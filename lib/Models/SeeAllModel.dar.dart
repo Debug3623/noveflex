@@ -1,92 +1,141 @@
 // To parse this JSON data, do
 //
-//     final seeAllModel = seeAllModelFromJson(jsonString);
+//     final seeAllBooksModelClass = seeAllBooksModelClassFromJson(jsonString);
 
 import 'dart:convert';
 
-SeeAllModel seeAllModelFromJson(String str) => SeeAllModel.fromJson(json.decode(str));
+SeeAllBooksModelClass? seeAllBooksModelClassFromJson(String str) => SeeAllBooksModelClass.fromJson(json.decode(str));
 
-String seeAllModelToJson(SeeAllModel data) => json.encode(data.toJson());
+String seeAllBooksModelClassToJson(SeeAllBooksModelClass? data) => json.encode(data!.toJson());
 
-class SeeAllModel {
-  SeeAllModel({
+class SeeAllBooksModelClass {
+  SeeAllBooksModelClass({
     this.status,
-    this.message,
     this.data,
   });
 
   int? status;
-  String? message;
-  List<Datum>? data;
+  List<Datum?>? data;
 
-  factory SeeAllModel.fromJson(Map<String, dynamic> json) => SeeAllModel(
+  factory SeeAllBooksModelClass.fromJson(Map<String, dynamic> json) => SeeAllBooksModelClass(
     status: json["status"],
-    message: json["message"],
-    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
+    data: json["data"] == null ? [] : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "message": message,
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x!.toJson())),
   };
 }
 
 class Datum {
   Datum({
     this.id,
-    this.bookTitle,
+    this.title,
+    this.authorName,
     this.description,
-    this.bookImage,
+    this.categoryId,
+    this.userId,
+    this.lessonId,
+    this.image,
+    this.status,
+    this.isActive,
+    this.isSeen,
     this.language,
+    this.createdBy,
+    this.updatedBy,
+    this.deletedBy,
+    this.createdAt,
+    this.updatedAt,
+    this.imagePath,
+    this.user,
   });
 
-  String? id;
-  String? bookTitle;
-  Description? description;
-  String? bookImage;
-  Language? language;
+  int? id;
+  String? title;
+  dynamic authorName;
+  String? description;
+  int? categoryId;
+  int? userId;
+  dynamic lessonId;
+  String? image;
+  String? status;
+  int? isActive;
+  int? isSeen;
+  String? language;
+  dynamic createdBy;
+  dynamic updatedBy;
+  dynamic deletedBy;
+  DateTime? createdAt;
+  dynamic updatedAt;
+  String? imagePath;
+  List<User?>? user;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
-    bookTitle: json["bookTitle"],
-    description: descriptionValues.map[json["description"]],
-    bookImage: json["bookImage"],
-    language: languageValues.map[json["language"]],
+    title: json["title"],
+    authorName: json["author_name"],
+    description: json["description"],
+    categoryId: json["category_id"],
+    userId: json["user_id"],
+    lessonId: json["lesson_id"],
+    image: json["image"],
+    status: json["status"],
+    isActive: json["is_active"],
+    isSeen: json["is_seen"],
+    language: json["language"],
+    createdBy: json["created_by"],
+    updatedBy: json["updated_by"],
+    deletedBy: json["deleted_by"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"],
+    imagePath: json["image_path"],
+    user: json["user"] == null ? [] : List<User?>.from(json["user"]!.map((x) => User.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "bookTitle": bookTitle,
-    "description": descriptionValues.reverse[description],
-    "bookImage": bookImage,
-    "language": languageValues.reverse[language],
+    "title": title,
+    "author_name": authorName,
+    "description": description,
+    "category_id": categoryId,
+    "user_id": userId,
+    "lesson_id": lessonId,
+    "image": image,
+    "status": status,
+    "is_active": isActive,
+    "is_seen": isSeen,
+    "language": language,
+    "created_by": createdBy,
+    "updated_by": updatedBy,
+    "deleted_by": deletedBy,
+    "created_at": createdAt?.toIso8601String(),
+    "updated_at": updatedAt,
+    "image_path": imagePath,
+    "user": user == null ? [] : List<dynamic>.from(user!.map((x) => x!.toJson())),
   };
 }
 
-enum Description { BOOK_ADDED_SUCCESSFULLY }
+class User {
+  User({
+    this.id,
+    this.username,
+    this.imagePath,
+  });
 
-final descriptionValues = EnumValues({
-  "book added successfully": Description.BOOK_ADDED_SUCCESSFULLY
-});
+  int? id;
+  String? username;
+  String? imagePath;
 
-enum Language { ENG, ARB }
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    id: json["id"],
+    username: json["username"],
+    imagePath: json["image_path"],
+  );
 
-final languageValues = EnumValues({
-  "arb": Language.ARB,
-  "eng": Language.ENG
-});
-
-class EnumValues<T> {
-  Map<String, T> map;
-  Map<T, String>? reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    if (reverseMap == null) {
-      reverseMap = map.map((k, v) => new MapEntry(v, k));
-    }
-    return reverseMap!;
-  }
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "username": username,
+    "image_path": imagePath,
+  };
 }

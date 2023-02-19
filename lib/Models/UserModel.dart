@@ -4,74 +4,62 @@
 
 import 'dart:convert';
 
-UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+UserModel? userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-String userModelToJson(UserModel data) => json.encode(data.toJson());
+String userModelToJson(UserModel? data) => json.encode(data!.toJson());
 
 class UserModel {
   UserModel({
     this.status,
-    this.message,
-    this.data,
+    this.user,
   });
 
   int? status;
-  String? message;
-  Data? data;
+  User? user;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     status: json["status"],
-    message: json["message"],
-    data: Data.fromJson(json["data"]),
+    user: User.fromJson(json["user"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "message": message,
-    "data": data!.toJson(),
+    "user": user!.toJson(),
   };
 }
 
-class Data {
-  Data({
+class User {
+  User({
     this.id,
-    this.fname,
-    this.lname,
+    this.username,
     this.email,
-    this.password,
-    this.img,
     this.accessToken,
-    this.language,
+    this.expiredDays,
+    this.googleLogin,
   });
 
-  String? id;
-  String? fname;
-  String? lname;
+  int? id;
+  String? username;
   String? email;
-  String? password;
-  String? img;
   String? accessToken;
-  dynamic language;
+  int? expiredDays;
+  bool? googleLogin;
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
-    fname: json["fname"],
-    lname: json["lname"],
+    username: json["username"],
     email: json["email"],
-    password: json["password"],
-    img: json["img"],
-    accessToken: json["accessToken"],
-    language: json["language"],
+    accessToken: json["access_token"],
+    expiredDays: json["expired_days"],
+    googleLogin: json["google_login"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "fname": fname,
-    "lname": lname,
+    "username": username,
     "email": email,
-    "password": password,
-    "img": img,
-    "accessToken": accessToken,
-    "language": language,
+    "access_token": accessToken,
+    "expired_days": expiredDays,
+    "google_login": googleLogin,
   };
 }

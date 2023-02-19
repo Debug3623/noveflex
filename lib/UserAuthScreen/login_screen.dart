@@ -1,15 +1,23 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:novelflex/UserAuthScreen/SignUpScreens/signUpScreen_First.dart';
+import 'package:novelflex/tab_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+// import 'package:sign_in_apple/apple_id_user.dart';
+// import 'package:sign_in_apple/sign_in_apple.dart';
+import 'package:transitioner/transitioner.dart';
+import '../Models/CheckStatusModel.dart';
 import '../Models/UserModel.dart';
 import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
@@ -20,6 +28,7 @@ import '../Widgets/reusable_button_small.dart';
 import '../localization/Language/languages.dart';
 import 'ForgetPasswordScreen.dart';
 import 'SignUpScreens/SignUpScreen_Second.dart';
+import 'SignUpScreens/signUpScreen_Third.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -29,6 +38,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  GoogleSignInAccount? _userObj;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
+  Map _userFBObject = {};
+  Map<String, dynamic>? _userData;
+  AccessToken? _accessToken;
+
   static const String id = 'login_screen';
 
   final _emailFocusNode = new FocusNode();
@@ -47,12 +62,22 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
 
   UserModel? _userModel;
+  CheckStatusModel? _checkStatusModel;
 
   String _errorMsg = "";
+
+  String social_login_ID = "0";
+
+  String _name = 'Unknown';
+  String _mail = 'Unknown';
+  String _userIdentify = 'Unknown';
+  String _authorizationCode = 'Unknown';
+  bool show = true;
 
   @override
   void initState() {
     super.initState();
+    // initPlatformState();
     _controllerEmail = TextEditingController();
     _controllerPassword = TextEditingController();
   }
@@ -94,12 +119,14 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   _navigateAndRemove() {
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      _controllerEmail!.clear();
-      _controllerPassword!.clear();
-      Navigator.of(context).pushNamedAndRemoveUntil(
-          'tab_screen', (Route<dynamic> route) => false);
-    });
+    Transitioner(
+      context: context,
+      child: TabScreen(),
+      animation: AnimationType.slideLeft, // Optional value
+      duration: Duration(milliseconds: 1000), // Optional value
+      replacement: true, // Optional value
+      curveType: CurveType.decelerate, // Optional value
+    );
   }
 
   @override
@@ -112,6 +139,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: SingleChildScrollView(
           child: Form(
             key: _formKey,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -206,88 +234,114 @@ class _LoginScreenState extends State<LoginScreen> {
                     Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: height * 0.02, horizontal: width * 0.04),
-                      child: TextFormField(
-                        key: _passwordKey,
-                        controller: _controllerPassword,
-                        focusNode: _passwordFocusNode,
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        cursorColor: Colors.black,
-                        validator: validatePassword,
-                        obscureText: true,
-                        onFieldSubmitted: (_) {
-                          FocusScope.of(context)
-                              .requestFocus(_emailFocusNode);
-                        },
-                        decoration: InputDecoration(
-                            errorMaxLines: 3,
-                            counterText: "",
-                            filled: true,
-                            fillColor: Colors.white,
-                            focusedBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.black12,
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            child: TextFormField(
+                              key: _passwordKey,
+                              controller: _controllerPassword,
+                              focusNode: _passwordFocusNode,
+                              keyboardType: TextInputType.emailAddress,
+                              textInputAction: TextInputAction.next,
+                              cursorColor: Colors.black,
+                              validator: validatePassword,
+                              obscureText: show,
+                              onFieldSubmitted: (_) {
+                                FocusScope.of(context)
+                                    .requestFocus(_emailFocusNode);
+                              },
+                              decoration: InputDecoration(
+                                errorMaxLines: 3,
+                                counterText: "",
+                                filled: true,
+                                fillColor: Colors.white,
+                                focusedBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Colors.black12,
+                                  ),
+                                ),
+                                disabledBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Colors.black12,
+                                  ),
+                                ),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Color(0xFF256D85),
+                                  ),
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                  ),
+                                ),
+                                errorBorder: const OutlineInputBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    borderSide: BorderSide(
+                                      width: 1,
+                                      color: Colors.red,
+                                    )),
+                                focusedErrorBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Colors.red,
+                                  ),
+                                ),
+                                hintText: Languages.of(context)!.password,
+                                hintStyle: const TextStyle(
+                                  fontFamily: Constants.fontfamily,
+                                ),
                               ),
                             ),
-                            disabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.black12,
-                              ),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Color(0xFF256D85),
-                              ),
-                            ),
-                            border: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                              ),
-                            ),
-                            errorBorder: const OutlineInputBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
-                                borderSide: BorderSide(
-                                  width: 1,
-                                  color: Colors.red,
-                                )),
-                            focusedErrorBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.red,
-                              ),
-                            ),
-                            hintText: Languages.of(context)!.password,
-                            // labelStyle: TextStyle(
-                            //   color: Colors.red
-                            // ),
-                            // labelText: Languages.of(context)!.password,
-                            hintStyle: const TextStyle(
-                              fontFamily: Constants.fontfamily,
-                            )),
+                          ),
+                          Positioned(
+                              top: height * 0.01,
+                              left:context.read<UserProvider>().SelectedLanguage=='English' ? width * 0.8 : 0.0,
+                              right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? width * 0.8 : 0.0,
+                              child: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      show = !show;
+                                    });
+                                  },
+                                  icon: show
+                                      ? Icon(
+                                          Icons.remove_red_eye_outlined,
+                                          color: Colors.black38,
+                                        )
+                                      : Icon(
+                                          Icons.remove_red_eye,
+                                          color: const Color(0xff3a6c83),
+                                        )))
+                        ],
                       ),
                     ),
                     GestureDetector(
                         onTap: () {
-                          Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const ForgetPasswordScreen()),
-                              ModalRoute.withName("forgetPassword_screen"));
+                          Transitioner(
+                            context: context,
+                            child: ForgetPasswordScreen(),
+                            animation:
+                                AnimationType.slideLeft, // Optional value
+                            duration:
+                                Duration(milliseconds: 1000), // Optional value
+                            replacement: false, // Optional value
+                            curveType: CurveType.bounce, // Optional value
+                          );
                         },
                         child: forgetPassword(height)),
                     Container(
@@ -320,8 +374,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           Container(
                               width: width * 0.2,
                               height: 1,
-                              decoration: BoxDecoration(
-                                  color: const Color(0xff3a6c83)))
+                              decoration:
+                                  BoxDecoration(color: const Color(0xff3a6c83)))
                         ],
                       ),
                     ),
@@ -330,23 +384,62 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          SvgPicture.asset(
-                              "assets/quotes_data/google_login.svg", //asset location
+                          GestureDetector(
+                            onTap: () {
+                              _googleSignIn.signIn().then((userData) {
+                                setState(() {
+                                  _userObj = userData;
+                                  social_login_ID = "1";
+                                });
+                                CHECK_STATUS_API("1", userData!.email);
+                              }).catchError((e) {
+                                print(e);
+                              });
+                            },
+                            child: SvgPicture.asset(
+                                "assets/quotes_data/google_login.svg", //asset location
 
-                              fit: BoxFit.scaleDown),
+                                fit: BoxFit.scaleDown),
+                          ),
                           SizedBox(
                             width: width * 0.02,
                           ),
-                          SvgPicture.asset(
-                              "assets/quotes_data/facebook_login.svg", //asset location
+                          GestureDetector(
+                            onTap: () async {
+                              FacebookAuth.instance.login(permissions: [
+                                "public_profile",
+                                "email"
+                              ]).then((value) {
+                                FacebookAuth.instance
+                                    .getUserData()
+                                    .then((userData) {
+                                  setState(() {
+                                    social_login_ID = "2";
+                                    _userFBObject = userData;
+                                  });
+                                  CHECK_STATUS_API("2", _userFBObject["email"]);
+                                });
+                              });
+                            },
+                            child: SvgPicture.asset(
+                                "assets/quotes_data/facebook_login.svg", //asset location
 
-                              fit: BoxFit.scaleDown),
+                                fit: BoxFit.scaleDown),
+                          ),
                           SizedBox(
                             width: width * 0.02,
                           ),
-                          SvgPicture.asset(
-                              "assets/quotes_data/apple_login.svg", //asset location
-                              fit: BoxFit.scaleDown)
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                social_login_ID = "3";
+                              });
+                              // SignInApple.clickAppleSignIn();
+                            },
+                            child: SvgPicture.asset(
+                                "assets/quotes_data/apple_login.svg", //asset location
+                                fit: BoxFit.scaleDown),
+                          )
                         ],
                       ),
                     ),
@@ -358,18 +451,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 Visibility(
                   visible: _isLoading == true,
                   child: const Center(
-                    child: CircularProgressIndicator(
-                      color: Color(0xFF256D85),
-                    ),
+                    child: CupertinoActivityIndicator(),
                   ),
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const SignUpScreen_First()));
+                    Transitioner(
+                      context: context,
+                      child: SignUpScreen_Second(
+                        ReferralUserID: "",
+                      ),
+                      animation: AnimationType.slideLeft, // Optional value
+                      duration: Duration(milliseconds: 1000), // Optional value
+                      replacement: true, // Optional value
+                      curveType: CurveType.decelerate, // Optional value
+                    );
                   },
                   child: Container(
                     margin: EdgeInsets.only(
@@ -535,7 +631,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (response.statusCode == 200) {
       //Success
 
-       jsonData = json.decode(response.body);
+      jsonData = json.decode(response.body);
       print('loginSuccess_data: $jsonData');
       if (jsonData['status'] == 200) {
         _userModel = UserModel.fromJson(jsonData);
@@ -546,7 +642,6 @@ class _LoginScreenState extends State<LoginScreen> {
         setState(() {
           _isLoading = false;
         });
-
       } else {
         ToastConstant.showToast(context, "Invalid Credential!");
         setState(() {
@@ -561,15 +656,283 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future CHECK_STATUS_API(String id, String email) async {
+    setState(() {
+      _isLoading = true;
+    });
+    var map = Map<String, dynamic>();
+    map['email'] = email;
+    map['google_id'] = id;
+
+    final response = await http.post(
+      Uri.parse(ApiUtils.CHECK_STATUS_API),
+      body: map,
+    );
+
+    var jsonData;
+
+    if (response.statusCode == 200) {
+      //Success
+
+      jsonData = json.decode(response.body);
+
+      if (jsonData['status'] == 200) {
+        print('check_status_api_response: $jsonData');
+        _checkStatusModel = CheckStatusModel.fromJson(jsonData);
+        setState(() {
+          _isLoading = false;
+        });
+        if (_checkStatusModel!.data == "false") {
+          print("false executed");
+          if (social_login_ID == "1") {
+            Transitioner(
+              context: context,
+              child: SingUpScreen_Third(
+                name: _userObj!.displayName!,
+                email: _userObj!.email,
+                password: "",
+                phone: social_login_ID.toString(),
+                route: "login",
+                photoUrl: _userObj!.photoUrl.toString(),
+              ),
+              animation: AnimationType.slideLeft, // Optional value
+              duration: Duration(milliseconds: 1000), // Optional value
+              replacement: true, // Optional value
+              curveType: CurveType.decelerate, // Optional value
+            );
+          } else if (social_login_ID == "2") {
+            Transitioner(
+              context: context,
+              child: SingUpScreen_Third(
+                name: _userFBObject["name"],
+                email: _userFBObject["email"],
+                password: "",
+                phone: social_login_ID.toString(),
+                route: "login",
+                photoUrl: _userFBObject["picture"]["data"]["url"],
+              ),
+              animation: AnimationType.slideLeft, // Optional value
+              duration: Duration(milliseconds: 1000), // Optional value
+              replacement: true, // Optional value
+              curveType: CurveType.decelerate, // Optional value
+            );
+          } else if (social_login_ID == "3") {
+            Transitioner(
+              context: context,
+              child: SingUpScreen_Third(
+                name: _userObj!.displayName!,
+                email: _userObj!.email,
+                password: "",
+                phone: social_login_ID.toString(),
+                route: "login",
+                photoUrl: _userObj!.photoUrl.toString(),
+              ),
+              animation: AnimationType.slideLeft, // Optional value
+              duration: Duration(milliseconds: 1000), // Optional value
+              replacement: true, // Optional value
+              curveType: CurveType.decelerate, // Optional value
+            );
+          } else {
+            ToastConstant.showToast(context, "Error!");
+          }
+        } else {
+          print("true executed");
+          if (social_login_ID == "1") {
+            SOCIAL_LOGIN_GOOGLE_API();
+          } else if (social_login_ID == "2") {
+            SOCIAL_LOGIN_FACEBOOK_API();
+          } else if (social_login_ID == "3") {
+            SOCIAL_LOGIN_APPLE_API();
+          }
+        }
+      } else {
+        ToastConstant.showToast(context, "Error!");
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      ToastConstant.showToast(context, "Internet Server Error!");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future SOCIAL_LOGIN_GOOGLE_API() async {
+    var map = Map<String, dynamic>();
+    map['email'] = _userObj!.email.toString();
+
+    final response = await http.post(
+      Uri.parse(ApiUtils.USER_SOCIAL_LOGIN),
+      body: map,
+    );
+
+    var jsonData;
+
+    if (response.statusCode == 200) {
+      //Success
+
+      jsonData = json.decode(response.body);
+      print('social_login_response: $jsonData');
+      if (jsonData['status'] == 200) {
+        jsonData = json.decode(response.body);
+        print('loginSuccess_data: $jsonData');
+        if (jsonData['status'] == 200) {
+          _userModel = UserModel.fromJson(jsonData);
+          saveToPreferencesUserDetail(_userModel);
+          _navigateAndRemove();
+
+          ToastConstant.showToast(context, "Login Successfully");
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      } else {
+        ToastConstant.showToast(context, "Error!");
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      ToastConstant.showToast(context, "Internet Server Error!");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future SOCIAL_LOGIN_FACEBOOK_API() async {
+    var map = Map<String, dynamic>();
+    map['email'] = _userFBObject["email"].toString();
+
+    final response = await http.post(
+      Uri.parse(ApiUtils.USER_SOCIAL_LOGIN),
+      body: map,
+    );
+
+    var jsonData;
+
+    if (response.statusCode == 200) {
+      //Success
+
+      jsonData = json.decode(response.body);
+      print('social_login_response: $jsonData');
+      if (jsonData['status'] == 200) {
+        jsonData = json.decode(response.body);
+        print('loginSuccess_data: $jsonData');
+        if (jsonData['status'] == 200) {
+          _userModel = UserModel.fromJson(jsonData);
+          saveToPreferencesUserDetail(_userModel);
+          _navigateAndRemove();
+
+          ToastConstant.showToast(context, "Login Successfully");
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      } else {
+        ToastConstant.showToast(context, "Error!");
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      ToastConstant.showToast(context, "Internet Server Error!");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future SOCIAL_LOGIN_APPLE_API() async {
+    var map = Map<String, dynamic>();
+    map['email'] = _mail.toString();
+
+    final response = await http.post(
+      Uri.parse(ApiUtils.USER_SOCIAL_LOGIN),
+      body: map,
+    );
+
+    var jsonData;
+
+    if (response.statusCode == 200) {
+      //Success
+
+      jsonData = json.decode(response.body);
+      print('social_login_response: $jsonData');
+      if (jsonData['status'] == 200) {
+        jsonData = json.decode(response.body);
+        print('loginSuccess_data: $jsonData');
+        if (jsonData['status'] == 200) {
+          _userModel = UserModel.fromJson(jsonData);
+          saveToPreferencesUserDetail(_userModel);
+          _navigateAndRemove();
+
+          ToastConstant.showToast(context, "Login Successfully");
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      } else {
+        ToastConstant.showToast(context, "Error!");
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      ToastConstant.showToast(context, "Internet Server Error!");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  // Future<void> initPlatformState() async {
+  //   SignInApple.handleAppleSignInCallBack(onCompleteWithSignIn: (AppleIdUser user) async {
+  //     print("flutter receiveCode: \n");
+  //     print(user.authorizationCode);
+  //     print("flutter receiveToken \n");
+  //     print(user.identifyToken);
+  //     setState(() {
+  //       _name = user.name ?? ""; // may be null or "" if use set privacy
+  //       _mail = user.mail ?? ""; // may be null or "" if use set privacy
+  //       _userIdentify = user.userIdentifier;
+  //       _authorizationCode = user.authorizationCode;
+  //     });
+  //
+  //     CHECK_STATUS_API("3",_mail);
+  //
+  //   }, onCompleteWithError: (AppleSignInErrorCode code) async {
+  //     var errorMsg = "unknown";
+  //     switch (code) {
+  //       case AppleSignInErrorCode.canceled:
+  //         errorMsg = "user canceled request";
+  //         break;
+  //       case AppleSignInErrorCode.failed:
+  //         errorMsg = "request fail";
+  //         break;
+  //       case AppleSignInErrorCode.invalidResponse:
+  //         errorMsg = "request invalid response";
+  //         break;
+  //       case AppleSignInErrorCode.notHandled:
+  //         errorMsg = "request not handled";
+  //         break;
+  //       case AppleSignInErrorCode.unknown:
+  //         errorMsg = "request fail unknown";
+  //         break;
+  //     }
+  //     print(errorMsg);
+  //   });
+  // }
+
   void saveToPreferencesUserDetail(UserModel? _userModel) async {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
 
-    userProvider.setUserEmail(_userModel!.data!.email!);
-    userProvider.setUserToken(_userModel.data!.accessToken!);
-    userProvider.setUserName(_userModel.data!.fname!);
-    // userProvider.setUserImage(_userModel.data.img);
-    userProvider.setUserID(_userModel.data!.id!.toString());
-    userProvider.setLanguage("English");
+    userProvider.setUserEmail(_userModel!.user!.email!);
+    userProvider.setUserToken(_userModel.user!.accessToken!);
+    userProvider.setUserName(_userModel.user!.username!);
+    userProvider.setUserID(_userModel.user!.id!.toString());
   }
 }

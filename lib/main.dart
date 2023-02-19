@@ -1,40 +1,165 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:app_version_update/app_version_update.dart';
+import 'package:connectivity/connectivity.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:novelflex/TabScreens/home_screen.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/SignUpScreen_Second.dart';
 import 'package:novelflex/localization/Language/languages.dart';
 import 'package:novelflex/tab_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:transitioner/transitioner.dart';
+import 'package:workmanager/workmanager.dart';
+import 'MixScreens/BookDetailsAuthor.dart';
+import 'Models/language_model.dart';
 import 'Provider/UserProvider.dart';
 import 'Provider/VariableProvider.dart';
 import 'TabScreens/profile_screen.dart';
 import 'UserAuthScreen/login_screen.dart';
 import 'UserAuthScreen/SignUpScreens/signUpScreen_First.dart';
+import 'Utils/ApiUtils.dart';
+import 'Utils/Constants.dart';
+import 'Utils/constant.dart';
+import 'Utils/notification.dart';
+import 'Utils/store_config.dart';
+import 'Utils/toast.dart';
+import 'firebase_options.dart';
 import 'localization/locale_constants.dart';
 import 'localization/localizations_delegate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:http/http.dart' as http;
+import 'dart:io' show Platform;
 
-//NovelFlex
+const fetchBackground = "fetchBackground";
+BuildContext? context1;
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
 Future<void> main() async {
-  // HttpOverrides.global = MyHttpOverrides();
-  WidgetsFlutterBinding.ensureInitialized();
+
+  try {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {}
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+      AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
+
+
+  if (Platform.isIOS || Platform.isMacOS) {
+    StoreConfig(
+      store: Store.appleStore,
+      apiKey: appleApiKey,
+    );
+  } else if (Platform.isAndroid) {
+
+    StoreConfig(
+      store:  Store.googlePlay,
+      apiKey:googleApiKey,
+    );
+  }
+
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
+  // if (Platform.isIOS || Platform.isMacOS) {
+  //   StoreConfig(
+  //     store: Store.appleStore,
+  //     apiKey: Constants.appleApiKey,
+  //   );
+  // } else if (Platform.isAndroid) {
+  //   StoreConfig(
+  //     store:  Store.googlePlay,
+  //     apiKey: Constants.googleApiKey,
+  //   );
+  // }
+
   runApp(Phoenix(child: MyApp(sharedPreferences: prefs)));
+
+
 }
 
-class MyHttpOverrides extends HttpOverrides{
-  @override
-  HttpClient createHttpClient(SecurityContext? context){
-    return super.createHttpClient(context)
-      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
-  }
-}
+
+const AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel', // id
+  'High Importance Notifications', // title// description
+  importance: Importance.high,
+);
+
+
+// void callbackDispatcher() {
+//   Workmanager().executeTask((task, inputData) {
+//
+//     FlutterLocalNotificationsPlugin localNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+//     var android = new AndroidInitializationSettings('@drawable/icon_notify');
+//     var IOS = new IOSInitializationSettings();
+//
+//     var settings = new InitializationSettings(android: android, iOS: IOS);
+//     localNotificationsPlugin.initialize(settings,
+//         onSelectNotification: (payload) {
+//           if (payload != null) {
+//             onSelectNotification(payload);
+//             debugPrint('notification payload: ' + payload);
+//           }
+//         });
+//     localNotificationsPlugin.initialize(settings);
+//     _showNotificationWithDefaultSound(localNotificationsPlugin);
+//     return Future.value(true);
+//   });
+// }
+//
+//
+// Future _showNotificationWithDefaultSound(notification) async {
+//   var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
+//       'your channel id',
+//       'your channel name',
+//       importance: Importance.max,
+//       priority: Priority.high
+//   );
+//   var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
+//   var platformChannelSpecifics = new NotificationDetails(
+//       android: androidPlatformChannelSpecifics,
+//       iOS: iOSPlatformChannelSpecifics
+//   );
+//   await notification.show(0, 'New Novel Published',
+//       'See whats in new Manga',
+//       platformChannelSpecifics, payload: 'Default_Sound'
+//   );
+// }
+//
+// Future onSelectNotification(String payload) async {
+//   await Navigator.push(
+//     context1!,
+//     MaterialPageRoute(builder: (context) => HomeScreen()),
+//   );
+// }
+
 
 class MyApp extends StatefulWidget {
   late SharedPreferences sharedPreferences;
@@ -50,8 +175,79 @@ class MyApp extends StatefulWidget {
   }
 }
 
+
+
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+
+  String? token;
+
+  @override
+  void initState() {
+    super.initState();
+    var initializationSettingsAndroid =
+    AndroidInitializationSettings('@drawable/ic_launcher');
+    const iosInitializationSetting = IOSInitializationSettings(
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+      // defaultPresentAlert: true,
+      // defaultPresentBadge: true,
+      // defaultPresentSound: true
+    );
+    var initializationSettings =
+    InitializationSettings(android: initializationSettingsAndroid,iOS:iosInitializationSetting);
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                // channel.description,
+                color: Colors.blue,
+                icon: "@drawable/icon_notify",
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        showDialog(
+          // context: context,
+            builder: (_) {
+              return AlertDialog(
+                title: Text(notification.title!),
+                content: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [Text(notification.body!)],
+                  ),
+                ),
+              );
+            }, context: context);
+      }
+    });
+
+    getToken();
+  }
+
+
+  getToken() async {
+
+    token = await FirebaseMessaging.instance.getToken();
+    print("firebase_token ${token}");
+  }
+
 
   Locale? _locale;
 
@@ -85,39 +281,43 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider<VariableProvider>(
               create: (context) => VariableProvider()),
         ],
-        child: MaterialApp(
-          locale: _locale,
-          supportedLocales: const [
-            Locale('en', ''),
-            Locale('ar', ''),
-          ],
-          localizationsDelegates: const [
-            AppLocalizationsDelegate(),
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          localeResolutionCallback: (locale, supportedLocales) {
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale?.languageCode &&
-                  supportedLocale.countryCode == locale?.countryCode) {
-                return supportedLocale;
+        child: FirebasePhoneAuthProvider(
+          child: MaterialApp(
+            locale: _locale,
+            supportedLocales: const [
+              Locale('en', ''),
+              Locale('ar', ''),
+            ],
+            localizationsDelegates: const [
+              AppLocalizationsDelegate(),
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            localeResolutionCallback: (locale, supportedLocales) {
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale?.languageCode &&
+                    supportedLocale.countryCode == locale?.countryCode) {
+                  return supportedLocale;
+                }
               }
-            }
-            return supportedLocales.first;
-          },
-          debugShowCheckedModeBanner: false,
-          home: SplashFirst(),
-          routes: {
-            // 'slider_screen': (context) => SliderScreen(),
-            'tab_screen': (context) => TabScreen(),
-            'login_screen': (context) => LoginScreen(),
-            'profile_screen': (context) => Profile_Screen(),
-          },
+              return supportedLocales.first;
+            },
+            debugShowCheckedModeBanner: false,
+            home: SplashFirst(),
+            routes: {
+              // 'slider_screen': (context) => SliderScreen(),
+              'tab_screen': (context) => TabScreen(),
+              'login_screen': (context) => LoginScreen(),
+              'profile_screen': (context) => Profile_Screen(),
+            },
+          ),
         ),
       ),
     );
   }
+
+
 }
 
 class SplashFirst extends StatefulWidget {
@@ -128,18 +328,31 @@ class SplashFirst extends StatefulWidget {
 }
 
 class _SplashFirstState extends State<SplashFirst> {
-
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   @override
   void initState() {
     super.initState();
-    Timer(const Duration(seconds: 1), () {
+    retrieveDynamicLink(context);
+    Timer(const Duration(seconds: 0), () {
       if (context.read<UserProvider>().UserToken == '' ||
           context.read<UserProvider>().UserToken == null) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => SplashPage()));
+        Transitioner(
+          context: context,
+          child: SplashPage(),
+          animation: AnimationType.fadeIn, // Optional value
+          duration: Duration(milliseconds: 1000), // Optional value
+          replacement: true, // Optional value
+          curveType: CurveType.decelerate, // Optional value
+        );
       } else {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => TabScreen()));
+        Transitioner(
+          context: context,
+          child: TabScreen(),
+          animation: AnimationType.fadeIn, // Optional value
+          duration: Duration(milliseconds: 1000), // Optional value
+          replacement: true, // Optional value
+          curveType: CurveType.decelerate, // Optional value
+        );
       }
     });
   }
@@ -148,12 +361,36 @@ class _SplashFirstState extends State<SplashFirst> {
   Widget build(BuildContext context) {
     return const Scaffold(
       backgroundColor: const Color(0xffebf5f9),
+      body: Center(
+        child: CupertinoActivityIndicator(
+          color: Colors.black12,
+        ),
+      ),
     );
   }
+
+  Future<void> retrieveDynamicLink(BuildContext context) async {
+    try {
+      final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
+      final Uri? deepLink = data?.link;
+
+      if (deepLink != null) {
+        if (deepLink.queryParameters.containsKey('referral_code')) {
+          String? referral_code = deepLink.queryParameters['referral_code'];
+          Constants.showToastBlack(context, deepLink.queryParameters['referral_code']!);
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen_Second(ReferralUserID:deepLink.queryParameters['referral_code'],)));
+          print("referral_code = $referral_code");
+          }
+
+      }
+
+      FirebaseDynamicLinks.instance.onLink;
+
+    } catch (e) {
+      print(e.toString());
+    }
+  }
 }
-
-
-
 
 
 class SplashPage extends StatefulWidget {
@@ -165,6 +402,16 @@ class SplashPage extends StatefulWidget {
 
 class _SplashPageState extends State<SplashPage> {
 
+  @override
+  void initState() {
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<UserProvider>().setLanguage('English');
+      changeLanguage(context, 'en');
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -193,7 +440,10 @@ class _SplashPageState extends State<SplashPage> {
           ),
           Positioned(
             top: _height * 0.45,
-            left: _width * 0.25,
+            left:context.read<UserProvider>().SelectedLanguage=='English' ? _width*0.1 : 0.0,
+            right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width*0.05 : 0.0,
+
+
             child: Text(Languages.of(context)!.labelWelcome,
                 style: const TextStyle(
                     color: const Color(0xff101010),
@@ -208,8 +458,15 @@ class _SplashPageState extends State<SplashPage> {
               left: _width * 0.1,
               child: GestureDetector(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>LoginScreen()));
-                },
+                  Transitioner(
+                    context: context,
+                    child: LoginScreen(),
+                    animation: AnimationType.slideLeft, // Optional value
+                    duration: Duration(milliseconds: 1000), // Optional value
+                    replacement: true, // Optional value
+                    curveType: CurveType.decelerate, // Optional value
+                  );
+                  },
                 child: Container(
                   width: 320,
                   height: 50,
@@ -242,7 +499,14 @@ class _SplashPageState extends State<SplashPage> {
             left: _width * 0.1,
             child: GestureDetector(
               onTap: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpScreen_First()));
+                 Transitioner(
+                  context: context,
+                  child: SignUpScreen_Second(ReferralUserID: "",),
+                  animation: AnimationType.slideLeft, // Optional value
+                  duration: Duration(milliseconds: 1000), // Optional value
+                  replacement: true, // Optional value
+                  curveType: CurveType.decelerate, // Optional value
+                );
               },
               child: Container(
                 width: 320,
@@ -267,8 +531,43 @@ class _SplashPageState extends State<SplashPage> {
               ),
             ),
           ),
+          Positioned(
+            top: _height*0.05,
+            left:context.read<UserProvider>().SelectedLanguage=='English' ? _width*0.8 : _width*0.02,
+            child: GestureDetector(
+              child: Column(
+                children: [
+                  Text(context.read<UserProvider>().SelectedLanguage=='English' ? "🇦🇪" : "🇺🇸", style: TextStyle(
+                      fontSize: _width*_height*0.0001
+                  ),),
+                  Text(context.read<UserProvider>().SelectedLanguage=='English' ? "العربية": "English ", style: const TextStyle(
+                      color:   Colors.black,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: "Lato",
+                      fontStyle:  FontStyle.normal,
+                      fontSize: 14.0
+                  ),),
+
+                ],
+              ),
+              onTap: () {
+                UserProvider userProviderlng =
+                Provider.of<UserProvider>(this.context, listen: false);
+                if(userProviderlng.SelectedLanguage == 'English'){
+                  userProviderlng.setLanguage('Arabic');
+                  changeLanguage(context, 'ar');
+                }else{
+                  userProviderlng.setLanguage('English');
+                  changeLanguage(context, 'en');
+                }
+
+              },
+            ),
+          )
         ],
       ),
     );
   }
+
+
 }

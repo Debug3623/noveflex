@@ -5,10 +5,11 @@ import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
+import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/signUpScreen_Third.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:transitioner/transitioner.dart';
 import '../../Models/UserModel.dart';
 import '../../Provider/UserProvider.dart';
 import '../../Utils/ApiUtils.dart';
@@ -21,8 +22,9 @@ import '../login_screen.dart';
 
 class SignUpScreen_Second extends StatefulWidget {
   static const String id = 'signUp_screen';
+  String? ReferralUserID;
 
-  const SignUpScreen_Second({Key? key}) : super(key: key);
+   SignUpScreen_Second({Key? key,required this.ReferralUserID}) : super(key: key);
 
   @override
   State<SignUpScreen_Second> createState() => _SignUpScreen_SecondState();
@@ -39,11 +41,13 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
   final GlobalKey<FormState> _formKey =
       GlobalKey<FormState>(debugLabel: 'GlobalFormKey #SignIn ');
 
+  String? phone;
+  String? country= '+971';
+
   final _fullNameKey = GlobalKey<FormFieldState>();
   final _emailKey = GlobalKey<FormFieldState>();
   final _phoneKey = GlobalKey<FormFieldState>();
   final _passwordKey = GlobalKey<FormFieldState>();
-  final _confirPasswordKey = GlobalKey<FormFieldState>();
 
   String _errorMsg = "";
 
@@ -51,7 +55,7 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
   TextEditingController? _controllerEmail;
   TextEditingController? _controllerPhoneNumber;
   TextEditingController? _controllerPassword;
-  TextEditingController? _controllerConfirmPassword;
+  TextEditingController? _phoneController;
 
   bool _autoValidate = false;
 
@@ -66,7 +70,7 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
     _controllerEmail = TextEditingController();
     _controllerPhoneNumber = TextEditingController();
     _controllerPassword = TextEditingController();
-    _controllerConfirmPassword = TextEditingController();
+    _phoneController = TextEditingController();
   }
 
   @override
@@ -75,7 +79,7 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
     _controllerEmail!.dispose();
     _controllerPhoneNumber!.dispose();
     _controllerPassword!.dispose();
-    _controllerConfirmPassword!.dispose();
+    _phoneController!.dispose();
     super.dispose();
   }
 
@@ -257,6 +261,147 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
                     Padding(
                       padding: EdgeInsets.symmetric(
                           vertical: _height * 0.01, horizontal: _width * 0.04),
+                      child:Container(
+                        height: _height* 0.095,
+                        child: IntlPhoneField(
+                          controller: _phoneController,
+                          initialCountryCode: 'AE',
+                          cursorColor: Colors.black12,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          decoration:  InputDecoration(
+                              errorMaxLines: 1,
+                              counterText: "",
+                              filled: true,
+                              fillColor: Colors.white,
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Colors.black12,
+                                ),
+                              ),
+                              disabledBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Color(0xFF256D85),
+                                ),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Color(0xFF256D85),
+                                ),
+                              ),
+                              border: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                ),
+                              ),
+                              errorBorder: const OutlineInputBorder(
+                                  borderRadius:
+                                  BorderRadius.all(Radius.circular(10)),
+                                  borderSide: BorderSide(
+                                    width: 1,
+                                    color: Colors.red,
+                                  )),
+                              focusedErrorBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Colors.red,
+                                ),
+                              ),
+                              hintText: Languages.of(context)!.phoneNumber,
+                              // labelText: Languages.of(context)!.password,
+                              hintStyle: const TextStyle(fontFamily: Constants.fontfamily,)),
+                          onChanged: (phone) {
+                            print(phone.completeNumber);
+                            // _phoneController!.text = phone.completeNumber;
+                          },
+                          onCountryChanged: (phone) {
+                            print('Country code changed to: ' + phone.dialCode);
+                            country =phone.dialCode;
+                          },
+                        ),
+                      ),
+
+                      // TextFormField(
+                      //   key: _confirPasswordKey,
+                      //   controller: _controllerConfirmPassword,
+                      //   focusNode: _confirmpasswordFocusNode,
+                      //   keyboardType: TextInputType.text,
+                      //   textInputAction: TextInputAction.done,
+                      //   obscureText: true,
+                      //   cursorColor: Colors.black,
+                      //   validator: validateConfirmPassword,
+                      //   onFieldSubmitted: (_) {
+                      //     handleRegisterUser();
+                      //   },
+                      //   decoration:  InputDecoration(
+                      //     errorMaxLines: 3,
+                      //     counterText: "",
+                      //     filled: true,
+                      //     fillColor: Colors.white,
+                      //     focusedBorder: const OutlineInputBorder(
+                      //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //       borderSide: BorderSide(
+                      //         width: 1,
+                      //         color:  Colors.black12,
+                      //       ),
+                      //     ),
+                      //     disabledBorder: const OutlineInputBorder(
+                      //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //       borderSide: BorderSide(
+                      //         width: 1,
+                      //         color:  Color(0xFF256D85),
+                      //       ),
+                      //     ),
+                      //     enabledBorder: const OutlineInputBorder(
+                      //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //       borderSide: BorderSide(
+                      //         width: 1,
+                      //         color:  Color(0xFF256D85),
+                      //       ),
+                      //     ),
+                      //     border: const OutlineInputBorder(
+                      //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //       borderSide: BorderSide(
+                      //         width: 1,
+                      //       ),
+                      //     ),
+                      //     errorBorder: const OutlineInputBorder(
+                      //         borderRadius:
+                      //             BorderRadius.all(Radius.circular(10)),
+                      //         borderSide: BorderSide(
+                      //           width: 1,
+                      //           color: Colors.red,
+                      //         )),
+                      //     focusedErrorBorder: const OutlineInputBorder(
+                      //       borderRadius: BorderRadius.all(Radius.circular(10)),
+                      //       borderSide: BorderSide(
+                      //         width: 1,
+                      //         color: Colors.red,
+                      //       ),
+                      //     ),
+                      //     hintText: Languages.of(context)!.confirmpassword,
+                      //     // labelText: Languages.of(context)!.confirmpassword,
+                      //     hintStyle: const TextStyle(
+                      //       fontFamily: Constants.fontfamily,
+                      //     )
+                      //   ),
+                      // ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          vertical: _height * 0.01, horizontal: _width * 0.04),
                       child: TextFormField(
                         key: _passwordKey,
                         controller: _controllerPassword,
@@ -326,83 +471,6 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
                         hintStyle: const TextStyle(fontFamily: Constants.fontfamily,)),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                          vertical: _height * 0.01, horizontal: _width * 0.04),
-                      child: TextFormField(
-                        key: _confirPasswordKey,
-                        controller: _controllerConfirmPassword,
-                        focusNode: _confirmpasswordFocusNode,
-                        keyboardType: TextInputType.text,
-                        textInputAction: TextInputAction.done,
-                        obscureText: true,
-                        cursorColor: Colors.black,
-                        validator: validateConfirmPassword,
-                        onFieldSubmitted: (_) {
-                          handleRegisterUser();
-                        },
-                        decoration:  InputDecoration(
-                          errorMaxLines: 3,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color:  Colors.black12,
-                            ),
-                          ),
-                          disabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color:  Color(0xFF256D85),
-                            ),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color:  Color(0xFF256D85),
-                            ),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                            ),
-                          ),
-                          errorBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.red,
-                              )),
-                          focusedErrorBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.red,
-                            ),
-                          ),
-                          hintText: Languages.of(context)!.confirmpassword,
-                          // labelText: Languages.of(context)!.confirmpassword,
-                          hintStyle: const TextStyle(
-                            fontFamily: Constants.fontfamily,
-                          )
-                        ),
-                      ),
-                    ),
-                    Visibility(
-                      visible: _isLoading == true,
-                      child: const Center(
-                        child: CircularProgressIndicator(
-                          color: Color(0xFF256D85),
-                        ),
-                      ),
-                    ),
                     Container(
                       width: _width * 0.9,
                       height: _height * 0.06,
@@ -422,11 +490,20 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
                     ),
                     GestureDetector(
                       onTap: () {
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const LoginScreen()),
-                            ModalRoute.withName("login_screen"));
+                        Transitioner(
+                          context: context,
+                          child: LoginScreen(),
+                          animation: AnimationType.slideLeft, // Optional value
+                          duration: Duration(milliseconds: 1000), // Optional value
+                          replacement: true, // Optional value
+                          curveType: CurveType.decelerate, // Optional value
+                        );
+                        // Navigator.pushAndRemoveUntil(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => const LoginScreen()),
+                        //     ModalRoute.withName("login_screen"));
+
                       },
                       child: Container(
                         margin: EdgeInsets.only(
@@ -529,12 +606,23 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
     SystemChannels.textInput.invokeMethod('TextInput.hide');
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      Navigator.push(context, MaterialPageRoute(builder: (context)=>
-          SingUpScreen_Third(
-            name: _controllerFullName!.text.toString(),
-            email: _controllerEmail!.text.toString(),
-            password: _controllerPassword!.text.toString(),
-          )));
+      print("phone_number== +${country!+_phoneController!.text.toString()}");
+      Transitioner(
+        context: context,
+        child: SingUpScreen_Third(
+          name: _controllerFullName!.text.toString(),
+          email: _controllerEmail!.text.toString(),
+          password: _controllerPassword!.text.toString(),
+          phone:"+${country!+_phoneController!.text.toString()}",
+          route: "signup",
+          photoUrl: "",
+        ),
+        animation: AnimationType.slideLeft, // Optional value
+        duration: Duration(milliseconds: 1000), // Optional value
+        replacement: false, // Optional value
+        curveType: CurveType.decelerate, // Optional value
+      );
+
     } else {
       setState(() {
         _autoValidate = true;
@@ -617,149 +705,8 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
   }
 
 
-  Future _checkInternetConnection() async {
-    if (this.mounted) {
-      setState(() {
-        _isLoading = true;
-      });
-    }
-
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (!(connectivityResult == ConnectivityResult.mobile ||
-        connectivityResult == ConnectivityResult.wifi)) {
-      ToastConstant.showToast(context, "Internet Not Connected");
-      _errorMsg = "No internet connection.";
-      if (this.mounted) {
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    } else {
-      _callRegisterAPI();
-    }
-  }
-
-  Future _callRegisterAPI() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    var map = Map<String, dynamic>();
-    map['fname'] =  _controllerFullName!.text.trim();
-    map['lname'] = _controllerFullName!.text.trim();
-    map['email'] = _controllerEmail!.text.trim();
-    map['password'] = _controllerPassword!.text.trim();
-    map['confirmd_password'] = _controllerConfirmPassword!.text.trim();
 
 
-
-    final response = await http.post(
-      Uri.parse(ApiUtils.URL_REGISTER_USER_API),
-      body: map,
-    );
-
-    var jsonData;
-
-    switch (response.statusCode) {
-
-      case 200:
-        //Success
-
-        var jsonData = json.decode(response.body);
-
-        if(jsonData['status']==200){
-          print('RegisterSuccess_data: $jsonData');
-          _userModel = UserModel.fromJson(jsonData);
-          saveToPreferencesUserDetail(_userModel);
-          _navigateAndRemove();
-          ToastConstant.showToast(context, "Register Successfully");
-          setState(() {
-            _isLoading = false;
-          });
-        }else{
-
-          ToastConstant.showToast(context,jsonData['message'].toString());
-          setState(() {
-            _isLoading = false;
-          });
-        }
-
-
-        break;
-      case 401:
-        jsonData = json.decode(response.body);
-        print('jsonData 401: $jsonData');
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_401);
-
-        break;
-      case 404:
-        jsonData = json.decode(response.body);
-        print('jsonData 404: $jsonData');
-
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_404);
-
-        break;
-      case 400:
-        jsonData = json.decode(response.body);
-        print('jsonData 400: $jsonData');
-
-        ToastConstant.showToast(context, 'Email already Exist.');
-
-        break;
-      case 405:
-        jsonData = json.decode(response.body);
-        print('jsonData 405: $jsonData');
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_405);
-
-        break;
-      case 422:
-        //Unprocessable Entity
-        jsonData = json.decode(response.body);
-        print('jsonData 422: $jsonData');
-
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_422);
-        break;
-      case 500:
-        jsonData = json.decode(response.body);
-        print('jsonData 500: $jsonData');
-
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_500);
-
-        break;
-      default:
-        jsonData = json.decode(response.body);
-        print('jsonData failed: $jsonData');
-
-        ToastConstant.showToast(context, "Login Failed Try Again");
-    }
-
-    if (this.mounted) {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-
-  void saveToPreferencesUserDetail(UserModel? _userModel) {
-    UserProvider userProvider =
-    Provider.of<UserProvider>(context, listen: false);
-
-    userProvider.setUserEmail(_userModel!.data!.email!);
-    userProvider.setUserToken(_userModel.data!.accessToken!);
-    userProvider.setUserName(_userModel.data!.fname!);
-    // userProvider.setUserImage(_userModel.data.img);
-    userProvider.setUserID(_userModel.data!.id!.toString());
-    // userProvider.setUserImage(_userModel.data.img);
-    userProvider.setLanguage("English");
-  }
-
-  _navigateAndRemove() {
-    Navigator.pushAndRemoveUntil(
-        this.context,
-        MaterialPageRoute(builder: (context) => TabScreen()),
-        ModalRoute.withName("tab_screen"));
-  }
   Widget mainText2(var width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,

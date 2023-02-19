@@ -20,7 +20,7 @@ class ResuableMaterialButton extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
 
       ),
-      color:const Color(0xFFE8A20C),
+      color:const Color(0xff3a6c83),
       minWidth: width*0.99,
       height: height*0.1,
       onPressed: onpress,

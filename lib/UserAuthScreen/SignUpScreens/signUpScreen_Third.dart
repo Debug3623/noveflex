@@ -1,15 +1,30 @@
+import 'dart:convert';
+
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/signUpScreen_Author.dart';
-
+import 'package:http/http.dart' as http;
+import 'package:novelflex/UserAuthScreen/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:transitioner/transitioner.dart';
+import '../../Models/UserModel.dart';
+import '../../Provider/UserProvider.dart';
+import '../../Utils/ApiUtils.dart';
+import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button_small.dart';
 import '../../localization/Language/languages.dart';
+import '../../tab_screen.dart';
 
 class SingUpScreen_Third extends StatefulWidget {
   String name;
   String email;
   String password;
+  String phone;
+  String route;
+  String photoUrl;
 
-  SingUpScreen_Third({required this.name,required this.email,required this.password});
+  SingUpScreen_Third({required this.name,required this.email,required this.password,required this.phone,required this.route,required this.photoUrl});
 
   @override
   State<SingUpScreen_Third> createState() => _SingUpScreen_ThirdState();
@@ -18,6 +33,8 @@ class SingUpScreen_Third extends StatefulWidget {
 class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
   bool isReader =false;
   bool isWriter = true;
+  bool _isLoading = false;
+  UserModel? _userModel;
 
   @override
   Widget build(BuildContext context) {
@@ -158,6 +175,14 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
               ),
             ),
           ),
+          Visibility(
+            visible:  _isLoading==true,
+            child: const Center(
+              child: CupertinoActivityIndicator(
+                color: Color(0xFF256D85),
+              ),
+            ),
+          ),
           Container(
             width: _width * 0.9,
             height: _height * 0.06,
@@ -167,15 +192,49 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
             child: ResuableMaterialButtonSmall(
               onpress: () {
                 if(isWriter){
-                  Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                      SignUpAuthorScreen(
+                  if(widget.route=="login"){
+                    Transitioner(
+                      context: context,
+                      child: SignUpAuthorScreen(
                         name: widget.name,
                         email: widget.email,
                         password: widget.password,
-                        status: "",
-                      )));
+                        status: "writer",
+                        phone: widget.phone,
+                        photoUrl: widget.photoUrl,
+                        lstatus: "login",
+                      ),
+                      animation: AnimationType.slideLeft, // Optional value
+                      duration: Duration(milliseconds: 1000), // Optional value
+                      replacement: false, // Optional value
+                      curveType: CurveType.decelerate,
+                    );
+                  }else{
+                    Transitioner(
+                      context: context,
+                      child: SignUpAuthorScreen(
+                        name: widget.name,
+                        email: widget.email,
+                        password: widget.password,
+                        status: "writer",
+                        phone: widget.phone,
+                        photoUrl: "",
+                        lstatus: "",
+                      ),
+                      animation: AnimationType.slideLeft, // Optional value
+                      duration: Duration(milliseconds: 1000), // Optional value
+                      replacement: false, // Optional value
+                      curveType: CurveType.decelerate,
+                    );
+                  }
+
                 }else{
-                  //signUp call api
+                  if(widget.route=="login"){
+                    _checkInternetConnection2();
+                  }else{
+                    _checkInternetConnection();
+                  }
+
                 }
 
               },
@@ -225,4 +284,253 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
       ],
     );
   }
+
+  Future _checkInternetConnection() async {
+    if (this.mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (!(connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi)) {
+      ToastConstant.showToast(context, "Internet Not Connected");
+      if (this.mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      READER_REGISTER_API();
+    }
+  }
+
+  Future _checkInternetConnection2() async {
+    if (this.mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
+
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (!(connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi)) {
+      ToastConstant.showToast(context, "Internet Not Connected");
+      if (this.mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      READER_SOCIAL_API();
+    }
+  }
+
+  Future READER_REGISTER_API() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var map = Map<String, dynamic>();
+    map['username'] =  widget.name.trim();
+    map['email'] = widget.email.trim();
+    map['phone'] = widget.phone.trim();
+    map['password'] = widget.password.trim();
+    map['confirm_password'] = widget.password.trim();
+    map['type'] = "reader";
+
+
+
+    final response = await http.post(
+      Uri.parse(ApiUtils.URL_REGISTER_READER_API),
+      body: map,
+    );
+
+    var jsonData;
+
+    switch (response.statusCode) {
+
+      case 200:
+      //Success
+
+        var jsonData = json.decode(response.body);
+
+        if(jsonData['status']==200){
+          ToastConstant.showToast(context,jsonData['message'].toString());
+          _navigateAndRemove();
+          setState(() {
+            _isLoading = false;
+          });
+        }else{
+
+          ToastConstant.showToast(context,jsonData['message'].toString());
+          setState(() {
+            _isLoading = false;
+          });
+        }
+
+
+        break;
+      case 401:
+        jsonData = json.decode(response.body);
+        print('jsonData 401: $jsonData');
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_401);
+
+        break;
+      case 404:
+        jsonData = json.decode(response.body);
+        print('jsonData 404: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_404);
+
+        break;
+      case 400:
+        jsonData = json.decode(response.body);
+        print('jsonData 400: $jsonData');
+
+        ToastConstant.showToast(context, 'Email already Exist.');
+
+        break;
+      case 405:
+        jsonData = json.decode(response.body);
+        print('jsonData 405: $jsonData');
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_405);
+
+        break;
+      case 422:
+        jsonData = json.decode(response.body);
+        print('jsonData 422: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_422);
+        break;
+      case 500:
+        jsonData = json.decode(response.body);
+        print('jsonData 500: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_500);
+
+        break;
+      default:
+        jsonData = json.decode(response.body);
+        print('jsonData failed: $jsonData');
+
+        ToastConstant.showToast(context, "Login Failed Try Again");
+    }
+
+    if (this.mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future READER_SOCIAL_API() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    var map = Map<String, dynamic>();
+    map['username'] =  widget.name.trim();
+    map['email'] = widget.email.trim();
+    map['google_id'] = widget.phone.trim();
+    map['type'] = "reader";
+
+
+
+    final response = await http.post(
+      Uri.parse(ApiUtils.USER_SOCIAL_REGISTER),
+      body: map,
+    );
+
+    var jsonData;
+
+    switch (response.statusCode) {
+
+      case 200:
+      //Success
+
+        var jsonData = json.decode(response.body);
+        if(jsonData['status']==200){
+          print("reader_ social_response${jsonData.toString()}");
+          ToastConstant.showToast(context,jsonData['message'].toString());
+          _navigateAndRemove();
+          setState(() {
+            _isLoading = false;
+          });
+        }else{
+
+          ToastConstant.showToast(context,jsonData['message'].toString());
+          setState(() {
+            _isLoading = false;
+          });
+        }
+
+
+        break;
+      case 401:
+        jsonData = json.decode(response.body);
+        print('jsonData 401: $jsonData');
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_401);
+
+        break;
+      case 404:
+        jsonData = json.decode(response.body);
+        print('jsonData 404: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_404);
+
+        break;
+      case 400:
+        jsonData = json.decode(response.body);
+        print('jsonData 400: $jsonData');
+
+        ToastConstant.showToast(context, 'Email already Exist.');
+
+        break;
+      case 405:
+        jsonData = json.decode(response.body);
+        print('jsonData 405: $jsonData');
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_405);
+
+        break;
+      case 422:
+        jsonData = json.decode(response.body);
+        print('jsonData 422: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_422);
+        break;
+      case 500:
+        jsonData = json.decode(response.body);
+        print('jsonData 500: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_500);
+
+        break;
+      default:
+        jsonData = json.decode(response.body);
+        print('jsonData failed: $jsonData');
+
+        ToastConstant.showToast(context, "Login Failed Try Again");
+    }
+
+    if (this.mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+
+  _navigateAndRemove() {
+    Transitioner(
+      context: context,
+      child: LoginScreen(),
+      animation: AnimationType.fadeIn, // Optional value
+      duration: Duration(milliseconds: 1000), // Optional value
+      replacement: true, // Optional value
+      curveType: CurveType.decelerate, // Optional value
+    );
+  }
+
 }

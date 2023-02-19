@@ -10,41 +10,18 @@ class DisclimarScreen extends StatelessWidget {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: const Color(0xffebf5f9),
       appBar: AppBar(
-        toolbarHeight: _height * 0.07,
+        backgroundColor: const Color(0xffebf5f9),
         elevation: 0.0,
-        backgroundColor: Color(0xFF256D85),
         leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(
-            Icons.arrow_back,
-            size: 35,
-            color: Colors.white,
-          ),
-        ),
-        actions: [
-          SizedBox(
-            width: _width * 0.0,
-          ),
-          Expanded(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: _height * 0.02,
-                ),
-                Text(
-                  Languages.of(context)!.discliamr_bar,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0),
-                )
-              ],
-            ),
-          ),
-        ],
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black54,
+            )),
       ),
       body: SingleChildScrollView(
         child: Padding(

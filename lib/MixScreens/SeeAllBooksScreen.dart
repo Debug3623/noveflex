@@ -1,11 +1,15 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import '../Models/SeeAllModel.dar.dart';
+import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
+import '../Utils/toast.dart';
 import 'BookDetailScreen.dart';
 
 class SeeAllBookScreen extends StatefulWidget {
@@ -17,7 +21,7 @@ class SeeAllBookScreen extends StatefulWidget {
 }
 
 class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
-  SeeAllModel? _seeAllModel;
+  SeeAllBooksModelClass? _seeAllBooksModelClass;
   bool _isLoading = false;
   bool _isInternetConnected = true;
 
@@ -46,7 +50,7 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
         });
       }
     } else {
-      _callSeeAllBooksAPI();
+      ALLBOOKSApiCall();
     }
   }
 
@@ -55,7 +59,20 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xffebf5f9),
+      appBar: AppBar(
+        backgroundColor: const Color(0xffebf5f9),
+        elevation: 0.0,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black54,
+            )),
+        toolbarHeight: _height*0.05,
+      ),
       body: _isInternetConnected == false
           ? SafeArea(
               child: Center(
@@ -89,8 +106,8 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 5,
                               blurRadius: 7,
-                              offset:
-                                  const Offset(0, 3), // changes position of shadow
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
                             ),
                           ],
                         ),
@@ -116,170 +133,115 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
           : _isLoading
               ? const Align(
                   alignment: Alignment.center,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      Color(0xFF256D85),
-                    ),
-                  ),
+                  child:  const Align(
+                    alignment: Alignment.center,
+                    child: CupertinoActivityIndicator(),
+                  )
                 )
               : Padding(
                   padding: EdgeInsets.only(top: _height * 0.02),
-                  child: GridView.builder(
-                      itemCount: _seeAllModel!.data!.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              crossAxisSpacing: 2,
-                              mainAxisSpacing: 2),
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => BookDetailScreen(
-                                      BookID:
-                                      '${_seeAllModel!.data![index].id}',
-                                    )));
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0,right: 8.0),
-                            child: Card(
-                              color: Colors.white,
-                              elevation: 2,
-                                // shape: RoundedRectangleBorder(
-                                //   borderRadius: BorderRadius.circular(15),
-                                //   //set border radius more than 50% of height and width to make circle
-                                // ),
-                              child: Center(
-                                child: Stack(
-                                  children: [
-                                    Container(
-                                      margin: const EdgeInsets.only(top: 10.0,bottom: 10.0),
-                                      decoration: const BoxDecoration(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Padding(
+                          padding: EdgeInsets.only(
+                              top: _height * 0.02,
+                              left: _width * 0.03,
+                              right: _width * 0.01),
+                          child: GridView.count(
+                            physics: BouncingScrollPhysics(),
+                            crossAxisCount: 3,
+                            childAspectRatio: 0.78,
+                            mainAxisSpacing: _height * 0.01,
+                            children: List.generate(
+                                _seeAllBooksModelClass!.data!.length, (index) {
+                              return Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Container(
+                                      width: _width * 0.25,
+                                      height: _height * 0.13,
+                                      decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
-                                            Radius.circular(5.0),
+                                            Radius.circular(10),
                                           ),
-                                          color: Colors.white),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(0.0),
-                                        child: Image.network(_seeAllModel!
-                                            .data![index].bookImage!
-                                            .toString()),
-                                      ),
-                                    ),
-                                    // Positioned(
-                                    //   top: _height * 0.17,
-                                    //   left: _width * 0.04,
-                                    //   child: Text(
-                                    //     _seeAllModel!.data![index].bookTitle!
-                                    //         .toString(),
-                                    //     style: TextStyle(
-                                    //       color: Colors.white,
-                                    //       fontSize: 15,
-                                    //       fontWeight: FontWeight.w500,
-                                    //       fontFamily: Constants.fontfamily,
-                                    //     ),
-                                    //     overflow: TextOverflow.ellipsis,
-                                    //   ),
-                                    // ),
-                                  ],
-                                ),
-                              ),
-                            ),
+                                          image: DecorationImage(
+                                              image: NetworkImage(
+                                                  _seeAllBooksModelClass!
+                                                      .data![index]!.imagePath
+                                                      .toString()),
+                                              fit: BoxFit.cover),
+                                          color: Colors.green)),
+                                  SizedBox(
+                                    height: _height * 0.01,
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                        _seeAllBooksModelClass!.data![index]!.title
+                                            .toString(),
+                                        style: const TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w500,
+                                            fontFamily: "Alexandria",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 12.0),
+                                        textAlign: TextAlign.left),
+                                  ),
+                                  Expanded(
+                                      child: Text(
+                                          _seeAllBooksModelClass!
+                                              .data![index]!.authorName
+                                              .toString(),
+                                          style: const TextStyle(
+                                              color: const Color(0xff676767),
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: "Lato",
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 12.0),
+                                          textAlign: TextAlign.left)),
+                                ],
+                              );
+                            }),
                           ),
-                        );
-                      }),
-
-                  // GridView.count(
-                  //   crossAxisCount: 2,
-                  //   crossAxisSpacing: 0.0,
-                  //   mainAxisSpacing: 5.0,
-                  //   shrinkWrap: true,
-                  //   children: List.generate(
-                  //     _seeAllModel!.data!.length,
-                  //     growable: true,
-                  //     (index) {
-                  //       return GestureDetector(
-                  //         onTap: () {
-                  //           Navigator.push(
-                  //               context,
-                  //               MaterialPageRoute(
-                  //                   builder: (context) => BookDetailScreen(
-                  //                         BookID:
-                  //                             '${_seeAllModel!.data![index].id}',
-                  //                       )));
-                  //         },
-                  //         child: Padding(
-                  //           padding: const EdgeInsets.all(10.0),
-                  //           child: Stack(
-                  //             children: [
-                  //               AspectRatio(
-                  //                 aspectRatio: 16 / 18,
-                  //                 child: Container(
-                  //                   // child: Center(child: Text(_seeAllModel!.data![index].bookTitle!.toString())),
-                  //                   decoration: BoxDecoration(
-                  //                       image: DecorationImage(
-                  //                         image: NetworkImage(_seeAllModel!
-                  //                             .data![index].bookImage!
-                  //                             .toString()),
-                  //                         fit: BoxFit.cover,
-                  //                       ),
-                  //                       borderRadius: BorderRadius.all(
-                  //                         Radius.circular(5.0),
-                  //                       ),
-                  //                       color: Colors.white),
-                  //                 ),
-                  //               ),
-                  //               Positioned(
-                  //                 top: _height * 0.17,
-                  //                 left: _width * 0.04,
-                  //                 child: Text(
-                  //                   _seeAllModel!.data![index].bookTitle!
-                  //                       .toString(),
-                  //                   style: TextStyle(
-                  //                     color: Colors.white,
-                  //                     fontSize: 15,
-                  //                     fontWeight: FontWeight.w500,
-                  //                     fontFamily: Constants.fontfamily,
-                  //                   ),
-                  //                   overflow: TextOverflow.ellipsis,
-                  //                 ),
-                  //               ),
-                  //             ],
-                  //           ),
-                  //         ),
-                  //       );
-                  //     },
-                  //   ),
-                  // ),
-                ),
+                        ),
+                      )
+                    ],
+                  )),
     );
   }
 
-  Future _callSeeAllBooksAPI() async {
-    setState(() {
-      _isLoading = true;
-      _isInternetConnected = true;
-    });
-    // Map<String, String> headers = {
-    //   'Content-Type': 'application/json;charset=UTF-8',
-    //   'Charset': 'utf-8'
-    // };
+  Future ALLBOOKSApiCall() async {
+    var map = Map<String, dynamic>();
+    map['category_id'] = widget.categoriesId.toString();
 
-    final response = await http.get(
-      Uri.parse("${ApiUtils.SEE_ALL_BOOKS_API}${widget.categoriesId}"),
+    final response = await http.post(
+      Uri.parse(ApiUtils.ALL_BOOKS_CATEGORIES_API),
+      headers: {
+        // 'Content-Type': 'application/json',
+        // 'Accept': 'application/json',
+        'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+      },
+      body: map,
     );
 
     if (response.statusCode == 200) {
-      print('See all books under 200 ${response.body}');
-      var jsonData = json.decode(response.body);
+      print('see_all_books_categories_wise_response${response.body}');
+      var jsonData = response.body;
       //var jsonData = response.body;
-      _seeAllModel = SeeAllModel.fromJson(jsonData);
-      print('see all api respo  ${_seeAllModel!.data![0].bookTitle}');
-      setState(() {
-        _isLoading = false;
-      });
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        _seeAllBooksModelClass = seeAllBooksModelClassFromJson(jsonData);
+        setState(() {
+          _isLoading = false;
+        });
+      } else {
+        ToastConstant.showToast(context, jsonData1['message'].toString());
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 }

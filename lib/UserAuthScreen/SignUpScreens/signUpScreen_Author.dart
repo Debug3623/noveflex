@@ -1,18 +1,36 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:connectivity/connectivity.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:novelflex/UserAuthScreen/login_screen.dart';
+import 'package:novelflex/tab_screen.dart';
 import 'package:path/path.dart' as path;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:transitioner/transitioner.dart';
+import '../../Models/UserModel.dart';
+import '../../Provider/UserProvider.dart';
+import '../../Utils/ApiUtils.dart';
+import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button_small.dart';
 import '../../localization/Language/languages.dart';
+import 'package:http/http.dart' as http;
+
 
 class SignUpAuthorScreen extends StatefulWidget {
   String name;
   String email;
   String password;
   String status;
-SignUpAuthorScreen({required this.name,required this.email,required this.password,required this.status});
+  String phone;
+  String photoUrl;
+  String lstatus;
+SignUpAuthorScreen({required this.name,required this.email,required this.password,required this.status,required this.phone,required this.photoUrl,required this.lstatus});
 
   @override
   State<SignUpAuthorScreen> createState() => _SignUpAuthorScreenState();
@@ -23,6 +41,8 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
   final _descriptionKey = GlobalKey<FormFieldState>();
   TextEditingController? _descriptionController;
   File? imageFile;
+  bool isLoading = false;
+  UserModel? _userModel;
 
   @override
   void initState() {
@@ -63,14 +83,14 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
                 _getFromGallery();
               },
               child: Container(
-                  width: _width*0.38,
-                  height: _height*0.19,
+                  width: _width*0.385,
+                  height: _height*0.18,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                       color: const Color(0xffd9e7ed),
 
                   ),
-                child: imageFile==null ? Center(
+                child: widget.lstatus == "" ? imageFile==null ? Center(
                   child: Text(
                       Languages.of(context)!.selectPicture,
                       style: const TextStyle(
@@ -85,7 +105,7 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
                   // clipBehavior: Clip.antiAlias,
                 child: Image.file(File(imageFile!.path),
                     fit:BoxFit.cover,),
-              )
+              ) : Image.network(widget.photoUrl)
               ),
             ),
             SizedBox(
@@ -130,6 +150,14 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
                 ),
               ),
             ),
+            Visibility(
+              visible:  isLoading==true,
+              child: const Center(
+                child: CupertinoActivityIndicator(
+                  color: Color(0xFF256D85),
+                ),
+              ),
+            ),
             Container(
               width: _width * 0.9,
               height: _height * 0.06,
@@ -138,9 +166,20 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
               ),
               child: ResuableMaterialButtonSmall(
                 onpress: () {
+                  if(widget.lstatus==""){
+                    if(_descriptionController!.text != "" && imageFile != null){
+                      _checkInternetConnection();
 
-                    // Navigator.push(context, MaterialPageRoute(builder: (context)=>
-                    //     SignUpAuthorScreen()));
+
+
+
+                    }else{
+                      ToastConstant.showToast(context, "Please fill all Fields");
+                    }
+
+                  }else{
+                    _checkInternetConnection2();
+                  }
 
                 },
                 buttonname: Languages.of(context)!.register,
@@ -173,6 +212,7 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
       ],
     );
   }
+
   String? validateDescription(String? value) {
     if (value!.isEmpty)
       return 'Enter Description';
@@ -199,4 +239,205 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
       });
     }
   }
+
+  Future<void> WRITER_REGISTER_API() async {
+
+    setState(() {
+      isLoading = true;
+    });
+
+    var request = http.MultipartRequest('POST',
+        Uri.parse(ApiUtils.URL_REGISTER_WRITER_API));
+
+    request.fields['username'] = widget.name;
+    request.fields['email'] = widget.email;
+    request.fields['phone'] = widget.phone;
+    request.fields['password'] = widget.password;
+    request.fields['confirm_password'] = widget.password;
+    request.fields['description'] = _descriptionController!.text.trim().toString();
+
+
+    http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+        'profile_photo', imageFile!.path,
+        // contentType: MediaType('application', 'jpg', )
+    );
+
+
+    request.files.add(multipartFile);
+    request.send().then((result) async {
+      http.Response.fromStream(result).then((response) {
+        var jsonData = json.decode(response.body);
+
+        if (response.statusCode == 200) {
+          if(jsonData['status'] == 200){
+            ToastConstant.showToast(context, jsonData['message'].toString());
+            print('author_register_api_response ' + response.body);
+            setState(() {
+              isLoading = false;
+
+            });
+            _navigateAndRemove();
+          }else{
+            ToastConstant.showToast(context, jsonData['message']);
+            setState(() {
+              isLoading = false;
+
+            });
+          }
+
+
+        }
+      });
+    });
+  }
+
+  Future WRITER_SOCIAL_API() async {
+    setState(() {
+      isLoading = true;
+    });
+
+    print("google_id${widget.phone}");
+    print("username${widget.name}");
+    print("email${widget.email}");
+    print("image${widget.phone}");
+
+
+    var map = Map<String, dynamic>();
+    map['username'] =  widget.name.trim().toString();
+    map['email'] = widget.email.trim().toString();
+    map['type'] = widget.status.trim().toString();
+    map['google_id'] = widget.phone.trim().toString();
+    map['image'] = widget.photoUrl.trim().toString();
+
+
+
+    final response = await http.post(
+      Uri.parse(ApiUtils.USER_SOCIAL_REGISTER),
+      body: map,
+    );
+
+    var jsonData;
+
+    switch (response.statusCode) {
+
+      case 200:
+      //Success
+
+        var jsonData = json.decode(response.body);
+
+        if(jsonData['status']==200){
+          ToastConstant.showToast(context,jsonData['message'].toString());
+          _navigateAndRemove();
+          setState(() {
+            isLoading = false;
+          });
+          print("Social Writer response${jsonData.toString()}");
+        }else{
+
+          ToastConstant.showToast(context,jsonData['message'].toString());
+          setState(() {
+            isLoading = false;
+          });
+        }
+
+
+        break;
+      case 401:
+        jsonData = json.decode(response.body);
+        print('jsonData 401: $jsonData');
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_401);
+
+        break;
+      case 404:
+        jsonData = json.decode(response.body);
+        print('jsonData 404: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_404);
+
+        break;
+      case 400:
+        jsonData = json.decode(response.body);
+        print('jsonData 400: $jsonData');
+
+        ToastConstant.showToast(context, 'Email already Exist.');
+
+        break;
+      case 405:
+        jsonData = json.decode(response.body);
+        print('jsonData 405: $jsonData');
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_405);
+
+        break;
+      case 422:
+        jsonData = json.decode(response.body);
+        print('jsonData 422: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_422);
+        break;
+      case 500:
+        jsonData = json.decode(response.body);
+        print('jsonData 500: $jsonData');
+
+        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_500);
+
+        break;
+      default:
+        jsonData = json.decode(response.body);
+        print('jsonData failed: $jsonData');
+
+        ToastConstant.showToast(context, "Login Failed Try Again");
+    }
+
+    if (this.mounted) {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
+
+  Future _checkInternetConnection() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (!(connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi)) {
+      Fluttertoast.showToast(
+        msg: "Internet Not Connected",
+        toastLength: Toast.LENGTH_SHORT,
+        textColor: Colors.white,
+        backgroundColor: Colors.black,
+        fontSize: 14,
+      );
+    } else {
+      WRITER_REGISTER_API();
+    }
+  }
+
+  Future _checkInternetConnection2() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (!(connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi)) {
+      Fluttertoast.showToast(
+        msg: "Internet Not Connected",
+        toastLength: Toast.LENGTH_SHORT,
+        textColor: Colors.white,
+        backgroundColor: Colors.black,
+        fontSize: 14,
+      );
+    } else {
+      WRITER_SOCIAL_API();
+    }
+  }
+
+  _navigateAndRemove() {
+
+      Transitioner(
+        context: context,
+        child: LoginScreen(),
+        animation: AnimationType.slideLeft, // Optional value
+        duration: Duration(milliseconds: 1000), // Optional value
+        replacement: true, // Optional value
+        curveType: CurveType.decelerate, // Optional value
+      );
+  }
+
 }

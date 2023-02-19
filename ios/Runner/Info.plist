@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <key>FirebaseAppDelegateProxyEnabled</key>
+    <false/>
+	<key>BGTaskSchedulerPermittedIdentifiers</key>
+	<array>
+		<string>workmanager.background.task</string>
+	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -22,8 +28,57 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
+	<key>CFBundleURLTypes</key>
+
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>fb1220583195561806</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.362340188692-sks0s537a6k98j6fuvqgfm4rpcqtuf4n</string>
+			</array>
+		</dict>
+	</array>
+
+	<key>FlutterDeepLinkingEnabled</key>
+    <true/>
+    <key>com.apple.developer.associated-domains</key>
+    <array>
+      <string>applinks:abc.page.link</string>
+    </array>
+    <key>CFBundleURLTypes</key>
+    <array>
+        <dict>
+        <key>CFBundleTypeRole</key>
+        <string>Editor</string>
+        <key>CFBundleURLName</key>
+        <string>novelflex.page.link</string>
+        <key>CFBundleURLSchemes</key>
+        <array>
+        <string>https</string>
+        </array>
+        </dict>
+    </array>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+	<key>FacebookAppID</key>
+	<string>1220583195561806</string>
+	<key>FacebookClientToken</key>
+	<string>6cf5ad23ae8886320886b46681c51d5a</string>
+	<key>FacebookDisplayName</key>
+	<string>NovelFlex</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>fbapi</string>
+		<string>fb-messenger-share-api</string>
+	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -32,11 +87,17 @@
 		<true/>
 	</dict>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>This app requires read and write access to the photo library.</string>
+	<string>This app requires read and write access to the photo library for user profile image Upload and  book cover image upload.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>This app requires access to the photo library.</string>
+	<string>This app requires read and write access to the photo library for user profile image Upload and  book cover image upload.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>processing</string>
+		<string>remote-notification</string>
+	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIMainStoryboardFile</key>
@@ -56,5 +117,48 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+    		<array>
+    			<dict>
+    				<key>CFBundleTypeRole</key>
+    				<string>Editor</string>
+    				<key>CFBundleURLSchemes</key>
+    				<array>
+    					<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
+    					<string>com.googleusercontent.apps.362340188692-sks0s537a6k98j6fuvqgfm4rpcqtuf4n</string>
+    				</array>
+    			</dict>
+    		</array>
+<key>CFBundleURLTypes</key>
+<array>
+  <dict>
+    <key>CFBundleURLSchemes</key>
+    <array>
+      <string>fb1220583195561806</string>
+    </array>
+  </dict>
+</array>
+<key>FacebookAppID</key>
+<string>1220583195561806</string>
+<key>FacebookDisplayName</key>
+<string>NovelFlex</string>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>fbapi</string>
+  <string>fbapi20130214</string>
+  <string>fbapi20130410</string>
+  <string>fbapi20130702</string>
+  <string>fbapi20131010</string>
+  <string>fbapi20131219</string>
+  <string>fbapi20140410</string>
+  <string>fbapi20140116</string>
+  <string>fbapi20150313</string>
+  <string>fbapi20150629</string>
+  <string>fbapi20160328</string>
+  <string>fbauth</string>
+  <string>fbauth2</string>
+  <string>fbshareextension</string>
+</array>
+
 </dict>
 </plist>

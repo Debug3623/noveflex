@@ -4,66 +4,82 @@
 
 import 'dart:convert';
 
-PostImageOtherFieldModel postImageOtherFieldModelFromJson(String str) => PostImageOtherFieldModel.fromJson(json.decode(str));
+PostImageOtherFieldModel? postImageOtherFieldModelFromJson(String str) => PostImageOtherFieldModel.fromJson(json.decode(str));
 
-String postImageOtherFieldModelToJson(PostImageOtherFieldModel data) => json.encode(data.toJson());
+String postImageOtherFieldModelToJson(PostImageOtherFieldModel? data) => json.encode(data!.toJson());
 
 class PostImageOtherFieldModel {
   PostImageOtherFieldModel({
     this.status,
-    this.message,
+    this.success,
     this.data,
   });
 
   int? status;
-  String? message;
+  String? success;
   Data? data;
 
   factory PostImageOtherFieldModel.fromJson(Map<String, dynamic> json) => PostImageOtherFieldModel(
     status: json["status"],
-    message: json["message"],
+    success: json["success"],
     data: Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "message": message,
+    "success": success,
     "data": data!.toJson(),
   };
 }
 
 class Data {
   Data({
-    this.id,
+    this.title,
     this.categoryId,
-    this.bookTitle,
+    this.subcategoryId,
+    this.userId,
     this.description,
-    this.language,
-    this.bookImage,
+    this.image,
+    this.updatedAt,
+    this.createdAt,
+    this.id,
+    this.imagePath,
   });
 
-  String? id;
+  String? title;
   String? categoryId;
-  String? bookTitle;
+  String? subcategoryId;
+  int? userId;
   String? description;
-  String? language;
-  String? bookImage;
+  String? image;
+  DateTime? updatedAt;
+  DateTime? createdAt;
+  int? id;
+  String? imagePath;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
-    categoryId: json["categoryId"],
-    bookTitle: json["bookTitle"],
+    title: json["title"],
+    categoryId: json["category_id"],
+    subcategoryId: json["subcategory_id"],
+    userId: json["user_id"],
     description: json["description"],
-    language: json["language"],
-    bookImage: json["bookImage"],
+    image: json["image"],
+    updatedAt: DateTime.parse(json["updated_at"]),
+    createdAt: DateTime.parse(json["created_at"]),
+    id: json["id"],
+    imagePath: json["image_path"],
   );
 
   Map<String, dynamic> toJson() => {
-    "id": id,
-    "categoryId": categoryId,
-    "bookTitle": bookTitle,
+    "title": title,
+    "category_id": categoryId,
+    "subcategory_id": subcategoryId,
+    "user_id": userId,
     "description": description,
-    "language": language,
-    "bookImage": bookImage,
+    "image": image,
+    "updated_at": updatedAt?.toIso8601String(),
+    "created_at": createdAt?.toIso8601String(),
+    "id": id,
+    "image_path": imagePath,
   };
 }

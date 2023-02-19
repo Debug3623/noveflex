@@ -17,8 +17,8 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:path/path.dart' as path;
 
-import '../MixScreens/UploadDataScreen.dart';
-import '../MixScreens/upload_history_screen.dart';
+import '../MixScreens/Uploadscreens/UploadDataScreen.dart';
+import '../MixScreens/Uploadscreens/upload_history_screen.dart';
 import '../Models/AuthorProfileModel.dart';
 import '../Models/ProfileStatusModel.dart';
 import '../Models/UserUploadHistoryModel.dart';
@@ -239,7 +239,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                                       Column(
                                         children: [
                                           Text(
-                                              Languages.of(context)!.subscriber,
+                                              Languages.of(context)!.followers,
                                               style: const TextStyle(
                                                 fontFamily: 'Lato',
                                                 color: Colors.black54,
@@ -326,7 +326,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  Uploadscreen()));
+                                                  UploadHistoryscreen()));
                                     },
                                     child: Text(Languages.of(context)!.seeAll,
                                         style: const TextStyle(
@@ -402,10 +402,11 @@ class _Profile_ScreenState extends State<Profile_Screen> {
                                                               borderRadius:
                                                                   BorderRadius
                                                                       .circular(
-                                                                          5.0),
+                                                                          10.0),
                                                               color:
                                                                   Colors.black,
                                                               image: DecorationImage(
+                                                                fit: BoxFit.cover,
                                                                   image: _userUploadHistoryModel!
                                                                               .data![
                                                                                   index1]
@@ -690,43 +691,43 @@ class _Profile_ScreenState extends State<Profile_Screen> {
           );
   }
 
-  Future<void> UploadProfileImageApi() async {
-    setState(() {
-      _isLoading = true;
-    });
-    Map<String, String> headers = {
-      'Content-type': 'application/json',
-      'Accept': 'application/json',
-      "accesstoken": context.read<UserProvider>().UserToken.toString(),
-    };
-
-    var jsonResponse;
-
-    var request = http.MultipartRequest(
-        'POST', Uri.parse(ApiUtils.PROFILE_IMAGE_UPLOAD_API));
-    request.files.add(http.MultipartFile.fromBytes(
-      "image",
-      File(imageFile!.path)
-          .readAsBytesSync(), //UserFile is my JSON key,use your own and "image" is the pic im getting from my gallary
-      filename: "Image.jpg",
-      contentType: MediaType('image', 'jpg'),
-    ));
-
-    request.headers.addAll(headers);
-
-    request.send().then((result) async {
-      http.Response.fromStream(result).then((response) {
-        if (response.statusCode == 200) {
-          print("Image Uploaded! ");
-          print('profile_image_upload ' + response.body);
-          Constants.showToastBlack(context, "Image Upload Successfully");
-          setState(() {
-            _isLoading = false;
-          });
-        }
-      });
-    });
-  }
+  // Future<void> UploadProfileImageApi() async {
+  //   setState(() {
+  //     _isLoading = true;
+  //   });
+  //   Map<String, String> headers = {
+  //     'Content-type': 'application/json',
+  //     'Accept': 'application/json',
+  //     "accesstoken": context.read<UserProvider>().UserToken.toString(),
+  //   };
+  //
+  //   var jsonResponse;
+  //
+  //   var request = http.MultipartRequest(
+  //       'POST', Uri.parse(ApiUtils.PROFILE_IMAGE_UPLOAD_API));
+  //   request.files.add(http.MultipartFile.fromBytes(
+  //     "image",
+  //     File(imageFile!.path)
+  //         .readAsBytesSync(), //UserFile is my JSON key,use your own and "image" is the pic im getting from my gallary
+  //     filename: "Image.jpg",
+  //     contentType: MediaType('image', 'jpg'),
+  //   ));
+  //
+  //   request.headers.addAll(headers);
+  //
+  //   request.send().then((result) async {
+  //     http.Response.fromStream(result).then((response) {
+  //       if (response.statusCode == 200) {
+  //         print("Image Uploaded! ");
+  //         print('profile_image_upload ' + response.body);
+  //         Constants.showToastBlack(context, "Image Upload Successfully");
+  //         setState(() {
+  //           _isLoading = false;
+  //         });
+  //       }
+  //     });
+  //   });
+  // }
 
   Future _profileStatusAPI() async {
     setState(() {
@@ -805,7 +806,7 @@ class _Profile_ScreenState extends State<Profile_Screen> {
 
       setState(() {
         imageFile = File(image.path);
-        UploadProfileImageApi();
+        // UploadProfileImageApi();
       });
     }
   }

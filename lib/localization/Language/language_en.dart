@@ -8,7 +8,38 @@ class LanguageEn extends Languages {
   String get follow => "Subscribe";
 
   @override
-  String get level => "LEVEL";
+  String get level => "level";
+
+  @override
+  String get novelFlexPremium => '✨ NovelFlex Premium';
+
+  @override
+  String get unlockPremium => "UNLOCK NOVEL FLEX PREMIUM FEATURES";
+
+  @override
+  String get search => "Title, Author";
+
+  @override
+  String get packageText => """A purchase will be applied to your account upon confirmation of the amount selected. Subscriptions will not automatically renew unless you subscribe again within 1 month period. You can cancel any time using your account settings. Any unused portion of a free trial will be forfeited if you purchase a subscription.""";
+
+
+  @override
+  String get privacyPolicy => "Privacy Policy";
+
+  @override
+  String get refundPolicy => "Refund Policy";
+
+
+
+  @override
+  String get paymentPolicy => "Payment Policy";
+
+
+  @override
+  String get unlockWallet => "Unlock Wallet";
+
+  @override
+  String get update => "Update";
 
   @override
   String get newPasswordCreate => "Create new password";
@@ -16,6 +47,32 @@ class LanguageEn extends Languages {
   @override
   String get selectAccountType => "Select Account type";
 
+  @override
+  String get verifyPhone => "Verify Phone Number";
+
+  @override
+  String get phoneNumber => "Phone Number";
+
+  @override
+  String get verify => "Verify";
+
+  @override
+  String get resend => "Resend";
+
+  @override
+  String get sendOtp => "Send OTP";
+
+  @override
+  String get weHavesentOtp => "We've sent an SMS with a verification code to ";
+
+  @override
+  String get listenForOtp => "Listening for OTP";
+
+  @override
+  String get or => "OR";
+
+  @override
+  String get enterOtp => "Enter OTP";
 
   @override
   String get resetPasswordtxt => "let's reset your password";
@@ -26,7 +83,7 @@ class LanguageEn extends Languages {
   String get continueWith =>  "Or continue with";
 
   @override
-  String get subscriber => "SUBSCRIBERS";
+  String get followers => "FOLLOWERS";
 
   @override
   String get authorC => "Publish Books";
@@ -59,6 +116,59 @@ class LanguageEn extends Languages {
   @override
   // TODO: implement home
   String get home => "Home";
+
+  @override
+  // TODO: implement home
+  String get myProfile => "My Profile";
+
+  @override
+  // TODO: implement home
+  String get following => "Following";
+
+
+  @override
+  // TODO: implement home
+  String get next => "Next";
+
+  @override
+  // TODO: implement home
+  String get unfollow_text => "UNFOLLOW";
+
+  @override
+  // TODO: implement EditButton
+  String get selectSubCategories => "Select Sub Categories";
+
+  @override
+  // TODO: implement home
+  String get publishButton => "PUBLISH";
+
+  @override
+  // TODO: implement home
+  String get account => "Account";
+
+  @override
+  // TODO: implement home
+  String get apply => "APPLY";
+
+  @override
+  // TODO: implement home
+  String get recentlyPublish => "Recently Published";
+
+  @override
+  // TODO: implement home
+  String get popular => "Most Popular";
+
+  @override
+  // TODO: implement home
+  String get FinsihAllsteps => "You have Finished all the necessary Steps";
+
+  @override
+  // TODO: implement LogOut
+  String get EAccount1 => "Earnings account";
+
+  @override
+  // TODO: implement home
+  String get EAccount2 => "The monthly profits will be added at the\n beginning of each month based on the number\n of ad views for each author in his portfolio,\n and he can withdraw according to the existing\n payment methods for the bank card.";
 
   @override
   // TODO: implement rate_Us
@@ -104,7 +214,7 @@ class LanguageEn extends Languages {
   String get terms => "TERMS & CONDITIONS";
 
   @override
-  String get published => "My Wallet";
+  String get published => "PUBLICATIONS";
 
   @override
   // TODO: implement Publish
@@ -116,7 +226,32 @@ class LanguageEn extends Languages {
 
   @override
   // TODO: implement Publish
-  String get following => "Following";
+  String get wallet1 => "Conditions for applying to activate\n the wallet and reap profits from ads";
+  @override
+  // TODO: implement Publish
+  String get wallet2 => "The author's account must have at least\n 50 followers";
+  @override
+  // TODO: implement Publish
+  String get wallet3 => "If it is a novel, the percentage of views is \n more than 200, with at least 100 pages.";
+  @override
+  // TODO: implement Publish
+  String get wallet4 => "If it is a manga, it must have obtained\n more than 200 views for all\n chapters together with at least 6 ";
+  @override
+  // TODO: implement Publish
+  String get wallet5 => "If it is a manga, it must have\n obtained more than 200 views\n for all chapters together with at\n  least 6 chaptersand each chapter\n  is 18 pages with a cover.";
+  @override
+  // TODO: implement Publish
+  String get wallet6 => "It is ensured that the works are not\n stolen or quoted from other authors";
+
+  @override
+  // TODO: implement Publish
+  String get bank1 => "Bank Account and Card";
+
+  @override
+  // TODO: implement Publish
+  String get bank2 => "All financial Details will be encrypted";
+
+
 
   @override
   // TODO: implement Publish
@@ -125,6 +260,49 @@ class LanguageEn extends Languages {
   @override
   // TODO: implement RateusDialog
   String get RateusDialog => "Rate Us";
+
+  @override
+  // TODO: implement RateusDialog
+  String get Subscribe => "FOLLOW";
+
+
+  @override
+  // TODO: implement RateusDialog
+  String get scan => "Scan Card";
+
+  @override
+  // TODO: implement RateusDialog
+  String get publishPorF => "Content Access";
+
+
+  @override
+  // TODO: implement RateusDialog
+  String get paid => "Paid";
+
+  @override
+  // TODO: implement RateusDialog
+  String get free => "Free";
+
+
+  @override
+  // TODO: implement RateusDialog
+  String get editT => "Edit";
+
+  @override
+  // TODO: implement RateusDialog
+  String get inviteApp => "Invite App";
+
+  @override
+  // TODO: implement RateusDialog
+  String get deleteb => "Delete";
+
+  @override
+  // TODO: implement RateusDialog
+  String get nodata => "Empty";
+
+  @override
+  // TODO: implement RateusDialog
+  String get Statistics => "Pie Chart";
 
   @override
   // TODO: implement SelectBook
@@ -148,7 +326,35 @@ class LanguageEn extends Languages {
 
   @override
   // TODO: implement seeAll
-  String get seeAll => "See All";
+  String get seeAll => "See More";
+
+  @override
+  // TODO: implement seeAllReviews
+  String get follow_author => "FOLLOW";
+
+  @override
+  // TODO: implement enterBookTitle
+  String get aboutAuthor => "About Author";
+
+  @override
+  // TODO: implement seeAll
+  String get author => "Authors";
+
+  @override
+  // TODO: implement seeAllReviews
+  String get view => "View";
+
+  @override
+  // TODO: implement seeAllReviews
+  String get aboutBook => "About The Book";
+
+  @override
+  // TODO: implement enterBookTitle
+  String get manga => "#Manga";
+
+  @override
+  // TODO: implement seeAll
+  String get read => "Read";
 
   @override
   // TODO: implement seeAllReviews
@@ -233,7 +439,19 @@ class LanguageEn extends Languages {
 
   @override
   // TODO: implement register
-  String get history => "My History";
+  String get history => "Uploaded Books";
+
+  @override
+  // TODO: implement register
+  String get pay => "Pay 3 \$ to Subscribe";
+
+  @override
+  // TODO: implement register
+  String get oneTimeSub => "One Month Subscription for NovelFlex will cost you  3\$ ";
+
+  @override
+  // TODO: implement register
+  String get afterSub => "After Subscription you will have access to all the books and novels";
 
   @override
   // TODO: implement register

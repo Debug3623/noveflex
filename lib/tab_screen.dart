@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-import 'MixScreens/MyCorner.dart';
+import 'package:novelflex/TabScreens/SearchScreen.dart';
+import 'TabScreens/Menu_screen.dart';
+import 'TabScreens/MyCorner.dart';
 import 'TabScreens/home_screen.dart';
 import 'TabScreens/profile_screen.dart';
+import 'Utils/Colors.dart';
 
 class TabScreen extends StatefulWidget {
   const TabScreen({Key? key}) : super(key: key);
@@ -13,30 +15,43 @@ class TabScreen extends StatefulWidget {
 }
 
 class _TabScreenState extends State<TabScreen> {
-  int pageIndex = 0;
+  int pageIndex = 2;
 
   final Screen = [
-    HomeScreen(),
+    SearchScreen(),
     MyCorner(),
-    Profile_Screen(),
+    HomeScreen(),
+    MenuScreen(),
   ];
+  GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  //
+  // void _onItemTapped(int index) {
+  //   index == 4
+  //       ? _drawerKey.currentState!.openDrawer()
+  //       : setState(() {
+  //     pageIndex = index;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Screen[pageIndex],
+      key: _drawerKey,
+      backgroundColor: AppColors.primaryColor,
+      body:  Screen[pageIndex],
+      // drawer: DrawerCode(),
       bottomNavigationBar: buildMyNavBar(context),
+
+
     );
   }
 
   Container buildMyNavBar(BuildContext context) {
-    var _height = MediaQuery.of(context).size.height;
-    var _width = MediaQuery.of(context).size.width;
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
     return Container(
-      decoration: const BoxDecoration(
-          color: Colors.black12,
-          borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(30), topRight: Radius.circular(30))),
-      height: _height * 0.08,
+      height: height*0.1,
+      color: const Color(0xffffffff),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
@@ -50,15 +65,15 @@ class _TabScreenState extends State<TabScreen> {
             iconSize: 55,
             icon: pageIndex == 0
                 ? const Icon(
-                    Icons.home,
-                    color: Color(0xFF256D85),
-                    size: 35,
-                  )
+              Icons.search,
+              color: AppColors.activeColor,
+              size: 35,
+            )
                 : const Icon(
-                    Icons.home,
-                    color: Colors.black,
-                    size: 35,
-                  ),
+              Icons.search,
+              color: AppColors.inactive,
+              size: 35,
+            ),
           ),
           IconButton(
             enableFeedback: false,
@@ -67,19 +82,16 @@ class _TabScreenState extends State<TabScreen> {
                 pageIndex = 1;
               });
             },
+            iconSize: 55,
             icon: pageIndex == 1
-                ? Image.asset(
-                    "assets/quotes_data/icon_home_my_corner.png",
-                    height: _height*0.07,
-                    width: _width*0.07,
-                    color: Color(0xFF256D85),
-                  )
-                : Image.asset(
-                    "assets/quotes_data/icon_home_my_corner.png",
-                    color: Colors.black,
-              height: _height*0.07,
-              width: _width*0.07,
-                  ),
+                ?  SizedBox(
+                height: height*0.07,
+                width:width*0.07 ,
+                child: Image.asset("assets/quotes_data/my_corner.png",color:AppColors.activeColor ,))
+                : SizedBox(
+              height: height*0.07,
+                width:width*0.07 ,
+                child: Image.asset("assets/quotes_data/my_corner.png",color:AppColors.inactive,))
           ),
           IconButton(
             enableFeedback: false,
@@ -88,17 +100,38 @@ class _TabScreenState extends State<TabScreen> {
                 pageIndex = 2;
               });
             },
+            iconSize: 55,
             icon: pageIndex == 2
                 ? const Icon(
-                    Icons.person_pin,
-                    color: Color(0xFF256D85),
-                    size: 35,
-                  )
+              Icons.home,
+              color: AppColors.activeColor,
+              size: 35,
+            )
                 : const Icon(
-                    Icons.person_pin,
-                    color: Colors.black,
-                    size: 35,
-                  ),
+              Icons.home,
+              color: AppColors.inactive,
+              size: 35,
+            ),
+          ),
+          IconButton(
+            enableFeedback: false,
+            onPressed: () {
+              setState(() {
+                pageIndex = 3;
+              });
+            },
+            iconSize: 55,
+            icon: pageIndex == 3
+                ? const Icon(
+              Icons.menu,
+              color: AppColors.activeColor,
+              size: 35,
+            )
+                : const Icon(
+              Icons.menu,
+              color: AppColors.inactive,
+              size: 35,
+            ),
           ),
         ],
       ),

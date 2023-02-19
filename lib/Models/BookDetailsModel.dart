@@ -1,322 +1,133 @@
-// // To parse this JSON data, do
-// //
-// //     final bookDetailsModel = bookDetailsModelFromJson(jsonString);
-//
-// import 'dart:convert';
-//
-// BookDetailsModel bookDetailsModelFromJson(String str) => BookDetailsModel.fromJson(json.decode(str));
-//
-// String bookDetailsModelToJson(BookDetailsModel data) => json.encode(data.toJson());
-//
-// class BookDetailsModel {
-//   BookDetailsModel({
-//     this.status,
-//     this.message,
-//     this.data,
-//   });
-//
-//   int? status;
-//   String? message;
-//   Data? data;
-//
-//   factory BookDetailsModel.fromJson(Map<String, dynamic> json) => BookDetailsModel(
-//     status: json["status"],
-//     message: json["message"],
-//     data: Data.fromJson(json["data"]),
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "status": status,
-//     "message": message,
-//     "data": data!.toJson(),
-//   };
-// }
-//
-// class Data {
-//   Data({
-//     this.id,
-//     this.bookTitle,
-//     this.description,
-//     this.bookImage,
-//     this.publishedDate,
-//     this.modifiedDate,
-//     this.language,
-//     this.userId,
-//     this.author,
-//     this.categories,
-//     this.chapters,
-//   });
-//
-//   String? id;
-//   String? bookTitle;
-//   String? description;
-//   String? bookImage;
-//   DateTime? publishedDate;
-//   dynamic? modifiedDate;
-//   String? language;
-//   String? userId;
-//   Author? author;
-//   List<Category>? categories;
-//   List<Chapter>? chapters;
-//
-//   factory Data.fromJson(Map<String, dynamic> json) => Data(
-//     id: json["id"],
-//     bookTitle: json["bookTitle"],
-//     description: json["description"],
-//     bookImage: json["bookImage"],
-//     publishedDate: DateTime.parse(json["publishedDate"]),
-//     modifiedDate: json["modifiedDate"],
-//     language: json["language"],
-//     userId: json["userId"],
-//     author: Author.fromJson(json["author"]),
-//     categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
-//     chapters: List<Chapter>.from(json["chapters"].map((x) => Chapter.fromJson(x))),
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "id": id,
-//     "bookTitle": bookTitle,
-//     "description": description,
-//     "bookImage": bookImage,
-//     "publishedDate": publishedDate!.toIso8601String(),
-//     "modifiedDate": modifiedDate,
-//     "language": language,
-//     "userId": userId,
-//     "author": author!.toJson(),
-//     "categories": List<dynamic>.from(categories!.map((x) => x.toJson())),
-//     "chapters": List<dynamic>.from(chapters!.map((x) => x.toJson())),
-//   };
-// }
-//
-// class Author {
-//   Author({
-//     this.id,
-//     this.name,
-//     this.img,
-//   });
-//
-//   String? id;
-//   String? name;
-//   dynamic? img;
-//
-//   factory Author.fromJson(Map<String, dynamic> json) => Author(
-//     id: json["id"],
-//     name: json["name"],
-//     img: json["img"],
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "id": id,
-//     "name": name,
-//     "img": img,
-//   };
-// }
-//
-// class Category {
-//   Category({
-//     this.id,
-//     this.titleEn,
-//     this.titleAr,
-//   });
-//
-//   String? id;
-//   String? titleEn;
-//   String? titleAr;
-//
-//   factory Category.fromJson(Map<String, dynamic> json) => Category(
-//     id: json["id"],
-//     titleEn: json["titleEn"],
-//     titleAr: json["titleAr"],
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "id": id,
-//     "titleEn": titleEn,
-//     "titleAr": titleAr,
-//   };
-// }
-//
-// class Chapter {
-//   Chapter({
-//     this.name,
-//     this.image,
-//     this.url,
-//   });
-//
-//   String? name;
-//   String? image;
-//   String? url;
-//
-//   factory Chapter.fromJson(Map<String, dynamic> json) => Chapter(
-//     name: json["name"],
-//     image: json["image"],
-//     url: json["url"],
-//   );
-//
-//   Map<String, dynamic> toJson() => {
-//     "name": name,
-//     "image": image,
-//     "url": url,
-//   };
-// }
 // To parse this JSON data, do
 //
 //     final bookDetailsModel = bookDetailsModelFromJson(jsonString);
 
 import 'dart:convert';
 
-BookDetailsModel bookDetailsModelFromJson(String str) => BookDetailsModel.fromJson(json.decode(str));
+BookDetailsModel? bookDetailsModelFromJson(String str) => BookDetailsModel.fromJson(json.decode(str));
 
-String bookDetailsModelToJson(BookDetailsModel data) => json.encode(data.toJson());
+String bookDetailsModelToJson(BookDetailsModel? data) => json.encode(data!.toJson());
 
 class BookDetailsModel {
   BookDetailsModel({
     this.status,
-    this.message,
     this.data,
   });
 
   int? status;
-  String? message;
   Data? data;
 
   factory BookDetailsModel.fromJson(Map<String, dynamic> json) => BookDetailsModel(
     status: json["status"],
-    message: json["message"],
     data: Data.fromJson(json["data"]),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "message": message,
     "data": data!.toJson(),
   };
 }
 
 class Data {
   Data({
-    this.id,
+    this.bookId,
     this.bookTitle,
-    this.description,
-    this.bookImage,
-    this.publishedDate,
-    this.modifiedDate,
-    this.language,
+    this.image,
+    this.bookDescription,
     this.userId,
-    this.author,
-    this.categories,
-    this.chapters,
+    this.authorName,
+    this.userimage,
+    this.categoryId,
+    this.catgoryTitle,
+    this.paymentStatus,
+    this.publication,
+    this.subscription,
+    this.bookView,
+    this.bookLike,
+    this.bookDisLike,
+    this.status,
+    this.bookSaved,
+    this.bookSubscription,
+    this.imagePath,
   });
 
-  String? id;
+  int? bookId;
   String? bookTitle;
-  String? description;
-  String? bookImage;
-  DateTime? publishedDate;
-  dynamic modifiedDate;
-  String? language;
-  String? userId;
-  Author? author;
-  List<Category>? categories;
-  List<Chapter>? chapters;
+  String? image;
+  String? bookDescription;
+  int? userId;
+  String? authorName;
+  dynamic userimage;
+  int? categoryId;
+  String? catgoryTitle;
+  int? paymentStatus;
+  int? publication;
+  int? subscription;
+  int? bookView;
+  int? bookLike;
+  int? bookDisLike;
+  Status? status;
+  bool? bookSaved;
+  bool? bookSubscription;
+  String? imagePath;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    id: json["id"],
+    bookId: json["bookId"],
     bookTitle: json["bookTitle"],
-    description: json["description"],
-    bookImage: json["bookImage"],
-    publishedDate: DateTime.parse(json["publishedDate"]),
-    modifiedDate: json["modifiedDate"],
-    language: json["language"],
-    userId: json["userId"],
-    author: Author.fromJson(json["author"]),
-    categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
-    chapters: List<Chapter>.from(json["chapters"].map((x) => Chapter.fromJson(x))),
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "bookTitle": bookTitle,
-    "description": description,
-    "bookImage": bookImage,
-    "publishedDate": publishedDate!.toIso8601String(),
-    "modifiedDate": modifiedDate,
-    "language": language,
-    "userId": userId,
-    "author": author!.toJson(),
-    "categories": List<dynamic>.from(categories!.map((x) => x.toJson())),
-    "chapters": List<dynamic>.from(chapters!.map((x) => x.toJson())),
-  };
-}
-
-class Author {
-  Author({
-    this.id,
-    this.name,
-    this.img,
-  });
-
-  String? id;
-  String? name;
-  dynamic img;
-
-  factory Author.fromJson(Map<String, dynamic> json) => Author(
-    id: json["id"],
-    name: json["name"],
-    img: json["img"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "name": name,
-    "img": img,
-  };
-}
-
-class Category {
-  Category({
-    this.id,
-    this.titleEn,
-    this.titleAr,
-  });
-
-  String? id;
-  String? titleEn;
-  String? titleAr;
-
-  factory Category.fromJson(Map<String, dynamic> json) => Category(
-    id: json["id"],
-    titleEn: json["titleEn"],
-    titleAr: json["titleAr"],
-  );
-
-  Map<String, dynamic> toJson() => {
-    "id": id,
-    "titleEn": titleEn,
-    "titleAr": titleAr,
-  };
-}
-
-class Chapter {
-  Chapter({
-    this.name,
-    this.image,
-    this.url,
-  });
-
-  String? name;
-  dynamic image;
-  String? url;
-
-  factory Chapter.fromJson(Map<String, dynamic> json) => Chapter(
-    name: json["name"],
     image: json["image"],
-    url: json["url"],
+    bookDescription: json["bookDescription"],
+    userId: json["user_id"],
+    authorName: json["author_name"],
+    userimage: json["userimage"],
+    categoryId: json["category_id"],
+    catgoryTitle: json["catgoryTitle"],
+    paymentStatus: json["payment_status"],
+    publication: json["publication"],
+    subscription: json["subscription"],
+    bookView: json["BookView"],
+    bookLike: json["BookLike"],
+    bookDisLike: json["BookDisLike"],
+    status: Status.fromJson(json["status"]),
+    bookSaved: json["book_saved"],
+    bookSubscription: json["book_subscription"],
+    imagePath: json["image_path"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
+    "bookId": bookId,
+    "bookTitle": bookTitle,
     "image": image,
-    "url": url,
+    "bookDescription": bookDescription,
+    "user_id": userId,
+    "author_name": authorName,
+    "userimage": userimage,
+    "category_id": categoryId,
+    "catgoryTitle": catgoryTitle,
+    "payment_status": paymentStatus,
+    "publication": publication,
+    "subscription": subscription,
+    "BookView": bookView,
+    "BookLike": bookLike,
+    "BookDisLike": bookDisLike,
+    "status": status!.toJson(),
+    "book_saved": bookSaved,
+    "book_subscription": bookSubscription,
+    "image_path": imagePath,
+  };
+}
+
+class Status {
+  Status({
+    this.status,
+  });
+
+  int? status;
+
+  factory Status.fromJson(Map<String, dynamic> json) => Status(
+    status: json["status"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "status": status,
   };
 }
