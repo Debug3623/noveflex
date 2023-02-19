@@ -14,6 +14,7 @@ import 'package:novelflex/UserAuthScreen/SignUpScreens/signUpScreen_First.dart';
 import 'package:novelflex/tab_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 // import 'package:sign_in_apple/apple_id_user.dart';
 // import 'package:sign_in_apple/sign_in_apple.dart';
 import 'package:transitioner/transitioner.dart';
@@ -29,6 +30,7 @@ import '../localization/Language/languages.dart';
 import 'ForgetPasswordScreen.dart';
 import 'SignUpScreens/SignUpScreen_Second.dart';
 import 'SignUpScreens/signUpScreen_Third.dart';
+import 'dart:io';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -41,6 +43,7 @@ class _LoginScreenState extends State<LoginScreen> {
   GoogleSignInAccount? _userObj;
   GoogleSignIn _googleSignIn = GoogleSignIn();
   Map _userFBObject = {};
+  AuthorizationCredentialAppleID? credential;
   Map<String, dynamic>? _userData;
   AccessToken? _accessToken;
 
@@ -75,7 +78,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool show = true;
 
   @override
-  void initState() {
+  void initState()  {
     super.initState();
     // initPlatformState();
     _controllerEmail = TextEditingController();
@@ -129,10 +132,14 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    UserProvider userProvider =
+    Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color(0xffebf5f9),
       body: SafeArea(
@@ -310,8 +317,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           ),
                           Positioned(
                               top: height * 0.01,
-                              left:context.read<UserProvider>().SelectedLanguage=='English' ? width * 0.8 : 0.0,
-                              right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? width * 0.8 : 0.0,
+                              left: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'English'
+                                  ? width * 0.8
+                                  : 0.0,
+                              right: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'Arabic'
+                                  ? width * 0.8
+                                  : 0.0,
                               child: IconButton(
                                   onPressed: () {
                                     setState(() {
@@ -430,10 +447,44 @@ class _LoginScreenState extends State<LoginScreen> {
                             width: width * 0.02,
                           ),
                           GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                social_login_ID = "3";
-                              });
+                            onTap: () async {
+                               if(Platform.isIOS){
+                                 if (await SignInWithApple.isAvailable()) {
+                                   credential = await SignInWithApple.getAppleIDCredential(
+                                     scopes: [
+                                       AppleIDAuthorizationScopes.email,
+                                       AppleIDAuthorizationScopes.fullName,
+                                     ],
+                                   );
+                                   if(userProvider.GetApple==""||userProvider.GetApple==null){
+                                     userProvider.setApple(credential!.email.toString());
+                                   }
+                                   print("Apple_email ${credential!.email}");
+                                   print("Apple_userName ${credential!.givenName}");
+                                   setState(() {
+                                     social_login_ID = "3";
+
+                                   });
+
+                                   CHECK_STATUS_API("3", userProvider.GetApple=="" ? credential!.email.toString() : context.read<UserProvider>().GetApple.toString());
+
+                                 } else {
+                                   print('Apple SignIn is not available for your device');
+                                   ToastConstant.showToast(context, "Apple SignIn is not available for your device");
+                                 }
+                                   // webAuthenticationOptions: WebAuthenticationOptions(
+                                   //   redirectUri: Uri.parse('https://api.dreamwod.app/auth/callbacks/apple-sign-in'),
+                                   //   clientId: 'com.dreamwod.app.login',
+                                   // ),
+                               }else{
+                                 // ToastConstant.showToast(context, "Login Successfully");
+                               }
+
+
+
+
+
+
                               // SignInApple.clickAppleSignIn();
                             },
                             child: SvgPicture.asset(
@@ -720,12 +771,12 @@ class _LoginScreenState extends State<LoginScreen> {
             Transitioner(
               context: context,
               child: SingUpScreen_Third(
-                name: _userObj!.displayName!,
-                email: _userObj!.email,
+                name:  credential!.givenName.toString().trim(),
+                email:  credential!.email.toString().trim(),
                 password: "",
                 phone: social_login_ID.toString(),
                 route: "login",
-                photoUrl: _userObj!.photoUrl.toString(),
+                photoUrl: "",
               ),
               animation: AnimationType.slideLeft, // Optional value
               duration: Duration(milliseconds: 1000), // Optional value
@@ -846,8 +897,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future SOCIAL_LOGIN_APPLE_API() async {
+
+    print("Apple_ID ${context.read<UserProvider>().GetApple}");
     var map = Map<String, dynamic>();
-    map['email'] = _mail.toString();
+    map['email'] = context.read<UserProvider>().GetApple=="" ||context.read<UserProvider>().GetApple==null ? credential!.email.toString() :context.read<UserProvider>().GetApple.toString();
 
     final response = await http.post(
       Uri.parse(ApiUtils.USER_SOCIAL_LOGIN),
@@ -875,7 +928,7 @@ class _LoginScreenState extends State<LoginScreen> {
           });
         }
       } else {
-        ToastConstant.showToast(context, "Error!");
+        ToastConstant.showToast(context, "Please go to your iphone setting and stop Apps Using Your Apple ID and then Try");
         setState(() {
           _isLoading = false;
         });
@@ -925,6 +978,7 @@ class _LoginScreenState extends State<LoginScreen> {
   //     print(errorMsg);
   //   });
   // }
+
 
   void saveToPreferencesUserDetail(UserModel? _userModel) async {
     UserProvider userProvider =

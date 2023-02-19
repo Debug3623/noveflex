@@ -21,6 +21,8 @@ class UserProvider extends ChangeNotifier {
 
   String? get UserID => _sharedPreferences.getString("user_id");
 
+  String? get GetApple => _sharedPreferences.getString("apple");
+
   void setUserEmail(String email) async {
     _sharedPreferences.setString("emailu", email);
     notifyListeners();
@@ -43,6 +45,11 @@ class UserProvider extends ChangeNotifier {
 
   void setUserImage(String token) async {
     _sharedPreferences.setString("img", token);
+    notifyListeners();
+  }
+
+  void setApple(String appleEmail) async {
+    _sharedPreferences.setString("apple", appleEmail);
     notifyListeners();
   }
 

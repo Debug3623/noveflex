@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -568,14 +569,13 @@ class _MenuScreenState extends State<MenuScreen> {
                   Languages.of(context)!.yes,
                   style: TextStyle(fontFamily: Constants.fontfamily),
                 ),
-                onPressed: () {
+                onPressed: ()  {
                   UserProvider userProvider =
                       Provider.of<UserProvider>(this.context, listen: false);
 
                   userProvider.setUserToken("");
                   userProvider.setUserEmail("");
                   userProvider.setUserName("");
-                  // userProvider.setLanguage("");
                   Phoenix.rebirth(context);
                   Navigator.of(context).pop();
                 }),
