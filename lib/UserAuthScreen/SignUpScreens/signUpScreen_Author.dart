@@ -90,7 +90,8 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
                       color: const Color(0xffd9e7ed),
 
                   ),
-                child: widget.lstatus == "" ? imageFile==null ? Center(
+                child: widget.lstatus == "" ?
+                imageFile==null ? Center(
                   child: Text(
                       Languages.of(context)!.selectPicture,
                       style: const TextStyle(

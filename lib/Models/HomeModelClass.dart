@@ -4,56 +4,56 @@
 
 import 'dart:convert';
 
-HomeModelClass? homeModelClassFromJson(String str) => HomeModelClass.fromJson(json.decode(str));
+HomeModelClass homeModelClassFromJson(String str) => HomeModelClass.fromJson(json.decode(str));
 
-String homeModelClassToJson(HomeModelClass? data) => json.encode(data!.toJson());
+String homeModelClassToJson(HomeModelClass data) => json.encode(data.toJson());
 
 class HomeModelClass {
   HomeModelClass({
-    this.status,
-    this.data,
+    required this.status,
+    required this.data,
   });
 
-  int? status;
-  List<Datum?>? data;
+  int status;
+  List<Datum> data;
 
   factory HomeModelClass.fromJson(Map<String, dynamic> json) => HomeModelClass(
     status: json["status"],
-    data: json["data"] == null ? [] : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x!.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
 class Datum {
   Datum({
-    this.id,
-    this.title,
-    this.titleAr,
-    this.isActive,
-    this.image,
-    this.createdAt,
-    this.updatedAt,
-    this.createdBy,
+    required this.id,
+    required this.title,
+    required this.titleAr,
+    required this.isActive,
+    required this.image,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.createdBy,
     this.updatedBy,
     this.deletedBy,
-    this.books,
+    required this.books,
   });
 
-  int? id;
-  String? title;
-  String? titleAr;
-  int? isActive;
-  String? image;
-  DateTime? createdAt;
-  String? updatedAt;
-  int? createdBy;
+  int id;
+  String title;
+  String titleAr;
+  int isActive;
+  String image;
+  DateTime createdAt;
+  String updatedAt;
+  int createdBy;
   dynamic updatedBy;
   dynamic deletedBy;
-  List<Book?>? books;
+  List<Book> books;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
@@ -66,7 +66,7 @@ class Datum {
     createdBy: json["created_by"],
     updatedBy: json["updated_by"],
     deletedBy: json["deleted_by"],
-    books: json["books"] == null ? [] : List<Book?>.from(json["books"]!.map((x) => Book.fromJson(x))),
+    books: List<Book>.from(json["books"].map((x) => Book.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -75,34 +75,37 @@ class Datum {
     "titleAr": titleAr,
     "is_active": isActive,
     "image": image,
-    "created_at": createdAt?.toIso8601String(),
+    "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt,
     "created_by": createdBy,
     "updated_by": updatedBy,
     "deleted_by": deletedBy,
-    "books": books == null ? [] : List<dynamic>.from(books!.map((x) => x!.toJson())),
+    "books": List<dynamic>.from(books.map((x) => x.toJson())),
   };
 }
 
 class Book {
   Book({
-    this.id,
-    this.bookTitle,
-    this.description,
-    this.image,
-    this.authorName,
+    required this.id,
+    required this.bookTitle,
+    required this.description,
+    required this.paymentStatus,
+    required this.image,
+    required this.authorName,
   });
 
-  int? id;
-  String? bookTitle;
-  String? description;
-  String? image;
-  String? authorName;
+  int id;
+  String bookTitle;
+  String description;
+  int paymentStatus;
+  String image;
+  String authorName;
 
   factory Book.fromJson(Map<String, dynamic> json) => Book(
     id: json["id"],
     bookTitle: json["bookTitle"],
     description: json["description"],
+    paymentStatus: json["payment_status"],
     image: json["image"],
     authorName: json["author_name"],
   );
@@ -111,6 +114,7 @@ class Book {
     "id": id,
     "bookTitle": bookTitle,
     "description": description,
+    "payment_status": paymentStatus,
     "image": image,
     "author_name": authorName,
   };

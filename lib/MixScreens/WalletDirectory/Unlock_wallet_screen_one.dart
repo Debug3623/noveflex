@@ -1,6 +1,8 @@
+import 'package:credit_card_form/credit_card_form.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_onboarding_slider/flutter_onboarding_slider.dart';
+import 'package:novelflex/MixScreens/WalletDirectory/withdrawPaymentScreen.dart';
 import 'package:novelflex/tab_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
@@ -17,18 +19,24 @@ class UnlockWalletScreenOne extends StatefulWidget {
 
 class _UnlockWalletScreenOneState extends State<UnlockWalletScreenOne> {
   final Color kDarkBlueColor = Color(0xff3a6c83);
+  String? cardNumber;
+  String? cardHolderName;
+  String? expMonth;
+  String? expYear;
+  String? cvV;
+  String? amount= "3";
 
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     return OnBoardingSlider(
-      finishButtonText: Languages.of(context)!.apply,
+      finishButtonText: Languages.of(context)!.confirmTxt,
       finishButtonColor: kDarkBlueColor,
       onFinish: () {
         Transitioner(
           context: context,
-          child: TabScreen(),
+          child: WithDrawPaymentScreen(),
           animation: AnimationType.fadeIn, // Optional value
           duration: Duration(milliseconds: 1000), // Optional value
           replacement: true, // Optional value

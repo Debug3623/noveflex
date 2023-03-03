@@ -6,7 +6,9 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:mailto/mailto.dart';
 import 'package:novelflex/MixScreens/AccountInfoScreen.dart';
+import 'package:novelflex/Models/UserReferralModel.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:transitioner/transitioner.dart';
@@ -17,6 +19,7 @@ import '../MixScreens/ProfileScreens/HomeProfileScreen.dart';
 import '../MixScreens/WalletDirectory/MyWalletScreen.dart';
 import '../MixScreens/WalletDirectory/Unlock_wallet_screen_one.dart';
 import '../MixScreens/disclimar_screen.dart';
+import '../Models/MenuProfileModel.dart';
 import '../Models/ReaderProfileModel.dart';
 import '../Models/StatusCheckModel.dart';
 import '../Provider/UserProvider.dart';
@@ -36,9 +39,10 @@ class MenuScreen extends StatefulWidget {
 class _MenuScreenState extends State<MenuScreen> {
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
   StatusCheckModel? _statusCheckModel;
+  UserReferralModel? _userReferralModel;
+  MenuProfileModel? _menuProfileModel;
   bool _isLoading = false;
   bool _isInternetConnected = true;
-
   bool isCheck = true;
 
   @override
@@ -64,31 +68,23 @@ class _MenuScreenState extends State<MenuScreen> {
                     children: [
                       Column(
                         children: [
+
                           Center(
                             child: Container(
                               color: const Color(0xffebf5f9),
-                              child: isCheck
-                                  ? Icon(
-                                      Icons.person_pin,
-                                      size: _height * _width * 0.0003,
-                                      color: Colors.black38,
-                                    )
-                                  : CircleAvatar(
+                              margin: EdgeInsets.only(top: _height*0.03, bottom: _height*0.02),
+                              child:  CircleAvatar(
+                                radius: _height*_width*0.00002,
                                       backgroundColor: Colors.black12,
-                                      backgroundImage: Provider.of<
-                                                          UserProvider>(context,
-                                                      listen: false)
-                                                  .UserImage !=
-                                              null
+                                      backgroundImage: _menuProfileModel!.data.profilePhoto !=
+                                              ""
                                           ? NetworkImage(
-                                              Provider.of<UserProvider>(context,
-                                                      listen: false)
-                                                  .UserImage!,
+                                        _menuProfileModel!.data.profilePath,
                                             )
                                           : AssetImage('assets/profile_pic.png')
                                               as ImageProvider,
                                     ),
-                              height: _height * 0.15,
+                              height: _height * 0.1,
                               width: _width * 0.3,
                             ),
                           ),
@@ -98,9 +94,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               child: Column(
                                 children: [
                                   Text(
-                                    (Provider.of<UserProvider>(context,
-                                            listen: false)
-                                        .UserName!),
+                                    (_menuProfileModel!.data.username),
                                     textAlign: TextAlign.start,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -114,9 +108,7 @@ class _MenuScreenState extends State<MenuScreen> {
                                     height: 6.0,
                                   ),
                                   Text(
-                                    Provider.of<UserProvider>(context,
-                                            listen: false)
-                                        .UserEmail!,
+                                    _menuProfileModel!.data.email,
                                     textAlign: TextAlign.start,
                                     overflow: TextOverflow.ellipsis,
                                     style: const TextStyle(
@@ -261,7 +253,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          _sendingMails();
+                          funcOpenMailComposer();
                         },
                         child: Padding(
                           padding: EdgeInsets.all(_width * 0.03),
@@ -333,7 +325,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          _createDynamicLink();
+                          _checkInternetConnectionInviteApp();
                         },
                         child: Padding(
                           padding: EdgeInsets.all(_width * 0.03),
@@ -412,55 +404,51 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                         ),
                       ),
-                      Visibility(
-                        visible: _statusCheckModel!.data![0]!.type == "Writer",
-                        child: GestureDetector(
-                          onTap: () {
-                            Transitioner(
-                              context: context,
-                              child: MyWalletScreen(),
-                              animation:
-                              AnimationType.slideLeft, // Optional value
-                              duration: Duration(
-                                  milliseconds: 1000), // Optional value
-                              replacement: false, // Optional value
-                              curveType: CurveType.decelerate, // Optional value
-                            );
-                          },
-                          child: Padding(
-                            padding: EdgeInsets.all(_width * 0.03),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Row(
-                                  children: [
-                                    Icon(Icons.card_travel),
-                                    SizedBox(
-                                      width: 8.0,
-                                    ),
-                                    Text(Languages.of(context)!.myWallet,
-                                        style: const TextStyle(
-                                            color: const Color(0xff2a2a2a),
-                                            fontWeight: FontWeight.w700,
-                                            fontFamily: "Neckar",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 14.0),
-                                        textAlign: TextAlign.left)
-                                  ],
-                                ),
-                                Icon(
-                                  Icons.arrow_forward_ios,
-                                  size: 15.0,
-                                )
-                              ],
-                            ),
+                      GestureDetector(
+                        onTap: () {
+                          Transitioner(
+                            context: context,
+                            child: MyWalletScreen(),
+                            animation:
+                            AnimationType.slideLeft, // Optional value
+                            duration: Duration(
+                                milliseconds: 1000), // Optional value
+                            replacement: false, // Optional value
+                            curveType: CurveType.decelerate, // Optional value
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(_width * 0.03),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Icon(Icons.card_travel),
+                                  SizedBox(
+                                    width: 8.0,
+                                  ),
+                                  Text(Languages.of(context)!.myWallet,
+                                      style: const TextStyle(
+                                          color: const Color(0xff2a2a2a),
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: "Neckar",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 14.0),
+                                      textAlign: TextAlign.left)
+                                ],
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 15.0,
+                              )
+                            ],
                           ),
                         ),
                       ),
-                      Visibility(
-                        visible: _statusCheckModel!.data![0]!.type == "Writer",
-                        child: GestureDetector(
-                          onTap: () {
+                      GestureDetector(
+                        onTap: () {
+                          if(_menuProfileModel!.data.totalAmount>=5){
                             Transitioner(
                               context: context,
                               child: UnlockWalletScreenOne(),
@@ -470,40 +458,56 @@ class _MenuScreenState extends State<MenuScreen> {
                               replacement: false, // Optional value
                               curveType: CurveType.decelerate, // Optional value
                             );
-                          },
-                          child: Container(
-                            width: _width * 0.5,
-                            height: _height * 0.05,
-                            decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25)),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: const Color(0x24000000),
-                                      offset: Offset(0, 7),
-                                      blurRadius: 14,
-                                      spreadRadius: 0)
-                                ],
-                                color: const Color(0xff3a6c83)),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                SizedBox(),
-                                Icon(
-                                  Icons.card_travel,
-                                  color: Colors.white,
-                                ),
-                                Text(Languages.of(context)!.unlockWallet,
-                                    style: const TextStyle(
-                                        color: const Color(0xffffffff),
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: "Lato",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14.0),
-                                    textAlign: TextAlign.center),
-                                SizedBox()
+
+                          }else{
+                            // ToastConstant.showToast(context, Languages.of(context)!.amountWithDraw);
+                            final snackBar = SnackBar(
+                              content:  Text( Languages.of(context)!.amountWithDraw),
+                              backgroundColor: (Colors.black),
+                              action: SnackBarAction(
+                                label: 'dismiss',
+
+                                onPressed: () {
+                                },
+                              ),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+
+                          }
+
+                        },
+                        child: Container(
+                          width: _width * 0.5,
+                          height: _height * 0.05,
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25)),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: const Color(0x24000000),
+                                    offset: Offset(0, 7),
+                                    blurRadius: 14,
+                                    spreadRadius: 0)
                               ],
-                            ),
+                              color: const Color(0xff3a6c83)),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              SizedBox(),
+                              Icon(
+                                Icons.card_travel,
+                                color: Colors.white,
+                              ),
+                              Text(Languages.of(context)!.unlockWallet,
+                                  style: const TextStyle(
+                                      color: const Color(0xffffffff),
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Lato",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 14.0),
+                                  textAlign: TextAlign.center),
+                              SizedBox()
+                            ],
                           ),
                         ),
                       ),
@@ -531,23 +535,55 @@ class _MenuScreenState extends State<MenuScreen> {
                     ],
                   )
             : Center(
-                child: Constants.InternetNotConnected(_height * 0.03),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "INTERNET NOT CONNECTED",
+                      style: TextStyle(
+                        fontFamily: Constants.fontfamily,
+                        color: Color(0xFF256D85),
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                    SizedBox(
+                      height: _height * 0.019,
+                    ),
+                    GestureDetector(
+                      child: Container(
+                        width: _width * 0.2,
+                        height: _height * 0.058,
+                        decoration: BoxDecoration(
+                            color: const Color(0xFF256D85),
+                            shape: BoxShape.circle
+                        ),
+                        child: const Center(
+                          child: Icon(Icons.sync,color: Colors.white,),
+                        ),
+                      ),
+                      onTap: () {
+                        setState(() {
+                          _checkInternetConnection();
+                        });
+                      },
+                    ),
+                  ],
+                ),
               ),
       ),
     );
   }
 
-  void _sendingMails() async {
-    final Uri params = Uri(
-      scheme: 'mailto',
-      path: 'n0velflexsupp0rt@gmail.com',
+
+  void funcOpenMailComposer() async{
+
+    final mailtoLink = Mailto(
+      to: ['n0velflexsupp0rt@gmail.com'],
+      cc: ['zahidrehman507@gmail.com','support@estisharati.net'],
+      subject: '',
+      body: '',
     );
-    String url = params.toString();
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      print('Could not launch $url');
-    }
+    await launch('$mailtoLink');
   }
 
   void showDialog() {
@@ -625,6 +661,29 @@ class _MenuScreenState extends State<MenuScreen> {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         _statusCheckModel = statusCheckModelFromJson(jsonData);
+        MENU_PROFILE_API();
+      } else {
+        ToastConstant.showToast(context, jsonData1['message'].toString());
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future MENU_PROFILE_API() async {
+    final response =
+    await http.get(Uri.parse(ApiUtils.MENU_PROFILE_API), headers: {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    });
+
+    if (response.statusCode == 200) {
+      print('menu_profile_response${response.body}');
+      var jsonData = response.body;
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        _menuProfileModel = menuProfileModelFromJson(jsonData);
+
         setState(() {
           _isLoading = false;
         });
@@ -641,6 +700,7 @@ class _MenuScreenState extends State<MenuScreen> {
     if (this.mounted) {
       setState(() {
         _isLoading = true;
+        _isInternetConnected=true;
       });
     }
 
@@ -660,11 +720,11 @@ class _MenuScreenState extends State<MenuScreen> {
     }
   }
 
-  Future<void> _createDynamicLink() async {
+  Future<void> _createDynamicLink(var referralCode) async {
     Uri url;
-    String link = "https://novelflex.page.link/?referral_code=${123}";
+    String link = "https://novelflexapp.page.link/?referral_code=${referralCode}";
     final DynamicLinkParameters parameters = DynamicLinkParameters(
-      uriPrefix: 'https://novelflex.page.link',
+      uriPrefix: 'https://novelflexapp.page.link',
       link: Uri.parse(link),
       androidParameters: const AndroidParameters(
         packageName: 'com.appcom.estisharati.novel.flex',
@@ -681,8 +741,59 @@ class _MenuScreenState extends State<MenuScreen> {
     final  shortLink =
     await dynamicLinks.buildLink(parameters);
     url = shortLink;
-    await Share.share('Congratulation You have been invited by Zahid to NovelFlex $url');
+    await Share.share('Congratulation You have been invited by ${context.read<UserProvider>().UserName} to NovelFlex $url');
     print("url_dynamic  ${url}");
   }
+
+  Future GET_REFER_CODE() async {
+    final response =
+    await http.get(Uri.parse(ApiUtils.USER_REFERRAL_API), headers: {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    });
+
+    if (response.statusCode == 200) {
+      print('referralApi_response${response.body}');
+      var jsonData = response.body;
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        if(jsonData1['success'] == false){
+          _createDynamicLink("");
+        }else{
+          _userReferralModel = userReferralModelFromJson(jsonData);
+          _createDynamicLink(_userReferralModel!.success![0]!.referralCode.toString());
+        }
+
+        // if(_userReferralModel!.success![0]!.referralCode!=""||_userReferralModel!.success![0]!.referralCode!=null){
+        //   _createDynamicLink(_userReferralModel!.success![0]!.referralCode.toString());
+        // }else{
+        //
+        // }
+
+      } else {
+        ToastConstant.showToast(context, jsonData1['message'].toString());
+      }
+    }
+  }
+
+  Future _checkInternetConnectionInviteApp() async {
+    if (this.mounted) {
+    }
+
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (!(connectivityResult == ConnectivityResult.mobile ||
+        connectivityResult == ConnectivityResult.wifi)) {
+      Constants.showToastBlack(context, "Internet not connected");
+      if (this.mounted) {
+        setState(() {
+          _isLoading = false;
+          _isInternetConnected = false;
+        });
+      }
+    } else {
+      GET_REFER_CODE();
+
+    }
+  }
+
 
 }

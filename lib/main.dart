@@ -22,11 +22,10 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transitioner/transitioner.dart';
 import 'package:workmanager/workmanager.dart';
-import 'MixScreens/BookDetailsAuthor.dart';
+import 'MixScreens/BooksScreens/BookDetailsAuthor.dart';
 import 'Models/language_model.dart';
 import 'Provider/UserProvider.dart';
 import 'Provider/VariableProvider.dart';
-import 'TabScreens/profile_screen.dart';
 import 'UserAuthScreen/login_screen.dart';
 import 'UserAuthScreen/SignUpScreens/signUpScreen_First.dart';
 import 'Utils/ApiUtils.dart';
@@ -52,6 +51,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
 }
 
+
+
+
+
 Future<void> main() async {
 
   try {
@@ -71,7 +74,8 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-
+  // Set the background messaging handler early on, as a named top-level function
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (Platform.isIOS || Platform.isMacOS) {
     StoreConfig(
@@ -238,14 +242,17 @@ class _MyAppState extends State<MyApp> {
       }
     });
 
-    getToken();
+    setFCMToken();
   }
 
 
-  getToken() async {
 
-    token = await FirebaseMessaging.instance.getToken();
-    print("firebase_token ${token}");
+  setFCMToken() async {
+    SharedPreferences prefts = await SharedPreferences.getInstance();
+    token = Platform.isIOS ? await FirebaseMessaging.instance.getAPNSToken() : await FirebaseMessaging.instance.getToken();
+    prefts.setString('fcm_token', token!);
+    // String? tokenIOS = await FirebaseMessaging.instance.getAPNSToken();
+    print(" token__ $token");
   }
 
 
@@ -309,7 +316,6 @@ class _MyAppState extends State<MyApp> {
               // 'slider_screen': (context) => SliderScreen(),
               'tab_screen': (context) => TabScreen(),
               'login_screen': (context) => LoginScreen(),
-              'profile_screen': (context) => Profile_Screen(),
             },
           ),
         ),
@@ -320,6 +326,7 @@ class _MyAppState extends State<MyApp> {
 
 }
 
+
 class SplashFirst extends StatefulWidget {
   const SplashFirst({Key? key}) : super(key: key);
 
@@ -329,13 +336,16 @@ class SplashFirst extends StatefulWidget {
 
 class _SplashFirstState extends State<SplashFirst> {
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
+
   @override
   void initState() {
     super.initState();
     retrieveDynamicLink(context);
+    expireToken();
     Timer(const Duration(seconds: 0), () {
       if (context.read<UserProvider>().UserToken == '' ||
-          context.read<UserProvider>().UserToken == null) {
+          context.read<UserProvider>().UserToken == null
+          || expireToken() >=13) {
         Transitioner(
           context: context,
           child: SplashPage(),
@@ -357,19 +367,29 @@ class _SplashFirstState extends State<SplashFirst> {
     });
   }
 
+  int expireToken(){
+    final currentTime = DateTime.now();
+    final savedTime =context.read<UserProvider>().GetSavedTime==null ? DateTime.now() : DateTime.fromMillisecondsSinceEpoch(context.read<UserProvider>().GetSavedTime!);
+    final diff_day = currentTime.difference(savedTime).inDays;
+    print("days differences for expiry token $diff_day");
+
+    return diff_day;
+  }
+
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: const Color(0xffebf5f9),
-      body: Center(
-        child: CupertinoActivityIndicator(
-          color: Colors.black12,
-        ),
-      ),
+        backgroundColor: const Color(0xffebf5f9),
+        body: const Center(
+          child: CupertinoActivityIndicator(
+          ),
+        )
     );
   }
 
   Future<void> retrieveDynamicLink(BuildContext context) async {
+    UserProvider userProvider =
+    Provider.of<UserProvider>(this.context, listen: false);
     try {
       final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
       final Uri? deepLink = data?.link;
@@ -378,6 +398,9 @@ class _SplashFirstState extends State<SplashFirst> {
         if (deepLink.queryParameters.containsKey('referral_code')) {
           String? referral_code = deepLink.queryParameters['referral_code'];
           Constants.showToastBlack(context, deepLink.queryParameters['referral_code']!);
+          // context.watch<UserProvider>().setReferral(referral_code.toString());
+          userProvider.setReferral(referral_code.toString());
+          print("Referal_user_code${userProvider.GetReferral.toString()}");
           Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen_Second(ReferralUserID:deepLink.queryParameters['referral_code'],)));
           print("referral_code = $referral_code");
           }

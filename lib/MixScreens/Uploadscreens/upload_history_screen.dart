@@ -18,8 +18,7 @@ import '../../Utils/ApiUtils.dart';
 import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../localization/Language/languages.dart';
-import '../BookDetailScreen.dart';
-import '../BookDetailsAuthor.dart';
+import '../BooksScreens/BookDetailsAuthor.dart';
 import '../BookEditScreens/BookDetailEditScreen.dart';
 import 'UploadDataScreen.dart';
 

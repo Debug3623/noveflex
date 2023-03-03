@@ -70,14 +70,53 @@ class LanguageAr extends Languages {
   String get myProfile => "ملفي";
 
   @override
+  String get subscribeTxt => "يشترك";
+
+  @override
+  String get profile => "حسابئ";
+
+  @override
+  String get totalAmount => "المبلغ الإجمالي             ";
+
+  @override
+  String get withdrawAmount => "المبلغ المسحوب";
+
+
+  @override
+  String get remainingAmount => "الكمية المتبقية";
+
+  @override
+  String get carefulText => "يرجى التأكد من ملء جميع الحقول أعلاه بشكل صحيح ، إذا قمت بإدخال تفاصيل خاطئة ، فلن تكون الشركة مسؤولة عن أي إزعاج";
+
+
+
+  @override
+  String get confirmTxt => "يتأكد";
+
+  @override
+  String get accountField => "يرجى ملء تفاصيل الحساب بعناية";
+
+  @override
   // TODO: implement home
   String get publishButton => "نشر";
 
   @override
-  String get search => "العنوان ، المؤلف";
+  String get search => "بحث في المفضلة";
 
   @override
-  String get unlockWallet => "افتح المحفظة";
+  String get amountWithDraw => "عذرًا ، ليس لديك رصيد كافٍ للسحب ، يجب أن يكون لديك 5 دولارات على الأقل في حسابك";
+
+  @override
+  String get giftText => "أضف مبلغًا إلى الهدية";
+
+  @override
+  String get dollar => "يمكنك إهداء 5\$  كحد أدنى";
+
+  @override
+  String get gift => "هدية";
+
+  @override
+  String get unlockWallet => "سحب الأموال";
 
   @override
   String get update => "تحديث";
@@ -123,6 +162,10 @@ class LanguageAr extends Languages {
   @override
   // TODO: implement home
   String get unfollow_text => "الغاء المتابعة";
+
+  @override
+  // TODO: implement home
+  String get continuebtn => "يكمل";
 
   @override
   String get weHavesentOtp => "لقد أرسلنا رسالة نصية قصيرة تحتوي على رمز التحقق إلى";

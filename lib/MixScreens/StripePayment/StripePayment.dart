@@ -17,7 +17,7 @@ import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button_small.dart';
 import '../../localization/Language/languages.dart';
-import '../BookDetailsAuthor.dart';
+import '../BooksScreens/BookDetailsAuthor.dart';
 import 'CardScanner.dart';
 
 class StripePayment extends StatefulWidget {
@@ -76,65 +76,134 @@ class _StripePaymentState extends State<StripePayment> {
             )),
       ),
       body:SafeArea(
-        child: Column(
-          children: [
-            SizedBox(height: _height*0.03,),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: CreditCardForm(
-                theme: CreditCardDarkTheme(),
-                onChanged: (CreditCardResult result) {
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: _height*0.03,),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: CreditCardForm(
+                  theme: CreditCardLightTheme(),
+                  onChanged: (CreditCardResult result) {
 
-                  cardNumber=result.cardNumber;
-                  cardHolderName=result.cardHolderName;
-                  expMonth=result.expirationMonth;
-                  expYear=result.expirationYear;
-                  cvV=result.cvc;
+                    cardNumber=result.cardNumber;
+                    cardHolderName=result.cardHolderName;
+                    expMonth=result.expirationMonth;
+                    expYear=result.expirationYear;
+                    cvV=result.cvc;
 
-                  print(result.cardNumber);
-                  print(result.cardHolderName);
-                  print(result.expirationMonth);
-                  print(result.expirationYear);
-                  print(result.cardType);
-                  print(result.cvc);
-                },
+                    print(result.cardNumber);
+                    print(result.cardHolderName);
+                    print(result.expirationMonth);
+                    print(result.expirationYear);
+                    print(result.cardType);
+                    print(result.cvc);
+                  },
+                ),
               ),
-            ),
-            SizedBox(height: _height*0.2,),
-            Container(
-              margin: EdgeInsets.only(top: _height * 0.03),
-              child: ResuableMaterialButtonSmall(
-                onpress: () {
-                  if(cardHolderName!.isNotEmpty && cardNumber!.isNotEmpty && expMonth!.isNotEmpty &&
-                  expYear!.isNotEmpty && cvV!.isNotEmpty){
-                    _checkInternetConnection();
-                  }else{
-                    Constants.showToastBlack(context, "Please fill all the Fields with Correct information");
-                  }
+              SizedBox(height: _height*0.04,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Container(
+                    width: 110,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10)
+                        ),
+                        boxShadow: [BoxShadow(
+                            color: const Color(0x17000000),
+                            offset: Offset(0,5),
+                            blurRadius: 16,
+                            spreadRadius: 0
+                        )] ,
+                        color: const Color(0xffffffff)
+                    ),
+                    child:  SizedBox(
+                        height: _height*0.03,
+                        width: _width*0.05,
+                        child: Image.asset("assets/quotes_data/matercard_withDraw.png")),
+                  ),
+                  Container(
+                    width: 110,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10)
+                        ),
 
-                },
-                buttonname: Languages.of(context)!.Subscribe,
+                        boxShadow: [BoxShadow(
+                            color: const Color(0x17000000),
+                            offset: Offset(0,5),
+                            blurRadius: 16,
+                            spreadRadius: 0
+                        )] ,
+                        color: const Color(0xffffffff)
+                    ),
+                    child:  SizedBox(
+                        height: _height*0.03,
+                        width: _width*0.05,
+                        child: Image.asset("assets/quotes_data/bank_imag.png")),
+                  ),
+                  Container(
+                    width: 110,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10)
+                        ),
+                        boxShadow: [BoxShadow(
+                            color: const Color(0x17000000),
+                            offset: Offset(0,5),
+                            blurRadius: 16,
+                            spreadRadius: 0
+                        )] ,
+                        color: const Color(0xffffffff)
+                    ),
+                    child:  SizedBox(
+                        height: _height*0.03,
+                        width: _width*0.05,
+                        child: Image.asset("assets/quotes_data/paypal_img.png")),
+                  ),
+                ],
               ),
-            ),
-            Visibility(
-               visible: _isLoading,
-               child : Padding(
-                 padding:  EdgeInsets.only(top: _height*0.1),
-                 child: const Center(
-              child: CupertinoActivityIndicator(),
-            ),
-               )),
-            // Container(
-            //   margin: EdgeInsets.only(top: _height * 0.03),
-            //   child: ResuableMaterialButtonSmall(
-            //     onpress: () {
-            //       scanCard();
-            //     },
-            //     buttonname: Languages.of(context)!.scan,
-            //   ),
-            // ),
-            SizedBox(),
-          ],
+              SizedBox(height: _height*0.04,),
+              Container(
+                margin: EdgeInsets.only(top: _height * 0.03),
+                child: ResuableMaterialButtonSmall(
+                  onpress: () {
+                    if(cardHolderName!.isNotEmpty && cardNumber!.isNotEmpty && expMonth!.isNotEmpty &&
+                    expYear!.isNotEmpty && cvV!.isNotEmpty){
+                      _checkInternetConnection();
+                    }else{
+                      Constants.showToastBlack(context, "Please fill all the Fields with Correct information");
+                    }
+
+                  },
+                  buttonname: Languages.of(context)!.subscribeTxt,
+                ),
+              ),
+              Visibility(
+                 visible: _isLoading,
+                 child : Padding(
+                   padding:  EdgeInsets.only(top: _height*0.1),
+                   child: const Center(
+                child: CupertinoActivityIndicator(),
+              ),
+                 )),
+              // Container(
+              //   margin: EdgeInsets.only(top: _height * 0.03),
+              //   child: ResuableMaterialButtonSmall(
+              //     onpress: () {
+              //       scanCard();
+              //     },
+              //     buttonname: Languages.of(context)!.scan,
+              //   ),
+              // ),
+              SizedBox(),
+            ],
+          ),
         ),
       ),
     );
@@ -163,6 +232,7 @@ class _StripePaymentState extends State<StripePayment> {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         Subscribe();
+        print("payment Done");
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());
         setState(() {
@@ -175,7 +245,7 @@ class _StripePaymentState extends State<StripePayment> {
   Future Subscribe() async {
 
     var map = Map<String, dynamic>();
-    map['amount'] = amount;
+    map['referral_code'] = context.read<UserProvider>().GetReferral.toString();
 
     final response =
     await http.post(Uri.parse(ApiUtils.USER_SUBSCRIPTION_API), headers: {
@@ -186,10 +256,10 @@ class _StripePaymentState extends State<StripePayment> {
 
     if (response.statusCode == 200) {
       print('subscribe_response${response.body}');
-      var jsonData = response.body;
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        ToastConstant.showToast(context, jsonData1['data'].toString());
+        print("subscribe done");
         Transitioner(
           context: context,
           child: BookDetailAuthor(bookID: widget.bookId,),
@@ -197,7 +267,7 @@ class _StripePaymentState extends State<StripePayment> {
               .slideLeft, // Optional value
           duration: Duration(
               milliseconds: 1000), // Optional value
-          replacement: false, // Optional value
+          replacement: true, // Optional value
           curveType:
           CurveType.decelerate, // Optional value
         );

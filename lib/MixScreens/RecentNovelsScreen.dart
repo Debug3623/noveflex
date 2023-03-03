@@ -5,11 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
+import 'package:transitioner/transitioner.dart';
 import '../Models/AllRecentModel.dart';
 import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import 'BooksScreens/BookDetailsAuthor.dart';
 
 class RecentNovelsScreen extends StatefulWidget {
   const RecentNovelsScreen({Key? key}) : super(key: key);
@@ -67,47 +69,82 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                               crossAxisCount: 3,
                               childAspectRatio: 0.78,
                               mainAxisSpacing: _height * 0.01,
-                              children: List.generate(_allrecentModel!.data!.length, (index) {
-                                return Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        width: _width * 0.25,
-                                        height: _height * 0.13,
-                                        decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.all(
-                                              Radius.circular(10),
-                                            ),
-                                            image: DecorationImage(
-                                                image: NetworkImage(
-                                                    _allrecentModel!.data![index]!.imagePath.toString()),
-                                                fit: BoxFit.cover),
-                                            color: Colors.green)),
-                                    SizedBox(
-                                      height: _height * 0.01,
-                                    ),
-                                    Expanded(
-                                      child: Text(_allrecentModel!.data![index]!.title.toString(),
-                                          style: const TextStyle(
-                                              color: const Color(0xff2a2a2a),
-                                              fontWeight: FontWeight.w500,
-                                              fontFamily: "Alexandria",
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 12.0),
-                                          textAlign: TextAlign.left),
-                                    ),
-                                    Expanded(
-                                        child: Text(_allrecentModel!.data![index]!.authorName.toString(),
+                              children: List.generate(_allrecentModel!.data.length, (index) {
+                                return GestureDetector(
+                                  onTap: (){
+                                    Transitioner(
+                                      context: context,
+                                      child: BookDetailAuthor(
+                                        bookID: _allrecentModel!.data[index].id.toString(),
+                                      ),
+                                      animation: AnimationType
+                                          .slideTop, // Optional value
+                                      duration: Duration(
+                                          milliseconds:
+                                          1000), // Optional value
+                                      replacement:
+                                      false, // Optional value
+                                      curveType: CurveType
+                                          .decelerate, // Optional value
+                                    );
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        child: Banner(
+                                          message: _allrecentModel!.data[index].paymentStatus.toString() ==
+                                              "1"
+                                              ? "Free"
+                                              : "Pro ++",
+                                          location: BannerLocation
+                                              .topEnd,
+                                          color:
+                                          _allrecentModel!.data[index].paymentStatus
+                                              .toString() ==
+                                              "1"
+                                              ? Color(0xff00bb23)
+                                              : Colors.red,
+                                          child: Container(
+                                              width: _width * 0.25,
+                                              height: _height * 0.13,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.all(
+                                                    Radius.circular(10),
+                                                  ),
+                                                  image: DecorationImage(
+                                                      image: NetworkImage(
+                                                          _allrecentModel!.data[index].imagePath.toString()),
+                                                      fit: BoxFit.cover),
+                                                  color: Colors.green)),
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: _height * 0.01,
+                                      ),
+                                      Expanded(
+                                        child: Text(_allrecentModel!.data[index].title.toString(),
                                             style: const TextStyle(
-                                                color: const Color(0xff676767),
-                                                fontWeight: FontWeight.w400,
-                                                fontFamily: "Lato",
+                                                color: const Color(0xff2a2a2a),
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: "Alexandria",
                                                 fontStyle: FontStyle.normal,
                                                 fontSize: 12.0),
-                                            textAlign: TextAlign.left)),
-                                  ],
+                                            textAlign: TextAlign.left),
+                                      ),
+                                      Expanded(
+                                          child: Text(_allrecentModel!.data[index].user[0].username.toString(),
+                                              style: const TextStyle(
+                                                  color: const Color(0xff676767),
+                                                  fontWeight: FontWeight.w400,
+                                                  fontFamily: "Lato",
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: 12.0),
+                                              textAlign: TextAlign.left)),
+                                    ],
+                                  ),
                                 );
                               }),
                             ),
@@ -124,8 +161,6 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
   Future RecentApiCall() async {
     final response =
         await http.get(Uri.parse(ApiUtils.ALL_RECENT_API), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 

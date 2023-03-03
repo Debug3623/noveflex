@@ -4,54 +4,54 @@
 
 import 'dart:convert';
 
-StatusCheckModel? statusCheckModelFromJson(String str) => StatusCheckModel.fromJson(json.decode(str));
+StatusCheckModel statusCheckModelFromJson(String str) => StatusCheckModel.fromJson(json.decode(str));
 
-String statusCheckModelToJson(StatusCheckModel? data) => json.encode(data!.toJson());
+String statusCheckModelToJson(StatusCheckModel data) => json.encode(data.toJson());
 
 class StatusCheckModel {
   StatusCheckModel({
-    this.status,
-    this.data,
+    required this.status,
+    required this.data,
   });
 
-  int? status;
-  List<Datum?>? data;
+  int status;
+  List<Datum> data;
 
   factory StatusCheckModel.fromJson(Map<String, dynamic> json) => StatusCheckModel(
     status: json["status"],
-    data: json["data"] == null ? [] : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x!.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
 class Datum {
   Datum({
-    this.id,
-    this.type,
-    this.imagePath,
-    this.backgroundPath,
+    required this.id,
+    required this.type,
+    required this.profilePath,
+    required this.backgroundPath,
   });
 
-  int? id;
-  String? type;
-  String? imagePath;
-  String? backgroundPath;
+  int id;
+  String type;
+  String profilePath;
+  String backgroundPath;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     type: json["type"],
-    imagePath: json["image_path"],
+    profilePath: json["profile_path"],
     backgroundPath: json["background_path"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "type": type,
-    "image_path": imagePath,
+    "profile_path": profilePath,
     "background_path": backgroundPath,
   };
 }

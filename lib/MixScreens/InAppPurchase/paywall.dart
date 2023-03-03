@@ -1,9 +1,19 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:novelflex/MixScreens/InAppPurchase/singletons_data.dart';
 import 'package:novelflex/Utils/Constants.dart';
 import 'package:novelflex/localization/Language/languages.dart';
+import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:transitioner/transitioner.dart';
+import '../../Provider/UserProvider.dart';
+import '../../Utils/ApiUtils.dart';
 import '../../Utils/constant.dart';
+import 'package:http/http.dart' as http;
+
+import '../../Utils/toast.dart';
+import '../BooksScreens/BookDetailsAuthor.dart';
 
 class Paywall extends StatefulWidget {
   final Offering offering;
@@ -65,6 +75,9 @@ class _PaywallState extends State<Paywall> {
                               myProductList[index]);
                           appData.entitlementIsActive = customerInfo
                               .entitlements.all[entitlementID]!.isActive;
+                          //Call Subscribe Api
+                          Subscribe();
+                          print("call_subscribe Api here during purchase");
                         } catch (e) {
                           print(e);
                         }
@@ -119,5 +132,29 @@ class _PaywallState extends State<Paywall> {
         ),
       ),
     );
+  }
+
+  Future Subscribe() async {
+
+    var map = Map<String, dynamic>();
+    map['referral_code'] = context.read<UserProvider>().GetReferral.toString();
+
+    final response =
+    await http.post(Uri.parse(ApiUtils.USER_SUBSCRIPTION_API), headers: {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    },
+        body: map
+    );
+
+    if (response.statusCode == 200) {
+      print('subscribe_response${response.body}');
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        ToastConstant.showToast(context, jsonData1['data'].toString());
+        print("subscribe done");
+      } else {
+        ToastConstant.showToast(context, jsonData1['message'].toString());
+      }
+    }
   }
 }

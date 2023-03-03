@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:novelflex/MixScreens/StripePayment/GiftScreen.dart';
 import 'package:novelflex/MixScreens/Uploadscreens/UploadDataScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:connectivity/connectivity.dart';
@@ -8,14 +9,15 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:transitioner/transitioner.dart';
-import '../Models/AuthorProfileViewModel.dart';
-import '../Provider/UserProvider.dart';
-import '../Utils/ApiUtils.dart';
-import '../Utils/Constants.dart';
-import '../Utils/toast.dart';
-import '../localization/Language/languages.dart';
+import '../../Models/AuthorProfileViewModel.dart';
+import '../../Models/UserStatusTypeModel.dart';
+import '../../Provider/UserProvider.dart';
+import '../../Utils/ApiUtils.dart';
+import '../../Utils/Constants.dart';
+import '../../Utils/toast.dart';
+import '../../localization/Language/languages.dart';
 import 'BookDetailsAuthor.dart';
-import 'Pay/Pay.dart';
+import '../Pay/Pay.dart';
 
 class AuthorViewByUserScreen extends StatefulWidget {
   String user_id;
@@ -27,17 +29,31 @@ class AuthorViewByUserScreen extends StatefulWidget {
 
 class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
   AuthorProfileViewModel? _authorProfileViewModel;
+  UserStatusTypeModel? _userStatusTypeModel;
+
+  final _giftKey = GlobalKey<FormFieldState>();
+
+  TextEditingController? _giftController;
 
   bool _isLoading = false;
+  bool _followLoading = false;
   bool _isInternetConnected = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isImageLoading = false;
   File? _cover_imageFile;
+  bool? FollowOrUnfollow;
 
   @override
   void initState() {
     super.initState();
+    _giftController = TextEditingController();
     _checkInternetConnection();
+  }
+
+  @override
+  void dispose() {
+    _giftController!.dispose();
+    super.dispose();
   }
 
   @override
@@ -69,25 +85,28 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                 color: Color(0xFF256D85),
                                 image: DecorationImage(
                                     image: _authorProfileViewModel!
-                                                .data!.backgroundPath ==
-                                            null
+                                                .data.backgroundImage ==
+                                            " "
                                         ? AssetImage('')
                                         : NetworkImage(
                                             _authorProfileViewModel!
-                                                .data!.imagePath
+                                                .data.backgroundPath
                                                 .toString(),
                                           ) as ImageProvider,
                                     fit: BoxFit.cover)),
+
+
                           ),
                         ),
                         Positioned(
                           left: _width * 0.05,
                           top: _height * 0.21,
                           child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
                               Container(
                                 height: _height * 0.12,
-                                width: _width * 0.23,
+                                width: _width * 0.2,
                                 decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     border: Border.all(
@@ -96,33 +115,38 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                     ),
                                     image: DecorationImage(
                                         image: _authorProfileViewModel!
-                                                    .data!.imagePath ==
-                                                null
+                                                    .data.profilePhoto ==
+                                                " "
                                             ? AssetImage(
                                                 "assets/profile_pic.png")
                                             : NetworkImage(
                                                     _authorProfileViewModel!
-                                                        .data!.imagePath
+                                                        .data.profilePath
                                                         .toString())
                                                 as ImageProvider,
                                         fit: BoxFit.cover)),
                               ),
                               SizedBox(
-                                width: _width * 0.05,
+                                width: _width * 0.03,
                               ),
                               Padding(
                                 padding: EdgeInsets.only(top: _height * 0.06),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      _authorProfileViewModel!.data!.username!,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
+                                    Container(
+                                      width: _width*0.3,
+                                      child: Text(
+                                        _authorProfileViewModel!.data.username,
+                                        style: const TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 11.0),
+                                        overflow: TextOverflow.ellipsis,
+                                        maxLines: 1,
+                                      ),
                                     ),
                                     SizedBox(
                                       height: _height * 0.01,
@@ -143,7 +167,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                         ),
                                         Text(
                                           _authorProfileViewModel!
-                                              .data!.followers
+                                              .data.followers
                                               .toString(),
                                           style: const TextStyle(
                                               color: const Color(0xff3a6c83),
@@ -157,39 +181,22 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                   ],
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.only(
-                                    top: _height * 0.07,
-                                  left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.15 : 0.0,
-                                  right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.15: 0.0,),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    _settingModalBottomSheet(context);
-                                  },
+                              Visibility(
+                                visible: _userStatusTypeModel!.data![0]!.type!="Writer",
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                      top: _height * 0.07,
+                                    left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.15 : 0.0,
+                                    right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.15: 0.0,),
                                   child: GestureDetector(
                                     onTap: () {
-                                      // Transitioner(
-                                      //   context: context,
-                                      //   child: Pay(
-                                      //     image: _authorProfileViewModel!
-                                      //         .data!.imagePath
-                                      //         .toString(),
-                                      //     name: _authorProfileViewModel!
-                                      //         .data!.username
-                                      //         .toString(),
-                                      //   ),
-                                      //   animation: AnimationType
-                                      //       .slideLeft, // Optional value
-                                      //   duration: Duration(
-                                      //       milliseconds:
-                                      //           1000), // Optional value
-                                      //   replacement: false, // Optional value
-                                      //   curveType: CurveType
-                                      //       .decelerate, // Optional value
-                                      // );
+                                      setState(() {
+                                        FollowOrUnfollow = !FollowOrUnfollow!;
+                                      });
+                                     FOLLOW_AND_UNFOLLOW();
                                     },
                                     child: Container(
-                                      width: _width * 0.24,
+                                      width: _width * 0.25,
                                       height: _height * 0.04,
                                       decoration: BoxDecoration(
                                           borderRadius: BorderRadius.all(
@@ -202,8 +209,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceAround,
                                         children: [
-                                          _authorProfileViewModel!
-                                                  .data!.isSubscription!
+                                          FollowOrUnfollow!
                                               ? Icon(
                                                   Icons
                                                       .notification_add_outlined,
@@ -215,12 +221,11 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                                       const Color(0xff3a6c83),
                                                 ),
                                           Text(
-                                              _authorProfileViewModel!
-                                                      .data!.isSubscription!
+                                              FollowOrUnfollow!
                                                   ? Languages.of(context)!
-                                                      .unfollow_text
+                                                      .follow_author
                                                   : Languages.of(context)!
-                                                      .follow_author,
+                                                      .unfollow_text,
                                               style: const TextStyle(
                                                   color:
                                                       const Color(0xff3a6c83),
@@ -265,31 +270,54 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                 top: _height * 0.02,
                                 left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.05 : 0.0,
                                 right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.05: 0.0,),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              child: Stack(
                                 children: [
-                                  Text(Languages.of(context)!.aboutAuthor,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w500,
-                                          fontFamily: "Alexandria",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 16.0),
-                                      textAlign: TextAlign.left),
-                                  SizedBox(
-                                    height: _height * 0.01,
+                                  Positioned(
+                                    child: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(Languages.of(context)!.aboutAuthor,
+                                            style: const TextStyle(
+                                                color: const Color(0xff2a2a2a),
+                                                fontWeight: FontWeight.w500,
+                                                fontFamily: "Alexandria",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 16.0),
+                                            textAlign: TextAlign.left),
+                                        SizedBox(
+                                          height: _height * 0.01,
+                                        ),
+                                        Text(
+                                          _authorProfileViewModel!.data!.description
+                                              .toString(),
+                                          style: const TextStyle(
+                                              color: const Color(0xff676767),
+                                              fontWeight: FontWeight.w400,
+                                              fontFamily: "Lato",
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: 14.0),
+                                          overflow: TextOverflow.fade,
+                                          maxLines: 6,
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    _authorProfileViewModel!.data!.description
-                                        .toString(),
-                                    style: const TextStyle(
-                                        color: const Color(0xff676767),
-                                        fontWeight: FontWeight.w400,
-                                        fontFamily: "Lato",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14.0),
-                                    overflow: TextOverflow.fade,
-                                    maxLines: 6,
+                                  Visibility(
+                                    visible: _userStatusTypeModel!.data![0]!.type!="Writer",
+                                    child: Positioned(
+                                      top: _height*0.05,
+                                      left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.4 : 0.0,
+                                      right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.4: 0.0,
+
+                                      child: GestureDetector(
+                                          onTap: (){
+                                            _giftSheet(context);
+                                          },
+                                          child: SizedBox(
+                                          height: _height*0.15,
+                                          width: _width*0.4,
+                                          child: Image.asset("assets/quotes_data/gif_white.gif",)),
+                                        )),
                                   )
                                 ],
                               ),
@@ -316,7 +344,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                         ),
                         Positioned(
                           top: _height * 0.67,
-                          child: _authorProfileViewModel!.data!.book!.length ==
+                          child: _authorProfileViewModel!.data.book.length ==
                                   0
                               ? Padding(
                                   padding:
@@ -432,6 +460,15 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                               },
                               icon: Icon(Icons.arrow_back_ios)),
                         )),
+                        Visibility(
+                          visible: _followLoading,
+                          child: Positioned(
+                            top: _height*0.54,
+                            left:context.read<UserProvider>().SelectedLanguage=='English' ? _width*0.0: 0.0,
+                            right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width*0.0: 0.0,
+
+                            child: CupertinoActivityIndicator(),),
+                        )
                       ],
                     )
               : Center(
@@ -457,17 +494,78 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
     if (response.statusCode == 200) {
       print('author_profile${response.body}');
       var jsonData = response.body;
-      //var jsonData = response.body;
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         _authorProfileViewModel = authorProfileViewModelFromJson(jsonData);
-        setState(() {
-          _isLoading = false;
-        });
+        FollowOrUnfollow = _authorProfileViewModel!
+            .data!.isSubscription!;
+        CHECK_USER_STATUS();
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());
         setState(() {
           _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future CHECK_USER_STATUS() async {
+
+    final response =
+    await http.post(Uri.parse(ApiUtils.USER_STATUS_API),
+        headers: {
+          'Authorization':
+          "Bearer ${context.read<UserProvider>().UserToken}",
+        },
+    );
+
+    if (response.statusCode == 200) {
+      print('author_profile${response.body}');
+      var jsonData = response.body;
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        _userStatusTypeModel = userStatusTypeModelFromJson(jsonData);
+        setState(() {
+          _isLoading = false;
+        });
+      } else {
+        ToastConstant.showToast(context, jsonData1['success'].toString());
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future FOLLOW_AND_UNFOLLOW() async {
+    setState(() {
+      _followLoading=true;
+    });
+    var map = Map<String, dynamic>();
+    map['writer_id'] = _authorProfileViewModel!.data!.id.toString();
+
+    final response =
+    await http.post(Uri.parse(ApiUtils.FOLLOW_AND_UNFOLLOW_API),
+        headers: {
+          'Authorization':
+          "Bearer ${context.read<UserProvider>().UserToken}",
+        },
+        body: map);
+
+    if (response.statusCode == 200) {
+      print('author_profile${response.body}');
+      var jsonData = response.body;
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        // _authorProfileViewModel = authorProfileViewModelFromJson(jsonData);
+        ToastConstant.showToast(context, jsonData1['success'].toString());
+        setState(() {
+          _followLoading = false;
+        });
+      } else {
+        ToastConstant.showToast(context, jsonData1['success'].toString());
+        setState(() {
+          _followLoading = false;
         });
       }
     }
@@ -546,7 +644,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
     }
   }
 
-  void _settingModalBottomSheet(context) {
+  void _giftSheet(context) {
     showModalBottomSheet(
         context: context,
         backgroundColor: const Color(0xffebf5f9),
@@ -562,24 +660,17 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text("Add Payment Details"),
+                Text(Languages.of(context)!.giftText),
                 Container(
                   height: _height * 0.1,
                   child: Padding(
                     padding: EdgeInsets.symmetric(
                         vertical: _height * 0.02, horizontal: _width * 0.04),
                     child: TextFormField(
-                      // key: _emailKey,
-                      // controller: _controllerEmail,
-                      // focusNode: _emailFocusNode,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
+                      key: _giftKey,
+                      controller: _giftController,
+                      keyboardType: TextInputType.number,
                       cursorColor: Colors.black,
-                      // validator: validateEmail,
-                      // onFieldSubmitted: (_) {
-                      //   FocusScope.of(context)
-                      //       .requestFocus(_passwordFocusNode);
-                      // },
                       decoration: InputDecoration(
                           errorMaxLines: 3,
                           counterText: "",
@@ -626,7 +717,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                               color: Colors.red,
                             ),
                           ),
-                          hintText: Languages.of(context)!.email,
+                          hintText: Languages.of(context)!.dollar,
                           // labelText: Languages.of(context)!.email,
                           hintStyle: const TextStyle(
                             fontFamily: Constants.fontfamily,
@@ -634,228 +725,44 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                     ),
                   ),
                 ),
-                Container(
-                  height: _height * 0.1,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: _height * 0.02, horizontal: _width * 0.04),
-                    child: TextFormField(
-                      // key: _emailKey,
-                      // controller: _controllerEmail,
-                      // focusNode: _emailFocusNode,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Colors.black,
-                      // validator: validateEmail,
-                      // onFieldSubmitted: (_) {
-                      //   FocusScope.of(context)
-                      //       .requestFocus(_passwordFocusNode);
-                      // },
-                      decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.white12,
-                            ),
-                          ),
-                          disabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
-                            ),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
-                            ),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                            ),
-                          ),
-                          errorBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.red,
-                              )),
-                          focusedErrorBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.red,
-                            ),
-                          ),
-                          hintText: Languages.of(context)!.email,
-                          // labelText: Languages.of(context)!.email,
-                          hintStyle: const TextStyle(
-                            fontFamily: Constants.fontfamily,
-                          )),
-                    ),
-                  ),
+                GestureDetector(
+                  onTap: (){
+                    if(_giftController!.text.trim()!="" && int.parse(_giftController!.text.trim()) >= 5){
+                      Transitioner(
+                        context: context,
+                        child: GiftScreen(author_id: _authorProfileViewModel!
+                            .data.id
+                            .toString(), amount: _giftController!.text.trim().toString(),),
+                        animation: AnimationType
+                            .slideLeft, // Optional value
+                        duration: Duration(
+                            milliseconds: 1000), // Optional value
+                        replacement: true, // Optional value
+                        curveType:
+                        CurveType.decelerate, // Optional value
+                      );
+                    }else{
+                      Constants.showToastBlack(context, "Please enter at least 5 \$ ");
+                    }
+
+                  },
+                  child: Container(
+                      height: _height * 0.07,
+                      width: _width * 0.9,
+                      padding: EdgeInsets.symmetric(
+                          vertical: _height * 0.02, horizontal: _width * 0.04),
+                      decoration: BoxDecoration(
+                          color: Color(0xFF256D85),
+                          borderRadius: BorderRadius.circular(30)),
+                      child: Center(child: Text(Languages.of(context)!.gift,
+                        style: const TextStyle(
+                            color:  const Color(0xffffffff),
+                            fontWeight: FontWeight.w700,
+                            fontFamily: "Lato",
+                            fontStyle:  FontStyle.normal,
+                            fontSize: 14.0
+                        ),))),
                 ),
-                Container(
-                  height: _height * 0.1,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: _height * 0.02, horizontal: _width * 0.04),
-                    child: TextFormField(
-                      // key: _emailKey,
-                      // controller: _controllerEmail,
-                      // focusNode: _emailFocusNode,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Colors.black,
-                      // validator: validateEmail,
-                      // onFieldSubmitted: (_) {
-                      //   FocusScope.of(context)
-                      //       .requestFocus(_passwordFocusNode);
-                      // },
-                      decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.white12,
-                            ),
-                          ),
-                          disabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
-                            ),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
-                            ),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                            ),
-                          ),
-                          errorBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.red,
-                              )),
-                          focusedErrorBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.red,
-                            ),
-                          ),
-                          hintText: Languages.of(context)!.email,
-                          // labelText: Languages.of(context)!.email,
-                          hintStyle: const TextStyle(
-                            fontFamily: Constants.fontfamily,
-                          )),
-                    ),
-                  ),
-                ),
-                Container(
-                  height: _height * 0.1,
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(
-                        vertical: _height * 0.02, horizontal: _width * 0.04),
-                    child: TextFormField(
-                      // key: _emailKey,
-                      // controller: _controllerEmail,
-                      // focusNode: _emailFocusNode,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Colors.black,
-                      // validator: validateEmail,
-                      // onFieldSubmitted: (_) {
-                      //   FocusScope.of(context)
-                      //       .requestFocus(_passwordFocusNode);
-                      // },
-                      decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.white12,
-                            ),
-                          ),
-                          disabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
-                            ),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
-                            ),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                            ),
-                          ),
-                          errorBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              borderSide: BorderSide(
-                                width: 1,
-                                color: Colors.red,
-                              )),
-                          focusedErrorBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.red,
-                            ),
-                          ),
-                          hintText: Languages.of(context)!.email,
-                          // labelText: Languages.of(context)!.email,
-                          hintStyle: const TextStyle(
-                            fontFamily: Constants.fontfamily,
-                          )),
-                    ),
-                  ),
-                ),
-                Container(
-                    height: _height * 0.05,
-                    width: _width * 0.9,
-                    padding: EdgeInsets.symmetric(
-                        vertical: _height * 0.02, horizontal: _width * 0.04),
-                    decoration: BoxDecoration(
-                        color: Color(0xFF256D85),
-                        borderRadius: BorderRadius.circular(30)),
-                    child: Text("Pay 1 \$ to Subscribe")),
               ],
             ),
           );

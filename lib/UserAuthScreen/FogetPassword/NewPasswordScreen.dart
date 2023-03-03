@@ -7,23 +7,23 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
-import '../Models/ForgetPasswordModel.dart';
-import '../Models/ResetPasswordModel.dart';
-import '../Provider/UserProvider.dart';
-import '../Utils/ApiUtils.dart';
-import '../Utils/Constants.dart';
-import '../Utils/toast.dart';
-import '../Widgets/reusable_button.dart';
-import '../Widgets/reusable_button_small.dart';
-import '../localization/Language/languages.dart';
-import '../tab_screen.dart';
-import 'login_screen.dart';
+import '../../Models/ForgetPasswordModel.dart';
+import '../../Models/ResetPasswordModel.dart';
+import '../../Provider/UserProvider.dart';
+import '../../Utils/ApiUtils.dart';
+import '../../Utils/Constants.dart';
+import '../../Utils/toast.dart';
+import '../../Widgets/reusable_button.dart';
+import '../../Widgets/reusable_button_small.dart';
+import '../../localization/Language/languages.dart';
+import '../../tab_screen.dart';
+import '../login_screen.dart';
 
 class NewPasswordScreen extends StatefulWidget {
   static const String id = 'forgetPassword_screen';
-  String phoneNumber;
+  String token;
 
-   NewPasswordScreen({Key? key, required this.phoneNumber}) : super(key: key);
+   NewPasswordScreen({Key? key, required this.token}) : super(key: key);
 
   @override
   State<NewPasswordScreen> createState() => _NewPasswordScreenState();
@@ -50,6 +50,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
 
   ForgetPasswordModel? _forgetPasswordModel;
   ResetPasswordModel? _resetPasswordModel;
+
   @override
   void initState() {
     super.initState();
@@ -406,20 +407,17 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     setState(() {
       _isLoading = true;
     });
-    // var map1 = new Map<String, String>();
-    // // map1['accesstoken'] = context.read<UserProvider>().UserToken.toString();
-
     var map = new Map<String, dynamic>();
-    map['phone_no'] = widget.phoneNumber.trim();
-    map['newpassword'] = _passcontoller!.text.trim();
-    map['confirmpassword'] = _cPAsscontroller!.text.trim();
+    map['password'] = _passcontoller!.text.trim();
+    map['password_confirmation'] = _cPAsscontroller!.text.trim();
 
 
 
     final response = await http.post(
       Uri.parse(ApiUtils.UPDATE_PASSWORD_API),
       body: map,
-      // headers: map1,
+      headers: {
+        'Authorization': "Bearer ${widget.token}",}
     );
 
     var jsonData;

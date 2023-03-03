@@ -4,50 +4,53 @@
 
 import 'dart:convert';
 
-SavedBooksModel? savedBooksModelFromJson(String str) => SavedBooksModel.fromJson(json.decode(str));
+SavedBooksModel savedBooksModelFromJson(String str) => SavedBooksModel.fromJson(json.decode(str));
 
-String savedBooksModelToJson(SavedBooksModel? data) => json.encode(data!.toJson());
+String savedBooksModelToJson(SavedBooksModel data) => json.encode(data.toJson());
 
 class SavedBooksModel {
   SavedBooksModel({
-    this.status,
-    this.data,
+    required this.status,
+    required this.data,
   });
 
-  int? status;
-  List<Datum?>? data;
+  int status;
+  List<Datum> data;
 
   factory SavedBooksModel.fromJson(Map<String, dynamic> json) => SavedBooksModel(
     status: json["status"],
-    data: json["data"] == null ? [] : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x!.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
 class Datum {
   Datum({
-    this.id,
-    this.title,
-    this.image,
-    this.username,
-    this.imagePath,
+    required this.id,
+    required this.title,
+    required this.image,
+    required this.username,
+    required this.paymentStatus,
+    required this.imagePath,
   });
 
-  int? id;
-  String? title;
-  String? image;
-  String? username;
-  String? imagePath;
+  int id;
+  String title;
+  String image;
+  String username;
+  int paymentStatus;
+  String imagePath;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     title: json["title"],
     image: json["image"],
     username: json["username"],
+    paymentStatus: json["payment_status"],
     imagePath: json["image_path"],
   );
 
@@ -56,6 +59,7 @@ class Datum {
     "title": title,
     "image": image,
     "username": username,
+    "payment_status": paymentStatus,
     "image_path": imagePath,
   };
 }

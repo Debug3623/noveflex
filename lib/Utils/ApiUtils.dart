@@ -1,6 +1,5 @@
 class ApiUtils {
-  // static const String BASE = "https://dats.digitecglobal.com/novel"; // Client Live BASE URL
-  // static const String BASE = "https://apptocom.com/novelflex2";
+
   static const String BASE = "https://apptocom.com/novelflex2/api/v1";
   static const String URL_REGISTER_READER_API = '$BASE/reader/register';
   static const String URL_REGISTER_WRITER_API = '$BASE/writer/register';
@@ -39,22 +38,34 @@ class ApiUtils {
   static const String DELETE_BOOK_API = '$BASE/book/deleteBook';
   static const String STRIPE_PAYMENT_API = '$BASE/user/subscription/payment';
   static const String USER_SUBSCRIPTION_API = '$BASE/user/subscription';
-
-  static const String SEE_ALL_BOOKS_API = '$BASE/books/getCategoryBooks?categoryId=';
-  static const String SEE_ALL_REVIEWS_API = '$BASE/books//reviews/all?bookId=';
-  static const String UPLOAD_HISTORY_API = '$BASE/books/GetBooksOfUser';
-
-  static const String DROP_DOWN_CATEGORIES_API = '$BASE/cate/all';
-
-  static const String ADD_REVIEW_API = '$BASE/books/add/reviews';
-  static const String FORGET_PASSWORD_API = '$BASE/auth/password/forgot';
+  static const String FORGET_PASSWORD_API = '$BASE/user/reset_password';
   static const String UPDATE_PASSWORD_API = '$BASE/user/change_password';
-  static const String PROFILE_STATUS_API = '$BASE/auth/user/type';
-  static const String UPDATE_PROFILE_STATUS_API = '$BASE/auth/user/statusUpdate';
-  static const String SUBSCRIBE_API = '$BASE/user/subscriptions';
-  static const String AUTHOR_PROFILE_API = '$BASE/user/history';
+  static const String USER_REFERRAL_API = '$BASE/user/subscription/referral';
+  static const String USER_CHECK_SUBSCRIPTION_API = '$BASE/user/subscription/check';
+  static const String ALL_CHAPTERS_API = '$BASE/book/chapters';
+  static const String USER_PAYMENT_API = '$BASE/user/subscription/amount';
+  static const String USER_PAYMENT_WITHDRAW_API = '$BASE/user/subscription/withdrawAmount';
+  static const String USER_STATUS_API = '$BASE/user/follow/checkUserStatus';
+  static const String FOLLOW_AND_UNFOLLOW_API = '$BASE/user/follow';
+  static const String ALL_NOTIFICATIONS = '$BASE/notifications/all';
+  static const String NOTIFICATIONS_COUNT = '$BASE/notifications/count';
+  static const String SEEN_NOTIFICATIONS_COUNT = '$BASE/notifications/read?all';
+  static const String SEARCH_AUTHORS = '$BASE/author/all';
+  static const String ALL_RECENT_API = '$BASE/home/recently/book/all';
   static const String SLIDER_API = '$BASE/home/slider';
   static const String RECENT_API = '$BASE/home/recently/book';
-  static const String ALL_RECENT_API = '$BASE/home/recently/book/all';
+  static const String PROFILE_IMAGE_UPDATE_API = '$BASE/author/update/image';
+  static const String MENU_PROFILE_API = '$BASE/tab/userProfile';
+  static const String BOOK_VIEW_API = '$BASE/book/views/add';
+  static const String GIFT_API = '$BASE/user/subscription/gifts';
+
+
+
+ static const String SEE_ALL_REVIEWS_API = '$BASE/books//reviews/all?bookId=';
+ static const String ADD_REVIEW_API = '$BASE/books/add/reviews';
+
+
+
+
 
 }

@@ -7,7 +7,7 @@ import 'package:novelflex/localization/Language/languages.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
-import '../MixScreens/BookDetailsAuthor.dart';
+import '../MixScreens/BooksScreens/BookDetailsAuthor.dart';
 import '../Models/LikesBooksModel.dart';
 import '../Models/SavedBooksModel.dart';
 import '../Provider/UserProvider.dart';
@@ -45,6 +45,7 @@ class _MyCornerState extends State<MyCorner> {
     return Scaffold(
       backgroundColor: const Color(0xffebf5f9),
       appBar: AppBar(
+        leading: Container(),
         title: Text(Languages.of(context)!.myCorner,
             style: const TextStyle(
                 color: const Color(0xff2a2a2a),
@@ -146,7 +147,7 @@ class _MyCornerState extends State<MyCorner> {
             )
                 : saved ? Padding(
               padding:  EdgeInsets.only(top: _height*0.02,left: _width*0.03,right: _width*0.01),
-              child: _savedBooksModel!.data!.length== 0 ? Padding(
+              child: _savedBooksModel!.data.length== 0 ? Padding(
                 padding:
                 EdgeInsets.all(_height * _width * 0.0004),
                 child: Center(
@@ -162,7 +163,7 @@ class _MyCornerState extends State<MyCorner> {
                 crossAxisCount: 3,
                 childAspectRatio: 0.78,
                 mainAxisSpacing: _height*0.01,
-                children: List.generate(_savedBooksModel!.data!.length, (index) {
+                children: List.generate(_savedBooksModel!.data.length, (index) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -173,7 +174,7 @@ class _MyCornerState extends State<MyCorner> {
                             context: context,
                             child: BookDetailAuthor(
                               bookID: _savedBooksModel!
-                                  .data![index]!.id
+                                  .data[index].id
                                   .toString(),
                             ),
                             animation: AnimationType
@@ -187,25 +188,45 @@ class _MyCornerState extends State<MyCorner> {
                                 .decelerate, // Optional value
                           );
                         },
-                        child: Container(
-                            width: _width*0.25,
-                            height: _height*0.15,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                ),
-                              image: DecorationImage(
-                                image: NetworkImage(_savedBooksModel!.data![index]!.imagePath.toString()),
-                                fit: BoxFit.cover
-                              ),
-                              color: Colors.green
-                            )
+                        child: ClipRRect(
+                          child: Banner(
+                            message: _savedBooksModel!
+                                .data[index]
+                                .paymentStatus
+                                .toString() ==
+                                "1"
+                                ? "Free"
+                                : "Pro ++",
+                            location:
+                            BannerLocation.topEnd,
+                            color: _savedBooksModel!
+                                .data[index]
+                                .paymentStatus
+                                .toString() ==
+                                "1"
+                                ? Color(0xff00bb23)
+                                : Colors.red,
+                            child: Container(
+                                width: _width*0.25,
+                                height: _height*0.15,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(10),
+                                    ),
+                                  image: DecorationImage(
+                                    image: NetworkImage(_savedBooksModel!.data![index]!.imagePath.toString()),
+                                    fit: BoxFit.cover
+                                  ),
+                                  color: Colors.green
+                                )
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(height: _height*0.01,),
                       Expanded(
                         child: Text(
-                            _savedBooksModel!.data![index]!.title.toString(),
+                            _savedBooksModel!.data[index].title.toString(),
                             style: const TextStyle(
                                 color:  const Color(0xff2a2a2a),
                                 fontWeight: FontWeight.w500,
@@ -218,7 +239,7 @@ class _MyCornerState extends State<MyCorner> {
                       ),
                       Expanded(
                           child: Text(
-                              _savedBooksModel!.data![index]!.username.toString(),
+                              _savedBooksModel!.data[index].username.toString(),
                           style: const TextStyle(
                               color:  const Color(0xff676767),
                               fontWeight: FontWeight.w400,
@@ -234,7 +255,7 @@ class _MyCornerState extends State<MyCorner> {
               ),
             ) : Padding(
               padding:  EdgeInsets.only(top: _height*0.02,left: _width*0.03,right: _width*0.01),
-              child:_likesBooksModel!.data!.length== 0 ? Padding(
+              child:_likesBooksModel!.data.length== 0 ? Padding(
                 padding:
                 EdgeInsets.all(_height * _width * 0.0004),
                 child: Center(
@@ -250,7 +271,7 @@ class _MyCornerState extends State<MyCorner> {
                 crossAxisCount: 3,
                 childAspectRatio: 0.78,
                 mainAxisSpacing: _height*0.01,
-                children: List.generate(_likesBooksModel!.data!.length, (index) {
+                children: List.generate(_likesBooksModel!.data.length, (index) {
                   return Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -261,7 +282,7 @@ class _MyCornerState extends State<MyCorner> {
                             context: context,
                             child: BookDetailAuthor(
                               bookID: _likesBooksModel!
-                                  .data![index]!.id
+                                  .data[index].id
                                   .toString(),
                             ),
                             animation: AnimationType
@@ -275,25 +296,45 @@ class _MyCornerState extends State<MyCorner> {
                                 .decelerate, // Optional value
                           );
                         },
-                        child: Container(
-                            width: _width*0.25,
-                            height: _height*0.15,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(10),
-                                ),
-                                image: DecorationImage(
-                                    image: NetworkImage(_likesBooksModel!.data![index]!.imagePath.toString()),
-                                    fit: BoxFit.cover
-                                ),
-                                color: Colors.green
-                            )
+                        child: ClipRRect(
+                          child: Banner(
+                            message: _likesBooksModel!
+                                .data[index]
+                                .paymentStatus
+                                .toString() ==
+                                "1"
+                                ? "Free"
+                                : "Pro ++",
+                            location:
+                            BannerLocation.topEnd,
+                            color: _likesBooksModel!
+                                .data[index]
+                                .paymentStatus
+                                .toString() ==
+                                "1"
+                                ? Color(0xff00bb23)
+                                : Colors.red,
+                            child: Container(
+                                width: _width*0.25,
+                                height: _height*0.15,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(10),
+                                    ),
+                                    image: DecorationImage(
+                                        image: NetworkImage(_likesBooksModel!.data[index].imagePath.toString()),
+                                        fit: BoxFit.cover
+                                    ),
+                                    color: Colors.green
+                                )
+                            ),
+                          ),
                         ),
                       ),
                       SizedBox(height: _height*0.01,),
                       Expanded(
                         child: Text(
-                            _likesBooksModel!.data![index]!.title.toString(),
+                            _likesBooksModel!.data[index].title.toString(),
                             style: const TextStyle(
                                 color:  const Color(0xff2a2a2a),
                                 fontWeight: FontWeight.w500,
@@ -306,7 +347,7 @@ class _MyCornerState extends State<MyCorner> {
                       ),
                       Expanded(
                           child: Text(
-                              _likesBooksModel!.data![index]!.username.toString(),
+                              _likesBooksModel!.data[index].username.toString(),
                               style: const TextStyle(
                                   color:  const Color(0xff676767),
                                   fontWeight: FontWeight.w400,
@@ -321,7 +362,40 @@ class _MyCornerState extends State<MyCorner> {
                 }),
               ),
             )  : Center(
-              child: Text("No Internet Connection!"),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "INTERNET NOT CONNECTED",
+                    style: TextStyle(
+                      fontFamily: Constants.fontfamily,
+                      color: Color(0xFF256D85),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: _height * 0.019,
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      width: _width * 0.2,
+                      height: _height * 0.058,
+                      decoration: BoxDecoration(
+                          color: const Color(0xFF256D85),
+                          shape: BoxShape.circle
+                      ),
+                      child: const Center(
+                        child: Icon(Icons.sync,color: Colors.white,),
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        _checkInternetConnection();
+                      });
+                    },
+                  ),
+                ],
+              ),
             ),
           )
         ],
@@ -392,6 +466,7 @@ class _MyCornerState extends State<MyCorner> {
     if (this.mounted) {
       setState(() {
         _isLoading = true;
+        _isInternetConnected=true;
       });
     }
 
@@ -413,6 +488,7 @@ class _MyCornerState extends State<MyCorner> {
     if (this.mounted) {
       setState(() {
         _isLoading = true;
+        _isInternetConnected=true;
       });
     }
 

@@ -23,6 +23,12 @@ class UserProvider extends ChangeNotifier {
 
   String? get GetApple => _sharedPreferences.getString("apple");
 
+  String? get GetReferral => _sharedPreferences.getString("referral_code");
+
+  int? get GetSavedTime => _sharedPreferences.getInt("day_time");
+
+  int? get getNotificationCount => _sharedPreferences.getInt("notifications");
+
   void setUserEmail(String email) async {
     _sharedPreferences.setString("emailu", email);
     notifyListeners();
@@ -53,8 +59,23 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setReferral(String referral_code) async {
+    _sharedPreferences.setString("referral_code", referral_code);
+    notifyListeners();
+  }
+
   void setUserID(String id) async {
     _sharedPreferences.setString("user_id", id);
+    notifyListeners();
+  }
+
+  void setSavedDate(int time) async {
+    _sharedPreferences.setInt("day_time", time);
+    notifyListeners();
+  }
+
+  void setNotificationsCount(int notifications) async {
+    _sharedPreferences.setInt("notifications", notifications);
     notifyListeners();
   }
 }

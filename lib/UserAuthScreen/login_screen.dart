@@ -27,7 +27,7 @@ import '../Utils/toast.dart';
 import '../Widgets/reusable_button.dart';
 import '../Widgets/reusable_button_small.dart';
 import '../localization/Language/languages.dart';
-import 'ForgetPasswordScreen.dart';
+import 'FogetPassword/ForgetPasswordScreen.dart';
 import 'SignUpScreens/SignUpScreen_Second.dart';
 import 'SignUpScreens/signUpScreen_Third.dart';
 import 'dart:io';
@@ -76,6 +76,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _userIdentify = 'Unknown';
   String _authorizationCode = 'Unknown';
   bool show = true;
+  String? fcmToken;
 
   @override
   void initState()  {
@@ -83,6 +84,7 @@ class _LoginScreenState extends State<LoginScreen> {
     // initPlatformState();
     _controllerEmail = TextEditingController();
     _controllerPassword = TextEditingController();
+    getToken();
   }
 
   @override
@@ -130,6 +132,12 @@ class _LoginScreenState extends State<LoginScreen> {
       replacement: true, // Optional value
       curveType: CurveType.decelerate, // Optional value
     );
+  }
+
+  getToken() async {
+    SharedPreferences prefts = await SharedPreferences.getInstance();
+    fcmToken = prefts.getString('fcm_token');
+    print("firebase_token_preferences_login ${fcmToken}");
   }
 
 
@@ -455,7 +463,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                        AppleIDAuthorizationScopes.email,
                                        AppleIDAuthorizationScopes.fullName,
                                      ],
+                                     // webAuthenticationOptions: WebAuthenticationOptions(
+                                     //   redirectUri: Uri.parse('https://api.dreamwod.app/auth/callbacks/apple-sign-in'),
+                                     //   clientId: 'com.dreamwod.app.login',
+                                     // ),
                                    );
+
                                    if(userProvider.GetApple==""||userProvider.GetApple==null){
                                      userProvider.setApple(credential!.email.toString());
                                    }
@@ -472,10 +485,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                    print('Apple SignIn is not available for your device');
                                    ToastConstant.showToast(context, "Apple SignIn is not available for your device");
                                  }
-                                   // webAuthenticationOptions: WebAuthenticationOptions(
-                                   //   redirectUri: Uri.parse('https://api.dreamwod.app/auth/callbacks/apple-sign-in'),
-                                   //   clientId: 'com.dreamwod.app.login',
-                                   // ),
+
                                }else{
                                  // ToastConstant.showToast(context, "Login Successfully");
                                }
@@ -671,6 +681,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var map = Map<String, dynamic>();
     map['email'] = _controllerEmail!.text.trim();
     map['password'] = _controllerPassword!.text.trim();
+    map['firebase_token'] = fcmToken!.trim();
 
     final response = await http.post(
       Uri.parse(ApiUtils.URL_LOGIN_USER_API),
@@ -811,8 +822,10 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future SOCIAL_LOGIN_GOOGLE_API() async {
+    print("google token $fcmToken");
     var map = Map<String, dynamic>();
     map['email'] = _userObj!.email.toString();
+    map['firebase_token'] = fcmToken!.trim();
 
     final response = await http.post(
       Uri.parse(ApiUtils.USER_SOCIAL_LOGIN),
@@ -856,6 +869,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Future SOCIAL_LOGIN_FACEBOOK_API() async {
     var map = Map<String, dynamic>();
     map['email'] = _userFBObject["email"].toString();
+    map['firebase_token'] = fcmToken!.trim();
 
     final response = await http.post(
       Uri.parse(ApiUtils.USER_SOCIAL_LOGIN),
@@ -899,9 +913,10 @@ class _LoginScreenState extends State<LoginScreen> {
   Future SOCIAL_LOGIN_APPLE_API() async {
 
     print("Apple_ID ${context.read<UserProvider>().GetApple}");
+    print("fcm_token $fcmToken");
     var map = Map<String, dynamic>();
     map['email'] = context.read<UserProvider>().GetApple=="" ||context.read<UserProvider>().GetApple==null ? credential!.email.toString() :context.read<UserProvider>().GetApple.toString();
-
+    map['firebase_token'] = fcmToken!.trim();
     final response = await http.post(
       Uri.parse(ApiUtils.USER_SOCIAL_LOGIN),
       body: map,
@@ -988,5 +1003,6 @@ class _LoginScreenState extends State<LoginScreen> {
     userProvider.setUserToken(_userModel.user!.accessToken!);
     userProvider.setUserName(_userModel.user!.username!);
     userProvider.setUserID(_userModel.user!.id!.toString());
+    userProvider.setSavedDate(DateTime.now().millisecondsSinceEpoch);
   }
 }

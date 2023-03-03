@@ -4,13 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:transitioner/transitioner.dart';
 
 import '../Models/SeeAllModel.dar.dart';
 import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
-import 'BookDetailScreen.dart';
+import '../localization/Language/languages.dart';
+import 'BooksScreens/BookDetailsAuthor.dart';
 
 class SeeAllBookScreen extends StatefulWidget {
   String? categoriesId;
@@ -71,7 +73,7 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
               Icons.arrow_back_ios,
               color: Colors.black54,
             )),
-        toolbarHeight: _height*0.05,
+        toolbarHeight: _height * 0.05,
       ),
       body: _isInternetConnected == false
           ? SafeArea(
@@ -133,82 +135,142 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
           : _isLoading
               ? const Align(
                   alignment: Alignment.center,
-                  child:  const Align(
+                  child: const Align(
                     alignment: Alignment.center,
                     child: CupertinoActivityIndicator(),
-                  )
-                )
-              : Padding(
-                  padding: EdgeInsets.only(top: _height * 0.02),
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Padding(
-                          padding: EdgeInsets.only(
-                              top: _height * 0.02,
-                              left: _width * 0.03,
-                              right: _width * 0.01),
-                          child: GridView.count(
-                            physics: BouncingScrollPhysics(),
-                            crossAxisCount: 3,
-                            childAspectRatio: 0.78,
-                            mainAxisSpacing: _height * 0.01,
-                            children: List.generate(
-                                _seeAllBooksModelClass!.data!.length, (index) {
-                              return Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      width: _width * 0.25,
-                                      height: _height * 0.13,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                            Radius.circular(10),
-                                          ),
-                                          image: DecorationImage(
-                                              image: NetworkImage(
-                                                  _seeAllBooksModelClass!
-                                                      .data![index]!.imagePath
-                                                      .toString()),
-                                              fit: BoxFit.cover),
-                                          color: Colors.green)),
-                                  SizedBox(
-                                    height: _height * 0.01,
-                                  ),
-                                  Expanded(
-                                    child: Text(
-                                        _seeAllBooksModelClass!.data![index]!.title
-                                            .toString(),
-                                        style: const TextStyle(
-                                            color: const Color(0xff2a2a2a),
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: "Alexandria",
-                                            fontStyle: FontStyle.normal,
-                                            fontSize: 12.0),
-                                        textAlign: TextAlign.left),
-                                  ),
-                                  Expanded(
-                                      child: Text(
-                                          _seeAllBooksModelClass!
-                                              .data![index]!.authorName
-                                              .toString(),
-                                          style: const TextStyle(
-                                              color: const Color(0xff676767),
-                                              fontWeight: FontWeight.w400,
-                                              fontFamily: "Lato",
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 12.0),
-                                          textAlign: TextAlign.left)),
-                                ],
-                              );
-                            }),
-                          ),
+                  ))
+              : _seeAllBooksModelClass!.data.length == 0
+                  ? Padding(
+                      padding: EdgeInsets.only(top: _height * 0.4),
+                      child: Center(
+                        child: Text(
+                          Languages.of(context)!.nodata,
+                          style: const TextStyle(
+                              color: const Color(0xff3a6c83),
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "Lato",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 12.0),
                         ),
-                      )
-                    ],
-                  )),
+                      ))
+                  : Padding(
+                      padding: EdgeInsets.only(top: _height * 0.02),
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                  top: _height * 0.02,
+                                  left: _width * 0.03,
+                                  right: _width * 0.01),
+                              child: GridView.count(
+                                physics: BouncingScrollPhysics(),
+                                crossAxisCount: 3,
+                                childAspectRatio: 0.78,
+                                mainAxisSpacing: _height * 0.01,
+                                children: List.generate(
+                                    _seeAllBooksModelClass!.data.length,
+                                    (index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      Transitioner(
+                                        context: context,
+                                        child: BookDetailAuthor(
+                                          bookID: _seeAllBooksModelClass!
+                                              .data[index].id
+                                              .toString(),
+                                        ),
+                                        animation: AnimationType
+                                            .slideTop, // Optional value
+                                        duration: Duration(
+                                            milliseconds:
+                                                1000), // Optional value
+                                        replacement: false, // Optional value
+                                        curveType: CurveType
+                                            .decelerate, // Optional value
+                                      );
+                                    },
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        ClipRRect(
+                                          child: Banner(
+                                            message: _seeAllBooksModelClass!
+                                                        .data[index]
+                                                        .paymentStatus
+                                                        .toString() ==
+                                                    "1"
+                                                ? "Free"
+                                                : "Pro ++",
+                                            location: BannerLocation.topEnd,
+                                            color: _seeAllBooksModelClass!
+                                                        .data[index]
+                                                        .paymentStatus
+                                                        .toString() ==
+                                                    "1"
+                                                ? Color(0xff00bb23)
+                                                : Colors.red,
+                                            child: Container(
+                                                width: _width * 0.25,
+                                                height: _height * 0.13,
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                      Radius.circular(10),
+                                                    ),
+                                                    image: DecorationImage(
+                                                        image: NetworkImage(
+                                                            _seeAllBooksModelClass!
+                                                                .data[index]
+                                                                .imagePath
+                                                                .toString()),
+                                                        fit: BoxFit.cover),
+                                                    color: Colors.green)),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: _height * 0.01,
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                              _seeAllBooksModelClass!
+                                                  .data[index].title
+                                                  .toString(),
+                                              style: const TextStyle(
+                                                  color:
+                                                      const Color(0xff2a2a2a),
+                                                  fontWeight: FontWeight.w500,
+                                                  fontFamily: "Alexandria",
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: 12.0),
+                                              textAlign: TextAlign.left),
+                                        ),
+                                        Expanded(
+                                            child: Text(
+                                                "${_seeAllBooksModelClass!
+                                                    .data[index]
+                                                    .user[0]
+                                                    .username.toString()}",
+                                                style: const TextStyle(
+                                                    color:
+                                                        const Color(0xff676767),
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: "Lato",
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: 12.0),
+                                                textAlign: TextAlign.left)),
+                                      ],
+                                    ),
+                                  );
+                                }),
+                              ),
+                            ),
+                          )
+                        ],
+                      )),
     );
   }
 

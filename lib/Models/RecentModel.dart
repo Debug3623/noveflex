@@ -4,159 +4,201 @@
 
 import 'dart:convert';
 
-RecentModel? recentModelFromJson(String str) => RecentModel.fromJson(json.decode(str));
+RecentModel recentModelFromJson(String str) => RecentModel.fromJson(json.decode(str));
 
-String recentModelToJson(RecentModel? data) => json.encode(data!.toJson());
+String recentModelToJson(RecentModel data) => json.encode(data.toJson());
 
 class RecentModel {
   RecentModel({
-    this.status,
-    this.data,
+    required this.status,
+    required this.data,
   });
 
-  int? status;
-  List<Datum?>? data;
+  int status;
+  List<Datum> data;
 
   factory RecentModel.fromJson(Map<String, dynamic> json) => RecentModel(
     status: json["status"],
-    data: json["data"] == null ? [] : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x!.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
 class Datum {
   Datum({
-    this.id,
-    this.title,
-    this.authorName,
-    this.description,
-    this.categoryId,
-    this.userId,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.categoryId,
+    required this.subcategoryId,
+    required this.userId,
     this.lessonId,
-    this.image,
+    required this.paymentStatus,
+    required this.image,
     this.status,
-    this.isActive,
-    this.isSeen,
-    this.language,
+    required this.isActive,
+    required this.isSeen,
+    required this.language,
     this.createdBy,
     this.updatedBy,
     this.deletedBy,
-    this.createdAt,
+    required this.createdAt,
     this.updatedAt,
-    this.imagePath,
-    this.categories,
+    required this.imagePath,
+    required this.categories,
+    required this.user,
   });
 
-  int? id;
-  String? title;
-  dynamic authorName;
-  String? description;
-  int? categoryId;
-  int? userId;
+  int id;
+  String title;
+  String description;
+  int categoryId;
+  int subcategoryId;
+  int userId;
   dynamic lessonId;
-  String? image;
-  Status? status;
-  int? isActive;
-  int? isSeen;
-  Language? language;
+  int paymentStatus;
+  String image;
+  String? status;
+  int isActive;
+  int isSeen;
+  Language language;
   dynamic createdBy;
   dynamic updatedBy;
   dynamic deletedBy;
-  DateTime? createdAt;
-  dynamic updatedAt;
-  String? imagePath;
-  List<Category?>? categories;
+  DateTime createdAt;
+  DateTime? updatedAt;
+  String imagePath;
+  List<Category> categories;
+  List<User> user;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     title: json["title"],
-    authorName: json["author_name"],
     description: json["description"],
     categoryId: json["category_id"],
+    subcategoryId: json["subcategory_id"],
     userId: json["user_id"],
     lessonId: json["lesson_id"],
+    paymentStatus: json["payment_status"],
     image: json["image"],
-    status: statusValues!.map[json["status"]],
+    status: json["status"],
     isActive: json["is_active"],
     isSeen: json["is_seen"],
-    language: languageValues!.map[json["language"]],
+    language: languageValues.map[json["language"]]!,
     createdBy: json["created_by"],
     updatedBy: json["updated_by"],
     deletedBy: json["deleted_by"],
     createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"],
+    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
     imagePath: json["image_path"],
-    categories: json["categories"] == null ? [] : List<Category?>.from(json["categories"]!.map((x) => Category.fromJson(x))),
+    categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
+    user: List<User>.from(json["user"].map((x) => User.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "title": title,
-    "author_name": authorName,
     "description": description,
     "category_id": categoryId,
+    "subcategory_id": subcategoryId,
     "user_id": userId,
     "lesson_id": lessonId,
+    "payment_status": paymentStatus,
     "image": image,
-    "status": statusValues.reverse![status],
+    "status": status,
     "is_active": isActive,
     "is_seen": isSeen,
-    "language": languageValues.reverse![language],
+    "language": languageValues.reverse[language],
     "created_by": createdBy,
     "updated_by": updatedBy,
     "deleted_by": deletedBy,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt?.toIso8601String(),
     "image_path": imagePath,
-    "categories": categories == null ? [] : List<dynamic>.from(categories!.map((x) => x!.toJson())),
+    "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
+    "user": List<dynamic>.from(user.map((x) => x.toJson())),
   };
 }
 
 class Category {
   Category({
-    this.id,
-    this.title,
+    required this.id,
+    required this.title,
+    required this.imagePath,
   });
 
-  int? id;
-  String? title;
+  int id;
+  Title title;
+  String imagePath;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     id: json["id"],
-    title: json["title"],
+    title: titleValues.map[json["title"]]!,
+    imagePath: json["image_path"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "title": title,
+    "title": titleValues.reverse[title],
+    "image_path": imagePath,
   };
 }
 
-enum Language { ARB }
+enum Title { MANGA, MANHWA, NOVELS }
+
+final titleValues = EnumValues({
+  "Manga": Title.MANGA,
+  "Manhwa": Title.MANHWA,
+  "Novels": Title.NOVELS
+});
+
+enum Language { ENG, ARB }
 
 final languageValues = EnumValues({
-  "arb": Language.ARB
+  "arb": Language.ARB,
+  "eng": Language.ENG
 });
 
-enum Status { IN_PROGRESS, DONE }
+class User {
+  User({
+    required this.id,
+    required this.username,
+    required this.profilePath,
+    required this.backgroundPath,
+  });
 
-final statusValues = EnumValues({
-  "Done": Status.DONE,
-  "InProgress": Status.IN_PROGRESS
-});
+  int id;
+  String username;
+  String profilePath;
+  String backgroundPath;
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+    id: json["id"],
+    username: json["username"],
+    profilePath: json["profile_path"],
+    backgroundPath: json["background_path"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "username": username,
+    "profile_path": profilePath,
+    "background_path": backgroundPath,
+  };
+}
 
 class EnumValues<T> {
   Map<String, T> map;
-  Map<T, String>? reverseMap;
+  late Map<T, String> reverseMap;
 
   EnumValues(this.map);
 
-  Map<T, String>? get reverse {
-    reverseMap ??= map.map((k, v) => MapEntry(v, k));
+  Map<T, String> get reverse {
+    reverseMap = map.map((k, v) => MapEntry(v, k));
     return reverseMap;
   }
 }

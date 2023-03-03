@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:intl_phone_field/phone_number.dart';
-import '../Utils/toast.dart';
-import '../localization/Language/languages.dart';
+import '../../Utils/toast.dart';
+import '../../localization/Language/languages.dart';
 import 'ResetPasswordScreen.dart';
 
 class ForgetPasswordScreen extends StatefulWidget {
@@ -16,6 +16,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
 
   TextEditingController textController = TextEditingController();
   String countryCode = "+971";
+  var phoneNumber;
 
   @override
   Widget build(BuildContext context) {
@@ -69,10 +70,11 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                   cursorColor: Color(0xFF256D85),
                   onChanged: (phone) {
                     print(phone.completeNumber);
-                    if(phone.completeNumber.length==13){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>VerifyPhoneNumberScreen(phoneNumber: phone.completeNumber,)));
-
-                    }
+                    // if(phone.completeNumber.length==13){
+                      phoneNumber=phone.completeNumber;
+                    //   Navigator.push(context, MaterialPageRoute(builder: (context)=>VerifyPhoneNumberScreen(phoneNumber: phone.completeNumber,)));
+                    //
+                    // }
 
                  },
                   initialCountryCode: 'AE',
@@ -92,8 +94,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                     onPressed: () {
                       // ;
                       if(textController.text.isNotEmpty){
-                        Navigator.push(context, MaterialPageRoute(builder: (context)=>VerifyPhoneNumberScreen(phoneNumber: countryCode+textController.text.trim(),)));
-                        print("phoneNumber ${countryCode+textController.text.trim()}");
+                        Navigator.push(context, MaterialPageRoute(builder: (context)=>VerifyPhoneNumberScreen(phoneNumber: phoneNumber.toString().trim(),)));
+                        print("phoneNumber ${phoneNumber}");
                       }else{
                         ToastConstant.showToast(context, "Enter Phone Number");
                       }

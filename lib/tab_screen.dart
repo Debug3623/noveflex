@@ -4,7 +4,6 @@ import 'package:novelflex/TabScreens/SearchScreen.dart';
 import 'TabScreens/Menu_screen.dart';
 import 'TabScreens/MyCorner.dart';
 import 'TabScreens/home_screen.dart';
-import 'TabScreens/profile_screen.dart';
 import 'Utils/Colors.dart';
 
 class TabScreen extends StatefulWidget {
@@ -24,14 +23,6 @@ class _TabScreenState extends State<TabScreen> {
     MenuScreen(),
   ];
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  //
-  // void _onItemTapped(int index) {
-  //   index == 4
-  //       ? _drawerKey.currentState!.openDrawer()
-  //       : setState(() {
-  //     pageIndex = index;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -50,87 +41,65 @@ class _TabScreenState extends State<TabScreen> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Container(
-      height: height*0.1,
+      height: height*0.08,
       color: const Color(0xffffffff),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
+          GestureDetector(
+            onTap: (){
               setState(() {
                 pageIndex = 0;
               });
             },
-            iconSize: 55,
-            icon: pageIndex == 0
-                ? const Icon(
-              Icons.search,
-              color: AppColors.activeColor,
-              size: 35,
-            )
-                : const Icon(
-              Icons.search,
-              color: AppColors.inactive,
-              size: 35,
+            child: Container(
+              height: height*0.031,
+              width:width*0.07 ,
+              child: pageIndex == 0
+                  ?  Image.asset("assets/quotes_data/icon_search_ziplink.png",color:AppColors.activeColor ,fit: BoxFit.contain,)
+                  : Image.asset("assets/quotes_data/icon_search_ziplink.png",color:AppColors.inactive,fit: BoxFit.contain,),
             ),
           ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
+          GestureDetector(
+            onTap: (){
               setState(() {
                 pageIndex = 1;
               });
             },
-            iconSize: 55,
-            icon: pageIndex == 1
-                ?  SizedBox(
-                height: height*0.07,
-                width:width*0.07 ,
-                child: Image.asset("assets/quotes_data/my_corner.png",color:AppColors.activeColor ,))
-                : SizedBox(
-              height: height*0.07,
-                width:width*0.07 ,
-                child: Image.asset("assets/quotes_data/my_corner.png",color:AppColors.inactive,))
+            child: Container(
+              height: height*0.03,
+              width:width*0.07 ,
+              child: pageIndex == 1
+                  ?  Image.asset("assets/quotes_data/feather_new3x.png",color:AppColors.activeColor ,fit: BoxFit.contain,)
+                  : Image.asset("assets/quotes_data/feather_new3x.png",color:AppColors.inactive,fit: BoxFit.contain,),
+            ),
           ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
+          GestureDetector(
+            onTap: (){
               setState(() {
                 pageIndex = 2;
               });
             },
-            iconSize: 55,
-            icon: pageIndex == 2
-                ? const Icon(
-              Icons.home,
-              color: AppColors.activeColor,
-              size: 35,
-            )
-                : const Icon(
-              Icons.home,
-              color: AppColors.inactive,
-              size: 35,
+            child: Container(
+              height: height*0.03,
+              width:width*0.07 ,
+              child: pageIndex == 2
+                  ?  Image.asset("assets/quotes_data/icon_home_ziplin.png",color:AppColors.activeColor ,fit: BoxFit.contain,)
+                  : Image.asset("assets/quotes_data/icon_home_ziplin.png",color:AppColors.inactive,fit: BoxFit.contain,),
             ),
           ),
-          IconButton(
-            enableFeedback: false,
-            onPressed: () {
+          GestureDetector(
+            onTap: (){
               setState(() {
                 pageIndex = 3;
               });
             },
-            iconSize: 55,
-            icon: pageIndex == 3
-                ? const Icon(
-              Icons.menu,
-              color: AppColors.activeColor,
-              size: 35,
-            )
-                : const Icon(
-              Icons.menu,
-              color: AppColors.inactive,
-              size: 35,
+            child: Container(
+              height: height*0.03,
+              width:width*0.07 ,
+              child:  pageIndex == 3
+                  ?  Image.asset("assets/quotes_data/icon_menu_ziplin.png",color:AppColors.activeColor ,fit: BoxFit.contain,)
+                  : Image.asset("assets/quotes_data/icon_menu_ziplin.png",color:AppColors.inactive,fit: BoxFit.contain,),
             ),
           ),
         ],

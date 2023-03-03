@@ -17,7 +17,21 @@ class LanguageEn extends Languages {
   String get unlockPremium => "UNLOCK NOVEL FLEX PREMIUM FEATURES";
 
   @override
-  String get search => "Title, Author";
+  String get search => "Search Favourite";
+
+  @override
+  String get giftText => "Add Amount to Gift";
+
+  @override
+  String get gift => "Gift";
+
+  @override
+  String get dollar => "You can gift minimum 5\$ ";
+
+  @override
+  String get amountWithDraw => "Sorry you don't have sufficient Balance to With draw, You must have at least 5 \$ in your Account";
+
+
 
   @override
   String get packageText => """A purchase will be applied to your account upon confirmation of the amount selected. Subscriptions will not automatically renew unless you subscribe again within 1 month period. You can cancel any time using your account settings. Any unused portion of a free trial will be forfeited if you purchase a subscription.""";
@@ -36,7 +50,34 @@ class LanguageEn extends Languages {
 
 
   @override
-  String get unlockWallet => "Unlock Wallet";
+  String get unlockWallet => "Withdraw Money";
+
+  @override
+  String get subscribeTxt => "SUBSCRIBE";
+
+
+  @override
+  String get confirmTxt => "CONFIRM";
+
+
+  @override
+  String get profile => "Profile";
+
+  @override
+  String get totalAmount => "Total Amount             ";
+
+  @override
+  String get withdrawAmount => "Amount WithDraw";
+
+
+  @override
+  String get remainingAmount => "Remaining Amount";
+
+  @override
+  String get carefulText => "Please make sure you fill all the Above fields Correctly, If You enter wrong Details Company  will not responsible for any inconvenience";
+
+  @override
+  String get accountField => "Please Fill the Account Details Carefully";
 
   @override
   String get update => "Update";
@@ -133,6 +174,10 @@ class LanguageEn extends Languages {
   @override
   // TODO: implement home
   String get unfollow_text => "UNFOLLOW";
+
+  @override
+  // TODO: implement home
+  String get continuebtn => "Continue";
 
   @override
   // TODO: implement EditButton

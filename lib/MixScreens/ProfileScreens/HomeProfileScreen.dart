@@ -19,7 +19,8 @@ import '../../Utils/ApiUtils.dart';
 import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../localization/Language/languages.dart';
-import '../BookDetailsAuthor.dart';
+import '../BooksScreens/AuthorViewByUserScreen.dart';
+import '../BooksScreens/BookDetailsAuthor.dart';
 import '../Uploadscreens/upload_history_screen.dart';
 
 class HomeProfileScreen extends StatefulWidget {
@@ -51,7 +52,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     UserProvider userProvider =
-    Provider.of<UserProvider>(context, listen: false);
+        Provider.of<UserProvider>(context, listen: false);
     return Scaffold(
       backgroundColor: const Color(0xffebf5f9),
       body: SafeArea(
@@ -61,7 +62,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                   ? const Center(
                       child: CupertinoActivityIndicator(),
                     )
-                  : _statusCheckModel!.data![0]!.type == "Reader"
+                  : _statusCheckModel!.data[0].type == "Reader"
                       ? Stack(
                           children: [
                             Positioned(
@@ -78,13 +79,23 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                     bottomLeft: Radius.circular(10),
                                     bottomRight: Radius.circular(10),
                                   ),
-                                  color: Color(0xFF256D85),
+                                  color: Colors.black12,
                                 ),
                               ),
                             ),
                             Positioned(
-                              left:context.read<UserProvider>().SelectedLanguage=='English' ? _width * 0.28 : 0.0,
-                              right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.28: 0.0,
+                              left: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'English'
+                                  ? _width * 0.05
+                                  : 0.0,
+                              right: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'Arabic'
+                                  ? _width * 0.05
+                                  : 0.0,
                               top: _height * 0.05,
                               child: Column(
                                 children: [
@@ -99,22 +110,22 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                         ),
                                         image: DecorationImage(
                                             image: _readerProfileModel!
-                                                        .data!.imagePath ==
-                                                    null
+                                                .data.profilePhoto ==
+                                                ""
                                                 ? AssetImage(
-                                                    "assets/profile_pic.png")
+                                                "assets/profile_pic.png",)
                                                 : NetworkImage(
-                                                        _readerProfileModel!
-                                                            .data!.imagePath
-                                                            .toString())
-                                                    as ImageProvider,
+                                                _readerProfileModel!
+                                                    .data.profilePath
+                                                    .toString())
+                                            as ImageProvider,
                                             fit: BoxFit.cover)),
                                   ),
                                   Padding(
                                     padding:
                                         EdgeInsets.only(top: _height * 0.02),
                                     child: Text(
-                                      _readerProfileModel!.data!.username!,
+                                      _readerProfileModel!.data.username,
                                       style: const TextStyle(
                                           color: const Color(0xff2a2a2a),
                                           fontWeight: FontWeight.w700,
@@ -125,10 +136,10 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                   ),
                                   Padding(
                                     padding:
-                                    EdgeInsets.only(top: _height * 0.04),
+                                        EdgeInsets.only(top: _height * 0.01),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                          MainAxisAlignment.center,
                                       children: [
                                         Image.asset(
                                           "assets/quotes_data/extra_pngs/glasses.png",
@@ -137,7 +148,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                           width: _width * 0.03,
                                         ),
                                         SizedBox(
-                                          width: _width * 0.01,
+                                          width: _width * 0.03,
                                         ),
                                         Text(Languages.of(context)!.reader,
                                             style: const TextStyle(
@@ -146,7 +157,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                 fontFamily: "Lato",
                                                 fontStyle: FontStyle.normal,
                                                 fontSize: 12.0),
-                                            textAlign: TextAlign.left)
+                                            textAlign: TextAlign.left),
                                       ],
                                     ),
                                   )
@@ -155,8 +166,18 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             ),
                             Positioned(
                               top: _height * 0.35,
-                              left:context.read<UserProvider>().SelectedLanguage=='English' ? _width * 0.05 : 0.0,
-                              right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.05: 0.0,
+                              left: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'English'
+                                  ? _width * 0.05
+                                  : 0.0,
+                              right: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'Arabic'
+                                  ? _width * 0.05
+                                  : 0.0,
                               child: Container(
                                 height: _height * 0.3,
                                 width: _width,
@@ -173,8 +194,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             ),
                             Positioned(
                               top: _height * 0.4,
-                              child: _readerProfileModel!
-                                          .data!.following!.length ==
+                              child: _readerProfileModel
+                                          ?.data.following.length ==
                                       0
                                   ? Padding(
                                       padding: EdgeInsets.only(
@@ -197,17 +218,17 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       child: ListView.builder(
                                         physics: const BouncingScrollPhysics(),
                                         itemCount: _readerProfileModel!
-                                            .data!.following!.length,
+                                            .data.following.length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
                                           return GestureDetector(
                                             onTap: () {
                                               Transitioner(
                                                 context: context,
-                                                child: BookDetailAuthor(
-                                                  bookID: _readerProfileModel!
-                                                      .data!
-                                                      .following![index]!
+                                                child: AuthorViewByUserScreen(
+                                                    user_id: _readerProfileModel!
+                                                      .data
+                                                      .following[index]
                                                       .id
                                                       .toString(),
                                                 ),
@@ -222,66 +243,57 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                     .decelerate, // Optional value
                                               );
                                             },
-                                            child: Column(
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Container(
-                                                      width: _width * 0.22,
-                                                      height: _height * 0.12,
-                                                      margin: EdgeInsets.all(
-                                                          _width * 0.05),
-                                                      decoration: BoxDecoration(
-                                                        shape: BoxShape.circle,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                        color: Colors.black,
-                                                        image: DecorationImage(
-                                                            fit: BoxFit.cover,
-                                                            image: _readerProfileModel!
-                                                                        .data!
-                                                                        .books![
-                                                                            index]!
-                                                                        .imagePath
-                                                                        .toString() ==
-                                                                    ""
-                                                                ? const AssetImage(
-                                                                    "assets/quotes_data/manga image.png")
-                                                                : NetworkImage(_readerProfileModel!
-                                                                    .data!
-                                                                    .following![
-                                                                        index]!
-                                                                    .imagePath
-                                                                    .toString()) as ImageProvider),
-                                                      ),
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: _width * 0.05,
+                                                  right: _width * 0.05),
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    width: _width * 0.22,
+                                                    height: _height * 0.12,
+                                                    decoration: BoxDecoration(
+                                                      color: Colors.black,
+                                                      shape: BoxShape.circle,
+                                                      image: DecorationImage(
+                                                          fit: BoxFit.cover,
+                                                          image:  NetworkImage(
+                                                              _readerProfileModel!
+                                                                  .data
+                                                                  .following[
+                                                                      index]
+                                                                  .profilePath
+                                                                  .toString())),
                                                     ),
-                                                  ],
-                                                ),
-                                                Text(
-                                                  _readerProfileModel!
-                                                      .data!
-                                                      .following![index]!
-                                                      .username
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                    fontFamily: 'Lato',
-                                                    color: Color(0xff313131),
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.w700,
-                                                    fontStyle: FontStyle.normal,
                                                   ),
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                ),
-                                              ],
+                                                  Text(
+                                                    _readerProfileModel!
+                                                        .data
+                                                        .following[index]
+                                                        .username
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                      fontFamily: 'Lato',
+                                                      color: Color(0xff313131),
+                                                      fontSize: 14,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                    ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  ),
+
+                                                ],
+                                              ),
                                             ),
                                           );
                                         },
                                       )),
                             ),
                             Positioned(
-                              top: _height * 0.28,
+                              top: _height * 0.32,
                               left: _width * 0.1,
                               right: _width * 0.1,
                               child: Opacity(
@@ -295,8 +307,18 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             ),
                             Positioned(
                               top: _height * 0.64,
-                              left:context.read<UserProvider>().SelectedLanguage=='English' ? _width * 0.05 : 0.0,
-                              right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.05: 0.0,
+                              left: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'English'
+                                  ? _width * 0.05
+                                  : 0.0,
+                              right: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'Arabic'
+                                  ? _width * 0.05
+                                  : 0.0,
                               child: Container(
                                 height: _height * 0.3,
                                 width: _width,
@@ -313,7 +335,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             ),
                             Positioned(
                               top: _height * 0.67,
-                              child: _readerProfileModel!.data!.books!.length ==
+                              child: _readerProfileModel!.data.books.length ==
                                       0
                                   ? Padding(
                                       padding: EdgeInsets.only(
@@ -336,7 +358,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       child: ListView.builder(
                                         physics: const BouncingScrollPhysics(),
                                         itemCount: _readerProfileModel!
-                                            .data!.books!.length,
+                                            .data.books.length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
                                           return GestureDetector(
@@ -345,7 +367,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                 context: context,
                                                 child: BookDetailAuthor(
                                                   bookID: _readerProfileModel!
-                                                      .data!.books![index]!.id
+                                                      .data.books[index].id
                                                       .toString(),
                                                 ),
                                                 animation: AnimationType.fadeIn,
@@ -363,34 +385,27 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                               children: [
                                                 Stack(
                                                   children: [
-                                                    Container(
-                                                      width: _width * 0.22,
-                                                      height: _height * 0.12,
-                                                      margin: EdgeInsets.all(
-                                                          _width * 0.05),
-                                                      decoration: BoxDecoration(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                        color: Colors.black,
-                                                        image: DecorationImage(
-                                                            fit: BoxFit.cover,
-                                                            image: _readerProfileModel!
-                                                                        .data!
-                                                                        .books![
-                                                                            index]!
-                                                                        .imagePath
-                                                                        .toString() ==
-                                                                    ""
-                                                                ? const AssetImage(
-                                                                    "assets/quotes_data/manga image.png")
-                                                                : NetworkImage(_readerProfileModel!
-                                                                        .data!
-                                                                        .books![
-                                                                            index]!
-                                                                        .imagePath
-                                                                        .toString())
-                                                                    as ImageProvider),
+                                                    Positioned(
+                                                      child: Container(
+                                                        width: _width * 0.22,
+                                                        height: _height * 0.12,
+                                                        margin: EdgeInsets.all(
+                                                            _width * 0.05),
+                                                        decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(10.0),
+                                                          color: Colors.black,
+                                                          image: DecorationImage(
+                                                              fit: BoxFit.cover,
+                                                              image: NetworkImage(
+                                                                  _readerProfileModel!
+                                                                      .data
+                                                                      .books[
+                                                                          index]
+                                                                      .bookImage
+                                                                      .toString())),
+                                                        ),
                                                       ),
                                                     ),
                                                     Positioned(
@@ -405,10 +420,9 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                         )),
                                                   ],
                                                 ),
-
                                                 Text(
-                                                  _readerProfileModel!.data!
-                                                      .books![index]!.title
+                                                  _readerProfileModel!.data
+                                                      .books[index].title
                                                       .toString(),
                                                   style: const TextStyle(
                                                     fontFamily: 'Lato',
@@ -448,13 +462,13 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                 height: _height * 0.25,
                                 width: _width,
                                 decoration: BoxDecoration(
-                                  color:  Colors.white,
+                                  color: Colors.white,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     alignment: Alignment.topCenter,
                                     image: NetworkImage(
-                                      _authorProfileViewModel!.data!.backgroundPath!,
-
+                                      _authorProfileViewModel!
+                                          .data.backgroundPath,
                                     ),
                                     // fit: BoxFit.cover,
                                   ),
@@ -496,9 +510,10 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                               ),
                             )),
                             Positioned(
-                              left: _width * 0.05,
+                              left: _width * 0.02,
                               top: _height * 0.21,
                               child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceAround,
                                 children: [
                                   Container(
                                     height: _height * 0.12,
@@ -511,13 +526,13 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                         ),
                                         image: DecorationImage(
                                             image: _authorProfileViewModel!
-                                                        .data!.imagePath ==
-                                                    null
+                                                        .data.profilePhoto ==
+                                                    ""
                                                 ? AssetImage(
                                                     "assets/profile_pic.png")
                                                 : NetworkImage(
                                                         _authorProfileViewModel!
-                                                            .data!.imagePath
+                                                            .data.profilePath
                                                             .toString())
                                                     as ImageProvider,
                                             fit: BoxFit.cover)),
@@ -528,7 +543,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                     // ),
                                   ),
                                   SizedBox(
-                                    width: _width * 0.05,
+                                    width: _width * 0.02,
                                   ),
                                   Padding(
                                     padding:
@@ -537,15 +552,20 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          _authorProfileViewModel!
-                                              .data!.username!,
-                                          style: const TextStyle(
-                                              color: const Color(0xff2a2a2a),
-                                              fontWeight: FontWeight.w700,
-                                              fontFamily: "Neckar",
-                                              fontStyle: FontStyle.normal,
-                                              fontSize: 14.0),
+                                        Container(
+                                          width:_width*0.3,
+                                          child: Text(
+                                            _authorProfileViewModel!
+                                                .data.username,
+                                            style: const TextStyle(
+                                                color: const Color(0xff2a2a2a),
+                                                fontWeight: FontWeight.w700,
+                                                fontFamily: "Neckar",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 11.0),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 1,
+                                          ),
                                         ),
                                         SizedBox(
                                           height: _height * 0.01,
@@ -584,9 +604,20 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                   ),
                                   Padding(
                                     padding: EdgeInsets.only(
-                                        top: _height * 0.07,
-                                      left:context.read<UserProvider>().SelectedLanguage=='English' ? _width * 0.15 : 0.0,
-                                      right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.15: 0.0,),
+                                      top: _height * 0.07,
+                                      left: context
+                                                  .read<UserProvider>()
+                                                  .SelectedLanguage ==
+                                              'English'
+                                          ? _width * 0.15
+                                          : 0.0,
+                                      right: context
+                                                  .read<UserProvider>()
+                                                  .SelectedLanguage ==
+                                              'Arabic'
+                                          ? _width * 0.15
+                                          : 0.0,
+                                    ),
                                     child: GestureDetector(
                                         onTap: () {
                                           Transitioner(
@@ -604,7 +635,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                           );
                                         },
                                         child: Container(
-                                          width: _width * 0.28,
+                                          width: _width * 0.25,
                                           height: _height * 0.04,
                                           decoration: BoxDecoration(
                                               borderRadius: BorderRadius.all(
@@ -666,8 +697,19 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                     color: Colors.white),
                                 child: Padding(
                                   padding: EdgeInsets.only(
-                                      left:context.read<UserProvider>().SelectedLanguage=='English' ? _width * 0.05 : 0.0,
-                                      right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.05: 0.0, top: _height * 0.02),
+                                      left: context
+                                                  .read<UserProvider>()
+                                                  .SelectedLanguage ==
+                                              'English'
+                                          ? _width * 0.05
+                                          : 0.0,
+                                      right: context
+                                                  .read<UserProvider>()
+                                                  .SelectedLanguage ==
+                                              'Arabic'
+                                          ? _width * 0.05
+                                          : 0.0,
+                                      top: _height * 0.02),
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
@@ -685,7 +727,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       ),
                                       Text(
                                         _authorProfileViewModel!
-                                            .data!.description
+                                            .data.description
                                             .toString(),
                                         style: const TextStyle(
                                             color: const Color(0xff676767),
@@ -703,8 +745,18 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             ),
                             Positioned(
                               top: _height * 0.64,
-                              left:context.read<UserProvider>().SelectedLanguage=='English' ? _width * 0.05 : 0.0,
-                              right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.05: 0.0,
+                              left: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'English'
+                                  ? _width * 0.05
+                                  : 0.0,
+                              right: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'Arabic'
+                                  ? _width * 0.05
+                                  : 0.0,
                               child: Container(
                                 height: _height * 0.3,
                                 width: _width,
@@ -721,22 +773,24 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             ),
                             Positioned(
                               top: _height * 0.64,
-                              left: userProvider.SelectedLanguage=="English"  ? _width * 0.8 : 0.0,
-                              right: userProvider.SelectedLanguage=="English"  ?  0.0 :_width * 0.8,
+                              left: userProvider.SelectedLanguage == "English"
+                                  ? _width * 0.8
+                                  : 0.0,
+                              right: userProvider.SelectedLanguage == "English"
+                                  ? 0.0
+                                  : _width * 0.8,
                               child: GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   Transitioner(
                                     context: context,
                                     child: UploadHistoryscreen(),
                                     animation: AnimationType
                                         .slideTop, // Optional value
                                     duration: Duration(
-                                        milliseconds:
-                                        1000), // Optional value
-                                    replacement:
-                                    false, // Optional value
-                                    curveType: CurveType
-                                        .decelerate, // Optional value
+                                        milliseconds: 1000), // Optional value
+                                    replacement: false, // Optional value
+                                    curveType:
+                                        CurveType.decelerate, // Optional value
                                   );
                                 },
                                 child: Row(
@@ -744,8 +798,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                     Text(
                                       Languages.of(context)!.editT,
                                       style: const TextStyle(
-                                          color:
-                                          const Color(0xff3a6c83),
+                                          color: const Color(0xff3a6c83),
                                           fontWeight: FontWeight.w700,
                                           fontFamily: "Lato",
                                           fontStyle: FontStyle.normal,
@@ -765,7 +818,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             Positioned(
                               top: _height * 0.67,
                               child: _authorProfileViewModel!
-                                          .data!.book!.length ==
+                                          .data.book.length ==
                                       0
                                   ? Padding(
                                       padding: EdgeInsets.all(
@@ -787,7 +840,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       child: ListView.builder(
                                         physics: const BouncingScrollPhysics(),
                                         itemCount: _authorProfileViewModel!
-                                            .data!.book!.length,
+                                            .data.book.length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index) {
                                           return GestureDetector(
@@ -797,8 +850,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                 child: BookDetailAuthor(
                                                   bookID:
                                                       _authorProfileViewModel!
-                                                          .data!
-                                                          .book![index]!
+                                                          .data
+                                                          .book[index]
                                                           .id
                                                           .toString(),
                                                 ),
@@ -830,18 +883,18 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                         image: DecorationImage(
                                                             fit: BoxFit.cover,
                                                             image: _authorProfileViewModel!
-                                                                        .data!
-                                                                        .book![
-                                                                            index]!
+                                                                        .data
+                                                                        .book[
+                                                                            index]
                                                                         .imagePath
                                                                         .toString() ==
                                                                     ""
                                                                 ? const AssetImage(
                                                                     "assets/quotes_data/manga image.png")
                                                                 : NetworkImage(_authorProfileViewModel!
-                                                                        .data!
-                                                                        .book![
-                                                                            index]!
+                                                                        .data
+                                                                        .book[
+                                                                            index]
                                                                         .imagePath
                                                                         .toString())
                                                                     as ImageProvider),
@@ -898,9 +951,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
   }
 
   Future AUTHOR_PROFILE() async {
-
     var map = Map<String, dynamic>();
-    map['user_id'] = _statusCheckModel!.data![0]!.id.toString();
+    map['user_id'] = _statusCheckModel!.data[0].id.toString();
 
     final response =
         await http.post(Uri.parse(ApiUtils.AUTHOR_BOOKS_DETAILS_API),
@@ -941,6 +993,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         _readerProfileModel = readerProfileModelFromJson(jsonData);
+
         setState(() {
           _isLoading = false;
         });
@@ -1013,7 +1066,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
 
     var request = http.MultipartRequest(
         'POST', Uri.parse(ApiUtils.UPLOAD_BACKGROUND_IMAGE_API));
-    request.files.add( http.MultipartFile.fromBytes(
+    request.files.add(http.MultipartFile.fromBytes(
       "background_image",
       File(_cover_imageFile!.path)
           .readAsBytesSync(), //UserFile is my JSON key,use your own and "image" is the pic im getting from my gallary
@@ -1028,7 +1081,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
         if (response.statusCode == 200) {
           print("Cover Image Uploaded! ");
           print('COVER_image_upload ' + response.body);
-          Constants.showToastBlack(context, "your background  image updated successfully");
+          Constants.showToastBlack(
+              context, "your background  image updated successfully");
           setState(() {
             _isImageLoading = false;
           });
@@ -1039,9 +1093,9 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
   }
 
   _getFromGallery() async {
-    final PickedFile? image =
-        await ImagePicker().getImage(source: ImageSource.gallery,
-        );
+    final PickedFile? image = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+    );
 
     if (image != null) {
       _cover_imageFile = File(image.path);

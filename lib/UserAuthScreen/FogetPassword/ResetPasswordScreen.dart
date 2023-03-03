@@ -4,9 +4,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:novelflex/UserAuthScreen/login_screen.dart';
 
-import '../Widgets/PinInputField.dart';
-import '../localization/Language/languages.dart';
+import '../../Widgets/PinInputField.dart';
+import '../../localization/Language/languages.dart';
 import 'NewPasswordScreen.dart';
+import 'forgetPasswordEmailScreen.dart';
 
 class VerifyPhoneNumberScreen extends StatefulWidget {
   static const id = 'VerifyPhoneNumberScreen';
@@ -92,7 +93,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
           );
 
           Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) =>
-              NewPasswordScreen(phoneNumber: widget.phoneNumber,)), (Route<dynamic> route) => false);
+              ForgetPasswordEmailScreen()), (Route<dynamic> route) => false);
         },
         onLoginFailed: (authException, stackTrace) {
           log(

@@ -39,6 +39,7 @@ class _GeneralCategoriesScreenState extends State<GeneralCategoriesScreen> {
     super.initState();
   }
 
+
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;

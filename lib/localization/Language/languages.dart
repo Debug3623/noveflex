@@ -77,6 +77,10 @@ abstract class Languages {
 
   String get search;
 
+  String get giftText;
+
+  String get amountWithDraw;
+
   String get selectSubCategories;
 
   String get selectGenerals;
@@ -158,6 +162,8 @@ abstract class Languages {
 
   String get FinsihAllsteps;
 
+  String get accountField;
+
   String get EAccount2;
 
   String get wallet5;
@@ -180,6 +186,8 @@ abstract class Languages {
 
   String get aboutAuthor;
 
+  String get profile;
+
   String get author;
 
   String get view;
@@ -187,6 +195,9 @@ abstract class Languages {
   String get manga;
 
   String get read;
+
+
+  String get continuebtn;
 
 
   String get continueReading;
@@ -205,6 +216,10 @@ abstract class Languages {
 
   String get email;
 
+  String get gift;
+
+  String get dollar;
+
   String get password;
 
   String get login;
@@ -212,6 +227,18 @@ abstract class Languages {
   String get Subscribe;
 
   String get scan;
+
+  String get totalAmount;
+
+  String get withdrawAmount;
+
+  String get remainingAmount;
+
+  String get carefulText;
+
+  String get subscribeTxt;
+
+  String get confirmTxt;
 
   String get newPasswordCreate;
 

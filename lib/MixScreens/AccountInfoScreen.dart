@@ -35,6 +35,7 @@ class _AccountScreenState extends State<AccountScreen> {
   TextEditingController? _emailController;
   TextEditingController? _phoneNumberController;
   File? imageFile;
+  bool _isImageLoading = false;
 
   @override
   void initState() {
@@ -44,7 +45,6 @@ class _AccountScreenState extends State<AccountScreen> {
     _phoneNumberController = new TextEditingController();
     super.initState();
   }
-
 
   @override
   void dispose() {
@@ -87,24 +87,36 @@ class _AccountScreenState extends State<AccountScreen> {
                           children: [
                             Center(
                               child: GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   _getFromGallery();
                                 },
                                 child: Stack(
                                   children: [
                                     SizedBox(
                                       height: _height * 0.2,
-                                      child:  Center(
-                                        child: CircleAvatar(
-                                          radius: _width*_height*0.00015,
-                                          backgroundImage: imageFile == null ? NetworkImage(
-                                            _authorProfileEditModel!.data![0]!.imagePath.toString()
-                                          ) : AssetImage(imageFile!.path) as ImageProvider,
-                                          // child: Icon(
-                                          //   Icons.person_pin,
-                                          //   size: _height*_width*0.0004,
-                                          //   color: Colors.white,
-                                          // ),
+                                      child: Center(
+                                        child: Stack(
+                                          children: [
+                                            Positioned(
+                                              child: CircleAvatar(
+                                                radius: _width * _height * 0.0002,
+                                                backgroundColor: Colors.black12,
+                                                backgroundImage: NetworkImage(_authorProfileEditModel!
+                                                    .data.profilePath
+                                                    .toString(),),
+                                              ),
+                                            ),
+                                            Positioned(
+                                              top: _height*0.07,
+                                                width: _width*0.35,
+                                                child: Visibility(
+                                                visible: _isImageLoading,
+                                                child: const Center(
+                                                  child:
+                                                  CupertinoActivityIndicator(
+                                                  ),
+                                                )))
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -282,9 +294,7 @@ class _AccountScreenState extends State<AccountScreen> {
                         ),
                         GestureDetector(
                           onTap: () {
-
-                              EDIT_PROFILE_Api();
-
+                            EDIT_PROFILE_Api();
                           },
                           child: Container(
                             width: 320,
@@ -337,14 +347,13 @@ class _AccountScreenState extends State<AccountScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(height: _height*0.03,),
+                        SizedBox(
+                          height: _height * 0.03,
+                        ),
                         Visibility(
-                          visible: _UploadLoading==true,
+                          visible: _UploadLoading == true,
                           child: const Center(
-                            child: CupertinoActivityIndicator(
-                              color: const Color(0xFF256D85),
-                              radius: 20,
-                            ),
+                            child: CupertinoActivityIndicator(),
                           ),
                         ),
                       ],
@@ -376,12 +385,9 @@ class _AccountScreenState extends State<AccountScreen> {
                   Languages.of(context)!.yes,
                   style: TextStyle(fontFamily: Constants.fontfamily),
                 ),
-                onPressed: ()async{
-
+                onPressed: () async {
                   DELETE_PROFILE_Api();
                   Navigator.of(context).pop();
-
-
                 }),
             CupertinoDialogAction(
               child: Text(
@@ -405,7 +411,7 @@ class _AccountScreenState extends State<AccountScreen> {
     });
 
     if (response.statusCode == 200) {
-      print('profile_response${response.body}');
+      print('edit_profile_response${response.body}');
       var jsonData = response.body;
       //var jsonData = response.body;
       var jsonData1 = json.decode(response.body);
@@ -415,9 +421,12 @@ class _AccountScreenState extends State<AccountScreen> {
           _isLoading = false;
         });
 
-        _nameController!.text= _authorProfileEditModel!.data![0]!.username.toString();
-        _emailController!.text= _authorProfileEditModel!.data![0]!.email.toString();
-        _phoneNumberController!.text= _authorProfileEditModel!.data![0]!.phone.toString();
+        _nameController!.text =
+            _authorProfileEditModel!.data.username.toString();
+        _emailController!.text =
+            _authorProfileEditModel!.data.email.toString();
+        _phoneNumberController!.text =
+            _authorProfileEditModel!.data.phone.toString();
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());
         setState(() {
@@ -450,7 +459,6 @@ class _AccountScreenState extends State<AccountScreen> {
   }
 
   Future<void> EDIT_PROFILE_Api() async {
-
     setState(() {
       _UploadLoading = true;
     });
@@ -458,53 +466,38 @@ class _AccountScreenState extends State<AccountScreen> {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     };
 
-    var request = http.MultipartRequest('POST',
-        Uri.parse(ApiUtils.EDIT_PROFILE_));
+    var map = Map<String, dynamic>();
+    map['username'] = _nameController!.text.trim();
+    map['email'] = _emailController!.text.trim();
+    map['phone'] = _phoneNumberController!.text.trim();
 
-    request.fields['username'] = _nameController!.text.trim();
-    request.fields['email'] = _emailController!.text.trim();
-    request.fields['phone'] = _phoneNumberController!.text.trim();
-    http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-        'image',imageFile!.path,
-        contentType: MediaType('application', 'pdf')
-    );
-
-
-    request.files.add(multipartFile);
-    request.headers.addAll(headers);
-    request.send().then((result) async {
-      http.Response.fromStream(result).then((response) {
-        if (response.statusCode == 200) {
-          var  jsonData = json.decode(response.body);
-          if(jsonData['status'] == 200){
-            print("multiple  books Uploaded! ");
-            print('edit_response ' + response.body);
-            setState(() {
-              _UploadLoading = false;
-
-            });
-            ToastConstant.showToast(context, jsonData['data'] );
-            Transitioner(
-              context: context,
-              child: TabScreen(),
-              animation: AnimationType.fadeIn, // Optional value
-              duration: Duration(milliseconds: 1000), // Optional value
-              replacement: true, // Optional value
-              curveType: CurveType.decelerate, // Optional value
-            );
-          }else{
-            ToastConstant.showToast(context, jsonData['data'] );
-          }
-
-
-        }
-      });
-    });
-
+    final response = await http.post(Uri.parse(ApiUtils.EDIT_PROFILE_),
+        body: map, headers: headers);
+    if (response.statusCode == 200) {
+      var jsonData = json.decode(response.body);
+      if (jsonData['status'] == 200) {
+        setState(() {
+          _UploadLoading = false;
+        });
+        ToastConstant.showToast(context, jsonData['data']);
+        Transitioner(
+          context: context,
+          child: TabScreen(),
+          animation: AnimationType.fadeIn, // Optional value
+          duration: Duration(milliseconds: 1000), // Optional value
+          replacement: true, // Optional value
+          curveType: CurveType.decelerate, // Optional value
+        );
+      } else {
+        ToastConstant.showToast(context, jsonData['data']);
+        setState(() {
+          _UploadLoading = false;
+        });
+      }
+    }
   }
 
   Future<void> DELETE_PROFILE_Api() async {
-
     setState(() {
       _UploadLoading = true;
     });
@@ -525,14 +518,13 @@ class _AccountScreenState extends State<AccountScreen> {
           _UploadLoading = false;
         });
         UserProvider userProvider =
-        Provider.of<UserProvider>(this.context, listen: false);
+            Provider.of<UserProvider>(this.context, listen: false);
 
         userProvider.setUserToken("");
         userProvider.setUserEmail("");
         userProvider.setUserName("");
         userProvider.setLanguage("");
         Phoenix.rebirth(context);
-
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());
         setState(() {
@@ -544,13 +536,51 @@ class _AccountScreenState extends State<AccountScreen> {
 
   _getFromGallery() async {
     final PickedFile? image =
-    await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (image != null) {
-      imageFile = File(image.path);
       setState(() {
         imageFile = File(image.path);
       });
+      UploadCoverImageApi();
     }
+  }
+
+  Future<void> UploadCoverImageApi() async {
+    setState(() {
+      _isImageLoading = true;
+    });
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    };
+    var request = http.MultipartRequest(
+        'POST', Uri.parse(ApiUtils.PROFILE_IMAGE_UPDATE_API));
+
+    request.files.add(http.MultipartFile.fromBytes(
+      "profile_photo",
+      File(imageFile!.path).readAsBytesSync(),
+      filename: "Image.jpg",
+      contentType: MediaType('image', 'jpg'),
+    ));
+    request.headers.addAll(headers);
+
+    request.send().then((result) async {
+      http.Response.fromStream(result).then((response) {
+        if (response.statusCode == 200) {
+          print("profile Image Update Successfully! ");
+          print('book_cover_image_upload ' + response.body);
+          Constants.showToastBlack(context, "Profile Image Update Successfully!");
+          setState(() {
+            _isImageLoading = false;
+          });
+          _checkInternetConnection();
+        } else {
+          setState(() {
+            _isImageLoading = false;
+          });
+          Constants.showToastBlack(context, "sorry try again!");
+        }
+      });
+    });
   }
 }

@@ -2,22 +2,31 @@ import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:novelflex/MixScreens/StripePayment/StripePayment.dart';
 import 'package:novelflex/Models/LikeDislikeModel.dart';
 import 'package:provider/provider.dart';
+import 'package:purchases_flutter/models/offerings_wrapper.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:transitioner/transitioner.dart';
-import '../Models/BookDetailsModel.dart';
-import '../Provider/UserProvider.dart';
-import '../Provider/VariableProvider.dart';
-import '../Utils/ApiUtils.dart';
-import '../Utils/Constants.dart';
-import '../localization/Language/languages.dart';
+import '../../Models/BookDetailsModel.dart';
+import '../../Models/subscriptionModelClass.dart';
+import '../../Provider/UserProvider.dart';
+import '../../Provider/VariableProvider.dart';
+import '../../Utils/ApiUtils.dart';
+import '../../Utils/Constants.dart';
+import '../../Utils/constant.dart';
+import '../../Utils/native_dialog.dart';
+import '../../Utils/store_config.dart';
+import '../../Utils/toast.dart';
+import '../../localization/Language/languages.dart';
+import 'AllPdfScreens.dart';
 import 'AuthorViewByUserScreen.dart';
-import 'BookDetailScreen.dart';
 import 'dart:io';
-
-import 'InAppPurchase/inAppPurchaseSubscription.dart';
+import '../InAppPurchase/inAppPurchaseSubscription.dart';
+import '../InAppPurchase/paywall.dart';
+import '../InAppPurchase/singletons_data.dart';
 
 class BookDetailAuthor extends StatefulWidget {
   String bookID;
@@ -32,15 +41,21 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
   bool _isInternetConnected = true;
   BookDetailsModel? _bookDetailsModel;
   LikeDislikeModel? _likeDislikeModel;
+  SubscriptionModelClass? _subscriptionModelClass;
   var token;
   bool? _isLike;
   bool? _isDisLike;
   bool _isSaved = false;
+  bool _isLoadingInApppurchase = false;
+  Offerings? offerings;
+  // bool? subscriptionStatus;
 
   @override
   void initState() {
     super.initState();
     _checkInternetConnection();
+    initPlatformState();
+    print("token ${context.read<UserProvider>().UserToken}");
   }
 
   @override
@@ -128,19 +143,31 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Container(
-                          width: _width * 0.6,
-                          height: _height * 0.42,
-                          margin: EdgeInsets.all(8.0),
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
-                              color: const Color(0xffebf5f9),
-                              image: DecorationImage(
-                                  fit: BoxFit.cover,
-                                  image: NetworkImage(_bookDetailsModel!
-                                      .data!.imagePath
-                                      .toString()))),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: ClipRRect(
+                            child:Banner(
+                              message:_bookDetailsModel!.data!.paymentStatus
+                                  .toString()== "1" ? "Free" : "Pro ++",
+                              location: BannerLocation.topEnd,
+                              color: _bookDetailsModel!.data!.paymentStatus
+                                  .toString()== "1" ? Color(0xff00bb23) : Colors.red,
+                              child: Container(
+                                width: _width * 0.6,
+                                height: _height * 0.42,
+
+                                decoration: BoxDecoration(
+                                    borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                    color: const Color(0xffebf5f9),
+                                    image: DecorationImage(
+                                        fit: BoxFit.cover,
+                                        image: NetworkImage(_bookDetailsModel!
+                                            .data!.imagePath
+                                            .toString()))),
+                              ),
+                            ),
+                          ),
                         ),
                         Expanded(
                           child: Column(
@@ -181,14 +208,14 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                             width: 1),
                                         image: DecorationImage(
                                             image: _bookDetailsModel!
-                                                        .data!.imagePath ==
+                                                        .data!.userimage ==
                                                     null
                                                 ? AssetImage(
                                                     'assets/profile_pic.png',
                                                   )
                                                 : NetworkImage(
                                                         _bookDetailsModel!
-                                                            .data!.imagePath
+                                                            .data!.userimage
                                                             .toString())
                                                     as ImageProvider,
                                             fit: BoxFit.cover))),
@@ -508,92 +535,127 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         GestureDetector(
-                          // onTap: (){
-                          //   Navigator.push(
-                          //       context,
-                          //       MaterialPageRoute(
-                          //           builder: (context) =>
-                          //               BookDetailScreen(
-                          //                 BookID:
-                          //                 _bookDetailsModel!.data![0]!.bookId.toString(),
-                          //               )));
-                          // },
-                          child: GestureDetector(
-                            onTap: () {
-                              if (_bookDetailsModel!.data!.paymentStatus
-                                      .toString() ==
-                                  "1") {
-                                Constants.showToastBlack(context, "i am free");
-                                //pdf Api screen
-                              } else {
+                          onTap: () {
+                            switch (_bookDetailsModel!.data!.paymentStatus
+                                .toString()) {
+                              case "1":
+                                //All chapters Api for free books
+                                Transitioner(
+                                  context: context,
+                                  child: BookAllPDFViewSceens(
+                                    bookId: _bookDetailsModel!.data!.bookId
+                                        .toString(),
+                                    bookName: _bookDetailsModel!.data!.bookTitle
+                                        .toString(),
+                                    readerId:_bookDetailsModel!.data!.userId.toString() ,
+                                  ),
+                                  animation: AnimationType
+                                      .slideTop, // Optional value
+                                  duration: Duration(
+                                      milliseconds: 1000), // Optional value
+                                  replacement: false, // Optional value
+                                  curveType:
+                                  CurveType.decelerate, // Optional value
+                                );
+                                break;
+                              case "2":
                                 if (_bookDetailsModel!.data!.userId
                                         .toString() ==
                                     context
                                         .read<UserProvider>()
                                         .UserID
                                         .toString()) {
-                                  Constants.showToastBlack(
-                                      context, "i am author of this book");
+                                  //paid book but this is the author of this book
+                                  Transitioner(
+                                    context: context,
+                                    child: BookAllPDFViewSceens(
+                                      bookId: _bookDetailsModel!.data!.bookId
+                                          .toString(),
+                                      bookName: _bookDetailsModel!.data!.bookTitle
+                                          .toString(),
+                                        readerId:_bookDetailsModel!.data!.userId.toString()
+                                    ),
+                                    animation: AnimationType
+                                        .slideTop, // Optional value
+                                    duration: Duration(
+                                        milliseconds: 1000), // Optional value
+                                    replacement: false, // Optional value
+                                    curveType:
+                                    CurveType.decelerate, // Optional value
+                                  );
                                 } else {
-                                  if (_bookDetailsModel!
-                                          .data!.bookSubscription ==
-                                      true) {
-                                    //pdf Api screen
+                                  if (_subscriptionModelClass!.success == true) {
+                                    //Reader or Author Already Subscribe
+                                    Transitioner(
+                                      context: context,
+                                      child: BookAllPDFViewSceens(
+                                        bookId: _bookDetailsModel!.data!.bookId
+                                            .toString(),
+                                        bookName: _bookDetailsModel!.data!.bookTitle
+                                            .toString(),
+                                          readerId:_bookDetailsModel!.data!.userId.toString()
+                                      ),
+                                      animation: AnimationType
+                                          .slideTop, // Optional value
+                                      duration: Duration(
+                                          milliseconds: 1000), // Optional value
+                                      replacement: false, // Optional value
+                                      curveType:
+                                      CurveType.decelerate, // Optional value
+                                    );
                                   } else {
-                                    if(Platform.isIOS){
-                                      Transitioner(
-                                        context: context,
-                                        child: InAppSubscription(),
-                                        animation: AnimationType.fadeIn, // Optional value
-                                        duration: Duration(milliseconds: 1000), // Optional value
-                                        replacement: false, // Optional value
-                                        curveType: CurveType.decelerate, // Optional value
-                                      );
-                                    }else{
+                                    if (Platform.isIOS) {
+                                      SubscribeFunction();
+                                    } else {
                                       Transitioner(
                                         context: context,
                                         child: StripePayment(
-                                          bookId: _bookDetailsModel!.data!.bookId
+                                          bookId: _bookDetailsModel!
+                                              .data!.bookId
                                               .toString(),
                                         ),
                                         animation: AnimationType
                                             .slideLeft, // Optional value
                                         duration: Duration(
-                                            milliseconds: 1000), // Optional value
+                                            milliseconds:
+                                                1000), // Optional value
                                         replacement: false, // Optional value
                                         curveType: CurveType
                                             .decelerate, // Optional value
                                       );
                                     }
-
                                   }
                                 }
-                              }
-                            },
-                            child: Container(
-                              width: _width * 0.7,
-                              height: _height * 0.06,
-                              decoration: BoxDecoration(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(25)),
-                                  boxShadow: [
-                                    BoxShadow(
-                                        color: const Color(0x24000000),
-                                        offset: Offset(0, 7),
-                                        blurRadius: 14,
-                                        spreadRadius: 0)
-                                  ],
-                                  color: const Color(0xff3a6c83)),
-                              child: Center(
-                                child: Text(Languages.of(context)!.read,
-                                    style: const TextStyle(
-                                        color: const Color(0xffffffff),
-                                        fontWeight: FontWeight.w700,
-                                        fontFamily: "Lato",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 14.0),
-                                    textAlign: TextAlign.center),
-                              ),
+                                break;
+                              default:
+                                Constants.showToastBlack(
+                                    context, "server busy please try again");
+                                break;
+                            }
+                          },
+                          child: Container(
+                            width: _width * 0.7,
+                            height: _height * 0.06,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: const Color(0x24000000),
+                                      offset: Offset(0, 7),
+                                      blurRadius: 14,
+                                      spreadRadius: 0)
+                                ],
+                                color: const Color(0xff3a6c83)),
+                            child: Center(
+                              child: Text(Languages.of(context)!.read,
+                                  style: const TextStyle(
+                                      color: const Color(0xffffffff),
+                                      fontWeight: FontWeight.w700,
+                                      fontFamily: "Lato",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 14.0),
+                                  textAlign: TextAlign.center),
                             ),
                           ),
                         ),
@@ -664,13 +726,11 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
 
   Future _callBookDetailsAPI() async {
     setState(() {
-      _isLoading = true;
       _isInternetConnected = true;
     });
 
     var map = Map<String, dynamic>();
     map['bookId'] = widget.bookID.toString();
-    // map['bookId'] = "137";
     final response = await http.post(
       Uri.parse(
         ApiUtils.BOOK_DETAIL_API,
@@ -684,37 +744,37 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
     if (response.statusCode == 200) {
       print('BookDetail_response under 200 ${response.body}');
       var jsonData = json.decode(response.body);
-      //var jsonData = response.body;
-      _bookDetailsModel = BookDetailsModel.fromJson(jsonData);
+      if (jsonData['status'] == 200){
+        _bookDetailsModel = BookDetailsModel.fromJson(jsonData);
+        print("status_likes${_bookDetailsModel!.data!.status!.status}");
+        switch (_bookDetailsModel!.data!.status!.status) {
+          case 0:
+            _isLike = false;
+            _isDisLike = false;
+            break;
+          case 1:
+            _isLike = true;
+            _isDisLike = false;
 
-      print("status_likes${_bookDetailsModel!.data!.status!.status}");
-      switch (_bookDetailsModel!.data!.status!.status) {
-        case 0:
-          _isLike = false;
-          _isDisLike = false;
-          break;
-        case 1:
-          _isLike = true;
-          _isDisLike = false;
+            break;
+          case 2:
+            _isLike = false;
+            _isDisLike = true;
+            break;
+        }
+        _isSaved = _bookDetailsModel!.data!.bookSaved!;
+        VariableProvider userProvider =
+        Provider.of<VariableProvider>(context, listen: false);
 
-          break;
-        case 2:
-          _isLike = false;
-          _isDisLike = true;
-          break;
+        userProvider.setLikes(_bookDetailsModel!.data!.bookLike!);
+        userProvider.setDislikes(_bookDetailsModel!.data!.bookDisLike!);
+        print(
+            "likes_provider${context.read<VariableProvider>().getLikes.toString()}");
+        CHECK_SUBSCRIPTION();
+      }else{
+        Constants.showToastBlack(context, "Some things went wrong");
       }
-      _isSaved = _bookDetailsModel!.data!.bookSaved!;
-      VariableProvider userProvider =
-          Provider.of<VariableProvider>(context, listen: false);
 
-      userProvider.setLikes(_bookDetailsModel!.data!.bookLike!);
-      userProvider.setDislikes(_bookDetailsModel!.data!.bookDisLike!);
-      print(
-          "likes_provider${context.read<VariableProvider>().getLikes.toString()}");
-
-      setState(() {
-        _isLoading = false;
-      });
     } else {
       Constants.showToastBlack(context, "Some things went wrong");
       setState(() {
@@ -771,4 +831,127 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
       Constants.showToastBlack(context, "Some things went wrong");
     }
   }
+
+  Future<void> initPlatformState() async {
+    // Enable debug logs before calling `configure`.
+    await Purchases.setLogLevel(LogLevel.debug);
+
+    PurchasesConfiguration configuration;
+    if (StoreConfig.isForAmazonAppstore()) {
+      configuration = AmazonConfiguration(StoreConfig.instance.apiKey!)
+        ..appUserID = null
+        ..observerMode = false;
+    } else {
+      configuration = PurchasesConfiguration(StoreConfig.instance.apiKey!)
+        ..appUserID = null
+        ..observerMode = false;
+    }
+    await Purchases.configure(configuration);
+
+    appData.appUserID = await Purchases.appUserID;
+
+    Purchases.addCustomerInfoUpdateListener((customerInfo) async {
+      appData.appUserID = await Purchases.appUserID;
+
+      CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+      (customerInfo.entitlements.all[entitlementID] != null &&
+              customerInfo.entitlements.all[entitlementID]!.isActive)
+          ? appData.entitlementIsActive = true
+          : appData.entitlementIsActive = false;
+     // print("Ios subscribtion status ${ customerInfo.entitlements.all[entitlementID]!.isActive}");
+      // setState(() {});
+    });
+  }
+
+  void SubscribeFunction() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    // CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+    // //check purchase done or not
+    // // if("user_already_paid_and_offer_time is not end"==true){
+    // //   //Call pdf Api
+    // //   print("purchase_already_done");
+    // // }
+    //
+    // if (customerInfo.entitlements.all[entitlementID] != null &&
+    //     customerInfo.entitlements.all[entitlementID]!.isActive == true) {
+    //   // appData.currentData = WeatherData.generateData();
+    //   //check purchase done or not
+    //   //Call pdf Api
+    //   print("purchase_already_done");
+    //
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+    // }
+    if (_subscriptionModelClass!.success == true) {
+      //call book pdf api
+    } else {
+      try {
+        offerings = await Purchases.getOfferings();
+        print("offers_revenue cat ${offerings?.all.toString()}");
+      } on PlatformException catch (e) {
+        await showDialog(
+            context: context,
+            builder: (BuildContext context) => ShowDialogToDismiss(
+                title: "Error Try Again",
+                content: e.message.toString(),
+                buttonText: 'OK'));
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+
+      if (offerings!.current == null) {
+        // offerings are empty, show a message to your user
+      } else {
+        // current offering is available, show paywall
+        await showModalBottomSheet(
+          useRootNavigator: true,
+          isDismissible: true,
+          isScrollControlled: true,
+          backgroundColor: Colors.black,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          ),
+          context: context,
+          builder: (BuildContext context) {
+            return StatefulBuilder(
+                builder: (BuildContext context, StateSetter setModalState) {
+              return Paywall(
+                offering: offerings!.current!,
+              );
+            });
+          },
+        );
+      }
+    }
+  }
+
+  Future CHECK_SUBSCRIPTION() async {
+    final response =
+        await http.get(Uri.parse(ApiUtils.USER_CHECK_SUBSCRIPTION_API), headers: {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    });
+
+    if (response.statusCode == 200) {
+      print('subscription_status_response${response.body}');
+      var jsonData = json.decode(response.body);
+      if (jsonData['status'] == 200) {
+        _subscriptionModelClass= SubscriptionModelClass.fromJson(jsonData);
+        setState(() {
+          _isLoading = false;
+        });
+      } else {
+        ToastConstant.showToast(context, jsonData['message'].toString());
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
 }
