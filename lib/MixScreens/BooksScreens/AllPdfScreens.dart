@@ -87,16 +87,16 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
                   itemBuilder: (BuildContext context, index) {
                     return GestureDetector(
                       onTap: () {
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => PdfScreen(
-                        //           url: _boolAllPdfViewModelClass!
-                        //               .data[index]
-                        //               .lessonPath,
-                        //           name: _boolAllPdfViewModelClass!
-                        //               .data[index].lesson.toString(),
-                        //         )));
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => PdfScreen(
+                                  url: _boolAllPdfViewModelClass!
+                                      .data[index]
+                                      .lessonPath,
+                                  name: _boolAllPdfViewModelClass!
+                                      .data[index].lesson.toString(),
+                                )));
 
                         // PdfScreen()));
                       },

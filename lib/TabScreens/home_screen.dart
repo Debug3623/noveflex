@@ -26,7 +26,8 @@ import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:lottie/lottie.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  String route;
+  HomeScreen({Key? key, required this.route}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -147,17 +148,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   .read<UserProvider>()
                                   .setNotificationsCount(0);
                               setState(() {});
-                              Transitioner(
-                                context: context,
-                                child: NotificationScreen(),
-                                animation:
-                                    AnimationType.slideBottom, // Optional value
-                                duration: Duration(
-                                    milliseconds: 1000), // Optional value
-                                replacement: false, // Optional value
-                                curveType:
-                                    CurveType.decelerate, // Optional value
-                              );
+
+                              if (widget.route != "guest") {
+                                Transitioner(
+                                  context: context,
+                                  child: NotificationScreen(),
+                                  animation:
+                                  AnimationType.slideBottom, // Optional value
+                                  duration: Duration(
+                                      milliseconds: 1000), // Optional value
+                                  replacement: false, // Optional value
+                                  curveType:
+                                  CurveType.decelerate, // Optional value
+                                );
+                              } else {
+                                ToastConstant.showToast(context,
+                                    "Please register yourself to Proceed");
+                              }
                             },
                             icon: context
                                         .read<UserProvider>()
@@ -231,11 +238,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                       width: _width * 0.2,
                       height: _height * 0.058,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF256D85),
-                        shape: BoxShape.circle
-                        ),
+                          color: const Color(0xFF256D85),
+                          shape: BoxShape.circle),
                       child: const Center(
-                        child: Icon(Icons.sync,color: Colors.white,),
+                        child: Icon(
+                          Icons.sync,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                     onTap: () {
@@ -267,194 +276,216 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: const Color(0xff002333).withOpacity(0.07)),
                       child: Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child:_sliderModel!.data.length==0 ? Container() : CarouselSlider.builder(
-                              itemCount: _sliderModel!.data.length,
-                              options: CarouselOptions(
-                                height: 400,
-                                aspectRatio: 1,
-                                viewportFraction: 0.95,
-                                initialPage: 0,
-                                enableInfiniteScroll: true,
-                                reverse: false,
-                                autoPlay: true,
-                                autoPlayInterval: Duration(seconds: 3),
-                                autoPlayAnimationDuration:
-                                    Duration(milliseconds: 800),
-                                autoPlayCurve: Curves.fastOutSlowIn,
-                                enlargeCenterPage: true,
-                                enlargeFactor: 0.7,
-                                scrollDirection: Axis.horizontal,
-                              ),
-                              itemBuilder: (BuildContext context, int itemIndex,
-                                  int pageViewIndex) {
-                                return Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
-                                    child: Row(
-                                      children: [
-                                        SizedBox(
-                                          width: _width * 0.03,
-                                        ),
-                                        Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceAround,
+                          child: _sliderModel!.data.length == 0
+                              ? Container()
+                              : CarouselSlider.builder(
+                                  itemCount: _sliderModel!.data.length,
+                                  options: CarouselOptions(
+                                    height: 400,
+                                    aspectRatio: 1,
+                                    viewportFraction: 0.95,
+                                    initialPage: 0,
+                                    enableInfiniteScroll: true,
+                                    reverse: false,
+                                    autoPlay: true,
+                                    autoPlayInterval: Duration(seconds: 3),
+                                    autoPlayAnimationDuration:
+                                        Duration(milliseconds: 800),
+                                    autoPlayCurve: Curves.fastOutSlowIn,
+                                    enlargeCenterPage: true,
+                                    enlargeFactor: 0.7,
+                                    scrollDirection: Axis.horizontal,
+                                  ),
+                                  itemBuilder: (BuildContext context,
+                                      int itemIndex, int pageViewIndex) {
+                                    return Container(
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(10)),
+                                        child: Row(
                                           children: [
-                                            Text(
-                                              Languages.of(context)!.popular,
-                                              style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: "Alexandria",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 16.0),
+                                            SizedBox(
+                                              width: _width * 0.03,
                                             ),
-                                            Container(
-                                              width: _width * 0.25,
-                                              height: _height * 0.135,
-                                              decoration: BoxDecoration(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                        _sliderModel!
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Text(
+                                                  Languages.of(context)!
+                                                      .popular,
+                                                  style: const TextStyle(
+                                                      color: const Color(
+                                                          0xff2a2a2a),
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      fontFamily: "Alexandria",
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontSize: 16.0),
+                                                ),
+                                                Container(
+                                                  width: _width * 0.25,
+                                                  height: _height * 0.135,
+                                                  decoration: BoxDecoration(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              10),
+                                                      image: DecorationImage(
+                                                          image: NetworkImage(
+                                                            _sliderModel!
+                                                                .data[itemIndex]
+                                                                .imagePath
+                                                                .toString(),
+                                                          ),
+                                                          fit: BoxFit.cover)),
+                                                  child: ClipRRect(
+                                                    child: Banner(
+                                                      message: _sliderModel!
+                                                                  .data[
+                                                                      itemIndex]
+                                                                  .paymentStatus
+                                                                  .toString() ==
+                                                              "1"
+                                                          ? "Free"
+                                                          : "Pro ++",
+                                                      location:
+                                                          BannerLocation.topEnd,
+                                                      color: _sliderModel!
+                                                                  .data[
+                                                                      itemIndex]
+                                                                  .paymentStatus
+                                                                  .toString() ==
+                                                              "1"
+                                                          ? Color(0xff00bb23)
+                                                          : Colors.red,
+                                                      child: CachedNetworkImage(
+                                                        filterQuality:
+                                                            FilterQuality.high,
+                                                        imageBuilder: (context,
+                                                                imageProvider) =>
+                                                            Container(
+                                                                // decoration: BoxDecoration(
+                                                                //   shape: BoxShape.rectangle,
+                                                                //   borderRadius:
+                                                                //   BorderRadius.circular(
+                                                                //       10),
+                                                                //   image: DecorationImage(
+                                                                //       image: imageProvider,
+                                                                //       fit: BoxFit.cover),
+                                                                // ),
+                                                                ),
+                                                        imageUrl: _sliderModel!
                                                             .data[itemIndex]
                                                             .imagePath
                                                             .toString(),
+                                                        fit: BoxFit.cover,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            const Center(
+                                                                child:
+                                                                    CupertinoActivityIndicator(
+                                                          color:
+                                                              Color(0xFF256D85),
+                                                        )),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Center(
+                                                                child: Icon(Icons
+                                                                    .error_outline)),
                                                       ),
-                                                      fit: BoxFit.cover)),
-                                              child: ClipRRect(
-                                                child: Banner(
-                                                  message: _sliderModel!
-                                                              .data[itemIndex]
-                                                              .paymentStatus
-                                                              .toString() ==
-                                                          "1"
-                                                      ? "Free"
-                                                      : "Pro ++",
-                                                  location:
-                                                      BannerLocation.topEnd,
-                                                  color: _sliderModel!
-                                                              .data[itemIndex]
-                                                              .paymentStatus
-                                                              .toString() ==
-                                                          "1"
-                                                      ? Color(0xff00bb23)
-                                                      : Colors.red,
-                                                  child: CachedNetworkImage(
-                                                    filterQuality:
-                                                        FilterQuality.high,
-                                                    imageBuilder: (context, imageProvider) => Container(
-                                                        // decoration: BoxDecoration(
-                                                        //   shape: BoxShape.rectangle,
-                                                        //   borderRadius:
-                                                        //   BorderRadius.circular(
-                                                        //       10),
-                                                        //   image: DecorationImage(
-                                                        //       image: imageProvider,
-                                                        //       fit: BoxFit.cover),
-                                                        // ),
-                                                        ),
-                                                    imageUrl: _sliderModel!
-                                                        .data[itemIndex]
-                                                        .imagePath
-                                                        .toString(),
-                                                    fit: BoxFit.cover,
-                                                    placeholder: (context,
-                                                            url) =>
-                                                        const Center(
-                                                            child:
-                                                                CupertinoActivityIndicator(
-                                                      color: Color(0xFF256D85),
-                                                    )),
-                                                    errorWidget: (context, url,
-                                                            error) =>
-                                                        const Center(
-                                                            child: Icon(Icons
-                                                                .error_outline)),
+                                                    ),
                                                   ),
                                                 ),
-                                              ),
+                                                SizedBox()
+                                              ],
                                             ),
-                                            SizedBox()
+                                            SizedBox(
+                                              width: _width * 0.05,
+                                            ),
+                                            Expanded(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                children: [
+                                                  SizedBox(),
+                                                  SizedBox(),
+                                                  SizedBox(),
+                                                  SizedBox(),
+                                                  Text(
+                                                    _sliderModel!
+                                                        .data[itemIndex].title
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color: const Color(
+                                                            0xff2a2a2a),
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        fontFamily:
+                                                            "Alexandria",
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 14.0),
+                                                  ),
+                                                  Padding(
+                                                    padding: context
+                                                                .watch<
+                                                                    UserProvider>()
+                                                                .SelectedLanguage ==
+                                                            'English'
+                                                        ? EdgeInsets.only(
+                                                            right:
+                                                                _width * 0.02)
+                                                        : EdgeInsets.only(
+                                                            left:
+                                                                _width * 0.02),
+                                                    child: Text(
+                                                      _sliderModel!
+                                                          .data[itemIndex]
+                                                          .description
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                          color: const Color(
+                                                              0xff676767),
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontFamily: "Lato",
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontSize: 12.0),
+                                                      textAlign: TextAlign.left,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      maxLines: 5,
+                                                    ),
+                                                  ),
+                                                  Text(
+                                                    _sliderModel!
+                                                        .data[itemIndex]
+                                                        .categories[0]
+                                                        .title
+                                                        .toString(),
+                                                    style: const TextStyle(
+                                                        color: const Color(
+                                                            0xff3a6c83),
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        fontFamily: "Lato",
+                                                        fontStyle:
+                                                            FontStyle.normal,
+                                                        fontSize: 12.0),
+                                                  ),
+                                                  SizedBox(),
+                                                  SizedBox(),
+                                                ],
+                                              ),
+                                            )
                                           ],
-                                        ),
-                                        SizedBox(
-                                          width: _width * 0.05,
-                                        ),
-                                        Expanded(
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              SizedBox(),
-                                              SizedBox(),
-                                              SizedBox(),
-                                              SizedBox(),
-                                              Text(
-                                                _sliderModel!
-                                                    .data[itemIndex].title
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    color:
-                                                        const Color(0xff2a2a2a),
-                                                    fontWeight: FontWeight.w500,
-                                                    fontFamily: "Alexandria",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 14.0),
-                                              ),
-                                              Padding(
-                                                padding: context
-                                                            .watch<
-                                                                UserProvider>()
-                                                            .SelectedLanguage ==
-                                                        'English'
-                                                    ? EdgeInsets.only(
-                                                        right: _width * 0.02)
-                                                    : EdgeInsets.only(
-                                                        left: _width * 0.02),
-                                                child: Text(
-                                                  _sliderModel!.data[itemIndex]
-                                                      .description
-                                                      .toString(),
-                                                  style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff676767),
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                      fontFamily: "Lato",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 12.0),
-                                                  textAlign: TextAlign.left,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  maxLines: 5,
-                                                ),
-                                              ),
-                                              Text(
-                                                _sliderModel!.data[itemIndex]
-                                                    .categories[0].title
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    color:
-                                                        const Color(0xff3a6c83),
-                                                    fontWeight: FontWeight.w700,
-                                                    fontFamily: "Lato",
-                                                    fontStyle: FontStyle.normal,
-                                                    fontSize: 12.0),
-                                              ),
-                                              SizedBox(),
-                                              SizedBox(),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ));
-                              })),
+                                        ));
+                                  })),
                     ),
                     Expanded(
                       child: RefreshIndicator(
@@ -482,19 +513,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            Transitioner(
-                                              context: context,
-                                              child: RecentNovelsScreen(),
-                                              animation: AnimationType
-                                                  .slideLeft, // Optional value
-                                              duration: Duration(
-                                                  milliseconds:
-                                                      1000), // Optional value
-                                              replacement:
-                                                  false, // Optional value
-                                              curveType: CurveType
-                                                  .decelerate, // Optional value
-                                            );
+                                            if (widget.route != "guest") {
+                                              Transitioner(
+                                                context: context,
+                                                child: RecentNovelsScreen(),
+                                                animation: AnimationType
+                                                    .slideLeft, // Optional value
+                                                duration: Duration(
+                                                    milliseconds:
+                                                        1000), // Optional value
+                                                replacement:
+                                                    false, // Optional value
+                                                curveType: CurveType
+                                                    .decelerate, // Optional value
+                                              );
+                                            } else {
+                                              ToastConstant.showToast(context,
+                                                  "Please register yourself to Proceed");
+                                            }
                                           },
                                           child: Row(
                                             children: [
@@ -530,23 +566,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         itemBuilder: (context, index1) {
                                           return GestureDetector(
                                             onTap: () {
-                                              Transitioner(
-                                                context: context,
-                                                child: BookDetailAuthor(
-                                                  bookID: _recentModel!
-                                                      .data[index1].id
-                                                      .toString(),
-                                                ),
-                                                animation: AnimationType
-                                                    .slideTop, // Optional value
-                                                duration: Duration(
-                                                    milliseconds:
-                                                        1000), // Optional value
-                                                replacement:
-                                                    false, // Optional value
-                                                curveType: CurveType
-                                                    .decelerate, // Optional value
-                                              );
+                                              if (widget.route != "guest") {
+                                                Transitioner(
+                                                  context: context,
+                                                  child: BookDetailAuthor(
+                                                    bookID: _recentModel!
+                                                        .data[index1].id
+                                                        .toString(),
+                                                  ),
+                                                  animation: AnimationType
+                                                      .slideTop, // Optional value
+                                                  duration: Duration(
+                                                      milliseconds:
+                                                          1000), // Optional value
+                                                  replacement:
+                                                      false, // Optional value
+                                                  curveType: CurveType
+                                                      .decelerate, // Optional value
+                                                );
+                                              } else {
+                                                ToastConstant.showToast(context,
+                                                    "Please register yourself to Proceed");
+                                              }
                                             },
                                             child: Padding(
                                               padding:
@@ -650,8 +691,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         fontSize: 10.0),
                                                   ),
                                                   Text(
-                                                      _recentModel!
-                                                          .data[index1]
+                                                      _recentModel!.data[index1]
                                                           .user[0].username
                                                           .toString(),
                                                       style: const TextStyle(
@@ -714,22 +754,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           ),
                                           GestureDetector(
                                             onTap: () {
-                                              Transitioner(
-                                                context: context,
-                                                child: SeeAllBookScreen(
-                                                  categoriesId:
-                                                      _homeModelClass!.data[index].id.toString(),
-                                                ),
-                                                animation: AnimationType
-                                                    .fadeIn, // Optional value
-                                                duration: Duration(
-                                                    milliseconds:
-                                                        1000), // Optional value
-                                                replacement:
-                                                    false, // Optional value
-                                                curveType: CurveType
-                                                    .decelerate, // Optional value
-                                              );
+                                              if (widget.route != "guest") {
+                                                Transitioner(
+                                                  context: context,
+                                                  child: SeeAllBookScreen(
+                                                    categoriesId:
+                                                        _homeModelClass!
+                                                            .data[index].id
+                                                            .toString(),
+                                                  ),
+                                                  animation: AnimationType
+                                                      .fadeIn, // Optional value
+                                                  duration: Duration(
+                                                      milliseconds:
+                                                          1000), // Optional value
+                                                  replacement:
+                                                      false, // Optional value
+                                                  curveType: CurveType
+                                                      .decelerate, // Optional value
+                                                );
+                                              } else {
+                                                ToastConstant.showToast(context,
+                                                    "Please register yourself to Proceed");
+                                              }
                                             },
                                             child: Row(
                                               children: [
@@ -769,25 +816,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           itemBuilder: (context, index1) {
                                             return GestureDetector(
                                               onTap: () {
-                                                Transitioner(
-                                                  context: context,
-                                                  child: BookDetailAuthor(
-                                                    bookID: _homeModelClass!
-                                                        .data[index]
-                                                        .books[index1]
-                                                        .id
-                                                        .toString(),
-                                                  ),
-                                                  animation: AnimationType
-                                                      .slideTop, // Optional value
-                                                  duration: Duration(
-                                                      milliseconds:
-                                                          1000), // Optional value
-                                                  replacement:
-                                                      false, // Optional value
-                                                  curveType: CurveType
-                                                      .decelerate, // Optional value
-                                                );
+                                                if (widget.route != "guest") {
+                                                  Transitioner(
+                                                    context: context,
+                                                    child: BookDetailAuthor(
+                                                      bookID: _homeModelClass!
+                                                          .data[index]
+                                                          .books[index1]
+                                                          .id
+                                                          .toString(),
+                                                    ),
+                                                    animation: AnimationType
+                                                        .slideTop, // Optional value
+                                                    duration: Duration(
+                                                        milliseconds:
+                                                            1000), // Optional value
+                                                    replacement:
+                                                        false, // Optional value
+                                                    curveType: CurveType
+                                                        .decelerate, // Optional value
+                                                  );
+                                                } else {
+                                                  ToastConstant.showToast(
+                                                      context,
+                                                      "Please register yourself to Proceed");
+                                                }
                                               },
                                               child: Padding(
                                                 padding:
@@ -964,16 +1017,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       }
     } else {
       _callDashboardDioAPI();
-      NotificationsCount();
+      if (widget.route != "guest") {
+        NotificationsCount();
+      } else {
+        print("guest login");
+        context.read<UserProvider>().setNotificationsCount(0);
+      }
     }
   }
 
   Future _callDashboardDioAPI() async {
-    final response = await http.get(Uri.parse(ApiUtils.SLIDER_API), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-    });
+    final response = await http.get(
+      Uri.parse(ApiUtils.SLIDER_API),
+      //     headers: {
+      //   'Content-Type': 'application/json',
+      //   'Accept': 'application/json',
+      //   'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+      // }
+    );
 
     if (response.statusCode == 200) {
       print('home_response${response.body}');
@@ -993,11 +1054,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future RecentApiCall() async {
-    final response = await http.get(Uri.parse(ApiUtils.RECENT_API), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-    });
+    final response = await http.get(
+      Uri.parse(ApiUtils.RECENT_API),
+      //     headers: {
+      //   'Content-Type': 'application/json',
+      //   'Accept': 'application/json',
+      //   'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+      // }
+    );
 
     if (response.statusCode == 200) {
       print('recent_response${response.body}');
@@ -1048,12 +1112,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   }
 
   Future HOMEApiCall() async {
-    final response =
-        await http.get(Uri.parse(ApiUtils.ALL_HOME_CATEGORIES_API), headers: {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-    });
+    final response = await http.get(
+      Uri.parse(ApiUtils.ALL_HOME_CATEGORIES_API),
+      //         headers: {
+      //   'Content-Type': 'application/json',
+      //   'Accept': 'application/json',
+      //   'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+      // }
+    );
 
     if (response.statusCode == 200) {
       print('home_response${response.body}');

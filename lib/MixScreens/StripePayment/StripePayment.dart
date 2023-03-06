@@ -258,7 +258,7 @@ class _StripePaymentState extends State<StripePayment> {
       print('subscribe_response${response.body}');
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
-        ToastConstant.showToast(context, jsonData1['data'].toString());
+        ToastConstant.showToast(context, "Subscription Successful");
         print("subscribe done");
         Transitioner(
           context: context,

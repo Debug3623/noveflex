@@ -613,7 +613,7 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
           name: _controllerFullName!.text.toString(),
           email: _controllerEmail!.text.toString(),
           password: _controllerPassword!.text.toString(),
-          phone:"+${country!+_phoneController!.text.toString()}",
+          phone:"${country!+_phoneController!.text.toString()}",
           route: "signup",
           photoUrl: "",
         ),

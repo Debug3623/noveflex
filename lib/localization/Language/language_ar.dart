@@ -110,6 +110,23 @@ class LanguageAr extends Languages {
   String get giftText => "أضف مبلغًا إلى الهدية";
 
   @override
+  String get iban => "رقم الحساب المصرفي الدولي (آيبان)";
+
+
+  @override
+  String get fatherName => "اسم الأب";
+
+
+  @override
+  String get guest => "تسجيل الدخول كضيف";
+
+  @override
+  String get cardHolderName => "اسم الأب";
+
+  @override
+  String get giftAmount => "مبالغ موهوبة";
+
+  @override
   String get dollar => "يمكنك إهداء 5\$  كحد أدنى";
 
   @override

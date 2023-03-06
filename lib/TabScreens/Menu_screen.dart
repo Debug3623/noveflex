@@ -73,16 +73,23 @@ class _MenuScreenState extends State<MenuScreen> {
                             child: Container(
                               color: const Color(0xffebf5f9),
                               margin: EdgeInsets.only(top: _height*0.03, bottom: _height*0.02),
-                              child:  CircleAvatar(
-                                radius: _height*_width*0.00002,
-                                      backgroundColor: Colors.black12,
-                                      backgroundImage: _menuProfileModel!.data.profilePhoto !=
-                                              ""
-                                          ? NetworkImage(
-                                        _menuProfileModel!.data.profilePath,
-                                            )
-                                          : AssetImage('assets/profile_pic.png')
-                                              as ImageProvider,
+                              child:  Container(
+                                height: _height*0.15,
+                               decoration: BoxDecoration(
+                                 color: Colors.black12,
+                                 shape: BoxShape.circle,
+                                 image: DecorationImage(
+                                   image: _menuProfileModel!.data.profilePhoto !=
+                                       ""
+                                       ? NetworkImage(
+                                     _menuProfileModel!.data.profilePath,
+
+                                   )
+                                       : AssetImage('assets/profile_pic.png')
+                                   as ImageProvider,
+                                   fit: BoxFit.cover
+                                 )
+                               ),
                                     ),
                               height: _height * 0.1,
                               width: _width * 0.3,
@@ -360,7 +367,7 @@ class _MenuScreenState extends State<MenuScreen> {
                         ),
                       ),
                       Visibility(
-                        visible: _statusCheckModel!.data![0]!.type == "Writer",
+                        visible: _statusCheckModel!.data[0].type == "Writer",
                         child:  GestureDetector(
                           onTap: () {
                             Transitioner(

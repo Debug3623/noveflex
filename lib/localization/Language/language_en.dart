@@ -26,6 +26,23 @@ class LanguageEn extends Languages {
   String get gift => "Gift";
 
   @override
+  String get iban => "International Bank Account Number (IBAN)";
+
+  @override
+  String get giftAmount => "Gifted Amounts";
+
+
+  @override
+  String get fatherName => "Father Name";
+
+
+  @override
+  String get guest => "Login as Guest";
+
+  @override
+  String get cardHolderName => "Father Name";
+
+  @override
   String get dollar => "You can gift minimum 5\$ ";
 
   @override

@@ -19,7 +19,7 @@ class _TabScreenState extends State<TabScreen> {
   final Screen = [
     SearchScreen(),
     MyCorner(),
-    HomeScreen(),
+    HomeScreen(route: 'tab',),
     MenuScreen(),
   ];
   GlobalKey<ScaffoldState> _drawerKey = GlobalKey();

@@ -412,97 +412,40 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
     map['password_confirmation'] = _cPAsscontroller!.text.trim();
 
 
-
     final response = await http.post(
-      Uri.parse(ApiUtils.UPDATE_PASSWORD_API),
-      body: map,
-      headers: {
-        'Authorization': "Bearer ${widget.token}",}
+        Uri.parse(ApiUtils.UPDATE_PASSWORD_API),
+        body: map,
+        headers: {
+          'Authorization': "Bearer ${widget.token.trim().toString()}",}
     );
 
     var jsonData;
 
-    switch (response.statusCode) {
-
-      case 200:
+    if (response.statusCode == 200) {
       //Success
 
-        var jsonData = json.decode(response.body);
+      var jsonData = json.decode(response.body);
 
-        if(jsonData['status'] ==200){
-          print('resetPassword_response: $jsonData');
-          _resetPasswordModel = ResetPasswordModel.fromJson(jsonData);
-          ToastConstant.showToast(context, _resetPasswordModel!.message.toString());
-          setState(() {
-            _isLoading = false;
-
-          });
-          _navigateAndRemove();
-        }else{
-
-          ToastConstant.showToast(context, jsonData['message'].toString());
-          setState(() {
-            _isLoading = false;
-          });
-        }
-
-
-        break;
-      case 401:
-        jsonData = json.decode(response.body);
-        print('jsonData 401: $jsonData');
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_401);
-
-        break;
-      case 404:
-        jsonData = json.decode(response.body);
-        print('jsonData 404: $jsonData');
-
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_404);
-
-        break;
-      case 400:
-        jsonData = json.decode(response.body);
-        print('jsonData 400: $jsonData');
-
-        ToastConstant.showToast(context, 'Email already Exist.');
-
-        break;
-      case 405:
-        jsonData = json.decode(response.body);
-        print('jsonData 405: $jsonData');
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_405);
-
-        break;
-      case 422:
-      //Unprocessable Entity
-        jsonData = json.decode(response.body);
-        print('jsonData 422: $jsonData');
-
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_422);
-        break;
-      case 500:
-        jsonData = json.decode(response.body);
-        print('jsonData 500: $jsonData');
-
-        ToastConstant.showToast(context, ToastConstant.ERROR_MSG_500);
-
-        break;
-      default:
-        jsonData = json.decode(response.body);
-        print('jsonData failed: $jsonData');
-
-        ToastConstant.showToast(context, "Login Failed Try Again");
-    }
-
-    if (this.mounted) {
+      if (jsonData['status'] == 200) {
+        print('resetPassword_response: $jsonData');
+        _resetPasswordModel = ResetPasswordModel.fromJson(jsonData);
+        ToastConstant.showToast(
+            context, _resetPasswordModel!.message.toString());
+        setState(() {
+          _isLoading = false;
+        });
+        _navigateAndRemove();
+      } else {
+        ToastConstant.showToast(context, jsonData['message'].toString());
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } else {
+      ToastConstant.showToast(context, "server error try again");
       setState(() {
         _isLoading = false;
       });
     }
   }
-
-
-
-
 }

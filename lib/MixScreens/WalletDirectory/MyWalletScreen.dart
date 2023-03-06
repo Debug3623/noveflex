@@ -5,6 +5,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:novelflex/localization/Language/languages.dart';
 import 'package:provider/provider.dart';
+import '../../Models/GiftAmountModel.dart';
 import '../../Models/UserPaymentModel.dart';
 import '../../Models/UserWithDrawPaymentModel.dart';
 import '../../Provider/UserProvider.dart';
@@ -22,6 +23,7 @@ class MyWalletScreen extends StatefulWidget {
 class _MyWalletScreenState extends State<MyWalletScreen> {
   UserPaymentModel? _userPaymentModel;
   UserWithDrawPaymentModel? _userWithDrawPaymentModel;
+  GiftAmountModel? _giftAmountModel;
   bool _isLoading = false;
   bool _isInternetConnected = true;
 
@@ -142,6 +144,48 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                           SizedBox(
                             height: _height * 0.02,
                           ),
+                          Visibility(
+                            visible: true,
+                            child: Container(
+                              height: _height * 0.06,
+                              width: _width * 0.7,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30),
+                                color: const Color(0xff3a6c83),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(),
+                                  Text(Languages.of(context)!.giftAmount,
+                                      style: const TextStyle(
+                                          color: const Color(0xffffffff),
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: "Alexandria",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 15.0),
+                                      textAlign: TextAlign.left),
+                                  SizedBox(),
+                                  Container(
+                                      width: _width * 0.15,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30),
+                                        color: Colors.white70,
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          "\$ ${_giftAmountModel!.totalAmount.toString()}",
+                                          style: TextStyle(color: Colors.black),
+                                        ),
+                                      )),
+                                  SizedBox()
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: _height * 0.02,
+                          ),
                           Container(
                             height: _height * 0.06,
                             width: _width * 0.7,
@@ -213,7 +257,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
         _userPaymentModel = UserPaymentModel.fromJson(jsonData1);
         PaymentWithDrawApiCall();
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        ToastConstant.showToast(context, jsonData1['success'].toString());
         setState(() {
           _isLoading = false;
         });
@@ -233,11 +277,33 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
       if (jsonData1['status'] == 200) {
         _userWithDrawPaymentModel =
             UserWithDrawPaymentModel.fromJson(jsonData1);
+        GiftedAmount();
+      } else {
+        ToastConstant.showToast(context, jsonData1['success'].toString());
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
+
+  Future GiftedAmount() async {
+    final response =
+    await http.get(Uri.parse(ApiUtils.GIFT_PAYMENT), headers: {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    });
+
+    if (response.statusCode == 200) {
+      print('user_payment_response${response.body}');
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        _giftAmountModel =
+            GiftAmountModel.fromJson(jsonData1);
         setState(() {
           _isLoading = false;
         });
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        ToastConstant.showToast(context, jsonData1['success'].toString());
         setState(() {
           _isLoading = false;
         });

@@ -397,7 +397,7 @@ class _SplashFirstState extends State<SplashFirst> {
       if (deepLink != null) {
         if (deepLink.queryParameters.containsKey('referral_code')) {
           String? referral_code = deepLink.queryParameters['referral_code'];
-          Constants.showToastBlack(context, deepLink.queryParameters['referral_code']!);
+          // Constants.showToastBlack(context, deepLink.queryParameters['referral_code']!);
           // context.watch<UserProvider>().setReferral(referral_code.toString());
           userProvider.setReferral(referral_code.toString());
           print("Referal_user_code${userProvider.GetReferral.toString()}");
@@ -491,8 +491,8 @@ class _SplashPageState extends State<SplashPage> {
                   );
                   },
                 child: Container(
-                  width: 320,
-                  height: 50,
+                  width: _width*0.83,
+                  height: _height*0.06,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(25)),
                       boxShadow: [
@@ -518,7 +518,7 @@ class _SplashPageState extends State<SplashPage> {
                 ),
               )),
           Positioned(
-            top: _height * 0.8,
+            top: _height * 0.79,
             left: _width * 0.1,
             child: GestureDetector(
               onTap: (){
@@ -532,8 +532,8 @@ class _SplashPageState extends State<SplashPage> {
                 );
               },
               child: Container(
-                width: 320,
-                height: 50,
+                width: _width*0.83,
+                height: _height*0.06,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(25),
                     border: Border.all(
@@ -586,7 +586,46 @@ class _SplashPageState extends State<SplashPage> {
 
               },
             ),
-          )
+          ),
+          Positioned(
+            top: _height * 0.88,
+            left: _width * 0.1,
+            child: GestureDetector(
+              onTap: (){
+                Transitioner(
+                  context: context,
+                  child:HomeScreen(
+                    route: "guest",
+                  ),
+                  animation: AnimationType.slideLeft, // Optional value
+                  duration: Duration(milliseconds: 1000), // Optional value
+                  replacement: false, // Optional value
+                  curveType: CurveType.decelerate, // Optional value
+                );
+              },
+              child: Container(
+                width: _width*0.83,
+                height: _height*0.06,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                      color: const Color(0xff3a6c83),
+                      width: 2,
+                    )),
+                child: Center(
+                  child: Text(
+                    Languages.of(context)!.guest,
+                    style: const TextStyle(
+                        color: const Color(0xff3a6c83),
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Lato",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 14.0),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );

@@ -7,7 +7,8 @@ class ApiUtils {
   static const String CHECK_STATUS_API = '$BASE/user/check_user_status';
   static const String USER_SOCIAL_REGISTER = '$BASE/user/google/register';
   static const String USER_SOCIAL_LOGIN = '$BASE/user/googlelogin';
-  static const String ALL_HOME_CATEGORIES_API = '$BASE/home/category/books';
+  static const String ALL_HOME_CATEGORIES_API = '$BASE/categoryBooks';
+  // static const String ALL_HOME_CATEGORIES_API = '$BASE/home/category/books';
   static const String ALL_BOOKS_CATEGORIES_API = '$BASE/home/categoriesWiseBooksById';
   static const String SEARCH_CATEGORIES_API = '$BASE/categories/all';
   static const String SEARCH_AUTHOR_BY_CATEGORIES_ID_API = '$BASE/author/getByCategories';
@@ -52,13 +53,18 @@ class ApiUtils {
   static const String SEEN_NOTIFICATIONS_COUNT = '$BASE/notifications/read?all';
   static const String SEARCH_AUTHORS = '$BASE/author/all';
   static const String ALL_RECENT_API = '$BASE/home/recently/book/all';
-  static const String SLIDER_API = '$BASE/home/slider';
-  static const String RECENT_API = '$BASE/home/recently/book';
+  static const String SLIDER_API = '$BASE/guest';
+  // static const String SLIDER_API = '$BASE/home/slider';
+  // static const String RECENT_API = '$BASE/home/recently/book';
+  static const String RECENT_API = '$BASE/recentlyBook';
   static const String PROFILE_IMAGE_UPDATE_API = '$BASE/author/update/image';
   static const String MENU_PROFILE_API = '$BASE/tab/userProfile';
   static const String BOOK_VIEW_API = '$BASE/book/views/add';
   static const String GIFT_API = '$BASE/user/subscription/gifts';
-
+  static const String GIFT_PAYMENT = '$BASE/user/subscription/userGiftAmount';
+  static const String PAYMENT_APPLY_API = '$BASE/user/subscription/applyWithdrawAmount';
+  static const String TOTAL_FOLLOWERS_API = '$BASE/user/follow/totalFollower';
+  static const String TOTAL_GIFTS_API = '$BASE/user/follow/totalGifts';
 
 
  static const String SEE_ALL_REVIEWS_API = '$BASE/books//reviews/all?bookId=';

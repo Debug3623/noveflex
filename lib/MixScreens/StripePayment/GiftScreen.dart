@@ -159,7 +159,7 @@ class _GiftScreenState extends State<GiftScreen> {
                     }
 
                   },
-                  buttonname: Languages.of(context)!.subscribeTxt,
+                  buttonname: Languages.of(context)!.gift,
                 ),
               ),
               Visibility(
@@ -228,7 +228,7 @@ class _GiftScreenState extends State<GiftScreen> {
       print('subscribe_response${response.body}');
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
-        ToastConstant.showToast(context, jsonData1['data'].toString());
+        ToastConstant.showToast(context, jsonData1['success'].toString());
         print("gift done");
         Transitioner(
           context: context,
@@ -252,7 +252,6 @@ class _GiftScreenState extends State<GiftScreen> {
       }
     }
   }
-
 
   Future _checkInternetConnection() async {
     if (this.mounted) {

@@ -216,7 +216,13 @@ abstract class Languages {
 
   String get email;
 
+  String get iban;
+
   String get gift;
+
+  String get fatherName;
+
+  String get cardHolderName;
 
   String get dollar;
 
@@ -224,11 +230,15 @@ abstract class Languages {
 
   String get login;
 
+  String get guest;
+
   String get Subscribe;
 
   String get scan;
 
   String get totalAmount;
+
+  String get giftAmount;
 
   String get withdrawAmount;
 
