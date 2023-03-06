@@ -223,7 +223,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
                       ),
                       animation: AnimationType.slideLeft, // Optional value
                       duration: Duration(milliseconds: 1000), // Optional value
-                      replacement: false, // Optional value
+                      replacement: true, // Optional value
                       curveType: CurveType.decelerate,
                     );
                   }

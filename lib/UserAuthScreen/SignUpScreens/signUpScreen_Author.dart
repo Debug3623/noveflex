@@ -396,7 +396,6 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
     }
   }
 
-
   Future _checkInternetConnection() async {
     var connectivityResult = await (Connectivity().checkConnectivity());
     if (!(connectivityResult == ConnectivityResult.mobile ||

@@ -401,7 +401,15 @@ class _SplashFirstState extends State<SplashFirst> {
           // context.watch<UserProvider>().setReferral(referral_code.toString());
           userProvider.setReferral(referral_code.toString());
           print("Referal_user_code${userProvider.GetReferral.toString()}");
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen_Second(ReferralUserID:deepLink.queryParameters['referral_code'],)));
+          Transitioner(
+            context: context,
+            child: SignUpScreen_Second(ReferralUserID:deepLink.queryParameters['referral_code'],),
+            animation: AnimationType.slideLeft, // Optional value
+            duration: Duration(milliseconds: 1000), // Optional value
+            replacement: true, // Optional value
+            curveType: CurveType.decelerate, // Optional value
+          );
+          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen_Second(ReferralUserID:deepLink.queryParameters['referral_code'],)));
           print("referral_code = $referral_code");
           }
 
