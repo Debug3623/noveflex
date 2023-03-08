@@ -35,12 +35,15 @@ class LanguageEn extends Languages {
   @override
   String get fatherName => "Father Name";
 
+  @override
+  String get giftAuthor => "Gift Author";
+
 
   @override
   String get guest => "Login as Guest";
 
   @override
-  String get cardHolderName => "Father Name";
+  String get cardHolderName => "Card Holder Name";
 
   @override
   String get dollar => "You can gift minimum 5\$ ";

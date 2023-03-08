@@ -142,7 +142,7 @@ class Chapter {
   int? bookId;
   int? userId;
   dynamic image;
-  String? lesson;
+  dynamic lesson;
   String? filename;
   String? status;
   DateTime? createdAt;

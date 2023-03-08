@@ -121,7 +121,10 @@ class LanguageAr extends Languages {
   String get guest => "تسجيل الدخول كضيف";
 
   @override
-  String get cardHolderName => "اسم الأب";
+  String get giftAuthor => "مؤلف هدية";
+
+  @override
+  String get cardHolderName => "إسم صاحب البطاقة";
 
   @override
   String get giftAmount => "مبالغ موهوبة";

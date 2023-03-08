@@ -146,19 +146,24 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                         Padding(
                           padding: EdgeInsets.all(8.0),
                           child: ClipRRect(
-                            child:Banner(
-                              message:_bookDetailsModel!.data!.paymentStatus
-                                  .toString()== "1" ? "Free" : "Pro ++",
+                            child: Banner(
+                              message: _bookDetailsModel!.data!.paymentStatus
+                                          .toString() ==
+                                      "1"
+                                  ? "Free"
+                                  : "Pro ++",
                               location: BannerLocation.topEnd,
                               color: _bookDetailsModel!.data!.paymentStatus
-                                  .toString()== "1" ? Color(0xff00bb23) : Colors.red,
+                                          .toString() ==
+                                      "1"
+                                  ? Color(0xff00bb23)
+                                  : Colors.red,
                               child: Container(
                                 width: _width * 0.6,
                                 height: _height * 0.42,
-
                                 decoration: BoxDecoration(
                                     borderRadius:
-                                    BorderRadius.all(Radius.circular(10)),
+                                        BorderRadius.all(Radius.circular(10)),
                                     color: const Color(0xffebf5f9),
                                     image: DecorationImage(
                                         fit: BoxFit.cover,
@@ -547,15 +552,16 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                         .toString(),
                                     bookName: _bookDetailsModel!.data!.bookTitle
                                         .toString(),
-                                    readerId:_bookDetailsModel!.data!.userId.toString() ,
+                                    readerId: _bookDetailsModel!.data!.userId
+                                        .toString(),
                                   ),
-                                  animation: AnimationType
-                                      .slideTop, // Optional value
+                                  animation:
+                                      AnimationType.slideTop, // Optional value
                                   duration: Duration(
                                       milliseconds: 1000), // Optional value
                                   replacement: false, // Optional value
                                   curveType:
-                                  CurveType.decelerate, // Optional value
+                                      CurveType.decelerate, // Optional value
                                 );
                                 break;
                               case "2":
@@ -569,39 +575,45 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                   Transitioner(
                                     context: context,
                                     child: BookAllPDFViewSceens(
-                                      bookId: _bookDetailsModel!.data!.bookId
-                                          .toString(),
-                                      bookName: _bookDetailsModel!.data!.bookTitle
-                                          .toString(),
-                                        readerId:_bookDetailsModel!.data!.userId.toString()
-                                    ),
+                                        bookId: _bookDetailsModel!.data!.bookId
+                                            .toString(),
+                                        bookName: _bookDetailsModel!
+                                            .data!.bookTitle
+                                            .toString(),
+                                        readerId: _bookDetailsModel!
+                                            .data!.userId
+                                            .toString()),
                                     animation: AnimationType
                                         .slideTop, // Optional value
                                     duration: Duration(
                                         milliseconds: 1000), // Optional value
                                     replacement: false, // Optional value
                                     curveType:
-                                    CurveType.decelerate, // Optional value
+                                        CurveType.decelerate, // Optional value
                                   );
                                 } else {
-                                  if (_subscriptionModelClass!.success == true) {
+                                  if (_subscriptionModelClass!.success ==
+                                      true) {
                                     //Reader or Author Already Subscribe
                                     Transitioner(
                                       context: context,
                                       child: BookAllPDFViewSceens(
-                                        bookId: _bookDetailsModel!.data!.bookId
-                                            .toString(),
-                                        bookName: _bookDetailsModel!.data!.bookTitle
-                                            .toString(),
-                                          readerId:_bookDetailsModel!.data!.userId.toString()
-                                      ),
+                                          bookId: _bookDetailsModel!
+                                              .data!.bookId
+                                              .toString(),
+                                          bookName: _bookDetailsModel!
+                                              .data!.bookTitle
+                                              .toString(),
+                                          readerId: _bookDetailsModel!
+                                              .data!.userId
+                                              .toString()),
                                       animation: AnimationType
                                           .slideTop, // Optional value
                                       duration: Duration(
                                           milliseconds: 1000), // Optional value
                                       replacement: false, // Optional value
-                                      curveType:
-                                      CurveType.decelerate, // Optional value
+                                      curveType: CurveType
+                                          .decelerate, // Optional value
                                     );
                                   } else {
                                     if (Platform.isIOS) {
@@ -648,7 +660,20 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 ],
                                 color: const Color(0xff3a6c83)),
                             child: Center(
-                              child: Text(Languages.of(context)!.read,
+                              child: Text(
+                                  _bookDetailsModel!.data!.paymentStatus
+                                                  .toString() ==
+                                              "1" ||
+                                          _bookDetailsModel!.data!.userId
+                                                  .toString() ==
+                                              context
+                                                  .read<UserProvider>()
+                                                  .UserID
+                                                  .toString()
+                                      ? Languages.of(context)!.read
+                                      : _subscriptionModelClass!.success == true
+                                          ? Languages.of(context)!.read
+                                          : Languages.of(context)!.subscribeTxt,
                                   style: const TextStyle(
                                       color: const Color(0xffffffff),
                                       fontWeight: FontWeight.w700,
@@ -744,7 +769,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
     if (response.statusCode == 200) {
       print('BookDetail_response under 200 ${response.body}');
       var jsonData = json.decode(response.body);
-      if (jsonData['status'] == 200){
+      if (jsonData['status'] == 200) {
         _bookDetailsModel = BookDetailsModel.fromJson(jsonData);
         print("status_likes${_bookDetailsModel!.data!.status!.status}");
         switch (_bookDetailsModel!.data!.status!.status) {
@@ -764,17 +789,16 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
         }
         _isSaved = _bookDetailsModel!.data!.bookSaved!;
         VariableProvider userProvider =
-        Provider.of<VariableProvider>(context, listen: false);
+            Provider.of<VariableProvider>(context, listen: false);
 
         userProvider.setLikes(_bookDetailsModel!.data!.bookLike!);
         userProvider.setDislikes(_bookDetailsModel!.data!.bookDisLike!);
         print(
             "likes_provider${context.read<VariableProvider>().getLikes.toString()}");
         CHECK_SUBSCRIPTION();
-      }else{
+      } else {
         Constants.showToastBlack(context, "Some things went wrong");
       }
-
     } else {
       Constants.showToastBlack(context, "Some things went wrong");
       setState(() {
@@ -858,7 +882,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
               customerInfo.entitlements.all[entitlementID]!.isActive)
           ? appData.entitlementIsActive = true
           : appData.entitlementIsActive = false;
-     // print("Ios subscribtion status ${ customerInfo.entitlements.all[entitlementID]!.isActive}");
+      // print("Ios subscribtion status ${ customerInfo.entitlements.all[entitlementID]!.isActive}");
       // setState(() {});
     });
   }
@@ -888,6 +912,17 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
     // }
     if (_subscriptionModelClass!.success == true) {
       //call book pdf api
+      Transitioner(
+        context: context,
+        child: BookAllPDFViewSceens(
+            bookId: _bookDetailsModel!.data!.bookId.toString(),
+            bookName: _bookDetailsModel!.data!.bookTitle.toString(),
+            readerId: _bookDetailsModel!.data!.userId.toString()),
+        animation: AnimationType.slideTop, // Optional value
+        duration: Duration(milliseconds: 1000), // Optional value
+        replacement: false, // Optional value
+        curveType: CurveType.decelerate, // Optional value
+      );
     } else {
       try {
         offerings = await Purchases.getOfferings();
@@ -907,6 +942,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
 
       if (offerings!.current == null) {
         // offerings are empty, show a message to your user
+        Constants.showToastBlack(context, "Nothing to Pay");
       } else {
         // current offering is available, show paywall
         await showModalBottomSheet(
@@ -932,8 +968,8 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
   }
 
   Future CHECK_SUBSCRIPTION() async {
-    final response =
-        await http.get(Uri.parse(ApiUtils.USER_CHECK_SUBSCRIPTION_API), headers: {
+    final response = await http
+        .get(Uri.parse(ApiUtils.USER_CHECK_SUBSCRIPTION_API), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -941,7 +977,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
       print('subscription_status_response${response.body}');
       var jsonData = json.decode(response.body);
       if (jsonData['status'] == 200) {
-        _subscriptionModelClass= SubscriptionModelClass.fromJson(jsonData);
+        _subscriptionModelClass = SubscriptionModelClass.fromJson(jsonData);
         setState(() {
           _isLoading = false;
         });
@@ -953,5 +989,4 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
       }
     }
   }
-
 }

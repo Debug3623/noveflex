@@ -79,7 +79,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                         )),
                         Positioned(
                           child: Container(
-                            height: _height * 0.25,
+                            height: _height * 0.265,
                             width: _width,
                             decoration: BoxDecoration(
                                 color: Color(0xFF256D85),
@@ -181,70 +181,123 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                   ],
                                 ),
                               ),
-                              Visibility(
-                                visible: _userStatusTypeModel!.data![0]!.type!="Writer",
-                                child: Padding(
-                                  padding: EdgeInsets.only(
-                                      top: _height * 0.07,
-                                    left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.15 : 0.0,
-                                    right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.15: 0.0,),
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        FollowOrUnfollow = !FollowOrUnfollow!;
-                                      });
-                                     FOLLOW_AND_UNFOLLOW();
-                                    },
-                                    child: Container(
-                                      width: _width * 0.25,
-                                      height: _height * 0.04,
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(5)),
-                                          border: Border.all(
-                                              color: const Color(0xff3a6c83),
-                                              width: 1),
-                                          color: Color(0xffebf5f9)),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          FollowOrUnfollow!
-                                              ? Icon(
-                                                  Icons
-                                                      .notification_add_outlined,
-                                                  color:
-                                                      const Color(0xff3a6c83))
-                                              : Icon(
-                                                  Icons.person_add,
-                                                  color:
-                                                      const Color(0xff3a6c83),
-                                                ),
-                                          Text(
+                              Column(
+                                children: [
+                                  Visibility(
+                                    visible: _userStatusTypeModel!.data![0]!.type!="Writer",
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                          top: _height * 0.07,
+                                        left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.15 : 0.0,
+                                        right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.15: 0.0,),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            FollowOrUnfollow = !FollowOrUnfollow!;
+                                          });
+                                         FOLLOW_AND_UNFOLLOW();
+                                        },
+                                        child: Container(
+                                          width: _width * 0.25,
+                                          height: _height * 0.04,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
+                                              border: Border.all(
+                                                  color: const Color(0xff3a6c83),
+                                                  width: 1),
+                                              color: Color(0xffebf5f9)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
                                               FollowOrUnfollow!
-                                                  ? Languages.of(context)!
-                                                      .follow_author
-                                                  : Languages.of(context)!
-                                                      .unfollow_text,
-                                              style: const TextStyle(
-                                                  color:
-                                                      const Color(0xff3a6c83),
-                                                  fontWeight: FontWeight.w800,
-                                                  fontFamily: "Lato",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 10.0),
-                                              textAlign: TextAlign.left)
-                                        ],
+                                                  ? Icon(
+                                                      Icons
+                                                          .notification_add_outlined,
+                                                      color:
+                                                          const Color(0xff3a6c83))
+                                                  : Icon(
+                                                      Icons.person_add,
+                                                      color:
+                                                          const Color(0xff3a6c83),
+                                                    ),
+                                              Text(
+                                                  FollowOrUnfollow!
+                                                      ? Languages.of(context)!
+                                                          .follow_author
+                                                      : Languages.of(context)!
+                                                          .unfollow_text,
+                                                  style: const TextStyle(
+                                                      color:
+                                                          const Color(0xff3a6c83),
+                                                      fontWeight: FontWeight.w800,
+                                                      fontFamily: "Lato",
+                                                      fontStyle: FontStyle.normal,
+                                                      fontSize: 10.0),
+                                                  textAlign: TextAlign.left)
+                                            ],
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
+                                  Visibility(
+                                    visible: _userStatusTypeModel!.data![0]!.type!="Writer",
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: _height * 0.01,
+                                        left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.15 : 0.0,
+                                        right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.15: 0.0,),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                            _giftSheet(context);
+
+
+                                        },
+                                        child: Container(
+                                          width: _width * 0.25,
+                                          height: _height * 0.04,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
+                                              border: Border.all(
+                                                  color:  Colors.white,
+                                                  width: 1),
+                                              color:Color (0xff3a6c83)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Icon(
+                                                  Icons
+                                                      .card_giftcard,
+                                                  color:
+                                                   Colors.white),
+                                              Text(
+                                                  Languages.of(context)!
+                                                      .giftAuthor,
+                                                  style: const TextStyle(
+                                                      color:
+                                                       Colors.white,
+                                                      fontWeight: FontWeight.w800,
+                                                      fontFamily: "Lato",
+                                                      fontStyle: FontStyle.normal,
+                                                      fontSize: 10.0),
+                                                  )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ],
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.36,
+                          top: _height * 0.39,
                           left: _width * 0.1,
                           right: _width * 0.1,
                           child: Opacity(
@@ -288,7 +341,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                           height: _height * 0.01,
                                         ),
                                         Text(
-                                          _authorProfileViewModel!.data!.description
+                                          _authorProfileViewModel!.data.description
                                               .toString(),
                                           style: const TextStyle(
                                               color: const Color(0xff676767),
@@ -302,23 +355,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                       ],
                                     ),
                                   ),
-                                  Visibility(
-                                    visible: _userStatusTypeModel!.data![0]!.type!="Writer",
-                                    child: Positioned(
-                                      top: _height*0.05,
-                                      left:context.read<UserProvider>().SelectedLanguage=='English' ?  _width * 0.4 : 0.0,
-                                      right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width * 0.4: 0.0,
 
-                                      child: GestureDetector(
-                                          onTap: (){
-                                            _giftSheet(context);
-                                          },
-                                          child: SizedBox(
-                                          height: _height*0.15,
-                                          width: _width*0.4,
-                                          child: Image.asset("assets/quotes_data/gif_white.gif",)),
-                                        )),
-                                  )
                                 ],
                               ),
                             ),
@@ -365,7 +402,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                   child: ListView.builder(
                                     physics: const BouncingScrollPhysics(),
                                     itemCount: _authorProfileViewModel!
-                                        .data!.book!.length,
+                                        .data.book.length,
                                     scrollDirection: Axis.horizontal,
                                     itemBuilder: (context, index) {
                                       return GestureDetector(
@@ -374,7 +411,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                             context: context,
                                             child: BookDetailAuthor(
                                               bookID: _authorProfileViewModel!
-                                                  .data!.book![index]!.id
+                                                  .data.book[index].id
                                                   .toString(),
                                             ),
                                             animation: AnimationType
@@ -405,17 +442,17 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                                     image: DecorationImage(
                                                         fit: BoxFit.cover,
                                                         image: _authorProfileViewModel!
-                                                                    .data!
-                                                                    .book![
-                                                                        index]!
+                                                                    .data
+                                                                    .book[
+                                                                        index]
                                                                     .imagePath
                                                                     .toString() ==
                                                                 ""
                                                             ? const AssetImage(
                                                                 "assets/quotes_data/manga image.png")
                                                             : NetworkImage(_authorProfileViewModel!
-                                                                    .data!
-                                                                    .book![index]!
+                                                                    .data
+                                                                    .book[index]
                                                                     .imagePath
                                                                     .toString())
                                                                 as ImageProvider),
@@ -435,7 +472,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                             ),
                                             Text(
                                               _authorProfileViewModel!
-                                                  .data!.book![index]!.title
+                                                  .data.book[index].title
                                                   .toString(),
                                               style: const TextStyle(
                                                 fontFamily: 'Lato',
@@ -498,7 +535,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
       if (jsonData1['status'] == 200) {
         _authorProfileViewModel = authorProfileViewModelFromJson(jsonData);
         FollowOrUnfollow = _authorProfileViewModel!
-            .data!.isSubscription!;
+            .data.isSubscription;
         CHECK_USER_STATUS();
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());
@@ -593,57 +630,6 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
     }
   }
 
-  // Future<void> UploadCoverImageApi() async {
-  //   setState(() {
-  //     _isImageLoading = true;
-  //   });
-  //   Map<String, String> headers = {
-  //     'Content-type': 'application/json',
-  //     'Accept': 'application/json',
-  //     "accesstoken": context.read<UserProvider>().UserToken.toString(),
-  //   };
-  //
-  //   var jsonResponse;
-  //
-  //   var request = http.MultipartRequest(
-  //       'POST', Uri.parse(ApiUtils.COVER_IMAGE_API));
-  //   request.files.add( http.MultipartFile.fromBytes(
-  //     "background_image",
-  //     File(imageFileCoverImage!.path)
-  //         .readAsBytesSync(), //UserFile is my JSON key,use your own and "image" is the pic im getting from my gallary
-  //     filename: "Image.jpg",
-  //     contentType: MediaType('image', 'jpg'),
-  //   ));
-  //
-  //   request.headers.addAll(headers);
-  //
-  //   request.send().then((result) async {
-  //     http.Response.fromStream(result).then((response) {
-  //       if (response.statusCode == 200) {
-  //         print("Cover Image Uploaded! ");
-  //         print('profile_image_upload ' + response.body);
-  //         Constants.showToastBlack(context, "Cover Image Upload Successfully");
-  //         setState(() {
-  //           _isImageLoading = false;
-  //         });
-  //         _checkInternetConnection();
-  //       }
-  //     });
-  //   });
-  // }
-
-  _getFromGallery() async {
-    final PickedFile? image =
-        await ImagePicker().getImage(source: ImageSource.gallery);
-
-    if (image != null) {
-      _cover_imageFile = File(image.path);
-      setState(() {
-        _cover_imageFile = File(image.path);
-      });
-    }
-  }
-
   void _giftSheet(context) {
     showModalBottomSheet(
         context: context,
@@ -658,8 +644,12 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
             key: _formKey,
             autovalidateMode: AutovalidateMode.onUserInteraction,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
+                SizedBox(
+                    height: _height*0.2,
+                    width: _width*0.4,
+                    child: Image.asset("assets/quotes_data/new_gifts.gif",)),
                 Text(Languages.of(context)!.giftText),
                 Container(
                   height: _height * 0.1,

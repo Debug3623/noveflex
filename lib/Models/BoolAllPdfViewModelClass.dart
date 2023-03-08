@@ -38,11 +38,10 @@ class Datum {
     required this.bookId,
     required this.userId,
     this.image,
-    required this.lesson,
+    this.lesson,
     required this.filename,
     required this.status,
     required this.createdAt,
-    required this.updatedAt,
     required this.lessonPath,
     required this.book,
   });
@@ -51,11 +50,10 @@ class Datum {
   int bookId;
   int userId;
   dynamic image;
-  String lesson;
+  dynamic lesson;
   String filename;
   String status;
   DateTime createdAt;
-  DateTime updatedAt;
   String lessonPath;
   List<Book> book;
 
@@ -68,7 +66,6 @@ class Datum {
     filename: json["filename"],
     status: json["status"],
     createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
     lessonPath: json["lesson_path"],
     book: List<Book>.from(json["book"].map((x) => Book.fromJson(x))),
   );
@@ -82,7 +79,6 @@ class Datum {
     "filename": filename,
     "status": status,
     "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
     "lesson_path": lessonPath,
     "book": List<dynamic>.from(book.map((x) => x.toJson())),
   };

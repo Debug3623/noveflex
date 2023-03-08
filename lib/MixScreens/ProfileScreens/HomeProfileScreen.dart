@@ -963,6 +963,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
             body: map);
 
     if (response.statusCode == 200) {
+      print("author_executed");
       print('author_profile${response.body}');
       var jsonData = response.body;
       //var jsonData = response.body;
@@ -1018,10 +1019,11 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         _statusCheckModel = statusCheckModelFromJson(jsonData);
-        if (_statusCheckModel!.data![0]!.type == "Reader") {
+        if (_statusCheckModel!.data[0].type == "Reader") {
           READER_PROFILE();
         } else {
           AUTHOR_PROFILE();
+
         }
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());

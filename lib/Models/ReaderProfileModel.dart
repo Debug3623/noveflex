@@ -49,7 +49,7 @@ class Data {
   String email;
   dynamic phone;
   String type;
-  String profilePhoto;
+  dynamic profilePhoto;
   dynamic description;
   DateTime registerdDate;
   List<Following> following;

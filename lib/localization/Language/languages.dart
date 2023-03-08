@@ -220,6 +220,8 @@ abstract class Languages {
 
   String get gift;
 
+  String get giftAuthor;
+
   String get fatherName;
 
   String get cardHolderName;

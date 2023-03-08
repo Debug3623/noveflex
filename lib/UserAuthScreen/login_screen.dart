@@ -474,6 +474,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                    }
                                    print("Apple_email ${credential!.email}");
                                    print("Apple_userName ${credential!.givenName}");
+                                   print("Provider_email ${userProvider.GetApple}");
                                    setState(() {
                                      social_login_ID = "3";
 

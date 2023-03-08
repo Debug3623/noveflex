@@ -47,7 +47,7 @@ class Data {
   String email;
   String phone;
   String type;
-  String profilePhoto;
+  dynamic profilePhoto;
   String description;
   DateTime registerdDate;
   String profilePath;

@@ -99,14 +99,23 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         elevation: 0.0,
         toolbarHeight: _height * 0.06,
         backgroundColor: const Color(0xffebf5f9),
-        leading: Container(
-          height: _height * 0.1,
-          width: _width * 0.1,
-          decoration: BoxDecoration(
-              image: DecorationImage(
-            image: AssetImage("assets/quotes_data/NoPath.png"),
-          )),
-        ),
+        leading: (widget.route != "guest")
+            ? Container(
+                height: _height * 0.1,
+                width: _width * 0.1,
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage("assets/quotes_data/NoPath.png"),
+                )),
+              )
+            : IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black54,
+                )),
         actions: [
           SizedBox(
             width: _width * 0.14,
@@ -153,13 +162,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 Transitioner(
                                   context: context,
                                   child: NotificationScreen(),
-                                  animation:
-                                  AnimationType.slideBottom, // Optional value
+                                  animation: AnimationType
+                                      .slideBottom, // Optional value
                                   duration: Duration(
                                       milliseconds: 1000), // Optional value
                                   replacement: false, // Optional value
                                   curveType:
-                                  CurveType.decelerate, // Optional value
+                                      CurveType.decelerate, // Optional value
                                 );
                               } else {
                                 ToastConstant.showToast(context,
@@ -194,10 +203,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                     color: Color(0xffFF5733)),
                                 child: Center(
                                   child: Text(
-                                      context
-                                          .read<UserProvider>()
-                                          .getNotificationCount
-                                          .toString(),
+                                      (widget.route != "guest")
+                                          ? context
+                                              .read<UserProvider>()
+                                              .getNotificationCount
+                                              .toString()
+                                          : "0",
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.w400,
@@ -298,193 +309,216 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   ),
                                   itemBuilder: (BuildContext context,
                                       int itemIndex, int pageViewIndex) {
-                                    return Container(
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(10)),
-                                        child: Row(
-                                          children: [
-                                            SizedBox(
-                                              width: _width * 0.03,
-                                            ),
-                                            Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceAround,
-                                              children: [
-                                                Text(
-                                                  Languages.of(context)!
-                                                      .popular,
-                                                  style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff2a2a2a),
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      fontFamily: "Alexandria",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 16.0),
-                                                ),
-                                                Container(
-                                                  width: _width * 0.25,
-                                                  height: _height * 0.135,
-                                                  decoration: BoxDecoration(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              10),
-                                                      image: DecorationImage(
-                                                          image: NetworkImage(
-                                                            _sliderModel!
-                                                                .data[itemIndex]
-                                                                .imagePath
-                                                                .toString(),
-                                                          ),
-                                                          fit: BoxFit.cover)),
-                                                  child: ClipRRect(
-                                                    child: Banner(
-                                                      message: _sliderModel!
-                                                                  .data[
-                                                                      itemIndex]
-                                                                  .paymentStatus
-                                                                  .toString() ==
-                                                              "1"
-                                                          ? "Free"
-                                                          : "Pro ++",
-                                                      location:
-                                                          BannerLocation.topEnd,
-                                                      color: _sliderModel!
-                                                                  .data[
-                                                                      itemIndex]
-                                                                  .paymentStatus
-                                                                  .toString() ==
-                                                              "1"
-                                                          ? Color(0xff00bb23)
-                                                          : Colors.red,
-                                                      child: CachedNetworkImage(
-                                                        filterQuality:
-                                                            FilterQuality.high,
-                                                        imageBuilder: (context,
-                                                                imageProvider) =>
-                                                            Container(
-                                                                // decoration: BoxDecoration(
-                                                                //   shape: BoxShape.rectangle,
-                                                                //   borderRadius:
-                                                                //   BorderRadius.circular(
-                                                                //       10),
-                                                                //   image: DecorationImage(
-                                                                //       image: imageProvider,
-                                                                //       fit: BoxFit.cover),
-                                                                // ),
-                                                                ),
-                                                        imageUrl: _sliderModel!
-                                                            .data[itemIndex]
-                                                            .imagePath
-                                                            .toString(),
-                                                        fit: BoxFit.cover,
-                                                        placeholder: (context,
-                                                                url) =>
-                                                            const Center(
-                                                                child:
-                                                                    CupertinoActivityIndicator(
-                                                          color:
-                                                              Color(0xFF256D85),
-                                                        )),
-                                                        errorWidget: (context,
-                                                                url, error) =>
-                                                            const Center(
-                                                                child: Icon(Icons
-                                                                    .error_outline)),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                SizedBox()
-                                              ],
-                                            ),
-                                            SizedBox(
-                                              width: _width * 0.05,
-                                            ),
-                                            Expanded(
-                                              child: Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
+                                    return GestureDetector(
+                                      onTap: (){
+                                        Transitioner(
+                                          context: context,
+                                          child: BookDetailAuthor(
+                                            bookID: _sliderModel!
+                                                .data[
+                                            itemIndex]
+                                                .id
+                                                .toString(),
+                                          ),
+                                          animation: AnimationType
+                                              .slideTop, // Optional value
+                                          duration: Duration(
+                                              milliseconds:
+                                              1000), // Optional value
+                                          replacement:
+                                          false, // Optional value
+                                          curveType: CurveType
+                                              .decelerate, // Optional value
+                                        );
+                                      },
+                                      child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                          child: Row(
+                                            children: [
+                                              SizedBox(
+                                                width: _width * 0.03,
+                                              ),
+                                              Column(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
+                                                    MainAxisAlignment.spaceAround,
                                                 children: [
-                                                  SizedBox(),
-                                                  SizedBox(),
-                                                  SizedBox(),
-                                                  SizedBox(),
                                                   Text(
-                                                    _sliderModel!
-                                                        .data[itemIndex].title
-                                                        .toString(),
+                                                    Languages.of(context)!
+                                                        .popular,
                                                     style: const TextStyle(
                                                         color: const Color(
                                                             0xff2a2a2a),
                                                         fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily:
-                                                            "Alexandria",
+                                                            FontWeight.w700,
+                                                        fontFamily: "Alexandria",
                                                         fontStyle:
                                                             FontStyle.normal,
-                                                        fontSize: 14.0),
+                                                        fontSize: 16.0),
                                                   ),
-                                                  Padding(
-                                                    padding: context
-                                                                .watch<
-                                                                    UserProvider>()
-                                                                .SelectedLanguage ==
-                                                            'English'
-                                                        ? EdgeInsets.only(
-                                                            right:
-                                                                _width * 0.02)
-                                                        : EdgeInsets.only(
-                                                            left:
-                                                                _width * 0.02),
-                                                    child: Text(
+                                                  Container(
+                                                    width: _width * 0.25,
+                                                    height: _height * 0.135,
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.circular(
+                                                                10),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                              _sliderModel!
+                                                                  .data[itemIndex]
+                                                                  .imagePath
+                                                                  .toString(),
+                                                            ),
+                                                            fit: BoxFit.cover)),
+                                                    child: ClipRRect(
+                                                      child: Banner(
+                                                        message: _sliderModel!
+                                                                    .data[
+                                                                        itemIndex]
+                                                                    .paymentStatus
+                                                                    .toString() ==
+                                                                "1"
+                                                            ? "Free"
+                                                            : "Pro ++",
+                                                        location:
+                                                            BannerLocation.topEnd,
+                                                        color: _sliderModel!
+                                                                    .data[
+                                                                        itemIndex]
+                                                                    .paymentStatus
+                                                                    .toString() ==
+                                                                "1"
+                                                            ? Color(0xff00bb23)
+                                                            : Colors.red,
+                                                        child: CachedNetworkImage(
+                                                          filterQuality:
+                                                              FilterQuality.high,
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                                  // decoration: BoxDecoration(
+                                                                  //   shape: BoxShape.rectangle,
+                                                                  //   borderRadius:
+                                                                  //   BorderRadius.circular(
+                                                                  //       10),
+                                                                  //   image: DecorationImage(
+                                                                  //       image: imageProvider,
+                                                                  //       fit: BoxFit.cover),
+                                                                  // ),
+                                                                  ),
+                                                          imageUrl: _sliderModel!
+                                                              .data[itemIndex]
+                                                              .imagePath
+                                                              .toString(),
+                                                          fit: BoxFit.cover,
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              const Center(
+                                                                  child:
+                                                                      CupertinoActivityIndicator(
+                                                            color:
+                                                                Color(0xFF256D85),
+                                                          )),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              const Center(
+                                                                  child: Icon(Icons
+                                                                      .error_outline)),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  SizedBox()
+                                                ],
+                                              ),
+                                              SizedBox(
+                                                width: _width * 0.05,
+                                              ),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceAround,
+                                                  children: [
+                                                    SizedBox(),
+                                                    SizedBox(),
+                                                    SizedBox(),
+                                                    SizedBox(),
+                                                    Text(
                                                       _sliderModel!
-                                                          .data[itemIndex]
-                                                          .description
+                                                          .data[itemIndex].title
                                                           .toString(),
                                                       style: const TextStyle(
                                                           color: const Color(
-                                                              0xff676767),
+                                                              0xff2a2a2a),
                                                           fontWeight:
-                                                              FontWeight.w400,
+                                                              FontWeight.w500,
+                                                          fontFamily:
+                                                              "Alexandria",
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontSize: 14.0),
+                                                    ),
+                                                    Padding(
+                                                      padding: context
+                                                                  .watch<
+                                                                      UserProvider>()
+                                                                  .SelectedLanguage ==
+                                                              'English'
+                                                          ? EdgeInsets.only(
+                                                              right:
+                                                                  _width * 0.02)
+                                                          : EdgeInsets.only(
+                                                              left:
+                                                                  _width * 0.02),
+                                                      child: Text(
+                                                        _sliderModel!
+                                                            .data[itemIndex]
+                                                            .description
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            color: const Color(
+                                                                0xff676767),
+                                                            fontWeight:
+                                                                FontWeight.w400,
+                                                            fontFamily: "Lato",
+                                                            fontStyle:
+                                                                FontStyle.normal,
+                                                            fontSize: 12.0),
+                                                        textAlign: TextAlign.left,
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
+                                                        maxLines: 5,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      _sliderModel!
+                                                          .data[itemIndex]
+                                                          .categories[0]
+                                                          .title
+                                                          .toString(),
+                                                      style: const TextStyle(
+                                                          color: const Color(
+                                                              0xff3a6c83),
+                                                          fontWeight:
+                                                              FontWeight.w700,
                                                           fontFamily: "Lato",
                                                           fontStyle:
                                                               FontStyle.normal,
                                                           fontSize: 12.0),
-                                                      textAlign: TextAlign.left,
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      maxLines: 5,
                                                     ),
-                                                  ),
-                                                  Text(
-                                                    _sliderModel!
-                                                        .data[itemIndex]
-                                                        .categories[0]
-                                                        .title
-                                                        .toString(),
-                                                    style: const TextStyle(
-                                                        color: const Color(
-                                                            0xff3a6c83),
-                                                        fontWeight:
-                                                            FontWeight.w700,
-                                                        fontFamily: "Lato",
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontSize: 12.0),
-                                                  ),
-                                                  SizedBox(),
-                                                  SizedBox(),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ));
+                                                    SizedBox(),
+                                                    SizedBox(),
+                                                  ],
+                                                ),
+                                              )
+                                            ],
+                                          )),
+                                    );
                                   })),
                     ),
                     Expanded(

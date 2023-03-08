@@ -4,82 +4,82 @@
 
 import 'dart:convert';
 
-UploadBooksModel? uploadBooksModelFromJson(String str) => UploadBooksModel.fromJson(json.decode(str));
+UploadBooksModel uploadBooksModelFromJson(String str) => UploadBooksModel.fromJson(json.decode(str));
 
-String uploadBooksModelToJson(UploadBooksModel? data) => json.encode(data!.toJson());
+String uploadBooksModelToJson(UploadBooksModel data) => json.encode(data.toJson());
 
 class UploadBooksModel {
   UploadBooksModel({
-    this.status,
-    this.data,
+    required this.status,
+    required this.data,
   });
 
-  int? status;
-  List<Datum?>? data;
+  int status;
+  List<Datum> data;
 
   factory UploadBooksModel.fromJson(Map<String, dynamic> json) => UploadBooksModel(
     status: json["status"],
-    data: json["data"] == null ? [] : List<Datum?>.from(json["data"]!.map((x) => Datum.fromJson(x))),
+    data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data == null ? [] : List<dynamic>.from(data!.map((x) => x!.toJson())),
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
 class Datum {
   Datum({
-    this.id,
-    this.title,
-    this.authorName,
-    this.description,
-    this.categoryId,
-    this.subcategoryId,
-    this.userId,
-    this.lessonId,
-    this.image,
-    this.status,
-    this.isActive,
-    this.isSeen,
-    this.language,
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.categoryId,
+    required this.subcategoryId,
+    required this.paymentStatus,
+    required this.userId,
+    required this.lessonId,
+    required this.image,
+    required this.status,
+    required this.isActive,
+    required this.isSeen,
+    required this.language,
     this.createdBy,
     this.updatedBy,
     this.deletedBy,
-    this.createdAt,
+    required this.createdAt,
     this.updatedAt,
-    this.imagePath,
-    this.user,
+    required this.imagePath,
+    required this.user,
   });
 
-  int? id;
-  String? title;
-  dynamic authorName;
-  String? description;
-  int? categoryId;
-  int? subcategoryId;
-  int? userId;
+  int id;
+  String title;
+  String description;
+  int categoryId;
+  int subcategoryId;
+  int paymentStatus;
+  int userId;
   dynamic lessonId;
-  String? image;
+  String image;
   dynamic status;
-  int? isActive;
-  int? isSeen;
-  String? language;
+  int isActive;
+  int isSeen;
+  String language;
   dynamic createdBy;
   dynamic updatedBy;
   dynamic deletedBy;
-  DateTime? createdAt;
-  DateTime? updatedAt;
-  String? imagePath;
-  List<User?>? user;
+  DateTime createdAt;
+  dynamic updatedAt;
+  String imagePath;
+  List<User> user;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
     title: json["title"],
-    authorName: json["author_name"],
     description: json["description"],
     categoryId: json["category_id"],
     subcategoryId: json["subcategory_id"],
+    paymentStatus: json["payment_status"],
     userId: json["user_id"],
     lessonId: json["lesson_id"],
     image: json["image"],
@@ -91,18 +91,18 @@ class Datum {
     updatedBy: json["updated_by"],
     deletedBy: json["deleted_by"],
     createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    updatedAt: json["updated_at"],
     imagePath: json["image_path"],
-    user: json["user"] == null ? [] : List<User?>.from(json["user"]!.map((x) => User.fromJson(x))),
+    user: List<User>.from(json["user"].map((x) => User.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "title": title,
-    "author_name": authorName,
     "description": description,
     "category_id": categoryId,
     "subcategory_id": subcategoryId,
+    "payment_status": paymentStatus,
     "user_id": userId,
     "lesson_id": lessonId,
     "image": image,
@@ -113,37 +113,37 @@ class Datum {
     "created_by": createdBy,
     "updated_by": updatedBy,
     "deleted_by": deletedBy,
-    "created_at": createdAt?.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt,
     "image_path": imagePath,
-    "user": user == null ? [] : List<dynamic>.from(user!.map((x) => x!.toJson())),
+    "user": List<dynamic>.from(user.map((x) => x.toJson())),
   };
 }
 
 class User {
   User({
-    this.id,
-    this.username,
-    this.imagePath,
-    this.backgroundPath,
+    required this.id,
+    required this.username,
+    required this.profilePath,
+    required this.backgroundPath,
   });
 
-  int? id;
-  String? username;
-  String? imagePath;
-  String? backgroundPath;
+  int id;
+  String username;
+  String profilePath;
+  String backgroundPath;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     username: json["username"],
-    imagePath: json["image_path"],
+    profilePath: json["profile_path"],
     backgroundPath: json["background_path"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
     "username": username,
-    "image_path": imagePath,
+    "profile_path": profilePath,
     "background_path": backgroundPath,
   };
 }

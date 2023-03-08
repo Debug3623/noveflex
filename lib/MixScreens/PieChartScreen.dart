@@ -25,7 +25,7 @@ class _PieChartScreenState extends State<PieChartScreen> {
   late TooltipBehavior _tooltip;
   bool _isLoading = false;
   bool _isInternetConnected = true;
-  var Followers;
+  int Followers= 5;
   var gifts;
 
   @override
@@ -33,18 +33,18 @@ class _PieChartScreenState extends State<PieChartScreen> {
     _checkInternetConnection();
 
     data = [
-      _ChartData('1m', 12),
-      _ChartData('2m', 15),
-      _ChartData('3m', 30),
-      _ChartData('4m', 35),
-      _ChartData('5m', 14),
-      _ChartData('6m', 40),
-      _ChartData('7m', 70),
-      _ChartData('8m', 50),
-      _ChartData('9m', 4),
-      _ChartData('10', 65),
-      _ChartData('11m', 10),
-      _ChartData('12m', 70)
+      _ChartData('1m', Followers/90*50),
+      _ChartData('2m', Followers/20*50),
+      _ChartData('3m', Followers/13*50),
+      _ChartData('4m', Followers/50*50),
+      _ChartData('5m', Followers/7*50),
+      _ChartData('6m', Followers/40*50),
+      _ChartData('7m', Followers/35*50),
+      _ChartData('8m', Followers/30*50),
+      _ChartData('9m', Followers/8*50),
+      _ChartData('10', Followers/15*50),
+      _ChartData('11m', Followers/10*50),
+      _ChartData('12m', Followers/5*50)
     ];
     _tooltip = TooltipBehavior(enable: true);
 
@@ -233,9 +233,18 @@ class _PieChartScreenState extends State<PieChartScreen> {
       print('user_payment_response${response.body}');
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
-        setState(() {
-          Followers = jsonData1['totalFollower'];
-        });
+        if(jsonData1['totalFollower']=="0"){
+          setState(() {
+
+            Followers = 1;
+          });
+        }else{
+          setState(() {
+
+            Followers = jsonData1['totalFollower'];
+          });
+        }
+
         TotalGifts();
       } else {
         ToastConstant.showToast(context, jsonData1['success'].toString());

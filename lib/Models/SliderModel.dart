@@ -35,11 +35,11 @@ class Datum {
     required this.description,
     required this.categoryId,
     required this.subcategoryId,
-    required this.userId,
-    this.lessonId,
     required this.paymentStatus,
+    required this.userId,
+    required this.lessonId,
     required this.image,
-    this.status,
+    required this.status,
     required this.isActive,
     required this.isSeen,
     required this.language,
@@ -47,7 +47,7 @@ class Datum {
     this.updatedBy,
     this.deletedBy,
     required this.createdAt,
-    required this.updatedAt,
+    this.updatedAt,
     required this.imagePath,
     required this.categories,
   });
@@ -57,9 +57,9 @@ class Datum {
   String description;
   int categoryId;
   int subcategoryId;
+  int paymentStatus;
   int userId;
   dynamic lessonId;
-  int paymentStatus;
   String image;
   dynamic status;
   int isActive;
@@ -69,7 +69,7 @@ class Datum {
   dynamic updatedBy;
   dynamic deletedBy;
   DateTime createdAt;
-  DateTime updatedAt;
+  dynamic updatedAt;
   String imagePath;
   List<Category> categories;
 
@@ -79,9 +79,9 @@ class Datum {
     description: json["description"],
     categoryId: json["category_id"],
     subcategoryId: json["subcategory_id"],
+    paymentStatus: json["payment_status"],
     userId: json["user_id"],
     lessonId: json["lesson_id"],
-    paymentStatus: json["payment_status"],
     image: json["image"],
     status: json["status"],
     isActive: json["is_active"],
@@ -91,7 +91,7 @@ class Datum {
     updatedBy: json["updated_by"],
     deletedBy: json["deleted_by"],
     createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
+    updatedAt: json["updated_at"],
     imagePath: json["image_path"],
     categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
   );
@@ -102,9 +102,9 @@ class Datum {
     "description": description,
     "category_id": categoryId,
     "subcategory_id": subcategoryId,
+    "payment_status": paymentStatus,
     "user_id": userId,
     "lesson_id": lessonId,
-    "payment_status": paymentStatus,
     "image": image,
     "status": status,
     "is_active": isActive,
@@ -114,7 +114,7 @@ class Datum {
     "updated_by": updatedBy,
     "deleted_by": deletedBy,
     "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
+    "updated_at": updatedAt,
     "image_path": imagePath,
     "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
   };

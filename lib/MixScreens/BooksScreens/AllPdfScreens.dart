@@ -68,7 +68,7 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
             alignment: Alignment.center,
             child: CupertinoActivityIndicator(),
           )
-              :_boolAllPdfViewModelClass!.data!.length==0 ? Center(
+              :_boolAllPdfViewModelClass!.data.length==0 ? Center(
                 child: Text(
                   Languages.of(context)!
                       .nodata,
@@ -77,7 +77,7 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
                       color: Colors.black54),
                   textAlign: TextAlign.center,
                 ),
-              ): Column(
+              ): ListView(
             children: [
               ListView.builder(
                   shrinkWrap: true,
@@ -145,7 +145,7 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
                                     left: 8.0,
                                     right: 8.0),
                                 child: Text(
-                                   _boolAllPdfViewModelClass!.data[index].lesson.toString(),
+                                  _boolAllPdfViewModelClass!.data[index].lesson==null ? widget.bookName.toString() :_boolAllPdfViewModelClass!.data[index].lesson.toString(),
                                    style: const TextStyle(
                                     color:  Colors.white,
                                     fontSize: 18,

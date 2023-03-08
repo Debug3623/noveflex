@@ -47,7 +47,7 @@ class Data {
   String email;
   dynamic phone;
   String type;
-  String profilePhoto;
+  dynamic profilePhoto;
   DateTime registerdDate;
   int totalAmount;
   String profilePath;

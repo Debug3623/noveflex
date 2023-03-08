@@ -35,9 +35,9 @@ class Datum {
     required this.description,
     required this.categoryId,
     required this.subcategoryId,
+    required this.paymentStatus,
     required this.userId,
     this.lessonId,
-    required this.paymentStatus,
     required this.image,
     this.status,
     required this.isActive,
@@ -47,7 +47,7 @@ class Datum {
     this.updatedBy,
     this.deletedBy,
     required this.createdAt,
-    this.updatedAt,
+    required this.updatedAt,
     required this.imagePath,
     required this.categories,
     required this.user,
@@ -58,11 +58,11 @@ class Datum {
   String description;
   int categoryId;
   int subcategoryId;
+  int paymentStatus;
   int userId;
   dynamic lessonId;
-  int paymentStatus;
   String image;
-  String? status;
+  dynamic status;
   int isActive;
   int isSeen;
   Language language;
@@ -70,7 +70,7 @@ class Datum {
   dynamic updatedBy;
   dynamic deletedBy;
   DateTime createdAt;
-  DateTime? updatedAt;
+  DateTime updatedAt;
   String imagePath;
   List<Category> categories;
   List<User> user;
@@ -81,9 +81,9 @@ class Datum {
     description: json["description"],
     categoryId: json["category_id"],
     subcategoryId: json["subcategory_id"],
+    paymentStatus: json["payment_status"],
     userId: json["user_id"],
     lessonId: json["lesson_id"],
-    paymentStatus: json["payment_status"],
     image: json["image"],
     status: json["status"],
     isActive: json["is_active"],
@@ -93,7 +93,7 @@ class Datum {
     updatedBy: json["updated_by"],
     deletedBy: json["deleted_by"],
     createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: json["updated_at"] == null ? null : DateTime.parse(json["updated_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
     imagePath: json["image_path"],
     categories: List<Category>.from(json["categories"].map((x) => Category.fromJson(x))),
     user: List<User>.from(json["user"].map((x) => User.fromJson(x))),
@@ -105,9 +105,9 @@ class Datum {
     "description": description,
     "category_id": categoryId,
     "subcategory_id": subcategoryId,
+    "payment_status": paymentStatus,
     "user_id": userId,
     "lesson_id": lessonId,
-    "payment_status": paymentStatus,
     "image": image,
     "status": status,
     "is_active": isActive,
@@ -117,7 +117,7 @@ class Datum {
     "updated_by": updatedBy,
     "deleted_by": deletedBy,
     "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt?.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
     "image_path": imagePath,
     "categories": List<dynamic>.from(categories.map((x) => x.toJson())),
     "user": List<dynamic>.from(user.map((x) => x.toJson())),
@@ -132,29 +132,21 @@ class Category {
   });
 
   int id;
-  Title title;
+  String title;
   String imagePath;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     id: json["id"],
-    title: titleValues.map[json["title"]]!,
+    title: json["title"],
     imagePath: json["image_path"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "title": titleValues.reverse[title],
+    "title": title,
     "image_path": imagePath,
   };
 }
-
-enum Title { MANGA, MANHWA, NOVELS }
-
-final titleValues = EnumValues({
-  "Manga": Title.MANGA,
-  "Manhwa": Title.MANHWA,
-  "Novels": Title.NOVELS
-});
 
 enum Language { ENG, ARB }
 

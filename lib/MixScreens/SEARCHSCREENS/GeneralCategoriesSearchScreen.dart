@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
+import 'package:transitioner/transitioner.dart';
 
 import '../../Models/GeneralCategoriesNameModel.dart';
 import '../../Models/SubCategoriesModel.dart';
@@ -14,6 +15,7 @@ import '../../Utils/ApiUtils.dart';
 import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../localization/Language/languages.dart';
+import '../BooksScreens/BookDetailsAuthor.dart';
 
 class GeneralCategoriesScreen extends StatefulWidget {
   String categories_id;
@@ -189,76 +191,95 @@ class _GeneralCategoriesScreenState extends State<GeneralCategoriesScreen> {
               children: List.generate(_subCategoriesModel!.data!.length, (index) {
                 return Container(
                   margin: EdgeInsets.all(8.0),
-                  child: Column(
-                    mainAxisAlignment:
-                    MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          width: _width * 0.25,
-                          height: _height * 0.13,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(10),
+                  child: GestureDetector(
+                    onTap: (){
+                      Transitioner(
+                        context: context,
+                        child: BookDetailAuthor(
+                          bookID: _subCategoriesModel!.data![index]!.id.toString(),
+                        ),
+                        animation: AnimationType
+                            .slideTop, // Optional value
+                        duration: Duration(
+                            milliseconds:
+                            1000), // Optional value
+                        replacement:
+                        false, // Optional value
+                        curveType: CurveType
+                            .decelerate, // Optional value
+                      );
+                    },
+                    child: Column(
+                      mainAxisAlignment:
+                      MainAxisAlignment.spaceAround,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            width: _width * 0.25,
+                            height: _height * 0.13,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(10),
+                                ),
+                                // image: DecorationImage(
+                                //     image: NetworkImage(
+                                //         _subCategoriesModel!.data![index]!.imagePath.toString()),
+                                //     fit: BoxFit.cover),
+                                color: Colors.green),
+                        child: CachedNetworkImage(
+                          filterQuality:
+                          FilterQuality.high,
+                          imageBuilder:
+                              (context, imageProvider) =>
+                              Container(
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.rectangle,
+                                  borderRadius:
+                                  BorderRadius.circular(
+                                      10),
+                                  image: DecorationImage(
+                                      image: imageProvider,
+                                      fit: BoxFit.cover),
+                                ),
                               ),
-                              // image: DecorationImage(
-                              //     image: NetworkImage(
-                              //         _subCategoriesModel!.data![index]!.imagePath.toString()),
-                              //     fit: BoxFit.cover),
-                              color: Colors.green),
-                      child: CachedNetworkImage(
-                        filterQuality:
-                        FilterQuality.high,
-                        imageBuilder:
-                            (context, imageProvider) =>
-                            Container(
-                              decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                borderRadius:
-                                BorderRadius.circular(
-                                    10),
-                                image: DecorationImage(
-                                    image: imageProvider,
-                                    fit: BoxFit.cover),
-                              ),
-                            ),
-                        imageUrl:  _subCategoriesModel!.data![index]!.imagePath.toString(),
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) =>
-                        const Center(
-                            child:
-                            CupertinoActivityIndicator(
-                              color: Color(0xFF256D85),
-                            )),
-                        errorWidget: (context, url,
-                            error) =>
-                        const Center(
-                            child: Icon(Icons
-                                .error_outline)),
-                      ),),
-                      SizedBox(
-                        height: _height * 0.01,
-                      ),
-                      Expanded(
-                        child: Text(_subCategoriesModel!.data![index]!.title.toString(),
-                            style: const TextStyle(
-                                color: const Color(0xff2a2a2a),
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Alexandria",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 12.0),
-                            textAlign: TextAlign.left),
-                      ),
-                      Expanded(
-                          child: Text(_subCategoriesModel!.data![index]!.user![0]!.authorName.toString(),
+                          imageUrl:  _subCategoriesModel!.data![index]!.imagePath.toString(),
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) =>
+                          const Center(
+                              child:
+                              CupertinoActivityIndicator(
+                                color: Color(0xFF256D85),
+                              )),
+                          errorWidget: (context, url,
+                              error) =>
+                          const Center(
+                              child: Icon(Icons
+                                  .error_outline)),
+                        ),),
+                        SizedBox(
+                          height: _height * 0.01,
+                        ),
+                        Expanded(
+                          child: Text(_subCategoriesModel!.data![index]!.title.toString(),
                               style: const TextStyle(
-                                  color: const Color(0xff676767),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "Lato",
+                                  color: const Color(0xff2a2a2a),
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: "Alexandria",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 12.0),
-                              textAlign: TextAlign.left)),
-                    ],
+                              textAlign: TextAlign.left),
+                        ),
+                        Expanded(
+                            child: Text(_subCategoriesModel!.data![index]!.user![0]!.authorName.toString(),
+                                style: const TextStyle(
+                                    color: const Color(0xff676767),
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "Lato",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 12.0),
+                                textAlign: TextAlign.left)),
+                      ],
+                    ),
                   ),
                 );
               }),
