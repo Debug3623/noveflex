@@ -17,12 +17,12 @@ import '../../Utils/toast.dart';
 import '../../ad_helper.dart';
 import '../../localization/Language/languages.dart';
 
-
 class ShowAllReviewScreen extends StatefulWidget {
   String? bookId;
   String bookName;
   String bookImage;
-  ShowAllReviewScreen({required this.bookId,required this.bookName,required this.bookImage});
+  ShowAllReviewScreen(
+      {required this.bookId, required this.bookName, required this.bookImage});
 
   @override
   State<ShowAllReviewScreen> createState() => _ShowAllReviewScreenState();
@@ -38,7 +38,7 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
   void initState() {
     super.initState();
     _checkInternetConnection();
-    token= context.read<UserProvider>().UserToken;
+    token = context.read<UserProvider>().UserToken;
   }
 
   Future _checkInternetConnection() async {
@@ -112,7 +112,7 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
                   showDialog(
                     context: context,
                     barrierDismissible:
-                    true, // set to false if you want to force a rating
+                        true, // set to false if you want to force a rating
                     builder: (context) => Dialogue(context),
                   );
                 },
@@ -129,112 +129,103 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
         ),
         body: _isInternetConnected == false
             ? SafeArea(
-          child: Center(
-            child:  Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Text(
-                  "INTERNET NOT CONNECTED",
-                  style: TextStyle(
-                    fontFamily: Constants.fontfamily,
-                    color: Color(0xFF256D85),
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                SizedBox(
-                  height: _height * 0.019,
-                ),
-                GestureDetector(
-                  child: Container(
-                    width: _width * 0.2,
-                    height: _height * 0.058,
-                    decoration: BoxDecoration(
-                        color: const Color(0xFF256D85),
-                        shape: BoxShape.circle),
-                    child: const Center(
-                      child: Icon(
-                        Icons.sync,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  onTap: () {
-                    setState(() {
-                      _checkInternetConnection();
-                    });
-                  },
-                ),
-              ],
-            ),
-          ),
-        )
-            : _isLoading
-            ? const Align(
-            alignment: Alignment.center,
-            child: const Center(
-              child: CupertinoActivityIndicator(
-              ),
-            )
-        )
-            : _bookReviewModel!.data.length==0
-            ?  Center(
-              child: Text(
-                  Languages.of(context)!.noReview,
-                  style:
-                  TextStyle(
-                    color: Colors
-                        .black,
-                    fontFamily:
-                    Constants
-                        .fontfamily,
-                  )),
-            )
-            : ListView.builder(
-            itemCount: _bookReviewModel!.data.length,
-            shrinkWrap: true,
-            physics: ClampingScrollPhysics(),
-            itemBuilder: (BuildContext context, index) {
-              return GFListTile(
-                  color: Colors.black12,
-                  avatar: GFAvatar(
-                    // backgroundColor: Colors.bl,
-                    backgroundImage:
-                    NetworkImage(_bookReviewModel!
-                        .data[index].profilePhoto
-                        .toString()),
-                  ),
-                  title: Padding(
-                    padding: const EdgeInsets.only(bottom: 8.0),
-                    child: Text(
-                      _bookReviewModel!.data[index].username
-                          .toString(),
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontFamily: Constants.fontfamily,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15.0),
-                    ),
-                  ),
-                  subTitleText: _bookReviewModel!
-                      .data[index].comment
-                      .toString(),
-                  icon: Column(
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(
-                        Icons.star_rate,
-                        color: Colors.amberAccent,
+                      const Text(
+                        "INTERNET NOT CONNECTED",
+                        style: TextStyle(
+                          fontFamily: Constants.fontfamily,
+                          color: Color(0xFF256D85),
+                          fontWeight: FontWeight.w400,
+                        ),
                       ),
-                      // Text(
-                      //   _bookReviewModel!.data[index].status
-                      //       .toString(),
-                      //   style: const TextStyle(
-                      //     fontFamily: Constants.fontfamily,
-                      //   ),
-                      // ),
+                      SizedBox(
+                        height: _height * 0.019,
+                      ),
+                      GestureDetector(
+                        child: Container(
+                          width: _width * 0.2,
+                          height: _height * 0.058,
+                          decoration: BoxDecoration(
+                              color: const Color(0xFF256D85),
+                              shape: BoxShape.circle),
+                          child: const Center(
+                            child: Icon(
+                              Icons.sync,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        onTap: () {
+                          setState(() {
+                            _checkInternetConnection();
+                          });
+                        },
+                      ),
                     ],
-                  )
-              );
-            }));
+                  ),
+                ),
+              )
+            : _isLoading
+                ? const Align(
+                    alignment: Alignment.center,
+                    child: const Center(
+                      child: CupertinoActivityIndicator(),
+                    ))
+                : _bookReviewModel!.data.length == 0
+                    ? Center(
+                        child: Text(Languages.of(context)!.noReview,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: Constants.fontfamily,
+                            )),
+                      )
+                    : ListView.builder(
+                        itemCount: _bookReviewModel!.data.length,
+                        shrinkWrap: true,
+                        physics: ClampingScrollPhysics(),
+                        itemBuilder: (BuildContext context, index) {
+                          return GFListTile(
+                              color: Colors.black12,
+                              avatar: GFAvatar(
+                                // backgroundColor: Colors.bl,
+                                backgroundImage: NetworkImage(_bookReviewModel!
+                                    .data[index].profilePhoto
+                                    .toString()),
+                              ),
+                              title: Padding(
+                                padding: const EdgeInsets.only(bottom: 8.0),
+                                child: Text(
+                                  _bookReviewModel!.data[index].username
+                                      .toString(),
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontFamily: Constants.fontfamily,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15.0),
+                                ),
+                              ),
+                              subTitleText: _bookReviewModel!
+                                  .data[index].comment
+                                  .toString(),
+                              icon: Column(
+                                children: [
+                                  const Icon(
+                                    Icons.star_rate,
+                                    color: Colors.amberAccent,
+                                  ),
+                                  // Text(
+                                  //   _bookReviewModel!.data[index].status
+                                  //       .toString(),
+                                  //   style: const TextStyle(
+                                  //     fontFamily: Constants.fontfamily,
+                                  //   ),
+                                  // ),
+                                ],
+                              ));
+                        }));
   }
 
   Future _callReviewAPI() async {
@@ -243,14 +234,14 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
       _isInternetConnected = true;
     });
 
-    var map =  Map<String, dynamic>();
-    map['book_id'] =  widget.bookId.toString();
+    var map = Map<String, dynamic>();
+    map['book_id'] = widget.bookId.toString();
 
     final response = await http.post(
       Uri.parse(ApiUtils.SEE_ALL_REVIEWS_API),
-        headers: {
-          'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-        },
+      headers: {
+        'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+      },
       body: map,
     );
 
@@ -271,11 +262,11 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
     }
   }
 
-  Widget Dialogue(var context){
+  Widget Dialogue(var context) {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
-    return  RatingDialog(
-      title:  Text(
+    return RatingDialog(
+      title: Text(
         widget.bookName,
         textAlign: TextAlign.center,
         style: TextStyle(
@@ -284,16 +275,14 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
           fontFamily: Constants.fontfamily,
         ),
       ),
-      image:  Container(
-        height:_height*0.15,
-        width: _width*0.1,
+      image: Container(
+        height: _height * 0.15,
+        width: _width * 0.1,
         decoration: BoxDecoration(
           shape: BoxShape.rectangle,
           borderRadius: BorderRadius.circular(30),
           image: DecorationImage(
-            image: NetworkImage(widget.bookImage),
-            fit: BoxFit.fitHeight
-          ),
+              image: NetworkImage(widget.bookImage), fit: BoxFit.fitHeight),
         ),
       ),
       submitButtonText: 'Submit',
@@ -302,24 +291,22 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
       starColor: Colors.yellow,
       // starSize: 0.0,
       onSubmitted: (response) {
-        _addCommentAPI(response.comment,context);
-         print('rating: ${response.rating}, comment: ${response.comment}');
-
+        _addCommentAPI(response.comment, context);
+        print('rating: ${response.rating}, comment: ${response.comment}');
       },
     );
   }
 
-  Future _addCommentAPI(String comments,var context) async {
+  Future _addCommentAPI(String comments, var context) async {
     setState(() {
       _isLoading = true;
       _isInternetConnected = true;
     });
-    var map =  Map<String, dynamic>();
-    map['book_id'] =  widget.bookId.toString();
+    var map = Map<String, dynamic>();
+    map['book_id'] = widget.bookId.toString();
     map['comment'] = comments.toString().trim();
     final response = await http.post(
-      Uri.parse(
-          ApiUtils.ADD_REVIEW_API),
+      Uri.parse(ApiUtils.ADD_REVIEW_API),
       headers: {
         'Authorization': "Bearer $token",
       },
@@ -329,20 +316,16 @@ class _ShowAllReviewScreenState extends State<ShowAllReviewScreen> {
     if (response.statusCode == 200) {
       print('review_response under 200 ${response.body}');
       var jsonData = json.decode(response.body);
-      if(jsonData['status'] == 200)
-      {
+      if (jsonData['status'] == 200) {
         Constants.showToastBlack(context, "Thanks! for Review");
         setState(() {
           _callReviewAPI();
         });
-      }else{
-        ToastConstant.showToast(context,jsonData['message'].toString());
+      } else {
+        ToastConstant.showToast(context, jsonData['message'].toString());
       }
-
     } else {
       print("error_occur");
-
     }
   }
 }
-

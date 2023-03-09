@@ -14,6 +14,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:in_app_update/in_app_update.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:notification_permissions/notification_permissions.dart';
 import 'package:novelflex/TabScreens/home_screen.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/SignUpScreen_Second.dart';
 import 'package:novelflex/localization/Language/languages.dart';
@@ -183,6 +184,11 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  Future<String>? permissionStatusFuture;
+  var permGranted = "granted";
+  var permDenied = "denied";
+  var permUnknown = "unknown";
+  var permProvisional = "provisional";
   String? token;
 
   @override
@@ -243,9 +249,55 @@ class _MyAppState extends State<MyApp> {
     });
 
     setFCMToken();
+
+    permissionStatusFuture = getCheckNotificationPermStatus();
+    // With this, we will be able to check if the permission is granted or not
+    // when returning to the application
+    // WidgetsBinding.instance.addObserver(this);
+if(permissionStatusFuture==permGranted){
+
+}else{
+  NotificationPermissions.requestNotificationPermissions(
+      iosSettings: const NotificationSettingsIos(
+          sound: true, badge: true, alert: true))
+      .then((_) {
+    // when finished, check the permission status
+    setState(() {
+      permissionStatusFuture =
+          getCheckNotificationPermStatus();
+    });
+  });
+}
+
   }
 
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      setState(() {
+        permissionStatusFuture = getCheckNotificationPermStatus();
+      });
+    }
+  }
 
+  /// Checks the notification permission status
+  Future<String> getCheckNotificationPermStatus() {
+    return NotificationPermissions.getNotificationPermissionStatus()
+        .then((status) {
+      switch (status) {
+        case PermissionStatus.denied:
+          return permDenied;
+        case PermissionStatus.granted:
+          return permGranted;
+        case PermissionStatus.unknown:
+          return permUnknown;
+        case PermissionStatus.provisional:
+          return permProvisional;
+        default:
+          return "";
+      }
+    });
+  }
 
   setFCMToken() async {
     SharedPreferences prefts = await SharedPreferences.getInstance();
@@ -335,6 +387,7 @@ class SplashFirst extends StatefulWidget {
 }
 
 class _SplashFirstState extends State<SplashFirst> {
+
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
 
   @override
@@ -421,6 +474,7 @@ class _SplashFirstState extends State<SplashFirst> {
       print(e.toString());
     }
   }
+
 }
 
 
