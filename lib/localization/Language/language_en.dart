@@ -38,6 +38,9 @@ class LanguageEn extends Languages {
   @override
   String get giftAuthor => "Gift Author";
 
+  @override
+  String get allReview => "View all Reviews ★";
+
 
   @override
   String get guest => "Login as Guest";

@@ -222,6 +222,8 @@ abstract class Languages {
 
   String get giftAuthor;
 
+  String get allReview;
+
   String get fatherName;
 
   String get cardHolderName;

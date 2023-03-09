@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:new_version/new_version.dart';
@@ -21,6 +22,7 @@ import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import '../ad_helper.dart';
 import '../localization/Language/languages.dart';
 import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:lottie/lottie.dart';
@@ -49,11 +51,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   String? packageName = '';
   bool _isInternetConnected = true;
   int count = 0;
-  // DioCacheManager? _dioCacheManager;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
+
+    _loadAds();
     _bellController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1))
           ..repeat();
@@ -64,7 +68,27 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     _bellController.dispose();
+    _bannerAd?.dispose();
     super.dispose();
+  }
+
+  _loadAds() {
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
   }
 
   basicStatusCheck(NewVersion newVersion) {
@@ -1021,10 +1045,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 );
                               },
                             ),
+                            _bannerAd != null
+                                ? Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  width: _bannerAd!.size.width
+                                      .toDouble(),
+                                  height: _bannerAd!.size.height
+                                      .toDouble(),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(30)
+                                  ),
+                                  child: AdWidget(ad: _bannerAd!),
+                                ),
+                              ),
+                            )
+                                : Container()
                           ],
                         ),
                       ),
                     ),
+
                   ],
                 ),
       // drawer: DrawerCode(),

@@ -116,6 +116,9 @@ class LanguageAr extends Languages {
   @override
   String get fatherName => "اسم الأب";
 
+  @override
+  String get allReview => "عرض جميع التعليقات ★";
+
 
   @override
   String get guest => "تسجيل الدخول كضيف";

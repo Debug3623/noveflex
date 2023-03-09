@@ -3,6 +3,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:novelflex/MixScreens/StripePayment/StripePayment.dart';
 import 'package:novelflex/Models/LikeDislikeModel.dart';
@@ -20,6 +21,7 @@ import '../../Utils/constant.dart';
 import '../../Utils/native_dialog.dart';
 import '../../Utils/store_config.dart';
 import '../../Utils/toast.dart';
+import '../../ad_helper.dart';
 import '../../localization/Language/languages.dart';
 import 'AllPdfScreens.dart';
 import 'AuthorViewByUserScreen.dart';
@@ -27,6 +29,7 @@ import 'dart:io';
 import '../InAppPurchase/inAppPurchaseSubscription.dart';
 import '../InAppPurchase/paywall.dart';
 import '../InAppPurchase/singletons_data.dart';
+import 'BookReviewScreen.dart';
 
 class BookDetailAuthor extends StatefulWidget {
   String bookID;
@@ -46,16 +49,41 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
   bool? _isLike;
   bool? _isDisLike;
   bool _isSaved = false;
-  bool _isLoadingInApppurchase = false;
   Offerings? offerings;
-  // bool? subscriptionStatus;
+  BannerAd? _bannerAd;
 
   @override
   void initState() {
     super.initState();
     _checkInternetConnection();
     initPlatformState();
-    print("token ${context.read<UserProvider>().UserToken}");
+    _loadAds();
+  }
+
+  _loadAds() {
+    BannerAd(
+      adUnitId: AdHelper.bannerAdUnitId,
+      request: AdRequest(),
+      size: AdSize.banner,
+      listener: BannerAdListener(
+        onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        },
+        onAdFailedToLoad: (ad, err) {
+          print('Failed to load a banner ad: ${err.message}');
+          ad.dispose();
+        },
+      ),
+    ).load();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -501,8 +529,38 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 fontStyle: FontStyle.normal,
                                 fontSize: 12.0),
                             textAlign: TextAlign.left),
-                        SizedBox(),
-                        SizedBox()
+                        InkWell(
+                          onTap: (){
+                            Transitioner(
+                              context: context,
+                              child: ShowAllReviewScreen(
+                                bookId: _bookDetailsModel!.data!.bookId
+                                    .toString(),
+                                bookName: _bookDetailsModel!.data!.bookTitle
+                                    .toString(),
+                                bookImage: _bookDetailsModel!.data!.imagePath
+                                    .toString(),
+                              ),
+                              animation:
+                              AnimationType.slideTop, // Optional value
+                              duration: Duration(
+                                  milliseconds: 1000), // Optional value
+                              replacement: false, // Optional value
+                              curveType:
+                              CurveType.decelerate, // Optional value
+                            );
+
+
+                          },
+                          child: Text(Languages.of(context)!.allReview,
+                              style: const TextStyle(
+                                  color:  Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: "Lato",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 13.0),
+                              textAlign: TextAlign.left),
+                        ),
                       ],
                     ),
                     Padding(
@@ -721,7 +779,21 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                         ),
                       ],
                     ),
-                    SizedBox()
+                    SizedBox(
+                      height: _height * 0.05,
+                      child: _bannerAd != null
+                          ? Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: Container(
+                                  width: _bannerAd!.size.width.toDouble(),
+                                  height: _bannerAd!.size.height.toDouble(),
+                                  child: AdWidget(ad: _bannerAd!),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                    )
                   ],
                 ),
     );

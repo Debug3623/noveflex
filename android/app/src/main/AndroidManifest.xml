@@ -90,5 +90,11 @@
             android:name="com.google.android.gms.wallet.api.enabled"
             android:value="true" />
         <meta-data android:name="com.google.firebase.messaging.default_notification_icon" android:resource="@drawable/ic_launcher" />
+
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-1911709436746841~9687980309"
+            />
+
    </application>
 </manifest>

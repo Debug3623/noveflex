@@ -242,7 +242,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                       ),
                                     ),
                                   ),
-                                  Visibility(
+                                 Platform.isIOS ? Container() : Visibility(
                                     visible: _userStatusTypeModel!.data![0]!.type!="Writer",
                                     child: Padding(
                                       padding: EdgeInsets.only(

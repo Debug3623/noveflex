@@ -103,6 +103,7 @@ dependencies:
   flutter_animated_icons: ^1.0.1
   mailto: ^2.0.0
   advanced_search: ^2.2.3
+  google_mobile_ads: ^2.3.0
   #  advance_pdf_viewer: ^2.0.1
 #  advance_pdf_viewer_fork: ^2.0.0
 #  credit_card_scanner: ^1.0.5

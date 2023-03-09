@@ -10,64 +10,60 @@ String bookReviewModelToJson(BookReviewModel data) => json.encode(data.toJson())
 
 class BookReviewModel {
   BookReviewModel({
-    this.status,
-    this.message,
-    this.data,
+    required this.status,
+    required this.success,
+    required this.data,
   });
 
-  int? status;
-  String? message;
-  List<Datum>? data;
+  int status;
+  String success;
+  List<Datum> data;
 
   factory BookReviewModel.fromJson(Map<String, dynamic> json) => BookReviewModel(
     status: json["status"],
-    message: json["message"],
+    success: json["success"],
     data: List<Datum>.from(json["data"].map((x) => Datum.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "message": message,
-    "data": List<dynamic>.from(data!.map((x) => x.toJson())),
+    "success": success,
+    "data": List<dynamic>.from(data.map((x) => x.toJson())),
   };
 }
 
 class Datum {
   Datum({
-    this.id,
-    this.bookTitle,
-    this.rating,
-    this.comments,
-    this.bookImage,
-    this.username,
-    this.userImage,
+    required this.id,
+    required this.userId,
+    required this.comment,
+    required this.status,
+    required this.username,
+    required this.profilePhoto,
   });
 
-  String? id;
-  String? bookTitle;
-  String? rating;
-  String? comments;
-  String? bookImage;
-  String? username;
-  dynamic userImage;
+  int id;
+  int userId;
+  String comment;
+  int status;
+  String username;
+  String profilePhoto;
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
     id: json["id"],
-    bookTitle: json["bookTitle"],
-    rating: json["rating"],
-    comments: json["comments"],
-    bookImage: json["bookImage"],
+    userId: json["user_id"],
+    comment: json["comment"],
+    status: json["status"],
     username: json["username"],
-    userImage: json["userImage"],
+    profilePhoto: json["profile_photo"],
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "bookTitle": bookTitle,
-    "rating": rating,
-    "comments": comments,
-    "bookImage": bookImage,
+    "user_id": userId,
+    "comment": comment,
+    "status": status,
     "username": username,
-    "userImage": userImage,
+    "profile_photo": profilePhoto,
   };
 }

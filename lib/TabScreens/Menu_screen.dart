@@ -6,6 +6,7 @@ import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mailto/mailto.dart';
 import 'package:novelflex/MixScreens/AccountInfoScreen.dart';
 import 'package:novelflex/Models/UserReferralModel.dart';
@@ -26,6 +27,7 @@ import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import '../ad_helper.dart';
 import '../localization/Language/languages.dart';
 import 'package:http/http.dart' as http;
 
@@ -44,12 +46,55 @@ class _MenuScreenState extends State<MenuScreen> {
   bool _isLoading = false;
   bool _isInternetConnected = true;
   bool isCheck = true;
+  InterstitialAd? _interstitialAd;
 
   @override
   void initState() {
     _checkInternetConnection();
+    _loadInterstitialAd();
     super.initState();
   }
+
+  @override
+  void dispose() {
+
+    _interstitialAd?.dispose();
+
+    super.dispose();
+  }
+
+  void _loadInterstitialAd() {
+    InterstitialAd.load(
+      adUnitId: AdHelper.interstitialAdUnitId,
+      request: AdRequest(),
+      adLoadCallback: InterstitialAdLoadCallback(
+        onAdLoaded: (ad) {
+          ad.fullScreenContentCallback = FullScreenContentCallback(
+            onAdDismissedFullScreenContent: (ad) {
+              Transitioner(
+                context: context,
+                child: HomeProfileScreen(),
+                animation:
+                AnimationType.slideLeft, // Optional value
+                duration:
+                Duration(milliseconds: 1000), // Optional value
+                replacement: false, // Optional value
+                curveType: CurveType.decelerate, // Optional value
+              );
+            },
+          );
+
+          setState(() {
+            _interstitialAd = ad;
+          });
+        },
+        onAdFailedToLoad: (err) {
+          print('Failed to load an interstitial ad: ${err.message}');
+        },
+      ),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -183,16 +228,22 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Transitioner(
-                            context: context,
-                            child: HomeProfileScreen(),
-                            animation:
-                                AnimationType.slideLeft, // Optional value
-                            duration:
-                                Duration(milliseconds: 1000), // Optional value
-                            replacement: false, // Optional value
-                            curveType: CurveType.decelerate, // Optional value
-                          );
+                          _loadInterstitialAd();
+                          if (_interstitialAd != null) {
+                            _interstitialAd?.show();
+                          } else {
+                            Transitioner(
+                              context: context,
+                              child: HomeProfileScreen(),
+                              animation:
+                              AnimationType.slideLeft, // Optional value
+                              duration:
+                              Duration(milliseconds: 1000), // Optional value
+                              replacement: false, // Optional value
+                              curveType: CurveType.decelerate, // Optional value
+                            );
+                          }
+
                         },
                         child: Padding(
                           padding: EdgeInsets.all(_width * 0.03),
