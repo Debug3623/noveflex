@@ -117,6 +117,9 @@ class LanguageAr extends Languages {
   String get fatherName => "اسم الأب";
 
   @override
+  String get faq => "أسئلة مكرره";
+
+  @override
   String get allReview => "عرض جميع التعليقات ★";
 
 
@@ -223,7 +226,7 @@ class LanguageAr extends Languages {
 
   @override
   // TODO: implement home
-  String get home => "مسكن";
+  String get home => "الرئيسية";
 
   @override
   // TODO: implement rate_Us
@@ -516,8 +519,15 @@ class LanguageAr extends Languages {
   @override
   String get novelFlexPremium => ' NovelFlex بريميوم✨';
 
+
   @override
-  String get packageText => """سيتم تطبيق عملية شراء على حسابك عند تأكيد المبلغ المحدد. لن يتم تجديد الاشتراكات تلقائيًا إلا إذا قمت بالاشتراك مرة أخرى خلال فترة شهر واحد. يمكنك الإلغاء في أي وقت باستخدام إعدادات حسابك. سيتم مصادرة أي جزء غير مستخدم من الإصدار التجريبي المجاني إذا قمت بشراء اشتراك.""";
+  String get packageText => """
+  - Auto-renewable subscription
+  - 1 month (\$2.99)
+  - Payment: The purchase is confirmed and paid into the iTunes Account.
+  - Payment will be deducted from  Apple's  iTunes Account within 24 hours before expiration, and the subscription month will be extended to the next subscription month
+  after successful deduction.
+  """;
 
   @override
   String get unlockPremium => "فتح ميزات قسط novelflex";
@@ -595,11 +605,25 @@ class LanguageAr extends Languages {
   // TODO: implement yes
   String get yes => "نعم";
 
+  @override
+  // TODO: implement home
+  String get readerMore => "اقرأ أكثر";
+
   String get disclaimer =>
       "المحتوى الموجود في تطبيق Manga Reader ، بما في ذلك على سبيل المثال لا الحصر ، النص ، والبرامج ، والنصوص ، والرسومات ، والصور ، والأصوات ، والموسيقى ، ومقاطع الفيديو ، والميزات التفاعلية وما شابه (المحتوى) والعلامات التجارية وعلامات الخدمة والشعارات الواردة فيه (العلامات) ، مملوكة أو مرخصة لـ Manga Reader ، تخضع لحقوق الطبع والنشر وحقوق الملكية الفكرية الأخرى بموجب قوانين الولايات المتحدة والأجنبية والاتفاقيات الدولية. إذا قمت بتنزيل أو طباعة نسخة من المحتوى للاستخدام الشخصي ، فيجب عليك الاحتفاظ بجميع حقوق النشر وإشعارات الملكية الأخرى الواردة فيه. أنت توافق على عدم التحايل أو تعطيل أو التدخل بطريقة أخرى في الميزات المتعلقة بالأمان لموقع MangaEden على الويب أو الميزات التي تمنع أو تقيد استخدام أو نسخ أي محتوى أو تفرض قيودًا على استخدام موقع Manga Reader أو المحتوى الموجود فيه";
   @override
   // TODO: implement discliamr_bar
-  String get discliamr_bar => "تنصل";
+  String get discliamr_bar => "إخلاء المسؤولية";
+
+  @override
+  String get joinUs => "انضم إلينا كمؤلف مشهور!";
+
+  @override
+  String get faqText_long_1 => '''تطمح منصة "Novelflex" إلى إنشاء خدمة نشر مجانية تجمع جميع المؤلفين والرسامين من جميع أنحاء العالم بلغات وثقافات مختلفة في منصة واحدة تتيح لهم النشر وتحقيق النشر من خلال خطط مبتكرة. حيث توفر المنصة كافة الخدمات لنشر الأعمال بكل سهولة. المنصة تسمح
+  قام بإنشاء صفحة خاصة للنشر ، حيث يمكنه الحصول على جميع خدماتنا وأهمها الربح الشهري حسب عدد المتابعين لديه. ''';
+
+  @override
+  String get faqText_long => "منصة Novelx عبارة عن منصة تقع في دولة الإمارات العربية المتحدة. تم إطلاق المنصة في عام 2020. وتتمثل فكرة المنصة في نشر الأعمال الأدبية والفنية لجميع المبدعين والهواة في الروايات والمانجا والقصص المصورة جنبًا إلى جنب مع المنهوا والأعمال الأدبية الأخرى من خلال منصة إلكترونية واحدة.";
 
   @override
   // TODO: implement noReview

@@ -36,6 +36,9 @@ class LanguageEn extends Languages {
   String get fatherName => "Father Name";
 
   @override
+  String get faq => "FAQ";
+
+  @override
   String get giftAuthor => "Gift Author";
 
   @override
@@ -57,7 +60,13 @@ class LanguageEn extends Languages {
 
 
   @override
-  String get packageText => """A purchase will be applied to your account upon confirmation of the amount selected. Subscriptions will not automatically renew unless you subscribe again within 1 month period. You can cancel any time using your account settings. Any unused portion of a free trial will be forfeited if you purchase a subscription.""";
+  String get packageText => """
+  - Auto-renewable subscription
+  - 1 month (\$2.99)
+  - Payment: The purchase is confirmed and paid into the iTunes Account.
+  - Payment will be deducted from  Apple's  iTunes Account within 24 hours before expiration, and the subscription month will be extended to the next subscription month
+  after successful deduction.
+  """;
 
 
   @override
@@ -180,6 +189,20 @@ class LanguageEn extends Languages {
   @override
   // TODO: implement home
   String get home => "Home";
+
+  @override
+  // TODO: implement home
+  String get readerMore => "Read More";
+
+  @override
+  String get joinUs => "Join us as a famous author! ";
+
+  @override
+  String get faqText_long_1 => '''The "Novelflex" platform aspires to create a free publishing service to bring together all authors and illustrators around the world in different languages and cultures in one platform that allows them to publish and achieve dissemination through innovative plans. Where the platform provides all services to publish business with ease. The platform allows
+  He created a special page for publishing, where he can obtain all our services, the most important of which is the monthly profit, according to the number of followers he has.''';
+
+  @override
+  String get faqText_long => "The Novelx platform is a platform located in the United Arab Emirates. The platform was launched in 2020. The idea of the platform is to publish literary and artistic works for all creators and amateurs in novels, manga, and comics along with manhwa and other literary works through one electronic platform.";
 
   @override
   // TODO: implement home

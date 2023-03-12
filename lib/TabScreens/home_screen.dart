@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
@@ -56,13 +57,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
     _loadAds();
     _bellController =
         AnimationController(vsync: this, duration: const Duration(seconds: 1))
           ..repeat();
     checkUpdate();
     _checkInternetConnection();
+    requestNotificationsPermission();
   }
 
   @override
@@ -90,6 +91,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       ),
     ).load();
   }
+
+  void requestNotificationsPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+
 
   basicStatusCheck(NewVersion newVersion) {
     newVersion.showAlertIfNecessary(context: context);
@@ -1046,21 +1070,19 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               },
                             ),
                             _bannerAd != null
-                                ? Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  width: _bannerAd!.size.width
-                                      .toDouble(),
-                                  height: _bannerAd!.size.height
-                                      .toDouble(),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30)
+                                ? Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    width: _bannerAd!.size.width
+                                        .toDouble(),
+                                    height: _bannerAd!.size.height
+                                        .toDouble(),
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(30)
+                                    ),
+                                    child: AdWidget(ad: _bannerAd!),
                                   ),
-                                  child: AdWidget(ad: _bannerAd!),
-                                ),
-                              ),
-                            )
+                                )
                                 : Container()
                           ],
                         ),

@@ -782,16 +782,14 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                     SizedBox(
                       height: _height * 0.05,
                       child: _bannerAd != null
-                          ? Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  width: _bannerAd!.size.width.toDouble(),
-                                  height: _bannerAd!.size.height.toDouble(),
-                                  child: AdWidget(ad: _bannerAd!),
-                                ),
-                              ),
-                            )
+                          ? Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              width: _bannerAd!.size.width.toDouble(),
+                              height: _bannerAd!.size.height.toDouble(),
+                              child: AdWidget(ad: _bannerAd!),
+                            ),
+                          )
                           : Container(),
                     )
                   ],

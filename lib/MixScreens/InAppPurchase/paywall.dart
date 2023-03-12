@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:novelflex/MixScreens/InAppPurchase/singletons_data.dart';
 import 'package:novelflex/Utils/Constants.dart';
@@ -25,109 +26,131 @@ class Paywall extends StatefulWidget {
 }
 
 class _PaywallState extends State<Paywall> {
+  bool _isLoading= false;
   @override
   Widget build(BuildContext context) {
+    var _height = MediaQuery.of(context).size.height;
+    var _width = MediaQuery.of(context).size.width;
     return SingleChildScrollView(
       child: SafeArea(
-        child: Wrap(
-          children: <Widget>[
-            Container(
-              height: 70.0,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                  color: Colors.black,
-                  borderRadius:
-                  BorderRadius.vertical(top: Radius.circular(25.0))),
-              child:  Center(
-                  child:
-                  Text(Languages.of(context)!.novelFlexPremium, style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20,
-                  ))),
-            ),
-            Padding(
-              padding:
-              EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
-              child: SizedBox(
-                child: Text(
-                  Languages.of(context)!.unlockPremium,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15,
+        child: Stack(
+          children: [
+            Positioned(
+              child: Column(
+                children: <Widget>[
+                  Container(
+                    height: 70.0,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        color: Colors.black,
+                        borderRadius:
+                        BorderRadius.vertical(top: Radius.circular(25.0))),
+                    child:  Center(
+                        child:
+                        Text(Languages.of(context)!.novelFlexPremium, style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                        ))),
                   ),
-                ),
-                width: double.infinity,
-              ),
-            ),
-            ListView.builder(
-              itemCount: widget.offering.availablePackages.length,
-              itemBuilder: (BuildContext context, int index) {
-                var myProductList = widget.offering.availablePackages;
-                return Card(
-                  color: Colors.white24,
-                  child: ListTile(
-                      onTap: () async {
-                        try {
-                          CustomerInfo customerInfo =
-                          await Purchases.purchasePackage(
-                              myProductList[index]);
-                          appData.entitlementIsActive = customerInfo
-                              .entitlements.all[entitlementID]!.isActive;
-                          //Call Subscribe Api
-                          Subscribe();
-                          print("call_subscribe Api here during purchase");
-                        } catch (e) {
-                          print(e);
-                        }
-
-                        setState(() {});
-                        Navigator.pop(context);
-                      },
-                      title: Text(
-                        myProductList[index].storeProduct.title,
+                  Padding(
+                    padding:
+                    EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
+                    child: SizedBox(
+                      child: Text(
+                        Languages.of(context)!.unlockPremium,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.normal,
                           fontSize: 15,
                         ),
                       ),
-                      subtitle: Text(
-                        myProductList[index].storeProduct.description,
+                      width: double.infinity,
+                    ),
+                  ),
+                  ListView.builder(
+                    itemCount: widget.offering.availablePackages.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var myProductList = widget.offering.availablePackages;
+                      return Card(
+                        color: Colors.white24,
+                        child: ListTile(
+                            onTap: () async {
+                              try {
+                                setState(() {
+                                  _isLoading=true;
+                                });
+                                CustomerInfo customerInfo =
+                                await Purchases.purchasePackage(
+                                    myProductList[index]);
+                                appData.entitlementIsActive = customerInfo
+                                    .entitlements.all[entitlementID]!.isActive;
+                                //Call Subscribe Api
+                                Subscribe();
+                                print("call_subscribe Api here during purchase");
+                              } catch (e) {
+                                print(e);
+                              }
+
+                              setState(() {});
+                              Navigator.pop(context);
+                            },
+                            title: Text(
+                              myProductList[index].storeProduct.title,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 15,
+                              ),
+                            ),
+                            subtitle: Text(
+                              myProductList[index].storeProduct.description,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.normal,
+                                fontSize: 11,
+                              ),
+                            ),
+                            trailing: Text(
+                                myProductList[index].storeProduct.priceString,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ))),
+                      );
+                    },
+                    shrinkWrap: true,
+                    physics: const ClampingScrollPhysics(),
+                  ),
+                  Padding(
+                    padding:
+                    EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        Languages.of(context)!.packageText,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.normal,
-                          fontSize: 11,
+                          fontSize: 15,
                         ),
                       ),
-                      trailing: Text(
-                          myProductList[index].storeProduct.priceString,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                          ))),
-                );
-              },
-              shrinkWrap: true,
-              physics: const ClampingScrollPhysics(),
-            ),
-            Padding(
-              padding:
-              EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                child: Text(
-                  Languages.of(context)!.packageText,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.normal,
-                    fontSize: 15,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
+            Visibility(
+              visible: _isLoading,
+              child: Positioned(
+                top: _height*0.325,
+                  left: _width*0.45,
+                  child: CupertinoActivityIndicator(
+                    color: Colors.white,
+                    radius: _height*0.023,
+                  )),
+            )
           ],
         ),
       ),
@@ -151,6 +174,9 @@ class _PaywallState extends State<Paywall> {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         ToastConstant.showToast(context, jsonData1['data'].toString());
+        setState(() {
+          _isLoading=false;
+        });
         print("subscribe done");
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());

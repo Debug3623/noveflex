@@ -15,6 +15,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:transitioner/transitioner.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
+import '../MixScreens/FaqScreen.dart';
 import '../MixScreens/PieChartScreen.dart';
 import '../MixScreens/ProfileScreens/HomeProfileScreen.dart';
 import '../MixScreens/WalletDirectory/MyWalletScreen.dart';
@@ -117,7 +118,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           Center(
                             child: Container(
                               color: const Color(0xffebf5f9),
-                              margin: EdgeInsets.only(top: _height*0.03, bottom: _height*0.02),
+                              margin: EdgeInsets.only(top: _height*0.02, bottom: _height*0.02),
                               child:  Container(
                                 height: _height*0.15,
                                decoration: BoxDecoration(
@@ -176,13 +177,19 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                         ],
                       ),
+                      SizedBox(
+                        height: _height*0.03,
+                      ),
                       Opacity(
                         opacity: 0.5,
                         child: Container(
-                            width: 427.5,
+                            width: _width*0.7,
                             height: 1,
                             decoration:
                                 BoxDecoration(color: const Color(0xffbcbcbc))),
+                      ),
+                      SizedBox(
+                        height: _height*0.03,
                       ),
                       GestureDetector(
                         onTap: () {
@@ -344,45 +351,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       ),
                       GestureDetector(
                         onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DisclimarScreen()));
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.back_hand_outlined),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.Disclaimer,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
                           _checkInternetConnectionInviteApp();
                         },
                         child: Padding(
@@ -408,6 +376,53 @@ class _MenuScreenState extends State<MenuScreen> {
                               ),
                               SizedBox(
                                 width: 5.0,
+                              ),
+                              Icon(
+                                Icons.arrow_forward_ios,
+                                size: 15.0,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          Transitioner(
+                            context: context,
+                            child: FaqScreen(),
+                            animation:
+                            AnimationType.slideLeft, // Optional value
+                            duration:
+                            Duration(milliseconds: 1000), // Optional value
+                            replacement: false, // Optional value
+                            curveType: CurveType.decelerate, // Optional value
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.all(_width * 0.03),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                      child: Icon(Icons.question_mark),
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: Colors.white12
+                                  ),),
+                                  SizedBox(
+                                    width: 8.0,
+                                  ),
+                                  Text(Languages.of(context)!.faq,
+                                      style: const TextStyle(
+                                          color: const Color(0xff2a2a2a),
+                                          fontWeight: FontWeight.w700,
+                                          fontFamily: "Neckar",
+                                          fontStyle: FontStyle.normal,
+                                          fontSize: 14.0),
+                                      textAlign: TextAlign.left)
+                                ],
                               ),
                               Icon(
                                 Icons.arrow_forward_ios,
@@ -569,6 +584,9 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                         ),
                       ),
+                      SizedBox(
+                        height: _height*0.02,
+                      ),
                       InkWell(
                         onTap: () {
                           showDialog();
@@ -589,7 +607,10 @@ class _MenuScreenState extends State<MenuScreen> {
                           ],
                         ),
                       ),
-                      SizedBox()
+                      SizedBox(
+                        height: _height*0.04,
+                      ),
+
                     ],
                   )
             : Center(

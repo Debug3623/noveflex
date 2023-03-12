@@ -33,13 +33,22 @@ abstract class Languages {
 
   String get labelSelectLanguage;
 
-  String get home;
+  // String get home;
 
   String get rate_Us;
 
   String get ContactUs;
 
   String get Disclaimer;
+
+  String get faq;
+
+  String get joinUs;
+
+  String get faqText_long;
+
+
+  String get faqText_long_1;
 
   String get inviteApp;
 
@@ -175,6 +184,8 @@ abstract class Languages {
   String get followers;
 
   String get reader;
+
+  String get readerMore;
 
   String get aboutBook;
 

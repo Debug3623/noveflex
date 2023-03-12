@@ -82,7 +82,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                               image: AssetImage(
-                                  "assets/quotes_data/master_card.png"),
+                                  "assets/quotes_data/wallet_image.gif"),
                             )),
                           ),
                           SizedBox(
