@@ -63,14 +63,79 @@ class LanguageEn extends Languages {
   String get packageText => """
   - Auto-renewable subscription
   - 1 month (\$2.99)
-  - Payment: The purchase is confirmed and paid into the iTunes Account.
-  - Payment will be deducted from  Apple's  iTunes Account within 24 hours before expiration, and the subscription month will be extended to the next subscription month
-  after successful deduction.
+  - Payment: 
+  The purchase is confirmed and paid into the iTunes Account.
+  - Payment will be deducted from  Apple's  iTunes Account 
+    within 24 hours before expiration, 
+    and the subscription month will 
+    be extended to the next subscription month
+    after successful deduction.
   """;
 
 
   @override
   String get privacyPolicy => "Privacy Policy";
+
+
+  @override
+  String get dismiss => "Dismiss";
+
+  @override
+  String get fanSupport => "Fan support:";
+
+  @override
+  String get privateAds => "Private Ads:";
+
+  @override
+  String get submission => "Submission:";
+
+  @override
+  String get copyRight => "Copyrights:";
+
+  @override
+  String get copyRight2 => """The Novelx platform is an electronic platform where everyone can publish our various works, but if there is a complaint about business theft, the work will be verified by our team and removed from the site without referring to the author.
+  • In the event of a complaint about the ownership of the work, the author's portfolio will be frozen until ownership of the work is verified, in order to preserve the intellectual rights of all and to ensure the credibility of the platform.
+  • An electronic publishing contract between the platform and the author, where it will be done once you click on OK before publishing.
+  """;
+
+  @override
+  String get submission2 => """It is possible to apply for activating the wallet after passing the conditions. The account will be verified within three working days only.
+  Earnings account:
+  wallet activation images
+  The monthly profits will be added at the beginning of each month based on the number of ads percentage and the number of followers of the authors for each author in his portfolio and he can withdraw according to the existing payment methods for the bank card.""";
+
+  @override
+  String get ourCondition => "Our Condition:";
+
+  @override
+  String get ourCondition2 => """Conditions for applying to activate the wallet and reap profits from the monthly subscription and ads.
+  • The author's account must have at least 100 followers of the author of the novel of all kinds.
+  • It is ensured that the works are not stolen or quoted from other authors.
+  • The quality of the work will be confirmed as it matches the realistic conditions of good drawing, dictation, and non-repetition in more than one account.""";
+
+  @override
+  String get readerWin => "How does the reader win?";
+
+  @override
+  String get readerWin2 => "Readers can profit through a participant or the application for friends accused of the platform, as they will receive 10% of the value of each person’s subscription. The amount will be placed in their electronic wallet for the platform.";
+
+  @override
+  String get privateAds2 => "For the first time, through novel and manga publishing sites, Novelx offers a free advertisement service on the author's page, where authors can contract with third parties, agreeing on the price and duration, and publish an advertisement on their page. As shown below.";
+
+  @override
+  String get fanSupport2 => "Support can be obtained from fans of the author's work by sending material gifts through the author's account. There will be a fee of only 5% of the value of the gift for the platform.";
+
+  @override
+  String get mangaka_text => "First for the authors and mangaka: Monthly subscription: All authors who have passed the conditions for the number of followers can activate the portfolio and get a monthly income from the net profit according to the number of followers and the profit percentage shown below.";
+
+  @override
+  String get profit_text => "How can I profit from the Novelx platform?";
+
+  @override
+  String get famousAuthor_ => "How you can Join us as a famous author! ";
+
+  @override
+  String get sorry => "Sorry";
 
   @override
   String get refundPolicy => "Refund Policy";

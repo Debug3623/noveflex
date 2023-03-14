@@ -406,7 +406,7 @@ class _MenuScreenState extends State<MenuScreen> {
                               Row(
                                 children: [
                                   Container(
-                                      child: Icon(Icons.question_mark),
+                                      child: Icon(Icons.pan_tool_alt_outlined),
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: Colors.white12
@@ -534,17 +534,9 @@ class _MenuScreenState extends State<MenuScreen> {
 
                           }else{
                             // ToastConstant.showToast(context, Languages.of(context)!.amountWithDraw);
-                            final snackBar = SnackBar(
-                              content:  Text( Languages.of(context)!.amountWithDraw),
-                              backgroundColor: (Colors.black),
-                              action: SnackBarAction(
-                                label: 'dismiss',
 
-                                onPressed: () {
-                                },
-                              ),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                            showDialogMoney();
+
 
                           }
 
@@ -587,7 +579,7 @@ class _MenuScreenState extends State<MenuScreen> {
                       SizedBox(
                         height: _height*0.02,
                       ),
-                      InkWell(
+                      GestureDetector(
                         onTap: () {
                           showDialog();
                         },
@@ -697,6 +689,35 @@ class _MenuScreenState extends State<MenuScreen> {
             CupertinoDialogAction(
               child: Text(
                 Languages.of(context)!.no,
+                style: TextStyle(fontFamily: Constants.fontfamily),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void showDialogMoney() {
+    showCupertinoDialog(
+      context: context,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: Text(
+            Languages.of(context)!.alert,
+            style: TextStyle(fontFamily: Constants.fontfamily),
+          ),
+          content: Text(
+            Languages.of(context)!.amountWithDraw,
+            style: TextStyle(fontFamily: Constants.fontfamily),
+          ),
+          actions: [
+            CupertinoDialogAction(
+              child: Text(
+                Languages.of(context)!.dismiss,
                 style: TextStyle(fontFamily: Constants.fontfamily),
               ),
               onPressed: () {

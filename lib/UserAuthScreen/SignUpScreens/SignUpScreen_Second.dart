@@ -109,7 +109,7 @@ class _SignUpScreen_SecondState extends State<SignUpScreen_Second> {
                     SizedBox(
                       height: _height*0.2,
                       width: _width*0.4,
-                      child: Image.asset('assets/quotes_data/NoPath.png'),
+                      child: Image.asset('assets/quotes_data/NoPath_3x-removebg-preview.png'),
                     ),
                     mainText(_width),
                     Padding(

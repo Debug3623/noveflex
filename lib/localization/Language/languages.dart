@@ -309,6 +309,36 @@ abstract class Languages {
 
   String get packageText;
 
+  String get fanSupport;
+
+  String get fanSupport2;
+
+  String get privateAds;
+
+  String get privateAds2;
+
+  String get readerWin;
+
+  String get submission;
+
+  String get copyRight;
+
+  String get copyRight2;
+
+  String get submission2;
+
+  String get ourCondition;
+
+  String get ourCondition2;
+
+  String get readerWin2;
+
+  String get famousAuthor_;
+
+  String get profit_text;
+
+  String get mangaka_text;
+
   String get afterSub;
 
   String get novelFlexPremium;
@@ -342,6 +372,11 @@ abstract class Languages {
   String get nodata;
 
   String get disclaimer;
+
+
+  String get dismiss;
+
+  String get sorry;
 
   String get noReview;
 

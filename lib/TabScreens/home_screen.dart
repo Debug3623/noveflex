@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 width: _width * 0.1,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: AssetImage("assets/quotes_data/NoPath.png"),
+                  image: AssetImage("assets/quotes_data/NoPath_3x-removebg-preview.png"),
                 )),
               )
             : IconButton(

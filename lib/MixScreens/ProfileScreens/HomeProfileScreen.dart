@@ -266,6 +266,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                                   .toString())),
                                                     ),
                                                   ),
+                                                  SizedBox(height: _height*0.01,),
                                                   Text(
                                                     _readerProfileModel!
                                                         .data

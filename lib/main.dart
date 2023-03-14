@@ -1,8 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
-import 'package:app_version_update/app_version_update.dart';
-import 'package:connectivity/connectivity.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,9 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:in_app_update/in_app_update.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
-// import 'package:notification_permissions/notification_permissions.dart';
 import 'package:novelflex/TabScreens/home_screen.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/SignUpScreen_Second.dart';
 import 'package:novelflex/localization/Language/languages.dart';
@@ -22,27 +17,17 @@ import 'package:novelflex/tab_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transitioner/transitioner.dart';
-import 'package:workmanager/workmanager.dart';
-import 'MixScreens/BooksScreens/BookDetailsAuthor.dart';
-import 'Models/language_model.dart';
 import 'Provider/UserProvider.dart';
 import 'Provider/VariableProvider.dart';
 import 'UserAuthScreen/login_screen.dart';
-import 'UserAuthScreen/SignUpScreens/signUpScreen_First.dart';
-import 'Utils/ApiUtils.dart';
-import 'Utils/Constants.dart';
 import 'Utils/constant.dart';
-import 'Utils/notification.dart';
 import 'Utils/store_config.dart';
-import 'Utils/toast.dart';
 import 'firebase_options.dart';
 import 'localization/locale_constants.dart';
 import 'localization/localizations_delegate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
-
-const fetchBackground = "fetchBackground";
 BuildContext? context1;
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
@@ -75,7 +60,7 @@ Future<void> main() async {
     badge: true,
     sound: true,
   );
-  // Set the background messaging handler early on, as a named top-level function
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   if (Platform.isIOS || Platform.isMacOS) {
@@ -93,18 +78,6 @@ Future<void> main() async {
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
 
-  // if (Platform.isIOS || Platform.isMacOS) {
-  //   StoreConfig(
-  //     store: Store.appleStore,
-  //     apiKey: Constants.appleApiKey,
-  //   );
-  // } else if (Platform.isAndroid) {
-  //   StoreConfig(
-  //     store:  Store.googlePlay,
-  //     apiKey: Constants.googleApiKey,
-  //   );
-  // }
-
   runApp(Phoenix(child: MyApp(sharedPreferences: prefs)));
 
 
@@ -117,53 +90,6 @@ const AndroidNotificationChannel channel = AndroidNotificationChannel(
   importance: Importance.high,
 );
 
-
-// void callbackDispatcher() {
-//   Workmanager().executeTask((task, inputData) {
-//
-//     FlutterLocalNotificationsPlugin localNotificationsPlugin = new FlutterLocalNotificationsPlugin();
-//     var android = new AndroidInitializationSettings('@drawable/icon_notify');
-//     var IOS = new IOSInitializationSettings();
-//
-//     var settings = new InitializationSettings(android: android, iOS: IOS);
-//     localNotificationsPlugin.initialize(settings,
-//         onSelectNotification: (payload) {
-//           if (payload != null) {
-//             onSelectNotification(payload);
-//             debugPrint('notification payload: ' + payload);
-//           }
-//         });
-//     localNotificationsPlugin.initialize(settings);
-//     _showNotificationWithDefaultSound(localNotificationsPlugin);
-//     return Future.value(true);
-//   });
-// }
-//
-//
-// Future _showNotificationWithDefaultSound(notification) async {
-//   var androidPlatformChannelSpecifics = new AndroidNotificationDetails(
-//       'your channel id',
-//       'your channel name',
-//       importance: Importance.max,
-//       priority: Priority.high
-//   );
-//   var iOSPlatformChannelSpecifics = new IOSNotificationDetails();
-//   var platformChannelSpecifics = new NotificationDetails(
-//       android: androidPlatformChannelSpecifics,
-//       iOS: iOSPlatformChannelSpecifics
-//   );
-//   await notification.show(0, 'New Novel Published',
-//       'See whats in new Manga',
-//       platformChannelSpecifics, payload: 'Default_Sound'
-//   );
-// }
-//
-// Future onSelectNotification(String payload) async {
-//   await Navigator.push(
-//     context1!,
-//     MaterialPageRoute(builder: (context) => HomeScreen()),
-//   );
-// }
 
 
 class MyApp extends StatefulWidget {
@@ -184,11 +110,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  Future<String>? permissionStatusFuture;
-  var permGranted = "granted";
-  var permDenied = "denied";
-  var permUnknown = "unknown";
-  var permProvisional = "provisional";
   String? token;
 
   @override
@@ -200,9 +121,6 @@ class _MyAppState extends State<MyApp> {
       requestAlertPermission: true,
       requestBadgePermission: true,
       requestSoundPermission: true,
-      // defaultPresentAlert: true,
-      // defaultPresentBadge: true,
-      // defaultPresentSound: true
     );
     var initializationSettings =
     InitializationSettings(android: initializationSettingsAndroid,iOS:iosInitializationSetting);
@@ -220,7 +138,6 @@ class _MyAppState extends State<MyApp> {
               android: AndroidNotificationDetails(
                 channel.id,
                 channel.name,
-                // channel.description,
                 color: Colors.blue,
                 icon: "@drawable/icon_notify",
               ),
@@ -233,7 +150,6 @@ class _MyAppState extends State<MyApp> {
       AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
         showDialog(
-          // context: context,
             builder: (_) {
               return AlertDialog(
                 title: Text(notification.title!),
@@ -250,58 +166,13 @@ class _MyAppState extends State<MyApp> {
 
     setFCMToken();
 
-//     permissionStatusFuture = getCheckNotificationPermStatus();
-//     // With this, we will be able to check if the permission is granted or not
-//     // when returning to the application
-//     // WidgetsBinding.instance.addObserver(this);
-// if(permissionStatusFuture==permGranted){
-//
-// }else{
-//   NotificationPermissions.requestNotificationPermissions(
-//       iosSettings: const NotificationSettingsIos(
-//           sound: true, badge: true, alert: true))
-//       .then((_) {
-//     // when finished, check the permission status
-//     setState(() {
-//       permissionStatusFuture =
-//           getCheckNotificationPermStatus();
-//     });
-//   });
-// }
-
   }
-
-  // @override
-  // void didChangeAppLifecycleState(AppLifecycleState state) {
-  //   if (state == AppLifecycleState.resumed) {
-  //     setState(() {
-  //       permissionStatusFuture = getCheckNotificationPermStatus();
-  //     });
-  //   }
-  // }
-
-  /// Checks the notification permission status
-  // Future<String> getCheckNotificationPermStatus() {
-  //   return NotificationPermissions.getNotificationPermissionStatus()
-  //       .then((status) {
-  //     switch (status) {
-  //       case PermissionStatus.denied:
-  //         return permDenied;
-  //       case PermissionStatus.granted:
-  //         return permGranted;
-  //       case PermissionStatus.unknown:
-  //         return permUnknown;
-  //       case PermissionStatus.provisional:
-  //         return permProvisional;
-  //       default:
-  //         return "";
-  //     }
-  //   });
-  // }
 
   setFCMToken() async {
     SharedPreferences prefts = await SharedPreferences.getInstance();
-    token = Platform.isIOS ? await FirebaseMessaging.instance.getAPNSToken() : await FirebaseMessaging.instance.getToken();
+    // token = Platform.isIOS ? await FirebaseMessaging.instance.getAPNSToken() : await FirebaseMessaging.instance.getToken();
+    token =  await FirebaseMessaging.instance.getToken();
+
     prefts.setString('fcm_token', token!);
     // String? tokenIOS = await FirebaseMessaging.instance.getAPNSToken();
     print(" token__ $token");
@@ -365,7 +236,6 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             home: SplashFirst(),
             routes: {
-              // 'slider_screen': (context) => SliderScreen(),
               'tab_screen': (context) => TabScreen(),
               'login_screen': (context) => LoginScreen(),
             },
@@ -395,7 +265,7 @@ class _SplashFirstState extends State<SplashFirst> {
     super.initState();
     retrieveDynamicLink(context);
     expireToken();
-    Timer(const Duration(seconds: 0), () {
+    Timer(const Duration(microseconds: 0), () {
       if (context.read<UserProvider>().UserToken == '' ||
           context.read<UserProvider>().UserToken == null
           || expireToken() >=13) {
@@ -462,8 +332,7 @@ class _SplashFirstState extends State<SplashFirst> {
             replacement: true, // Optional value
             curveType: CurveType.decelerate, // Optional value
           );
-          // Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUpScreen_Second(ReferralUserID:deepLink.queryParameters['referral_code'],)));
-          print("referral_code = $referral_code");
+           print("referral_code = $referral_code");
           }
 
       }
@@ -486,9 +355,16 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
+  bool _isLoading= true;
 
   @override
   void initState() {
+
+    Timer(const Duration(seconds: 1), () {
+    setState(() {
+      _isLoading=false;
+    });
+    });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<UserProvider>().setLanguage('English');
@@ -505,16 +381,27 @@ class _SplashPageState extends State<SplashPage> {
     return Scaffold(
       body: Stack(
         children: [
-          SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: Image.asset('assets/quotes_data/bg_login.png',fit: BoxFit.fill,),
+          Positioned(
+            child: SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: Image.asset('assets/quotes_data/bg_login.png',fit: BoxFit.fill,),
+            ),
           ),
           Positioned(
-            top: _height * 0.2,
+            top: _height * 0.15,
             // left: _width*0.5,
-            child: Image.asset('assets/quotes_data/NoPath.png'),
-          ),
+            child: Container(
+                height: _height*0.2,
+                width: _width,
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage('assets/quotes_data/NoPath_3x-removebg-preview.png',),
+                    fit: BoxFit.cover
+                  )
+                ),
+
+          ),),
           Positioned(
             top: _height * 0.4,
             left: _width * 0.2,
@@ -688,6 +575,11 @@ class _SplashPageState extends State<SplashPage> {
               ),
             ),
           ),
+          _isLoading? Positioned(
+            top: _height*0.6,
+              left: _width*0.4,
+              right:_width*0.4,
+              child: CupertinoActivityIndicator()) : Container()
         ],
       ),
     );

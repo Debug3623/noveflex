@@ -171,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     SizedBox(
                       height: height * 0.2,
                       width: width * 0.4,
-                      child: Image.asset('assets/quotes_data/NoPath.png'),
+                      child: Image.asset('assets/quotes_data/NoPath_3x-removebg-preview.png'),
                     ),
                     Padding(
                       padding: EdgeInsets.symmetric(

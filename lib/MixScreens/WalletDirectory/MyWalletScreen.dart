@@ -97,131 +97,129 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                         ],
                       ),
                     ),
-                    Container(
-                      height: _height * 0.3,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                    Expanded(
+                      child: Stack(
                         children: [
-                          SizedBox(
-                            height: _height * 0.05,
-                          ),
-                          Container(
-                            height: _height * 0.06,
-                            width: _width * 0.7,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: const Color(0xff3a6c83),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(),
-                                Text(Languages.of(context)!.totalAmount,
-                                    style: const TextStyle(
-                                        color: const Color(0xffffffff),
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Alexandria",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 15.0),
-                                    textAlign: TextAlign.left),
-                                SizedBox(),
-                                Container(
-                                    width: _width * 0.15,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      color: Colors.white70,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        "\$ ${_userPaymentModel!.totalAmount.toString()}",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    )),
-                                SizedBox()
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: _height * 0.02,
-                          ),
-                          Visibility(
-                            visible: true,
+
+                          Positioned(
+                            top: _height*0.12,
                             child: Container(
-                              height: _height * 0.06,
-                              width: _width * 0.7,
+                              height: _height * 0.2,
+                              width: _width ,
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                color: const Color(0xff3a6c83),
+                                borderRadius: BorderRadius.circular(
+                                  30
+                                ),
+                                color:  Colors.black12,
                               ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  SizedBox(),
-                                  Text(Languages.of(context)!.giftAmount,
-                                      style: const TextStyle(
-                                          color: const Color(0xffffffff),
-                                          fontWeight: FontWeight.bold,
-                                          fontFamily: "Alexandria",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 15.0),
-                                      textAlign: TextAlign.left),
-                                  SizedBox(),
-                                  Container(
-                                      width: _width * 0.15,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(30),
-                                        color: Colors.white70,
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          "\$ ${_giftAmountModel!.totalAmount.toString()}",
-                                          style: TextStyle(color: Colors.black),
-                                        ),
-                                      )),
-                                  SizedBox()
-                                ],
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: _height * 0.02,
-                          ),
-                          Container(
-                            height: _height * 0.06,
-                            width: _width * 0.7,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: const Color(0xff3a6c83),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                SizedBox(),
-                                Text(Languages.of(context)!.withdrawAmount,
-                                    style: const TextStyle(
-                                        color: const Color(0xffffffff),
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Alexandria",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 15.0),
-                                    textAlign: TextAlign.left),
-                                SizedBox(),
-                                Container(
-                                    width: _width * 0.15,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(30),
-                                      color: Colors.white70,
+                              child: Padding(
+                                padding:  EdgeInsets.all(_height*0.02),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(),
+                                    Text(Languages.of(context)!.giftAmount,
+                                        style: const TextStyle(
+                                            color:  Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Alexandria",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 13.0),
+                                        textAlign: TextAlign.left),
+                                    SizedBox(width: _width*0.03,),
+                                    Text(
+                                      "\$ ${_giftAmountModel!.totalAmount.toString()}",
+                                      style: TextStyle(color: Colors.black,fontSize: 15.0,
+                                      fontWeight: FontWeight.bold),
                                     ),
-                                    child: Center(
-                                      child: Text(
-                                        "\$ ${_userWithDrawPaymentModel!.totalAmount.toString()}",
-                                        style: TextStyle(color: Colors.black),
-                                      ),
-                                    )),
-                                SizedBox()
-                              ],
+                                    SizedBox()
+                                  ],
+                                ),
+                              ),
+
                             ),
-                          )
+                          ),
+                          Positioned(
+                            top: _height*0.05,
+                            child: Container(
+                              height: _height * 0.2,
+                              width: _width ,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(30
+                                ),
+                                color:  Colors.black12,
+                              ),
+                              child: Padding(
+                                padding:  EdgeInsets.all(_height*0.02),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(),
+                                    Text(Languages.of(context)!.withdrawAmount,
+                                        style: const TextStyle(
+                                            color:  Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Alexandria",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 13.0),
+                                        textAlign: TextAlign.left),
+                                    SizedBox(),
+                                    Text(
+                                      "\$ ${_userWithDrawPaymentModel!.totalAmount.toString()}",
+                                      style: TextStyle(color: Colors.black,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox()
+                                  ],
+                                ),
+                              ),
+
+                            ),
+                          ),
+                          Positioned(
+                            top: _height*0.18,
+                            child: Container(
+                              height: _height * 0.2,
+                              width: _width ,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(
+                                    30
+                                ),
+                                color:  Colors.black12,
+                              ),
+                              child: Padding(
+                                padding:  EdgeInsets.all(_height*0.02),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(),
+                                    Text(Languages.of(context)!.totalAmount,
+                                        style: const TextStyle(
+                                            color:  Colors.black,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Alexandria",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 13.0),
+                                        textAlign: TextAlign.left),
+                                    SizedBox(),
+                                    Text(
+                                      "\$ ${_userPaymentModel!.totalAmount.toString()}",
+                                      style: TextStyle(color: Colors.black,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    SizedBox()
+                                  ],
+                                ),
+                              ),
+
+                            ),
+                          ),
+
                         ],
                       ),
                     )
