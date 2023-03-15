@@ -521,6 +521,9 @@ class LanguageAr extends Languages {
   String get dismiss => "رفض";
 
   @override
+  String get termsText => "شروط الخدمة";
+
+  @override
   String get privateAds => "الإعلانات الخاصة:";
 
   @override
@@ -534,6 +537,12 @@ class LanguageAr extends Languages {
 
   @override
   String get copyRight => "حقوق النشر:";
+
+  @override
+  String get translaTetext => """اشتراك قابل للتجديد التلقائي لمدة شهر واحد (2.99 دولار أمريكي)
+الدفع: يتم تأكيد الشراء ودفعه في حساب iTunes.
+سيتم خصم الدفع من حساب iTunes الخاص بشركة Apple في غضون 24 ساعة قبل انتهاء الصلاحية ، وسيتم تمديد شهر الاشتراك إلى شهر الاشتراك التالي بعد الخصم الناجح""";
+
 
   @override
   String get copyRight2 => """""منصة Novelx عبارة عن منصة إلكترونية حيث يمكن للجميع نشر أعمالنا المختلفة ، ولكن إذا كانت هناك شكوى بشأن سرقة الأعمال ، فسيتم التحقق من العمل من قبل فريقنا وإزالته من الموقع دون الرجوع إلى المؤلف.
@@ -584,7 +593,7 @@ class LanguageAr extends Languages {
   String get sorry => "آسف";
 
   @override
-  String get novelFlexPremium => ' NovelFlex بريميوم✨';
+  String get novelFlexPremium => '  نوفل فليكس بريميوم✨';
 
 
   @override
@@ -597,7 +606,17 @@ class LanguageAr extends Languages {
   """;
 
   @override
-  String get unlockPremium => "فتح ميزات قسط novelflex";
+  String get beneFicts => "مزايا الاشتراك:";
+
+  @override
+  String get beneFicts2 => """\nقراءة كل من المحتويات المجانية والمدفوعة في التطبيق
+  قراءة المحتويات بدون إعلانات\n
+  الحصول علي الأموال من نظام الاحالات \n
+ إنشاء إعلانات خاصة \n
+ مؤهل للحصول علي الهدايا  \n""";
+
+  @override
+  String get unlockPremium => "فتح الميزات المدفوعة في نوفل فليكس";
   @override
   // TODO: implement register
   String get history => "الكتب التي تم تحميلها";

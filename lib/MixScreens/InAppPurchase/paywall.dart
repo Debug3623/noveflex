@@ -56,14 +56,16 @@ class _PaywallState extends State<Paywall> {
                   ),
                   Padding(
                     padding:
-                    EdgeInsets.only(top: 32, bottom: 16, left: 16.0, right: 16.0),
+                    EdgeInsets.all(_height*0.02),
                     child: SizedBox(
-                      child: Text(
-                        Languages.of(context)!.unlockPremium,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.normal,
-                          fontSize: 15,
+                      child: Center(
+                        child: Text(
+                          Languages.of(context)!.unlockPremium,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                          ),
                         ),
                       ),
                       width: double.infinity,
@@ -113,7 +115,7 @@ class _PaywallState extends State<Paywall> {
                               ),
                             ),
                             trailing: Text(
-                                myProductList[index].storeProduct.priceString,
+                                "${myProductList[index].storeProduct.priceString} / Month",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -127,7 +129,7 @@ class _PaywallState extends State<Paywall> {
                   Container(
                     margin: EdgeInsets.all(_height*0.03),
                     child: Text(
-                      "Auto-renewable subscription\n1 month (\$2.99)\nPayment: The purchase is confirmed and paid into the iTunes Account.\nPayment will be deducted from  Apple's  iTunes Account  within 24 hours before expiration, and the subscription month will be extended to the next subscription month after successful deduction.",
+                      Languages.of(context)!.translaTetext,
                       textAlign: TextAlign.left,
                       style: TextStyle(
                         color: Colors.white,
@@ -137,21 +139,48 @@ class _PaywallState extends State<Paywall> {
                       ),
                     ),
                   ),
-                  GestureDetector(
-                    onTap: (
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: (
 
-                    ) {
-                      _launchIOSUrl();
-                    },
-                    child: Text(
-                      Languages.of(context)!.privacyPolicy,
-                      style: TextStyle(
-                        color: Colors.blue,
+                            ) {
+                          _launchTerms();
+                        },
+                        child: Text(
+                          Languages.of(context)!.termsText,
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                          ),
+                        ),
+                      ),
+                      Padding(padding: EdgeInsets.only(left: 8.0,right: 8.0),
+                      child: Text("and",  style: TextStyle(
+                        color: Colors.white54,
                         fontWeight: FontWeight.bold,
                         fontSize: 15,
+                      ),),),
+                      GestureDetector(
+                        onTap: (
+
+                            ) {
+                          _launchPrivacyPolicy();
+                        },
+                        child: Text(
+                          Languages.of(context)!.privacyPolicy,
+                          style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.normal,
+                            fontSize: 15,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+                  SizedBox(height: _height*0.05,)
                 ],
               ),
             ),
@@ -198,8 +227,17 @@ class _PaywallState extends State<Paywall> {
     }
   }
 
-  _launchIOSUrl() async {
+  _launchPrivacyPolicy() async {
     var url = Uri.parse("https://novelflex.com/automaticRenewalAgreement.html");
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
+  _launchTerms() async {
+    var url = Uri.parse("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/");
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {

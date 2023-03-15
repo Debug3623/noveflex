@@ -319,6 +319,9 @@ abstract class Languages {
 
   String get readerWin;
 
+  String get translaTetext;
+
+
   String get submission;
 
   String get copyRight;
@@ -345,7 +348,13 @@ abstract class Languages {
 
   String get unlockPremium;
 
+  String get beneFicts;
+
+  String get beneFicts2;
+
   String get privacyPolicy;
+
+  String get termsText;
 
   String get refundPolicy;
 

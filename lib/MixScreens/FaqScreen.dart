@@ -55,6 +55,7 @@ class _FaqScreenState extends State<FaqScreen> {
                   height: _height*0.1,
                 ),
                 Card1(),
+                Card(),
                 Card2(),
                 Card3(),
                 Card4(),
@@ -230,6 +231,78 @@ class Card1 extends StatelessWidget {
 
 }
 
+
+class Card extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ExpandableNotifier(
+        child: Padding(
+          padding: const EdgeInsets.all(10),
+          child: Container(
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Colors.white
+            ),
+            child: Column(
+              children: <Widget>[
+                ScrollOnExpand(
+                  scrollOnExpand: true,
+                  scrollOnCollapse: false,
+                  child: ExpandablePanel(
+                    theme: const ExpandableThemeData(
+                        headerAlignment: ExpandablePanelHeaderAlignment.center,
+                        tapBodyToCollapse: true,
+                        iconColor: Colors.black45
+                    ),
+                    header: Padding(
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          Languages.of(context)!.beneFicts,
+                          style: const TextStyle(
+                              color:  const Color(0xff676767),
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "Alexandria",
+                              fontStyle:  FontStyle.normal,
+                              fontSize: 14.0
+                          ),
+                        )),
+                    collapsed: Text(
+                      Languages.of(context)!.beneFicts2,
+                      softWrap: true,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    expanded: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                            padding: EdgeInsets.only(bottom: 10),
+                            child: Text(
+                              Languages.of(context)!.beneFicts2,
+                              softWrap: true,
+                              overflow: TextOverflow.fade,
+                            )),
+                      ],
+                    ),
+                    builder: (_, collapsed, expanded) {
+                      return Padding(
+                        padding: EdgeInsets.only(left: 10, right: 10, bottom: 10,),
+                        child: Expandable(
+                          collapsed: collapsed,
+                          expanded: expanded,
+                          theme: const ExpandableThemeData(crossFadePoint: 0),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+}
 
 class Card2 extends StatelessWidget {
   @override

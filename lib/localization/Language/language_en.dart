@@ -8,13 +8,26 @@ class LanguageEn extends Languages {
   String get follow => "Subscribe";
 
   @override
+  String get termsText => "Terms of Services";
+
+  @override
   String get level => "level";
+
+  @override
+  String get beneFicts => "Benefits for Subscription:";
+
+  @override
+  String get beneFicts2 => """Read both free & paid Contents  in the Application\n
+  Read contents without Advertisement\n
+  Getting money from referral\n
+  Create special Advertisement\n
+  Eligible for gifts \n""";
 
   @override
   String get novelFlexPremium => '✨ NovelFlex Premium';
 
   @override
-  String get unlockPremium => "UNLOCK NOVEL FLEX PREMIUM FEATURES";
+  String get unlockPremium => "UNLOCK NOVELFLEX PREMIUM FEATURES";
 
   @override
   String get search => "Search Favourite";
@@ -91,6 +104,9 @@ class LanguageEn extends Languages {
 
   @override
   String get copyRight => "Copyrights:";
+
+  @override
+  String get translaTetext => "Auto-renewable subscription\n1 month (\$2.99)\nPayment: The purchase is confirmed and paid into the iTunes Account.\nPayment will be deducted from  Apple's  iTunes Account  within 24 hours before expiration, and the subscription month will be extended to the next subscription month after successful deduction.";
 
   @override
   String get copyRight2 => """The Novelx platform is an electronic platform where everyone can publish our various works, but if there is a complaint about business theft, the work will be verified by our team and removed from the site without referring to the author.
