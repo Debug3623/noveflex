@@ -695,7 +695,7 @@ class _LoginScreenState extends State<LoginScreen> {
       //Success
 
       jsonData = json.decode(response.body);
-      print('loginSuccess_data: $jsonData');
+      print('login_user_success_data_shown: $jsonData');
       if (jsonData['status'] == 200) {
         _userModel = UserModel.fromJson(jsonData);
         saveToPreferencesUserDetail(_userModel);

@@ -142,27 +142,31 @@ class Card1 extends StatelessWidget {
                             textAlign: TextAlign.left),
                         SizedBox(height: _height*0.04,),
                         context.read<UserProvider>().SelectedLanguage ==
-                            "English" ? Container(
+                            "English" ? Center(
+                              child: Container(
                           height: _height*0.3,
                           width: _width*0.6,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: AssetImage("assets/quotes_data/faq_image_english_1.jpeg"),
-                                  fit: BoxFit.cover
-                              )
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: AssetImage("assets/quotes_data/faq_image_english_1.jpeg"),
+                                    fit: BoxFit.cover
+                                )
                           ),
-                        ) : Container(
+                        ),
+                            ) : Center(
+                              child: Container(
                           height: _height*0.3,
                           width: _width*0.6,
                           decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              image: DecorationImage(
-                                  image: AssetImage("assets/quotes_data/faq_image_arabic.jpeg"),
-                                  fit: BoxFit.cover
-                              )
+                                borderRadius: BorderRadius.circular(10),
+                                image: DecorationImage(
+                                    image: AssetImage("assets/quotes_data/faq_image_arabic.jpeg"),
+                                    fit: BoxFit.cover
+                                )
                           ),
-                        ) ,
+                        ),
+                            ) ,
                         SizedBox(height: _height*0.04,),
                         Text(
                             Languages.of(context)!.faqText_long_1,

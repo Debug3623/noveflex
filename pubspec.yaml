@@ -19,10 +19,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 
 #ios last upload versions
-version: 2.0.0+1
+#version: 2.0.0+1
 
 #Android  last upload  versions
-#version: 1.1.7+17
+version: 1.1.8+18
 
 
 environment:
@@ -103,6 +103,7 @@ dependencies:
   advanced_search: ^2.2.3
   google_mobile_ads: ^2.3.0
   expandable: ^5.0.1
+  webview_flutter: ^4.0.6
 #  notification_permissions: ^0.6.1
   #  advance_pdf_viewer: ^2.0.1
 #  advance_pdf_viewer_fork: ^2.0.0
