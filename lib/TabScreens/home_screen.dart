@@ -271,9 +271,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-          const SizedBox(
+                SizedBox(
             width: 5.0,
-          )
+          ),
+    //            ElTooltip(
+    //     child: Icon(Icons.info_outline),
+    // content: Text('Click me to publish book'),
+    // ),
         ],
       ),
       body: _isInternetConnected == false

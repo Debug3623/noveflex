@@ -336,7 +336,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                         color: const Color(0xff919191))),
                               ),
                               SizedBox(
-                                height: _height * 0.02,
+                                height: _height * 0.01,
                               ),
                               Container(
                                 width: _width * 0.27,
@@ -378,8 +378,8 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 height: _height * 0.03,
                               ),
                               Container(
-                                width: 110,
-                                height: 30,
+                                width: _width*0.28,
+                                height: _height*0.035,
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
@@ -445,8 +445,8 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 height: _height * 0.03,
                               ),
                               Container(
-                                width: 110,
-                                height: 30,
+                                width: _width*0.28,
+                                height: _height*0.035,
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
@@ -510,88 +510,160 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                         )
                       ],
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(_bookDetailsModel!.data!.bookTitle!,
-                            style: const TextStyle(
-                                color: const Color(0xff2a2a2a),
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "Alexandria",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 16.0),
-                            textAlign: TextAlign.left),
-                        Text(_bookDetailsModel!.data!.catgoryTitle.toString(),
-                            style: const TextStyle(
-                                color: const Color(0xff3a6c83),
-                                fontWeight: FontWeight.w700,
-                                fontFamily: "Lato",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 12.0),
-                            textAlign: TextAlign.left),
-                        InkWell(
-                          onTap: (){
-                            Transitioner(
-                              context: context,
-                              child: ShowAllReviewScreen(
-                                bookId: _bookDetailsModel!.data!.bookId
-                                    .toString(),
-                                bookName: _bookDetailsModel!.data!.bookTitle
-                                    .toString(),
-                                bookImage: _bookDetailsModel!.data!.imagePath
-                                    .toString(),
-                              ),
-                              animation:
-                              AnimationType.slideTop, // Optional value
-                              duration: Duration(
-                                  milliseconds: 1000), // Optional value
-                              replacement: false, // Optional value
-                              curveType:
-                              CurveType.decelerate, // Optional value
-                            );
-
-
-                          },
-                          child: Text(Languages.of(context)!.allReview,
-                              style: const TextStyle(
-                                  color:  Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontFamily: "Lato",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 13.0),
-                              textAlign: TextAlign.left),
-                        ),
-                      ],
-                    ),
                     Padding(
-                      padding: EdgeInsets.only(
-                          left: _width * 0.05, top: _height * 0.02),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      padding:  EdgeInsets.only(top:_height*0.01),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(Languages.of(context)!.aboutBook,
+                          Text(_bookDetailsModel!.data!.bookTitle!,
                               style: const TextStyle(
                                   color: const Color(0xff2a2a2a),
-                                  fontWeight: FontWeight.w500,
+                                  fontWeight: FontWeight.w700,
                                   fontFamily: "Alexandria",
                                   fontStyle: FontStyle.normal,
                                   fontSize: 16.0),
                               textAlign: TextAlign.left),
-                          SizedBox(
-                            height: _height * 0.01,
+                          Text(_bookDetailsModel!.data!.catgoryTitle.toString(),
+                              style: const TextStyle(
+                                  color: const Color(0xff3a6c83),
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: "Lato",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 12.0),
+                              textAlign: TextAlign.left),
+                          InkWell(
+                            onTap: (){
+                              Transitioner(
+                                context: context,
+                                child: ShowAllReviewScreen(
+                                  bookId: _bookDetailsModel!.data!.bookId
+                                      .toString(),
+                                  bookName: _bookDetailsModel!.data!.bookTitle
+                                      .toString(),
+                                  bookImage: _bookDetailsModel!.data!.imagePath
+                                      .toString(),
+                                ),
+                                animation:
+                                AnimationType.slideTop, // Optional value
+                                duration: Duration(
+                                    milliseconds: 1000), // Optional value
+                                replacement: false, // Optional value
+                                curveType:
+                                CurveType.decelerate, // Optional value
+                              );
+
+
+                            },
+                            child: Column(
+                              children: [
+                                Text(Languages.of(context)!.allReview,
+                                    style: const TextStyle(
+                                        color:  Colors.black,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: "Lato",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 13.0),
+                                    textAlign: TextAlign.left),
+                                Container(
+                                    width: _width*0.3,
+                                    height: 1,
+                                    decoration: BoxDecoration(
+                                        color: Colors.black
+                                    )
+                                )
+                              ],
+                            ),
                           ),
-                          Text(
-                            _bookDetailsModel!.data!.bookDescription.toString(),
-                            style: const TextStyle(
-                                color: const Color(0xff676767),
-                                fontWeight: FontWeight.w400,
-                                fontFamily: "Lato",
-                                fontStyle: FontStyle.normal,
-                                fontSize: 14.0),
-                            overflow: TextOverflow.fade,
-                            maxLines: 6,
-                          )
                         ],
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: _width * 0.02, top: _height * 0.02, right: _width * 0.02),
+                      child: Container(
+                        height: _height*0.2,
+                        width: _width,
+                        padding: EdgeInsets.all(_width*0.035),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: Colors.white
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(Languages.of(context)!.aboutBook,
+                                    style: const TextStyle(
+                                        color: const Color(0xff2a2a2a),
+                                        fontWeight: FontWeight.w500,
+                                        fontFamily: "Alexandria",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: 16.0),
+                                   ),
+                                InkWell(
+                                  onTap: (){
+
+                                    Transitioner(
+                                      context: context,
+                                      child: AuthorViewByUserScreen(
+                                        user_id: _bookDetailsModel!.data!.userId
+                                            .toString(),
+                                      ),
+                                      animation: AnimationType
+                                          .slideTop, // Optional value
+                                      duration: Duration(
+                                          milliseconds: 1000), // Optional value
+                                      replacement: false, // Optional value
+                                      curveType:
+                                      CurveType.decelerate, // Optional value
+                                    );
+
+                                  },
+                                  child: Padding(
+                                    padding:  EdgeInsets.only(
+                                      right: _width*0.07
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Text(Languages.of(context)!.seeAuthorBooks,
+                                            style: const TextStyle(
+                                                color:  Color(0xff3a6c83),
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: "Lato",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 13.0),
+                                            textAlign: TextAlign.left),
+                                        Container(
+                                            width: _width*0.3,
+                                            height: 1,
+                                            decoration: BoxDecoration(
+                                                color: const Color(0xff3a6c83)
+                                            )
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: _height * 0.01,
+                            ),
+                            Text(
+                              _bookDetailsModel!.data!.bookDescription.toString(),
+                              style: const TextStyle(
+                                  color: const Color(0xff676767),
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: "Lato",
+                                  fontStyle: FontStyle.normal,
+                                  fontSize: 14.0),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 5,
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Row(
@@ -705,7 +777,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                           },
                           child: Container(
                             width: _width * 0.7,
-                            height: _height * 0.06,
+                            height: _height * 0.05,
                             decoration: BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(25)),
@@ -751,7 +823,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                           },
                           child: Container(
                             width: _width * 0.13,
-                            height: _height * 0.13,
+                            height: _height * 0.12,
                             decoration: BoxDecoration(
                                 shape: BoxShape.circle,
                                 border: Border.all(

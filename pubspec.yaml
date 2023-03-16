@@ -104,6 +104,7 @@ dependencies:
   google_mobile_ads: ^2.3.0
   expandable: ^5.0.1
   webview_flutter: ^4.0.6
+#  el_tooltip: ^1.0.8
 #  notification_permissions: ^0.6.1
   #  advance_pdf_viewer: ^2.0.1
 #  advance_pdf_viewer_fork: ^2.0.0

@@ -524,6 +524,9 @@ class LanguageAr extends Languages {
   String get termsText => "شروط الخدمة";
 
   @override
+  String get seeAuthorBooks => "عرض كتب المؤلف";
+
+  @override
   String get privateAds => "الإعلانات الخاصة:";
 
   @override

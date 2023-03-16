@@ -336,6 +336,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                                 fontFamily: "Alexandria",
                                                 fontStyle: FontStyle.normal,
                                                 fontSize: 16.0),
+                                            overflow: TextOverflow.ellipsis,
                                             textAlign: TextAlign.left),
                                         SizedBox(
                                           height: _height * 0.01,

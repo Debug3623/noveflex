@@ -235,6 +235,8 @@ abstract class Languages {
 
   String get allReview;
 
+  String get seeAuthorBooks;
+
   String get fatherName;
 
   String get cardHolderName;
