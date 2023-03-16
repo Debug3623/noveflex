@@ -45,7 +45,7 @@ class LanguageAr extends Languages {
 
   @override
   // TODO: implement RateusDialog
-  String get free => "مجاني";
+  String get free => "غالي";
 
 
   @override

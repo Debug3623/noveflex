@@ -179,7 +179,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                           .toString() ==
                                       "1"
                                   ? "Free"
-                                  : "Pro ++",
+                                  : "Premium",
                               location: BannerLocation.topEnd,
                               color: _bookDetailsModel!.data!.paymentStatus
                                           .toString() ==

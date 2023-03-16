@@ -433,7 +433,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                     .toString() ==
                                                                 "1"
                                                             ? "Free"
-                                                            : "Pro ++",
+                                                            : "Premium",
                                                         location:
                                                             BannerLocation.topEnd,
                                                         color: _sliderModel!
@@ -702,7 +702,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                     .toString() ==
                                                                 "1"
                                                             ? "Free"
-                                                            : "Pro ++",
+                                                            : "Premium",
                                                         location: BannerLocation
                                                             .topEnd,
                                                         color: _recentModel!
@@ -957,7 +957,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                       .toString() ==
                                                                   "1"
                                                               ? "Free"
-                                                              : "Pro ++",
+                                                              : "Premium",
                                                           location:
                                                               BannerLocation
                                                                   .topEnd,

@@ -204,7 +204,7 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
                                                         .toString() ==
                                                     "1"
                                                 ? "Free"
-                                                : "Pro ++",
+                                                : "Premium",
                                             location: BannerLocation.topEnd,
                                             color: _seeAllBooksModelClass!
                                                         .data[index]

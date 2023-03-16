@@ -46,7 +46,7 @@ class Data {
 
   int id;
   String username;
-  String description;
+  dynamic description;
   dynamic profilePhoto;
   dynamic backgroundImage;
   String type;

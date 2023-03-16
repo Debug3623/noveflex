@@ -98,7 +98,7 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                                           message: _allrecentModel!.data[index].paymentStatus.toString() ==
                                               "1"
                                               ? "Free"
-                                              : "Pro ++",
+                                              : "Premium",
                                           location: BannerLocation
                                               .topEnd,
                                           color:

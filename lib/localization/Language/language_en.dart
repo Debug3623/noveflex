@@ -452,7 +452,7 @@ class LanguageEn extends Languages {
 
   @override
   // TODO: implement RateusDialog
-  String get paid => "Paid";
+  String get paid => "Premium";
 
   @override
   // TODO: implement RateusDialog
