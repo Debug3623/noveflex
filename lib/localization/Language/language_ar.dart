@@ -50,6 +50,11 @@ class LanguageAr extends Languages {
 
   @override
   // TODO: implement RateusDialog
+  String get supportTeam => "فريق الدعم";
+
+
+  @override
+  // TODO: implement RateusDialog
   String get scan => "مسح البطاقة";
 
   @override

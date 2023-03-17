@@ -72,8 +72,8 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
         phoneNumber: widget.phoneNumber,
         signOutOnSuccessfulVerification: false,
         linkWithExistingUser: false,
-        autoRetrievalTimeOutDuration: const Duration(seconds: 60),
-        otpExpirationDuration: const Duration(seconds: 60),
+        autoRetrievalTimeOutDuration: const Duration(minutes: 2),
+        otpExpirationDuration: const Duration(minutes: 2),
         onCodeSent: () {
           log(VerifyPhoneNumberScreen.id, name: 'OTP sent!');
         },
@@ -166,8 +166,6 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
               children:  [
                  Center(
                   child: CupertinoActivityIndicator(
-                    color: Colors.black12,
-                    radius: 20,
                   ),
                 ),
                 SizedBox(height: 50),
@@ -194,8 +192,7 @@ class _VerifyPhoneNumberScreenState extends State<VerifyPhoneNumberScreen>
                     children:  [
                       const Center(
                         child: CupertinoActivityIndicator(
-                          color: Colors.black12,
-                          radius: 20,
+
                         ),
                       ),
                       SizedBox(height: 50),

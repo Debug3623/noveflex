@@ -115,7 +115,7 @@ class _NewPasswordScreenState extends State<NewPasswordScreen> {
                             padding:  EdgeInsets.only(top: _height*0.1),
                             child: const Center(
                               child: CupertinoActivityIndicator(
-                                  color:Color(0xFF256D85)
+
                               ),
                             ),
                           ),

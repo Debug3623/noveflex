@@ -456,6 +456,10 @@ class LanguageEn extends Languages {
 
   @override
   // TODO: implement RateusDialog
+  String get supportTeam => "Support Team";
+
+  @override
+  // TODO: implement RateusDialog
   String get free => "Free";
 
 

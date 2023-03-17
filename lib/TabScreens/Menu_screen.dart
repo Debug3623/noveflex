@@ -109,40 +109,33 @@ class _MenuScreenState extends State<MenuScreen> {
                 ? const Center(
                     child: CupertinoActivityIndicator(),
                   )
-                : Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Column(
-                        children: [
+                : SingleChildScrollView(
+                  child: Column(
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Container(
+                              height: _height * 0.25,
+                              width: _width * 0.25,
+                              decoration: BoxDecoration(
+                                  color: Colors.black12,
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                      image: _menuProfileModel!.data.profilePhoto !=
+                                          ""
+                                          ? NetworkImage(
+                                        _menuProfileModel!.data.profilePath,
 
-                          Center(
-                            child: Container(
-                              color: const Color(0xffebf5f9),
-                              margin: EdgeInsets.only(top: _height*0.02, bottom: _height*0.02),
-                              child:  Container(
-                                height: _height*0.15,
-                               decoration: BoxDecoration(
-                                 color: Colors.black12,
-                                 shape: BoxShape.circle,
-                                 image: DecorationImage(
-                                   image: _menuProfileModel!.data.profilePhoto !=
-                                       ""
-                                       ? NetworkImage(
-                                     _menuProfileModel!.data.profilePath,
-
-                                   )
-                                       : AssetImage('assets/profile_pic.png')
-                                   as ImageProvider,
-                                   fit: BoxFit.cover
-                                 )
-                               ),
-                                    ),
-                              height: _height * 0.1,
-                              width: _width * 0.3,
+                                      )
+                                          : AssetImage('assets/profile_pic.png')
+                                      as ImageProvider,
+                                      fit: BoxFit.cover
+                                  )
+                              ),
                             ),
-                          ),
-                          Center(
-                            child: Container(
+                            Container(
                               color: const Color(0xffebf5f9),
                               child: Column(
                                 children: [
@@ -150,12 +143,12 @@ class _MenuScreenState extends State<MenuScreen> {
                                     (_menuProfileModel!.data.username),
                                     textAlign: TextAlign.start,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                         color: const Color(0xff2a2a2a),
                                         fontWeight: FontWeight.w700,
                                         fontFamily: "Neckar",
                                         fontStyle: FontStyle.normal,
-                                        fontSize: 14.0),
+                                        fontSize: _height*_width*0.00005),
                                   ),
                                   SizedBox(
                                     height: 6.0,
@@ -164,281 +157,317 @@ class _MenuScreenState extends State<MenuScreen> {
                                     _menuProfileModel!.data.email,
                                     textAlign: TextAlign.start,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
+                                    style:  TextStyle(
                                         color: const Color(0xff676767),
                                         fontWeight: FontWeight.w500,
                                         fontFamily: "Alexandria",
                                         fontStyle: FontStyle.normal,
-                                        fontSize: 12.0),
+                                        fontSize: _height*_width*0.00004),
                                   ),
                                 ],
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: _height*0.03,
-                      ),
-                      Opacity(
-                        opacity: 0.5,
-                        child: Container(
-                            width: _width*0.7,
-                            height: 1,
-                            decoration:
-                                BoxDecoration(color: const Color(0xffbcbcbc))),
-                      ),
-                      SizedBox(
-                        height: _height*0.03,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Transitioner(
-                            context: context,
-                            child: AccountScreen(),
-                            animation:
-                                AnimationType.slideBottom, // Optional value
-                            duration:
-                                Duration(milliseconds: 1000), // Optional value
-                            replacement: false, // Optional value
-                            curveType: CurveType.decelerate, // Optional value
-                          );
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.manage_accounts_outlined),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.account,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _loadInterstitialAd();
-                          if (_interstitialAd != null) {
-                            _interstitialAd?.show();
-                          } else {
-                            Transitioner(
-                              context: context,
-                              child: HomeProfileScreen(),
-                              animation:
-                              AnimationType.slideLeft, // Optional value
-                              duration:
-                              Duration(milliseconds: 1000), // Optional value
-                              replacement: false, // Optional value
-                              curveType: CurveType.decelerate, // Optional value
-                            );
-                          }
 
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.account_circle_outlined),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.myProfile,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
+                          ],
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Platform.isIOS
-                              ? _launchIOSUrl()
-                              : _launchAndroidUrl();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.star_border_rounded),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.rate_Us,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
+                        SizedBox(
+                          height: _height*0.03,
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          funcOpenMailComposer();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.mail_lock_outlined),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.ContactUs,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
+                        Opacity(
+                          opacity: 0.5,
+                          child: Container(
+                              width: _width*0.7,
+                              height: 1,
+                              decoration:
+                                  BoxDecoration(color: const Color(0xffbcbcbc))),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          _checkInternetConnectionInviteApp();
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.share),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.inviteApp,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              SizedBox(
-                                width: 5.0,
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
+                        SizedBox(
+                          height: _height*0.03,
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Transitioner(
-                            context: context,
-                            child: FaqScreen(),
-                            animation:
-                            AnimationType.slideLeft, // Optional value
-                            duration:
-                            Duration(milliseconds: 1000), // Optional value
-                            replacement: false, // Optional value
-                            curveType: CurveType.decelerate, // Optional value
-                          );
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                      child: Icon(Icons.pan_tool_alt_outlined),
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: Colors.white12
-                                  ),),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.faq,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Visibility(
-                        visible: _statusCheckModel!.data[0].type == "Writer",
-                        child:  GestureDetector(
+                        GestureDetector(
                           onTap: () {
                             Transitioner(
                               context: context,
-                              child: PieChartScreen(),
+                              child: AccountScreen(),
+                              animation:
+                                  AnimationType.slideBottom, // Optional value
+                              duration:
+                                  Duration(milliseconds: 1000), // Optional value
+                              replacement: false, // Optional value
+                              curveType: CurveType.decelerate, // Optional value
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(_width * 0.03),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.manage_accounts_outlined,size: _height*_width*0.0001,),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text(Languages.of(context)!.account,
+                                        style:  TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: _height*_width*0.00005),
+                                        textAlign: TextAlign.left)
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                    size: _height*_width*0.00007
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _loadInterstitialAd();
+                            if (_interstitialAd != null) {
+                              _interstitialAd?.show();
+                            } else {
+                              Transitioner(
+                                context: context,
+                                child: HomeProfileScreen(),
+                                animation:
+                                AnimationType.slideLeft, // Optional value
+                                duration:
+                                Duration(milliseconds: 1000), // Optional value
+                                replacement: false, // Optional value
+                                curveType: CurveType.decelerate, // Optional value
+                              );
+                            }
+
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(_width * 0.03),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.account_circle_outlined,size: _height*_width*0.0001),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text(Languages.of(context)!.myProfile,
+                                        style:  TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: _height*_width*0.00005),
+                                        textAlign: TextAlign.left)
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                    size: _height*_width*0.00007
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Transitioner(
+                              context: context,
+                              child: MyWalletScreen(),
+                              animation:
+                              AnimationType.slideLeft, // Optional value
+                              duration: Duration(
+                                  milliseconds: 1000), // Optional value
+                              replacement: false, // Optional value
+                              curveType: CurveType.decelerate, // Optional value
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(_width * 0.03),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.card_travel,size: _height*_width*0.0001),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text(Languages.of(context)!.myWallet,
+                                        style:  TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: _height*_width*0.00005),
+                                        textAlign: TextAlign.left)
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                    size: _height*_width*0.00007
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            _checkInternetConnectionInviteApp();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(_width * 0.03),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.share,size: _height*_width*0.0001),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text(Languages.of(context)!.inviteApp,
+                                        style:  TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: _height*_width*0.00005),
+                                        textAlign: TextAlign.left)
+                                  ],
+                                ),
+                                SizedBox(
+                                  width: 5.0,
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                    size: _height*_width*0.00007
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Visibility(
+                          visible: _statusCheckModel!.data[0].type == "Writer",
+                          child:  GestureDetector(
+                            onTap: () {
+                              Transitioner(
+                                context: context,
+                                child: PieChartScreen(),
+                                animation:
+                                AnimationType.slideLeft, // Optional value
+                                duration:
+                                Duration(milliseconds: 1000), // Optional value
+                                replacement: false, // Optional value
+                                curveType: CurveType.decelerate, // Optional value
+                              );
+                            },
+                            child: Padding(
+                              padding: EdgeInsets.all(_width * 0.03),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      Icon(Icons.bar_chart,size: _height*_width*0.0001),
+                                      SizedBox(
+                                        width: 8.0,
+                                      ),
+                                      Text(Languages.of(context)!.Statistics,
+                                          style:  TextStyle(
+                                              color: const Color(0xff2a2a2a),
+                                              fontWeight: FontWeight.w700,
+                                              fontFamily: "Neckar",
+                                              fontStyle: FontStyle.normal,
+                                              fontSize: _height*_width*0.00005),
+                                          textAlign: TextAlign.left)
+                                    ],
+                                  ),
+                                  Icon(
+                                    Icons.arrow_forward_ios,
+                                      size: _height*_width*0.00007
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            supportTeam();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(_width * 0.03),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.mark_email_read_outlined,size: _height*_width*0.0001),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text(Languages.of(context)!.supportTeam,
+                                        style:  TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: _height*_width*0.00005),
+                                        textAlign: TextAlign.left)
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                    size: _height*_width*0.00007
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            funcOpenMailComposer();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(_width * 0.03),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.mark_email_unread_outlined,size: _height*_width*0.0001),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text(Languages.of(context)!.ContactUs,
+                                        style:  TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: _height*_width*0.00005),
+                                        textAlign: TextAlign.left)
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                    size: _height*_width*0.00007
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            Transitioner(
+                              context: context,
+                              child: FaqScreen(),
                               animation:
                               AnimationType.slideLeft, // Optional value
                               duration:
@@ -454,157 +483,156 @@ class _MenuScreenState extends State<MenuScreen> {
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.bar_chart),
+                                    Container(
+                                      child: Icon(Icons.pan_tool_alt_outlined,size: _height*_width*0.0001),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.white12
+                                      ),),
                                     SizedBox(
                                       width: 8.0,
                                     ),
-                                    Text(Languages.of(context)!.Statistics,
-                                        style: const TextStyle(
+                                    Text(Languages.of(context)!.faq,
+                                        style:  TextStyle(
                                             color: const Color(0xff2a2a2a),
                                             fontWeight: FontWeight.w700,
                                             fontFamily: "Neckar",
                                             fontStyle: FontStyle.normal,
-                                            fontSize: 14.0),
+                                            fontSize: _height*_width*0.00005),
                                         textAlign: TextAlign.left)
                                   ],
                                 ),
                                 Icon(
                                   Icons.arrow_forward_ios,
-                                  size: 15.0,
+                                    size: _height*_width*0.00007
                                 )
                               ],
                             ),
                           ),
                         ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Transitioner(
-                            context: context,
-                            child: MyWalletScreen(),
-                            animation:
-                            AnimationType.slideLeft, // Optional value
-                            duration: Duration(
-                                milliseconds: 1000), // Optional value
-                            replacement: false, // Optional value
-                            curveType: CurveType.decelerate, // Optional value
-                          );
-                        },
-                        child: Padding(
-                          padding: EdgeInsets.all(_width * 0.03),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Row(
-                                children: [
-                                  Icon(Icons.card_travel),
-                                  SizedBox(
-                                    width: 8.0,
-                                  ),
-                                  Text(Languages.of(context)!.myWallet,
-                                      style: const TextStyle(
-                                          color: const Color(0xff2a2a2a),
-                                          fontWeight: FontWeight.w700,
-                                          fontFamily: "Neckar",
-                                          fontStyle: FontStyle.normal,
-                                          fontSize: 14.0),
-                                      textAlign: TextAlign.left)
-                                ],
-                              ),
-                              Icon(
-                                Icons.arrow_forward_ios,
-                                size: 15.0,
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          if(_menuProfileModel!.data.totalAmount>=5){
-                            Transitioner(
-                              context: context,
-                              child: UnlockWalletScreenOne(),
-                              animation: AnimationType.fadeIn, // Optional value
-                              duration: Duration(
-                                  milliseconds: 1000), // Optional value
-                              replacement: false, // Optional value
-                              curveType: CurveType.decelerate, // Optional value
-                            );
-
-                          }else{
-                            // ToastConstant.showToast(context, Languages.of(context)!.amountWithDraw);
-
-                            showDialogMoney();
-
-
-                          }
-
-                        },
-                        child: Container(
-                          width: _width * 0.5,
-                          height: _height * 0.05,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(25)),
-                              boxShadow: [
-                                BoxShadow(
-                                    color: const Color(0x24000000),
-                                    offset: Offset(0, 7),
-                                    blurRadius: 14,
-                                    spreadRadius: 0)
+                        GestureDetector(
+                          onTap: () {
+                            Platform.isIOS
+                                ? _launchIOSUrl()
+                                : _launchAndroidUrl();
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(_width * 0.03),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    Icon(Icons.star_border_rounded,size: _height*_width*0.0001),
+                                    SizedBox(
+                                      width: 8.0,
+                                    ),
+                                    Text(Languages.of(context)!.rate_Us,
+                                        style:  TextStyle(
+                                            color: const Color(0xff2a2a2a),
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Neckar",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: _height*_width*0.00005),
+                                        textAlign: TextAlign.left)
+                                  ],
+                                ),
+                                Icon(
+                                  Icons.arrow_forward_ios,
+                                    size: _height*_width*0.00007
+                                )
                               ],
-                              color: const Color(0xff3a6c83)),
+                            ),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            if(_menuProfileModel!.data.totalAmount>=5){
+                              Transitioner(
+                                context: context,
+                                child: UnlockWalletScreenOne(),
+                                animation: AnimationType.fadeIn, // Optional value
+                                duration: Duration(
+                                    milliseconds: 1000), // Optional value
+                                replacement: false, // Optional value
+                                curveType: CurveType.decelerate, // Optional value
+                              );
+
+                            }else{
+                              // ToastConstant.showToast(context, Languages.of(context)!.amountWithDraw);
+
+                              showDialogMoney();
+
+
+                            }
+
+                          },
+                          child: Container(
+                            width: _width * 0.5,
+                            height: _height * 0.05,
+                            decoration: BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(25)),
+                                boxShadow: [
+                                  BoxShadow(
+                                      color: const Color(0x24000000),
+                                      offset: Offset(0, 7),
+                                      blurRadius: 14,
+                                      spreadRadius: 0)
+                                ],
+                                color: const Color(0xff3a6c83)),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(),
+                                Icon(
+                                  Icons.card_travel
+                                  ,size: _height*_width*0.0001,
+                                  color: Colors.white,
+                                ),
+                                Text(Languages.of(context)!.unlockWallet,
+                                    style:  TextStyle(
+                                        color: const Color(0xffffffff),
+                                        fontWeight: FontWeight.w700,
+                                        fontFamily: "Lato",
+                                        fontStyle: FontStyle.normal,
+                                        fontSize: _height*_width*0.00005),
+                                    textAlign: TextAlign.center),
+                                SizedBox()
+                              ],
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: _height*0.02,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            showDialog();
+                          },
                           child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              SizedBox(),
-                              Icon(
-                                Icons.card_travel,
-                                color: Colors.white,
-                              ),
-                              Text(Languages.of(context)!.unlockWallet,
-                                  style: const TextStyle(
-                                      color: const Color(0xffffffff),
-                                      fontWeight: FontWeight.w700,
-                                      fontFamily: "Lato",
+                              Icon(Icons.logout_outlined,size: _height*_width*0.0001,
+                                  color: const Color(0xff3a6c83)),
+                              Text(Languages.of(context)!.LogOut,
+                                  style:  TextStyle(
+                                      color: const Color(0xff3a6c83),
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Alexandria",
                                       fontStyle: FontStyle.normal,
-                                      fontSize: 14.0),
-                                  textAlign: TextAlign.center),
-                              SizedBox()
+                                      fontSize: _height*_width*0.00005),
+                                  textAlign: TextAlign.right)
                             ],
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: _height*0.02,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog();
-                        },
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(Icons.logout_outlined,
-                                color: const Color(0xff3a6c83)),
-                            Text(Languages.of(context)!.LogOut,
-                                style: const TextStyle(
-                                    color: const Color(0xff3a6c83),
-                                    fontWeight: FontWeight.w500,
-                                    fontFamily: "Alexandria",
-                                    fontStyle: FontStyle.normal,
-                                    fontSize: 14.0),
-                                textAlign: TextAlign.right)
-                          ],
+                        SizedBox(
+                          height: _height*0.04,
                         ),
-                      ),
-                      SizedBox(
-                        height: _height*0.04,
-                      ),
 
-                    ],
-                  )
+                      ],
+                    ),
+                )
             : Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -651,6 +679,17 @@ class _MenuScreenState extends State<MenuScreen> {
     final mailtoLink = Mailto(
       to: ['n0velflexsupp0rt@gmail.com'],
       cc: ['zahidrehman507@gmail.com','support@estisharati.net'],
+      subject: '',
+      body: '',
+    );
+    await launch('$mailtoLink');
+  }
+
+  void supportTeam() async{
+
+    final mailtoLink = Mailto(
+      to: ['zk6978011@gmail.com'],
+      cc: ['mjawadsagheer@gmail.com','asaad@estisharati.net'],
       subject: '',
       body: '',
     );

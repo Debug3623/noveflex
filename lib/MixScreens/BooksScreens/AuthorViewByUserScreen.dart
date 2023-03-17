@@ -350,8 +350,8 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                               fontFamily: "Lato",
                                               fontStyle: FontStyle.normal,
                                               fontSize: 14.0),
-                                          overflow: TextOverflow.fade,
-                                          maxLines: 6,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
                                         )
                                       ],
                                     ),

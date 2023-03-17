@@ -171,33 +171,55 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: ClipRRect(
-                            child: Banner(
-                              message: _bookDetailsModel!.data!.paymentStatus
-                                          .toString() ==
-                                      "1"
-                                  ? "Free"
-                                  : "Premium",
-                              location: BannerLocation.topEnd,
-                              color: _bookDetailsModel!.data!.paymentStatus
-                                          .toString() ==
-                                      "1"
-                                  ? Color(0xff00bb23)
-                                  : Colors.red,
-                              child: Container(
-                                width: _width * 0.6,
-                                height: _height * 0.42,
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(10)),
-                                    color: const Color(0xffebf5f9),
-                                    image: DecorationImage(
-                                        fit: BoxFit.cover,
-                                        image: NetworkImage(_bookDetailsModel!
-                                            .data!.imagePath
-                                            .toString()))),
+                        GestureDetector(
+                          onTap: (){
+                            Transitioner(
+                              context: context,
+                              child: ShowAllReviewScreen(
+                                bookId: _bookDetailsModel!.data!.bookId
+                                    .toString(),
+                                bookName: _bookDetailsModel!.data!.bookTitle
+                                    .toString(),
+                                bookImage: _bookDetailsModel!.data!.imagePath
+                                    .toString(),
+                              ),
+                              animation:
+                              AnimationType.slideTop, // Optional value
+                              duration: Duration(
+                                  milliseconds: 1000), // Optional value
+                              replacement: false, // Optional value
+                              curveType:
+                              CurveType.decelerate, // Optional value
+                            );
+                          },
+                          child: Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: ClipRRect(
+                              child: Banner(
+                                message: _bookDetailsModel!.data!.paymentStatus
+                                            .toString() ==
+                                        "1"
+                                    ? "Free"
+                                    : "Premium",
+                                location: BannerLocation.topEnd,
+                                color: _bookDetailsModel!.data!.paymentStatus
+                                            .toString() ==
+                                        "1"
+                                    ? Color(0xff00bb23)
+                                    : Colors.red,
+                                child: Container(
+                                  width: _width * 0.6,
+                                  height: _height * 0.42,
+                                  decoration: BoxDecoration(
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(10)),
+                                      color: const Color(0xffebf5f9),
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: NetworkImage(_bookDetailsModel!
+                                              .data!.imagePath
+                                              .toString()))),
+                                ),
                               ),
                             ),
                           ),
@@ -651,16 +673,18 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                             SizedBox(
                               height: _height * 0.01,
                             ),
-                            Text(
-                              _bookDetailsModel!.data!.bookDescription.toString(),
-                              style: const TextStyle(
-                                  color: const Color(0xff676767),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "Lato",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 14.0),
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 5,
+                            Expanded(
+                              child: Text(
+                                _bookDetailsModel!.data!.bookDescription.toString(),
+                                style: const TextStyle(
+                                    color: const Color(0xff676767),
+                                    fontWeight: FontWeight.w400,
+                                    fontFamily: "Lato",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 14.0),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 4,
+                              ),
                             )
                           ],
                         ),

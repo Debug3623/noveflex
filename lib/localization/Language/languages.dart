@@ -39,6 +39,8 @@ abstract class Languages {
 
   String get ContactUs;
 
+  String get supportTeam;
+
   String get Disclaimer;
 
   String get faq;
