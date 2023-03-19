@@ -84,104 +84,102 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
                             textAlign: TextAlign.center,
                           ),
                         )
-                      : Expanded(
-                          child: Padding(
-                            padding: EdgeInsets.only(
-                                top: _height * 0.02,
-                                left: _width * 0.03,
-                                right: _width * 0.01),
-                            child: GridView.count(
-                              physics: BouncingScrollPhysics(),
-                              crossAxisCount: 2,
-                              childAspectRatio: 0.78,
-                              mainAxisSpacing: _height * 0.01,
-                              children: List.generate(
-                                  _boolAllPdfViewModelClass!.data.length,
-                                  (index) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => PdfScreen(
-                                                  url:
-                                                      _boolAllPdfViewModelClass!
-                                                          .data[index]
-                                                          .lessonPath,
-                                                  name:
-                                                      _boolAllPdfViewModelClass!
-                                                          .data[index].lesson
-                                                          .toString(),
-                                                )));
-                                  },
-                                  child: Container(
-                                    margin: EdgeInsets.all(_height*0.005),
-                                    width: _width * 0.45,
-                                    height: _height * 0.25,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                          Radius.circular(2),
-                                        ),
-                                        color: Colors.white),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        SizedBox(),
-                                        Container(
-                                          height: _height * 0.15,
-                                          width: _width * 0.15,
-                                          child: Center(
-                                            child: Image.asset(
-                                                "assets/quotes_data/pdf_view_image.png",
-                                                fit: BoxFit.cover),
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              IconButton(
-                                                  onPressed: () async {},
-                                                  icon: const Icon(
-                                                    Icons.picture_as_pdf,
-                                                    color: Colors.red,
-                                                  )),
-                                              Container(
-                                                width: _width*0.3,
-                                                child: Text(
+                      : Padding(
+                        padding: EdgeInsets.only(
+                            top: _height * 0.02,
+                            left: _width * 0.03,
+                            right: _width * 0.01),
+                        child: GridView.count(
+                          physics: BouncingScrollPhysics(),
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.78,
+                          mainAxisSpacing: _height * 0.01,
+                          children: List.generate(
+                              _boolAllPdfViewModelClass!.data.length,
+                              (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => PdfScreen(
+                                              url:
                                                   _boolAllPdfViewModelClass!
-                                                              .data[index]
-                                                              .lesson ==
-                                                          null
-                                                      ? widget.bookName
-                                                          .toString()
-                                                      : "${_boolAllPdfViewModelClass!.data[index].lesson.toString()}.pdf",
-                                                  style: const TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 12,
-                                                    fontFamily:
-                                                        Constants.fontfamily,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                  ),
-                                                  maxLines: 1,
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                                      .data[index]
+                                                      .lessonPath,
+                                              name:
+                                                  _boolAllPdfViewModelClass!
+                                                      .data[index].lesson
+                                                      .toString(),
+                                            )));
+                              },
+                              child: Container(
+                                margin: EdgeInsets.all(_height*0.005),
+                                width: _width * 0.45,
+                                height: _height * 0.25,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(2),
                                     ),
-                                  ),
-                                );
-                              }),
-                            ),
-                          ),
-                        )
+                                    color: Colors.white),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(),
+                                    Container(
+                                      height: _height * 0.15,
+                                      width: _width * 0.15,
+                                      child: Center(
+                                        child: Image.asset(
+                                            "assets/quotes_data/pdf_view_image.png",
+                                            fit: BoxFit.cover),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          IconButton(
+                                              onPressed: () async {},
+                                              icon: const Icon(
+                                                Icons.picture_as_pdf,
+                                                color: Colors.red,
+                                              )),
+                                          Container(
+                                            width: _width*0.3,
+                                            child: Text(
+                                              _boolAllPdfViewModelClass!
+                                                          .data[index]
+                                                          .lesson ==
+                                                      null
+                                                  ? widget.bookName
+                                                      .toString()
+                                                  : "${_boolAllPdfViewModelClass!.data[index].lesson.toString()}.pdf",
+                                              style: const TextStyle(
+                                                color: Colors.black,
+                                                fontSize: 12,
+                                                fontFamily:
+                                                    Constants.fontfamily,
+                                                fontWeight:
+                                                    FontWeight.normal,
+                                                overflow:
+                                                    TextOverflow.ellipsis,
+                                              ),
+                                              maxLines: 1,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                      )
               : Center(
                   child: Text("No Internet Connection!"),
                 ),

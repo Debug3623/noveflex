@@ -196,7 +196,7 @@ class _MyCornerState extends State<MyCorner> {
                                 .toString() ==
                                 "1"
                                 ? "Free"
-                                : "Pro ++",
+                                : "Premium",
                             location:
                             BannerLocation.topEnd,
                             color: _savedBooksModel!
@@ -304,7 +304,7 @@ class _MyCornerState extends State<MyCorner> {
                                 .toString() ==
                                 "1"
                                 ? "Free"
-                                : "Pro ++",
+                                : "Premium",
                             location:
                             BannerLocation.topEnd,
                             color: _likesBooksModel!

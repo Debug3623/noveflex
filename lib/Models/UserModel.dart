@@ -4,18 +4,18 @@
 
 import 'dart:convert';
 
-UserModel? userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
+UserModel userModelFromJson(String str) => UserModel.fromJson(json.decode(str));
 
-String userModelToJson(UserModel? data) => json.encode(data!.toJson());
+String userModelToJson(UserModel data) => json.encode(data.toJson());
 
 class UserModel {
   UserModel({
-    this.status,
-    this.user,
+    required this.status,
+    required this.user,
   });
 
-  int? status;
-  User? user;
+  int status;
+  User user;
 
   factory UserModel.fromJson(Map<String, dynamic> json) => UserModel(
     status: json["status"],
@@ -24,32 +24,38 @@ class UserModel {
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "user": user!.toJson(),
+    "user": user.toJson(),
   };
 }
 
 class User {
   User({
-    this.id,
-    this.username,
-    this.email,
-    this.accessToken,
-    this.expiredDays,
-    this.googleLogin,
+    required this.id,
+    required this.username,
+    required this.email,
+    required this.phone,
+    required this.accessToken,
+    required this.image,
+    required this.expiredDays,
+    required this.googleLogin,
   });
 
-  int? id;
-  String? username;
-  String? email;
-  String? accessToken;
-  int? expiredDays;
-  bool? googleLogin;
+  int id;
+  String username;
+  String email;
+  String phone;
+  String accessToken;
+  String image;
+  int expiredDays;
+  bool googleLogin;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
     username: json["username"],
     email: json["email"],
+    phone: json["phone"],
     accessToken: json["access_token"],
+    image: json["image"],
     expiredDays: json["expired_days"],
     googleLogin: json["google_login"],
   );
@@ -58,7 +64,9 @@ class User {
     "id": id,
     "username": username,
     "email": email,
+    "phone": phone,
     "access_token": accessToken,
+    "image": image,
     "expired_days": expiredDays,
     "google_login": googleLogin,
   };
