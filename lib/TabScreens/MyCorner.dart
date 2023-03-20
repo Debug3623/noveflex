@@ -188,39 +188,19 @@ class _MyCornerState extends State<MyCorner> {
                                 .decelerate, // Optional value
                           );
                         },
-                        child: ClipRRect(
-                          child: Banner(
-                            message: _savedBooksModel!
-                                .data[index]
-                                .paymentStatus
-                                .toString() ==
-                                "1"
-                                ? "Free"
-                                : "Premium",
-                            location:
-                            BannerLocation.topEnd,
-                            color: _savedBooksModel!
-                                .data[index]
-                                .paymentStatus
-                                .toString() ==
-                                "1"
-                                ? Color(0xff00bb23)
-                                : Colors.red,
-                            child: Container(
-                                width: _width*0.25,
-                                height: _height*0.15,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(10),
-                                    ),
-                                  image: DecorationImage(
-                                    image: NetworkImage(_savedBooksModel!.data![index]!.imagePath.toString()),
-                                    fit: BoxFit.cover
-                                  ),
-                                  color: Colors.green
-                                )
-                            ),
-                          ),
+                        child: Container(
+                            width: _width*0.25,
+                            height: _height*0.15,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                ),
+                              image: DecorationImage(
+                                image: NetworkImage(_savedBooksModel!.data![index]!.imagePath.toString()),
+                                fit: BoxFit.cover
+                              ),
+                              color: Colors.green
+                            )
                         ),
                       ),
                       SizedBox(height: _height*0.01,),
@@ -297,37 +277,19 @@ class _MyCornerState extends State<MyCorner> {
                           );
                         },
                         child: ClipRRect(
-                          child: Banner(
-                            message: _likesBooksModel!
-                                .data[index]
-                                .paymentStatus
-                                .toString() ==
-                                "1"
-                                ? "Free"
-                                : "Premium",
-                            location:
-                            BannerLocation.topEnd,
-                            color: _likesBooksModel!
-                                .data[index]
-                                .paymentStatus
-                                .toString() ==
-                                "1"
-                                ? Color(0xff00bb23)
-                                : Colors.red,
-                            child: Container(
-                                width: _width*0.25,
-                                height: _height*0.15,
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(10),
-                                    ),
-                                    image: DecorationImage(
-                                        image: NetworkImage(_likesBooksModel!.data[index].imagePath.toString()),
-                                        fit: BoxFit.cover
-                                    ),
-                                    color: Colors.green
-                                )
-                            ),
+                          child: Container(
+                              width: _width*0.25,
+                              height: _height*0.15,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(10),
+                                  ),
+                                  image: DecorationImage(
+                                      image: NetworkImage(_likesBooksModel!.data[index].imagePath.toString()),
+                                      fit: BoxFit.cover
+                                  ),
+                                  color: Colors.green
+                              )
                           ),
                         ),
                       ),

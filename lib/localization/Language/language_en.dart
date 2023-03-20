@@ -255,27 +255,21 @@ class LanguageEn extends Languages {
   String get labelInfo => "This is multi-languages demo application";
 
   @override
-  // TODO: implement labelChangeLanguage
   String get labelChangeLanguage => "Change Language";
 
   @override
-  // TODO: implement ContactUs
   String get ContactUs => "Contact Us";
 
   @override
-  // TODO: implement Disclaimer
   String get Disclaimer => "Disclaimer";
 
   @override
-  // TODO: implement LogOut
   String get LogOut => "Logout";
 
   @override
-  // TODO: implement home
   String get home => "Home";
 
   @override
-  // TODO: implement home
   String get readerMore => "Read More";
 
   @override
@@ -289,68 +283,52 @@ class LanguageEn extends Languages {
   String get faqText_long => "The Novelx platform is a platform located in the United Arab Emirates. The platform was launched in 2020. The idea of the platform is to publish literary and artistic works for all creators and amateurs in novels, manga, and comics along with manhwa and other literary works through one electronic platform.";
 
   @override
-  // TODO: implement home
   String get myProfile => "My Profile";
 
   @override
-  // TODO: implement home
   String get following => "Following";
 
 
   @override
-  // TODO: implement home
   String get next => "Next";
 
   @override
-  // TODO: implement home
   String get unfollow_text => "UNFOLLOW";
 
   @override
-  // TODO: implement home
   String get continuebtn => "Continue";
 
   @override
-  // TODO: implement EditButton
   String get selectSubCategories => "Select Sub Categories";
 
   @override
-  // TODO: implement home
   String get publishButton => "PUBLISH";
 
   @override
-  // TODO: implement home
   String get account => "Account";
 
   @override
-  // TODO: implement home
   String get apply => "APPLY";
 
   @override
-  // TODO: implement home
   String get recentlyPublish => "Recently Published";
 
   @override
-  // TODO: implement home
   String get popular => "Most Popular";
 
   @override
-  // TODO: implement home
   String get FinsihAllsteps => "You have Finished all the necessary Steps";
 
   @override
-  // TODO: implement LogOut
   String get EAccount1 => "Earnings account";
 
   @override
-  // TODO: implement home
   String get EAccount2 => "The monthly profits will be added at the\n beginning of each month based on the number\n of ad views for each author in his portfolio,\n and he can withdraw according to the existing\n payment methods for the bank card.";
 
   @override
-  // TODO: implement rate_Us
   String get rate_Us => "Rate Us";
 
   @override
-  // TODO: implement EditButton
   String get EditButton => "Add Pdf";
 
   @override
@@ -392,340 +370,277 @@ class LanguageEn extends Languages {
   String get published => "PUBLICATIONS";
 
   @override
-  // TODO: implement Publish
   String get Publish => "Publish";
 
   @override
-  // TODO: implement Publish
   String get reader => "Reader";
 
   @override
-  // TODO: implement Publish
   String get wallet1 => "Conditions for applying to activate\n the wallet and reap profits from ads";
   @override
-  // TODO: implement Publish
+
   String get wallet2 => "The author's account must have at least\n 50 followers";
   @override
-  // TODO: implement Publish
+
   String get wallet3 => "If it is a novel, the percentage of views is \n more than 200, with at least 100 pages.";
+
   @override
-  // TODO: implement Publish
   String get wallet4 => "If it is a manga, it must have obtained\n more than 200 views for all\n chapters together with at least 6 ";
+
   @override
-  // TODO: implement Publish
   String get wallet5 => "If it is a manga, it must have\n obtained more than 200 views\n for all chapters together with at\n  least 6 chaptersand each chapter\n  is 18 pages with a cover.";
+
   @override
-  // TODO: implement Publish
   String get wallet6 => "It is ensured that the works are not\n stolen or quoted from other authors";
 
   @override
-  // TODO: implement Publish
   String get bank1 => "Bank Account and Card";
 
   @override
-  // TODO: implement Publish
   String get bank2 => "All financial Details will be encrypted";
 
 
 
   @override
-  // TODO: implement Publish
   String get continueReading => "Continue Reading";
 
   @override
-  // TODO: implement RateusDialog
   String get RateusDialog => "Rate Us";
 
   @override
-  // TODO: implement RateusDialog
   String get Subscribe => "FOLLOW";
 
 
   @override
-  // TODO: implement RateusDialog
   String get scan => "Scan Card";
 
   @override
-  // TODO: implement RateusDialog
-  String get publishPorF => "Content Access";
+  String get publishPorF => "Upload Contents";
+
+  @override
+  String get publishPorF_text => "Publish Contents";
 
 
   @override
-  // TODO: implement RateusDialog
   String get paid => "Premium";
 
   @override
-  // TODO: implement RateusDialog
+  String get chapter => "Chapter No";
+
+  @override
   String get supportTeam => "Support Team";
 
   @override
-  // TODO: implement RateusDialog
   String get free => "Free";
 
 
   @override
-  // TODO: implement RateusDialog
   String get editT => "Edit";
 
   @override
-  // TODO: implement RateusDialog
   String get inviteApp => "Invite App";
 
   @override
-  // TODO: implement RateusDialog
   String get deleteb => "Delete";
 
   @override
-  // TODO: implement RateusDialog
   String get nodata => "Empty";
 
   @override
-  // TODO: implement RateusDialog
   String get Statistics => "Pie Chart";
 
   @override
-  // TODO: implement SelectBook
   String get SelectBook => "Select Book";
 
   @override
-  // TODO: implement UploadHistory
   String get UploadHistory => "Upload History";
 
   @override
-  // TODO: implement YourManga
   String get YourManga => "Your Manga";
 
   @override
-  // TODO: implement comments
   String get comments => "Comment";
 
   @override
-  // TODO: implement enterBookTitle
   String get enterBookTitle => "Enter Book Title";
 
   @override
-  // TODO: implement seeAll
   String get seeAll => "See More";
 
   @override
-  // TODO: implement seeAllReviews
   String get follow_author => "FOLLOW";
 
   @override
-  // TODO: implement enterBookTitle
   String get aboutAuthor => "About Author";
 
   @override
-  // TODO: implement seeAll
   String get author => "Authors";
 
   @override
-  // TODO: implement seeAllReviews
   String get view => "View";
 
   @override
-  // TODO: implement seeAllReviews
   String get aboutBook => "About The Book";
 
   @override
-  // TODO: implement enterBookTitle
   String get manga => "#Manga";
 
   @override
-  // TODO: implement seeAll
   String get read => "Read";
 
   @override
-  // TODO: implement seeAllReviews
   String get seeAllReviews => "See All Reviews ★   ";
 
   @override
-  // TODO: implement selectGenerals
   String get selectGenerals => "Select Generals";
 
   @override
-  // TODO: implement selectLanguage
   String get selectLanguage => "Select Languages";
 
   @override
-  // TODO: implement submitDialog
   String get submitDialog => "Submit";
 
   @override
-  // TODO: implement taptoUploadCoverImage
   String get taptoUploadCoverImage => "Tap To Upload Cover Image";
 
   @override
-  // TODO: implement writetheDescription
   String get writetheDescription => "Write Description";
 
   @override
-  // TODO: implement MyMangaUploads
   String get filesSelected => "Files are Selected";
 
   @override
-  // TODO: implement writetheDescription
   String get notSignUpYet => "Not Sign Up Yet!";
 
   @override
-  // TODO: implement writetheDescription
   String get seeAllreview2 => "See All Review";
 
   @override
-  // TODO: implement alreadyhaveAccountSignIn
   String get alreadyhaveAccountSignIn => "Already have an account? SignIn";
 
   @override
-  // TODO: implement confirmpassword
   String get confirmpassword => "Confirm Password";
 
   @override
-  // TODO: implement donthaveanaccountSignUp
   String get donthaveanaccountSignUp => "Don't have an account? Sign Up";
 
   @override
-  // TODO: implement email
   String get email => "Email";
 
   @override
-  // TODO: implement forgetPassword
   String get forgetPassword => "Forget Password";
 
   @override
-  // TODO: implement forgetpassword
   String get forgetpassword => "ForgetPassword";
 
   @override
-  // TODO: implement login
   String get login => "Login";
 
   @override
-  // TODO: implement password
   String get password => "Password";
 
 
   @override
-  // TODO: implement register
   String get saved => "Saved";
 
   @override
-  // TODO: implement register
   String get novels => "Novels";
 
   @override
-  // TODO: implement register
   String get liked => "Liked";
 
   @override
-  // TODO: implement register
   String get history => "Uploaded Books";
 
   @override
-  // TODO: implement register
   String get pay => "Pay 3 \$ to Subscribe";
 
   @override
-  // TODO: implement register
   String get oneTimeSub => "One Month Subscription for NovelFlex will cost you  3\$ ";
 
   @override
-  // TODO: implement register
   String get afterSub => "After Subscription you will have access to all the books and novels";
 
   @override
-  // TODO: implement register
   String get register => "Continue";
 
   @override
-  // TODO: implement register
   String get myWallet => "My Wallet";
 
   @override
-  // TODO: implement register
   String get myCorner => "My Corner";
 
   @override
-  // TODO: implement register
   String get bioHint => "About you...";
 
   @override
-  // TODO: implement register
   String get selectPicture => "Select Picture";
 
   @override
-  // TODO: implement password
   String get iamreader => "I am a Reader";
 
   @override
-  // TODO: implement password
   String get letsReaderKnowYuBetter => "Let Readers know you better!";
 
   @override
-  // TODO: implement register
   String get iamWriter => "I am a Writer";
 
   @override
-  // TODO: implement signup
   String get signup => "Sign Up";
 
   @override
-  // TODO: implement userName
   String get userName => "User Name";
 
   @override
-  // TODO: implement welcomenovelflex
   String get welcomenovelflex => "Welcome NovelFlex";
 
   @override
-  // TODO: implement welcomenovelflex
   String get socailtext =>
       "Log in with your account or\n with your social media";
 
   @override
-  // TODO: implement welcomenovelflex
   String get createAccount => "Create an Account";
 
   @override
-  // TODO: implement alert
   String get alert => "Alert";
 
   @override
-  // TODO: implement dialogAreyousure
   String get dialogAreyousure => "Are you sure you want to Logout?";
 
   @override
-  // TODO: implement no
   String get no => "NO";
 
   @override
-  // TODO: implement yes
   String get yes => "Yes";
 
   @override
-  // TODO: implement yes
   String get disclaimer =>
       "The content on the Manga Reader Application, including without limitation, the text, software, scripts, graphics, photos, sounds, music, videos, interactive features and the like (Content) and the trademarks, service marks and logos contained therein (Marks), are owned by or licensed to Manga Reader, subject to copyright and other intellectual property rights under United States and foreign laws and international conventions. If you download or print a copy of the Content for personal use, you must retain all copyright and other proprietary notices contained therein. You agree not to circumvent, disable or otherwise interfere with security related features of the MangaEden Website or features that prevent or restrict use or copying of any Content or enforce limitations on use of the Manga Reader Website or the Content therein.";
 
   @override
-  // TODO: implement discliamr_bar
   String get discliamr_bar => "Disclaimer";
 
   @override
-  // TODO: implement noReview
   String get noReview => "No reviews available";
 
   @override
-  // TODO: implement confirmnewpassword
   String get confirmnewpassword => "Confirm New Password";
+
   @override
-  // TODO: implement confirmnewpassword
   String get newFpassword => " New Password";
 
   @override
-  // TODO: implement doneText
   String get doneText => "Continue";
 
   @override
-  // TODO: implement doneText
+  String get free1 => "Read Free";
+
+  @override
+  String get episodes => "Episodes";
+
+  @override
+  String get premium1 => "Premium";
+
+  @override
   String get nouploadhistory => "Upload History is Empty";
 }

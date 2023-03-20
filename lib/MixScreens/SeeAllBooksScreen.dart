@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
-
 import '../Models/SeeAllModel.dar.dart';
 import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
@@ -196,41 +195,22 @@ class _SeeAllBookScreenState extends State<SeeAllBookScreen> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        ClipRRect(
-                                          child: Banner(
-                                            message: _seeAllBooksModelClass!
-                                                        .data[index]
-                                                        .paymentStatus
-                                                        .toString() ==
-                                                    "1"
-                                                ? "Free"
-                                                : "Premium",
-                                            location: BannerLocation.topEnd,
-                                            color: _seeAllBooksModelClass!
-                                                        .data[index]
-                                                        .paymentStatus
-                                                        .toString() ==
-                                                    "1"
-                                                ? Color(0xff00bb23)
-                                                : Colors.red,
-                                            child: Container(
-                                                width: _width * 0.25,
-                                                height: _height * 0.13,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                      Radius.circular(10),
-                                                    ),
-                                                    image: DecorationImage(
-                                                        image: NetworkImage(
-                                                            _seeAllBooksModelClass!
-                                                                .data[index]
-                                                                .imagePath
-                                                                .toString()),
-                                                        fit: BoxFit.cover),
-                                                    color: Colors.green)),
-                                          ),
-                                        ),
+                                        Container(
+                                            width: _width * 0.25,
+                                            height: _height * 0.13,
+                                            decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.all(
+                                                  Radius.circular(10),
+                                                ),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(
+                                                        _seeAllBooksModelClass!
+                                                            .data[index]
+                                                            .imagePath
+                                                            .toString()),
+                                                    fit: BoxFit.cover),
+                                                color: Colors.green)),
                                         SizedBox(
                                           height: _height * 0.01,
                                         ),

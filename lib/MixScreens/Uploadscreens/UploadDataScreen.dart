@@ -245,7 +245,6 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
                   SizedBox(
                     height: height * 0.05,
                   ),
-
                   Padding(
                     padding: EdgeInsets.only(
                         top: 15.0,
@@ -259,45 +258,6 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
                           fontWeight: FontWeight.bold,
                           fontFamily: Constants.fontfamily,
                           fontSize: 15.0),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(left: width * 0.05),
-                    child: Column(
-                      children: [
-                        RadioListTile(
-                          activeColor: const Color(0xff3a6c83),
-                          title:  Text(
-                         Languages.of(context)!.paid,
-                            style: TextStyle(
-                              fontFamily: Constants.fontfamily,
-                            ),
-                          ),
-                          value: "2",
-                          groupValue: paymentStatus,
-                          onChanged: (value) {
-                            setState(() {
-                              paymentStatus = value.toString();
-                            });
-                          },
-                        ),
-                        RadioListTile(
-                          activeColor: const Color(0xff3a6c83),
-                          title:  Text(
-                              Languages.of(context)!.free,
-                            style: TextStyle(
-                              fontFamily: Constants.fontfamily,
-                            ),
-                          ),
-                          value: "1",
-                          groupValue: paymentStatus,
-                          onChanged: (value) {
-                            setState(() {
-                              paymentStatus = value.toString();
-                            });
-                          },
-                        ),
-                      ],
                     ),
                   ),
                   Container(
@@ -759,7 +719,9 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
           .readAsBytesSync(), //UserFile is my JSON key,use your own and "image" is the pic im getting from my gallary
       filename: "Image.jpg",
       contentType: MediaType('image', 'jpg'),
-    ));
+    )
+
+    );
 
     request.headers.addAll(headers);
 

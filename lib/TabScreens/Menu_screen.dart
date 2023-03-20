@@ -688,8 +688,8 @@ class _MenuScreenState extends State<MenuScreen> {
   void supportTeam() async{
 
     final mailtoLink = Mailto(
-      to: ['zk6978011@gmail.com'],
-      cc: ['mjawadsagheer@gmail.com','asaad@estisharati.net'],
+      to: ['support@novelflex.com'],
+      // cc: ['mjawadsagheer@gmail.com','asaad@estisharati.net'],
       subject: '',
       body: '',
     );

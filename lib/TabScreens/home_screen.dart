@@ -425,60 +425,40 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             ),
                                                             fit: BoxFit.cover)),
                                                     child: ClipRRect(
-                                                      child: Banner(
-                                                        message: _sliderModel!
-                                                                    .data[
-                                                                        itemIndex]
-                                                                    .paymentStatus
-                                                                    .toString() ==
-                                                                "1"
-                                                            ? "Free"
-                                                            : "Premium",
-                                                        location:
-                                                            BannerLocation.topEnd,
-                                                        color: _sliderModel!
-                                                                    .data[
-                                                                        itemIndex]
-                                                                    .paymentStatus
-                                                                    .toString() ==
-                                                                "1"
-                                                            ? Color(0xff00bb23)
-                                                            : Colors.red,
-                                                        child: CachedNetworkImage(
-                                                          filterQuality:
-                                                              FilterQuality.high,
-                                                          imageBuilder: (context,
-                                                                  imageProvider) =>
-                                                              Container(
-                                                                  // decoration: BoxDecoration(
-                                                                  //   shape: BoxShape.rectangle,
-                                                                  //   borderRadius:
-                                                                  //   BorderRadius.circular(
-                                                                  //       10),
-                                                                  //   image: DecorationImage(
-                                                                  //       image: imageProvider,
-                                                                  //       fit: BoxFit.cover),
-                                                                  // ),
-                                                                  ),
-                                                          imageUrl: _sliderModel!
-                                                              .data[itemIndex]
-                                                              .imagePath
-                                                              .toString(),
-                                                          fit: BoxFit.cover,
-                                                          placeholder: (context,
-                                                                  url) =>
-                                                              const Center(
-                                                                  child:
-                                                                      CupertinoActivityIndicator(
-                                                            color:
-                                                                Color(0xFF256D85),
-                                                          )),
-                                                          errorWidget: (context,
-                                                                  url, error) =>
-                                                              const Center(
-                                                                  child: Icon(Icons
-                                                                      .error_outline)),
-                                                        ),
+                                                      child: CachedNetworkImage(
+                                                        filterQuality:
+                                                            FilterQuality.high,
+                                                        imageBuilder: (context,
+                                                                imageProvider) =>
+                                                            Container(
+                                                                // decoration: BoxDecoration(
+                                                                //   shape: BoxShape.rectangle,
+                                                                //   borderRadius:
+                                                                //   BorderRadius.circular(
+                                                                //       10),
+                                                                //   image: DecorationImage(
+                                                                //       image: imageProvider,
+                                                                //       fit: BoxFit.cover),
+                                                                // ),
+                                                                ),
+                                                        imageUrl: _sliderModel!
+                                                            .data[itemIndex]
+                                                            .imagePath
+                                                            .toString(),
+                                                        fit: BoxFit.cover,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            const Center(
+                                                                child:
+                                                                    CupertinoActivityIndicator(
+                                                          color:
+                                                              Color(0xFF256D85),
+                                                        )),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Center(
+                                                                child: Icon(Icons
+                                                                    .error_outline)),
                                                       ),
                                                     ),
                                                   ),
@@ -694,69 +674,48 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                               20),
                                                     ),
                                                     child: ClipRRect(
-                                                      child: Banner(
-                                                        message: _recentModel!
-                                                                    .data[
-                                                                        index1]
-                                                                    .paymentStatus
-                                                                    .toString() ==
-                                                                "1"
-                                                            ? "Free"
-                                                            : "Premium",
-                                                        location: BannerLocation
-                                                            .topEnd,
-                                                        color: _recentModel!
-                                                                    .data[
-                                                                        index1]
-                                                                    .paymentStatus
-                                                                    .toString() ==
-                                                                "1"
-                                                            ? Color(0xff00bb23)
-                                                            : Colors.red,
-                                                        child:
-                                                            CachedNetworkImage(
+                                                      child: CachedNetworkImage(
                                                           filterQuality:
-                                                              FilterQuality
-                                                                  .high,
+                                                        FilterQuality
+                                                            .high,
                                                           imageBuilder: (context,
-                                                                  imageProvider) =>
-                                                              Container(
-                                                            decoration:
-                                                                BoxDecoration(
-                                                              shape: BoxShape
-                                                                  .rectangle,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .circular(
-                                                                          10),
-                                                              image: DecorationImage(
-                                                                  image:
-                                                                      imageProvider,
-                                                                  fit: BoxFit
-                                                                      .cover),
-                                                            ),
+                                                            imageProvider) =>
+                                                        Container(
+                                                      decoration:
+                                                          BoxDecoration(
+                                                        shape: BoxShape
+                                                            .rectangle,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                                    10),
+                                                        image: DecorationImage(
+                                                            image:
+                                                                imageProvider,
+                                                            fit: BoxFit
+                                                                .cover),
+                                                      ),
                                                           ),
                                                           imageUrl:
-                                                              _recentModel!
-                                                                  .data[index1]
-                                                                  .imagePath
-                                                                  .toString(),
+                                                        _recentModel!
+                                                            .data[index1]
+                                                            .imagePath
+                                                            .toString(),
                                                           fit: BoxFit.cover,
                                                           placeholder: (context,
-                                                                  url) =>
-                                                              const Center(
-                                                                  child:
-                                                                      CupertinoActivityIndicator(
-                                                            color: Color(
-                                                                0xFF256D85),
+                                                            url) =>
+                                                        const Center(
+                                                            child:
+                                                                CupertinoActivityIndicator(
+                                                      color: Color(
+                                                          0xFF256D85),
                                                           )),
                                                           errorWidget: (context,
-                                                                  url, error) =>
-                                                              const Center(
-                                                                  child: Icon(Icons
-                                                                      .error_outline)),
+                                                            url, error) =>
+                                                        const Center(
+                                                            child: Icon(Icons
+                                                                .error_outline)),
                                                         ),
-                                                      ),
                                                     ),
                                                   ),
                                                   Text(
@@ -947,79 +906,52 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                 .circular(20),
                                                       ),
                                                       child: ClipRRect(
-                                                        child: Banner(
-                                                          message: _homeModelClass!
-                                                                      .data[
-                                                                          index]
-                                                                      .books[
-                                                                          index1]
-                                                                      .paymentStatus
-                                                                      .toString() ==
-                                                                  "1"
-                                                              ? "Free"
-                                                              : "Premium",
-                                                          location:
-                                                              BannerLocation
-                                                                  .topEnd,
-                                                          color: _homeModelClass!
-                                                                      .data[
-                                                                          index]
-                                                                      .books[
-                                                                          index1]
-                                                                      .paymentStatus
-                                                                      .toString() ==
-                                                                  "1"
-                                                              ? Color(
-                                                                  0xff00bb23)
-                                                              : Colors.red,
-                                                          child:
-                                                              CachedNetworkImage(
+                                                        child: CachedNetworkImage(
                                                             filterQuality:
-                                                                FilterQuality
-                                                                    .high,
+                                                          FilterQuality
+                                                              .high,
                                                             imageBuilder: (context,
-                                                                    imageProvider) =>
-                                                                Container(
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                shape: BoxShape
-                                                                    .rectangle,
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            10),
-                                                                image: DecorationImage(
-                                                                    image:
-                                                                        imageProvider,
-                                                                    fit: BoxFit
-                                                                        .cover),
-                                                              ),
+                                                              imageProvider) =>
+                                                          Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape: BoxShape
+                                                              .rectangle,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10),
+                                                          image: DecorationImage(
+                                                              image:
+                                                                  imageProvider,
+                                                              fit: BoxFit
+                                                                  .cover),
+                                                        ),
                                                             ),
                                                             imageUrl:
-                                                                _homeModelClass!
-                                                                    .data[index]
-                                                                    .books[
-                                                                        index1]
-                                                                    .image
-                                                                    .toString(),
+                                                          _homeModelClass!
+                                                              .data[index]
+                                                              .books[
+                                                                  index1]
+                                                              .image
+                                                              .toString(),
                                                             fit: BoxFit.cover,
                                                             placeholder: (context,
-                                                                    url) =>
-                                                                const Center(
-                                                                    child:
-                                                                        CupertinoActivityIndicator(
-                                                              color: Color(
-                                                                  0xFF256D85),
+                                                              url) =>
+                                                          const Center(
+                                                              child:
+                                                                  CupertinoActivityIndicator(
+                                                        color: Color(
+                                                            0xFF256D85),
                                                             )),
                                                             errorWidget: (context,
-                                                                    url,
-                                                                    error) =>
-                                                                const Center(
-                                                                    child: Icon(
-                                                                        Icons
-                                                                            .error_outline)),
+                                                              url,
+                                                              error) =>
+                                                          const Center(
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .error_outline)),
                                                           ),
-                                                        ),
                                                       ),
                                                     ),
                                                     Text(

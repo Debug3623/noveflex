@@ -28,6 +28,7 @@ import '../Widgets/reusable_button.dart';
 import '../Widgets/reusable_button_small.dart';
 import '../localization/Language/languages.dart';
 import 'FogetPassword/ForgetPasswordScreen.dart';
+import 'FogetPassword/forgetPasswordEmailScreen.dart';
 import 'SignUpScreens/SignUpScreen_Second.dart';
 import 'SignUpScreens/signUpScreen_Third.dart';
 import 'dart:io';
@@ -359,7 +360,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         onTap: () {
                           Transitioner(
                             context: context,
-                            child: ForgetPasswordScreen(),
+                            // child: ForgetPasswordScreen(),
+                            child: ForgetPasswordEmailScreen(),
                             animation:
                                 AnimationType.slideLeft, // Optional value
                             duration:

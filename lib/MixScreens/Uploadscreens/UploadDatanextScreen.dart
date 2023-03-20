@@ -7,7 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:novelflex/tab_screen.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
 import '../../Models/PdfUploadModel.dart';
@@ -18,6 +20,7 @@ import 'dart:io';
 import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button.dart';
 import '../../localization/Language/languages.dart';
+import 'package:path/path.dart' as path;
 
 class UploaddataNextScreen extends StatefulWidget {
   String bookId;
@@ -33,7 +36,6 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
   bool _isLoading = false;
   File? DocumentFile;
   int fileLength = 0;
-  File? imageFile;
   var documentFile;
   bool docUploader = false;
   bool _isInternetConnected = true;
@@ -41,12 +43,15 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
   bool checkUpload = false;
   final _chapterKey = GlobalKey<FormFieldState>();
   TextEditingController? _chapterController;
+  String paymentStatus = "1";
+  File? imageFile;
 
   @override
   void initState() {
     _chapterController= TextEditingController();
     super.initState();
   }
+
   @override
   void dispose() {
     _chapterController!.dispose();
@@ -81,93 +86,154 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: EdgeInsets.only(
-                  top: height * 0.04, left: width * 0.02, right: width * 0.02),
-              height: height * 0.07,
-              width: width * 0.9,
-              child: TextFormField(
-                key: _chapterKey,
-                controller: _chapterController,
-                keyboardType: TextInputType.text,
-                textInputAction: TextInputAction.next,
-                cursorColor: Colors.black,
-                validator: validateBookTitle,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Color(0xffebf5f9),
-                  // labelText: widget.labelText,
-                  hintText: Languages.of(context)!.enterBookTitle,
-                  hintStyle: const TextStyle(
+            Padding(
+              padding: EdgeInsets.only(
+                  top: 15.0,
+                  bottom: 15.0,
+                  left: width * 0.05,
+                  right: width * 0.05),
+              child: Text(
+                Languages.of(context)!.publishPorF_text,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                     fontFamily: Constants.fontfamily,
+                    fontSize: 15.0),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: width * 0.05),
+              child: Column(
+                children: [
+                  RadioListTile(
+                    activeColor: const Color(0xff3a6c83),
+                    title:  Text(
+                      Languages.of(context)!.paid,
+                      style: TextStyle(
+                        fontFamily: Constants.fontfamily,
+                      ),
+                    ),
+                    value: "2",
+                    groupValue: paymentStatus,
+                    onChanged: (value) {
+                      setState(() {
+                        paymentStatus = value.toString();
+                      });
+                    },
                   ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 2, color: Color(0xFF256D85)),
-                    borderRadius: BorderRadius.circular(10),
+                  RadioListTile(
+                    activeColor: const Color(0xff3a6c83),
+                    title:  Text(
+                      Languages.of(context)!.free,
+                      style: TextStyle(
+                        fontFamily: Constants.fontfamily,
+                      ),
+                    ),
+                    value: "1",
+                    groupValue: paymentStatus,
+                    onChanged: (value) {
+                      setState(() {
+                        paymentStatus = value.toString();
+                      });
+                    },
                   ),
-                  focusedBorder: OutlineInputBorder(
-                    borderSide:
-                        const BorderSide(width: 2, color: Color(0xFF256D85)),
-                    borderRadius: BorderRadius.circular(10),
+                ],
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: width * 0.02,right: width * 0.02),
+              child: Container(
+                margin: EdgeInsets.only(
+                    top: height * 0.04, left: width * 0.02, right: width * 0.02),
+                height: height * 0.07,
+                width: width * 0.9,
+                child: TextFormField(
+                  key: _chapterKey,
+                  controller: _chapterController,
+                  keyboardType: TextInputType.text,
+                  textInputAction: TextInputAction.next,
+                  cursorColor: Colors.black,
+                  validator: validateBookTitle,
+                  decoration: InputDecoration(
+                    filled: true,
+                    fillColor: Color(0xffebf5f9),
+                    // labelText: widget.labelText,
+                    hintText: Languages.of(context)!.chapter,
+                    hintStyle: const TextStyle(
+                      fontFamily: Constants.fontfamily,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 2, color: Color(0xFF256D85)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(width: 2, color: Color(0xFF256D85)),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
                   ),
                 ),
               ),
             ),
-            Container(
-              decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                    side: BorderSide(width: 0.5, style: BorderStyle.solid),
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                  ),
-                  color: Color(0xffebf5f9)),
-              width: width * 0.9,
-              height: height * 0.08,
-              margin: EdgeInsets.only(
-                  left: width * 0.02, right: width * 0.02, top: height * 0.05),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  // SizedBox(
-                  //   width: _width * 0.04,
-                  //   height: _height * 0.07,
-                  // ),
-                  fileLength == 0
-                      ? Expanded(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 8.0, right: 8.0),
-                            child: Text(Languages.of(context)!.SelectBook,
+            Padding(
+              padding: EdgeInsets.only(left: width * 0.02,right: width * 0.02,bottom: height*0.03),
+              child: Container(
+                decoration: const ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                      side: BorderSide(width: 0.5, style: BorderStyle.solid),
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                    ),
+                    color: Color(0xffebf5f9)),
+                width: width * 0.9,
+                height: height * 0.08,
+                margin: EdgeInsets.only(
+                    left: width * 0.02, right: width * 0.02, top: height * 0.05),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    // SizedBox(
+                    //   width: _width * 0.04,
+                    //   height: _height * 0.07,
+                    // ),
+                    fileLength == 0
+                        ? Expanded(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 8.0, right: 8.0),
+                              child: Text(Languages.of(context)!.SelectBook,
+                                  style: const TextStyle(
+                                    color: Colors.black54,
+                                    fontFamily: Constants.fontfamily,
+                                  )),
+                            ),
+                          )
+                        : Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Text(
+                                '$fileLength ${Languages.of(context)!.filesSelected}',
                                 style: const TextStyle(
                                   color: Colors.black54,
+                                  fontSize: 18,
                                   fontFamily: Constants.fontfamily,
-                                )),
-                          ),
-                        )
-                      : Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 8.0),
-                            child: Text(
-                              '$fileLength ${Languages.of(context)!.filesSelected}',
-                              style: const TextStyle(
-                                color: Colors.black54,
-                                fontSize: 18,
-                                fontFamily: Constants.fontfamily,
-                                fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                  // SizedBox(
-                  //   width: _width * 0.35,
-                  // ),
-                  IconButton(
-                      onPressed: () {
-                        getPdfAndUpload();
-                      },
-                      icon: const Icon(Icons.file_upload_outlined)),
-                ],
+                    // SizedBox(
+                    //   width: _width * 0.35,
+                    // ),
+                    IconButton(
+                        onPressed: () {
+                          getPdfAndUpload();
+                        },
+                        icon: const Icon(Icons.file_upload_outlined)),
+                  ],
+                ),
               ),
             ),
             Padding(
@@ -188,7 +254,7 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
                     child: ListView.builder(
                         shrinkWrap: true,
                         physics: const ClampingScrollPhysics(),
-                        itemCount: _pdfUploadModel!.data!.length,
+                        itemCount: _pdfUploadModel!.data.length,
                         itemBuilder: (BuildContext context, index) {
                           return Container(
                             decoration: const ShapeDecoration(
@@ -208,11 +274,14 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                // SizedBox(
-                                //   width: _width * 0.04,
-                                //   height: _height * 0.07,
-                                // ),
-                                _pdfUploadModel!.data!.length == 0
+
+                                _pdfUploadModel!.data[index].pdfStatus== 2 ? IconButton(
+                                    onPressed: () async {},
+                                    icon: const Icon(
+                                      Icons.lock_open_outlined,
+                                      color: Colors.white,
+                                    )): Container(),
+                                _pdfUploadModel!.data.length == 0
                                     ? const Expanded(
                                         child: Padding(
                                           padding: EdgeInsets.only(left: 8.0),
@@ -229,7 +298,7 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
                                           padding: const EdgeInsets.only(
                                               left: 8.0, right: 8.0),
                                           child: Text(
-                                            '${_pdfUploadModel!.data![index]!.lesson.toString()}',
+                                            '${_pdfUploadModel!.data[index].lesson.toString()}',
 
                                             // '${_bookDetailsModel!.data!.chapters![index].name!.replaceAll(".pdf", "")}',
                                             style: const TextStyle(
@@ -342,13 +411,13 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
 
     request.fields['book_id'] = widget.bookId.toString();
     request.fields['lesson'] = _chapterController!.text.trim();
-
-    http.MultipartFile multipartFile =
+    request.fields['pdf_status'] = paymentStatus.toString();
+    http.MultipartFile document =
         await http.MultipartFile.fromPath('filename', DocumentFile!.path,
             // contentType: MediaType('application', 'pdf')
             contentType: MediaType('application', 'pdf'));
 
-    request.files.add(multipartFile);
+    request.files.add(document);
     request.headers.addAll(headers);
     request.send().then((result) async {
       http.Response.fromStream(result).then((response) {
@@ -379,6 +448,7 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
     });
   }
 
+
   _navigateAndRemove() {
     Transitioner(
       context: context,
@@ -389,4 +459,5 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
       curveType: CurveType.decelerate, // Optional value
     );
 }
+
 }

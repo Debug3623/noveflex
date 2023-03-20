@@ -80,11 +80,22 @@ abstract class Languages {
 
   String get publishPorF;
 
+  String get publishPorF_text;
+
+
   String get paid;
 
   String get free;
 
+  String get free1;
+
+  String get episodes;
+
+  String get premium1;
+
   String get enterBookTitle;
+
+  String get chapter;
 
   String get search;
 
