@@ -160,7 +160,7 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
                     filled: true,
                     fillColor: Color(0xffebf5f9),
                     // labelText: widget.labelText,
-                    hintText: Languages.of(context)!.chapter,
+                    hintText: Languages.of(context)!.episodes,
                     hintStyle: const TextStyle(
                       fontFamily: Constants.fontfamily,
                     ),

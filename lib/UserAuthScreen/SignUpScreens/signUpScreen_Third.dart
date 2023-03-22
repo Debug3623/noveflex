@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/signUpScreen_Author.dart';
@@ -358,6 +359,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
 
         if(jsonData['status']==200){
           ToastConstant.showToast(context,jsonData['message'].toString());
+          // signUp(email:widget.email.trim(),password: widget.password.trim());
           _navigateAndRemove();
           setState(() {
             _isLoading = false;
@@ -531,6 +533,24 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
       replacement: true, // Optional value
       curveType: CurveType.decelerate, // Optional value
     );
+  }
+
+  signUp({String? email, String? password}) async {
+    try {
+       await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email!,
+        password: password!,
+      );
+       _navigateAndRemove();
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
 }

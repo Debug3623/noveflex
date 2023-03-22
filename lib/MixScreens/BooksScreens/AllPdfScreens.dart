@@ -1,11 +1,13 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:novelflex/MixScreens/Chat/chat_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:transitioner/transitioner.dart';
@@ -47,6 +49,7 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
   bool _isInternetConnected = true;
   SubscriptionModelClass? _subscriptionModelClass;
   Offerings? offerings;
+  FirebaseAuth? _firebaseAuth;
 
   @override
   void initState() {
@@ -82,6 +85,30 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
                 Icons.arrow_back_ios,
                 color: Colors.black54,
               )),
+          // actions: [
+          //   IconButton(
+          //       onPressed: () {
+          //         Transitioner(
+          //           context: context,
+          //           child: ChatScreen(
+          //             bookName:widget.bookName,
+          //             bookID:widget.bookId,
+          //           ),
+          //           animation: AnimationType
+          //               .slideTop, // Optional value
+          //           duration: Duration(
+          //               milliseconds:
+          //               1000), // Optional value
+          //           replacement: false, // Optional value
+          //           curveType: CurveType
+          //               .decelerate, // Optional value
+          //         );
+          //       },
+          //       icon: Icon(
+          //         Icons.mark_unread_chat_alt_outlined,
+          //         color: Color(0xff00bb23),
+          //       ))
+          // ],
         ),
         body: SafeArea(
           child: _isInternetConnected
@@ -102,176 +129,231 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
                         )
                       : Padding(
                           padding: EdgeInsets.only(
-                              top: _height * 0.02,
+                            top: _height * 0.02,
                           ),
                           child: ListView.builder(
                             physics: BouncingScrollPhysics(),
                             itemCount: _boolAllPdfViewModelClass!.data.length,
-                           itemBuilder: (BuildContext context, int index){
-                             return GestureDetector(
-                               onTap: () {
-                                 switch (_boolAllPdfViewModelClass!.data[index].pdfStatus) {
-                                   case 1 :
-                                   //All chapters Api for free books
-                                     Transitioner(
-                                       context: context,
-                                       child: PdfScreen(
-                                         url: _boolAllPdfViewModelClass!
-                                             .data[index].lessonPath,
-                                         name: _boolAllPdfViewModelClass!
-                                             .data[index].lesson
-                                             .toString(),
-                                       ),
-                                       animation: AnimationType
-                                           .slideTop, // Optional value
-                                       duration: Duration(
-                                           milliseconds:
-                                           1000), // Optional value
-                                       replacement: false, // Optional value
-                                       curveType: CurveType
-                                           .decelerate, // Optional value
-                                     );
-                                     break;
-                                   case 2:
-                                     if (widget.readerId ==
-                                         context
-                                             .read<UserProvider>()
-                                             .UserID
-                                             .toString()) {
-                                       //paid book but this is the author of this book
-                                       Transitioner(
-                                         context: context,
-                                         child: PdfScreen(
-                                           url: _boolAllPdfViewModelClass!
-                                               .data[index].lessonPath,
-                                           name: _boolAllPdfViewModelClass!
-                                               .data[index].lesson
-                                               .toString(),
-                                         ),
-                                         animation: AnimationType
-                                             .slideTop, // Optional value
-                                         duration: Duration(
-                                             milliseconds:
-                                             1000), // Optional value
-                                         replacement: false, // Optional value
-                                         curveType: CurveType
-                                             .decelerate, // Optional value
-                                       );
-                                     } else {
-                                       if (_subscriptionModelClass!.success ==
-                                           true) {
-                                         //Reader or Author Already Subscribe
-                                         Transitioner(
-                                           context: context,
-                                           child: PdfScreen(
-                                             url: _boolAllPdfViewModelClass!
-                                                 .data[index].lessonPath,
-                                             name: _boolAllPdfViewModelClass!
-                                                 .data[index].lesson
-                                                 .toString(),
-                                           ),
-                                           animation: AnimationType
-                                               .slideTop, // Optional value
-                                           duration: Duration(
-                                               milliseconds:
-                                               1000), // Optional value
-                                           replacement:
-                                           false, // Optional value
-                                           curveType: CurveType
-                                               .decelerate, // Optional value
-                                         );
-                                       } else {
-                                         if (Platform.isIOS) {
-                                           SubscribeFunction(
-                                               _boolAllPdfViewModelClass!
-                                                   .data[index].lessonPath,
-                                               _boolAllPdfViewModelClass!
-                                                   .data[index].lesson
-                                                   .toString());
-                                         } else {
-                                           Transitioner(
-                                             context: context,
-                                             child: StripePayment(
-                                               bookId: widget.bookId,
-                                             ),
-                                             animation: AnimationType
-                                                 .slideLeft, // Optional value
-                                             duration: Duration(
-                                                 milliseconds:
-                                                 1000), // Optional value
-                                             replacement:
-                                             false, // Optional value
-                                             curveType: CurveType
-                                                 .decelerate, // Optional value
-                                           );
-                                         }
-                                       }
-                                     }
-                                     break;
-                                   default:
-                                     Constants.showToastBlack(context,
-                                         "server busy please try again");
-                                     break;
-                                 }
-                               },
-                               child: Padding(
-                                 padding:
-                                 EdgeInsets.all(_height * 0.008),
-                                 child: Column(
-                                   children: [
-                                     Opacity(
-                                       opacity : 0.20000000298023224,
-                                       child:   Container(
-                                           width: 368,
-                                           height: 0.5,
-                                           decoration: BoxDecoration(
-                                               color: const Color(0xff3a6c83)
-                                           )
-                                       ),
-                                     ),
-                                     ListTile(
-                                       title: _boolAllPdfViewModelClass!.data[index].lesson==null ? Text("${index+1}. ${widget.bookName}",
-                                         style: const TextStyle(
-                                             color:  const Color(0xff2a2a2a),
-                                             fontWeight: FontWeight.w500,
-                                             fontFamily: "Alexandria",
-                                             fontStyle:  FontStyle.normal,
-                                             fontSize: 16.0
-                                         ),): Text("$index. ${_boolAllPdfViewModelClass!.data[index].lesson.toString()}",
-                                         style: const TextStyle(
-                                             color:  const Color(0xff2a2a2a),
-                                             fontWeight: FontWeight.w500,
-                                             fontFamily: "Alexandria",
-                                             fontStyle:  FontStyle.normal,
-                                             fontSize: 16.0
-                                         ),),
-                                       subtitle: Text(DateFormat.yMd('en-IN').format(_boolAllPdfViewModelClass!.data[index].createdAt),
-                                       style: TextStyle(
-                                         fontSize: 12
-                                       ),),
-                                       trailing: _boolAllPdfViewModelClass!.data[index].pdfStatus == 1 ?  Column(
-                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                         children: [
-                                           Icon(Icons.label_important_outline,color: Colors.red),
-                                           Text(Languages.of(context)!.free1,style: TextStyle(
-                                             fontSize: 12
-                                           ),)
-                                         ],
-                                       )  :  Column(
-                                         mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                         children: [
-                                           Icon(Icons.lock_outline,color: Colors.red,),
-                                           Text(Languages.of(context)!.premium1 ,style: TextStyle(
-                                               fontSize: 12
-                                           ),)
-                                         ],
-                                       ),
-                                     ),
-                                   ],
-                                 ),
-                               ),
-                             );
-                           },
+                            itemBuilder: (BuildContext context, int index) {
+                              return GestureDetector(
+                                onTap: () {
+                                  switch (_boolAllPdfViewModelClass!
+                                      .data[index].pdfStatus) {
+                                    case 1:
+                                      //All chapters Api for free books
+                                      Transitioner(
+                                        context: context,
+                                        child: PdfScreen(
+                                          url: _boolAllPdfViewModelClass!
+                                              .data[index].lessonPath,
+                                          name: _boolAllPdfViewModelClass!
+                                              .data[index].lesson
+                                              .toString(),
+                                        ),
+                                        animation: AnimationType
+                                            .slideTop, // Optional value
+                                        duration: Duration(
+                                            milliseconds:
+                                                1000), // Optional value
+                                        replacement: false, // Optional value
+                                        curveType: CurveType
+                                            .decelerate, // Optional value
+                                      );
+                                      break;
+                                    case 2:
+                                      if (widget.readerId ==
+                                          context
+                                              .read<UserProvider>()
+                                              .UserID
+                                              .toString()) {
+                                        //paid book but this is the author of this book
+                                        Transitioner(
+                                          context: context,
+                                          child: PdfScreen(
+                                            url: _boolAllPdfViewModelClass!
+                                                .data[index].lessonPath,
+                                            name: _boolAllPdfViewModelClass!
+                                                .data[index].lesson
+                                                .toString(),
+                                          ),
+                                          animation: AnimationType
+                                              .slideTop, // Optional value
+                                          duration: Duration(
+                                              milliseconds:
+                                                  1000), // Optional value
+                                          replacement: false, // Optional value
+                                          curveType: CurveType
+                                              .decelerate, // Optional value
+                                        );
+                                      } else {
+                                        if (_subscriptionModelClass!.success ==
+                                            true) {
+                                          //Reader or Author Already Subscribe
+                                          Transitioner(
+                                            context: context,
+                                            child: PdfScreen(
+                                              url: _boolAllPdfViewModelClass!
+                                                  .data[index].lessonPath,
+                                              name: _boolAllPdfViewModelClass!
+                                                  .data[index].lesson
+                                                  .toString(),
+                                            ),
+                                            animation: AnimationType
+                                                .slideTop, // Optional value
+                                            duration: Duration(
+                                                milliseconds:
+                                                    1000), // Optional value
+                                            replacement:
+                                                false, // Optional value
+                                            curveType: CurveType
+                                                .decelerate, // Optional value
+                                          );
+                                        } else {
+                                          if (Platform.isIOS) {
+                                            SubscribeFunction(
+                                                _boolAllPdfViewModelClass!
+                                                    .data[index].lessonPath,
+                                                _boolAllPdfViewModelClass!
+                                                    .data[index].lesson
+                                                    .toString());
+                                          } else {
+                                            Transitioner(
+                                              context: context,
+                                              child: StripePayment(
+                                                bookId: widget.bookId,
+                                              ),
+                                              animation: AnimationType
+                                                  .slideLeft, // Optional value
+                                              duration: Duration(
+                                                  milliseconds:
+                                                      1000), // Optional value
+                                              replacement:
+                                                  false, // Optional value
+                                              curveType: CurveType
+                                                  .decelerate, // Optional value
+                                            );
+                                          }
+                                        }
+                                      }
+                                      break;
+                                    default:
+                                      Constants.showToastBlack(context,
+                                          "server busy please try again");
+                                      break;
+                                  }
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(_height * 0.008),
+                                  child: Column(
+                                    children: [
+                                      Opacity(
+                                        opacity: 0.20000000298023224,
+                                        child: Container(
+                                            width: 368,
+                                            height: 0.5,
+                                            decoration: BoxDecoration(
+                                                color:
+                                                    const Color(0xff3a6c83))),
+                                      ),
+                                      ListTile(
+                                        title: _boolAllPdfViewModelClass!
+                                                    .data[index].lesson ==
+                                                null
+                                            ? Text(
+                                                "${index + 1}. ${widget.bookName}",
+                                                style: const TextStyle(
+                                                    color:
+                                                        const Color(0xff2a2a2a),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: "Alexandria",
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: 16.0),
+                                              )
+                                            : Text(
+                                                "$index. ${_boolAllPdfViewModelClass!.data[index].lesson.toString()}",
+                                                style: const TextStyle(
+                                                    color:
+                                                        const Color(0xff2a2a2a),
+                                                    fontWeight: FontWeight.w500,
+                                                    fontFamily: "Alexandria",
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: 16.0),
+                                              ),
+                                        subtitle: Text(
+                                          DateFormat.yMd('en-IN').format(
+                                              _boolAllPdfViewModelClass!
+                                                  .data[index].createdAt),
+                                          style: TextStyle(fontSize: 12),
+                                        ),
+                                        trailing: _boolAllPdfViewModelClass!
+                                                    .data[index].pdfStatus ==
+                                                1
+                                            ? Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceAround,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Icon(
+                                                      Icons
+                                                          .label_important_outline,
+                                                      color: Colors.red),
+                                                  Text(
+                                                    Languages.of(context)!
+                                                        .free1,
+                                                    style:
+                                                        TextStyle(fontSize: 12),
+                                                  )
+                                                ],
+                                              )
+                                            : _subscriptionModelClass!
+                                                        .success ==
+                                                    true
+                                                ? Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Icon(
+                                                        Icons
+                                                            .label_important_outline,
+                                                        color: Colors.red,
+                                                      ),
+                                                      Text(
+                                                        Languages.of(context)!
+                                                            .premium1,
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  )
+                                                : Column(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceAround,
+                                                    children: [
+                                                      Icon(
+                                                        Icons.lock_outline,
+                                                        color: Colors.red,
+                                                      ),
+                                                      Text(
+                                                        Languages.of(context)!
+                                                            .premium1,
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      )
+                                                    ],
+                                                  ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         )
               : Center(
@@ -481,4 +563,5 @@ class _BookAllPDFViewSceensState extends State<BookAllPDFViewSceens> {
       }
     }
   }
+
 }

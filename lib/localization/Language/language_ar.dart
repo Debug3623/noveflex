@@ -11,6 +11,9 @@ class LanguageAr extends Languages {
   String get episodes => "الحلقات";
 
   @override
+  String get otp => "الرجاء إدخال OTP أرسل إلى عنوان بريدك الإلكتروني";
+
+  @override
   String get premium1 => "غالي";
 
   @override

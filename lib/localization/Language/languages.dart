@@ -240,6 +240,8 @@ abstract class Languages {
 
   String get email;
 
+  String get otp;
+
   String get iban;
 
   String get gift;

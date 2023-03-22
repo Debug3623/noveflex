@@ -93,34 +93,18 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                                         MainAxisAlignment.spaceAround,
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
-                                      ClipRRect(
-                                        child: Banner(
-                                          message: _allrecentModel!.data[index].paymentStatus.toString() ==
-                                              "1"
-                                              ? "Free"
-                                              : "Premium",
-                                          location: BannerLocation
-                                              .topEnd,
-                                          color:
-                                          _allrecentModel!.data[index].paymentStatus
-                                              .toString() ==
-                                              "1"
-                                              ? Color(0xff00bb23)
-                                              : Colors.red,
-                                          child: Container(
-                                              width: _width * 0.25,
-                                              height: _height * 0.13,
-                                              decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                    Radius.circular(10),
-                                                  ),
-                                                  image: DecorationImage(
-                                                      image: NetworkImage(
-                                                          _allrecentModel!.data[index].imagePath.toString()),
-                                                      fit: BoxFit.cover),
-                                                  color: Colors.green)),
-                                        ),
-                                      ),
+                                      Container(
+                                          width: _width * 0.25,
+                                          height: _height * 0.13,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                Radius.circular(10),
+                                              ),
+                                              image: DecorationImage(
+                                                  image: NetworkImage(
+                                                      _allrecentModel!.data[index].imagePath.toString()),
+                                                  fit: BoxFit.cover),
+                                              color: Colors.green)),
                                       SizedBox(
                                         height: _height * 0.01,
                                       ),

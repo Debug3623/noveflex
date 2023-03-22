@@ -48,9 +48,9 @@ class Datum {
 
   int id;
   int bookId;
-  String bookTitle;
-  String bookImage;
-  String userImage;
+  dynamic bookTitle;
+  dynamic bookImage;
+  dynamic userImage;
   String titleEn;
   TitleAr titleAr;
   String bodyEn;

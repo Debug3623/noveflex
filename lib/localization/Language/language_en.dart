@@ -636,6 +636,9 @@ class LanguageEn extends Languages {
   String get free1 => "Read Free";
 
   @override
+  String get otp => "Please Enter OTP send to your email Address";
+
+  @override
   String get episodes => "Episodes";
 
   @override

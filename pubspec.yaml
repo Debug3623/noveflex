@@ -19,10 +19,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 
 #ios last upload versions
-version: 2.0.1+2
+#version: 2.0.1+2
 
 #Android  last upload  versions
-#version: 1.2.1+21
+version: 1.2.2+22
 
 
 environment:
@@ -73,11 +73,10 @@ dependencies:
   advance_pdf_viewer2: ^2.0.4
   firebase_core: ^2.4.1
   firebase_auth: ^4.2.5
-#  firebase_auth:
-#    git:
-#      url: https://github.com/collinjackson/plugins.git
-#      ref: 441417c2fed0ff26bf84a49ab2c5ffd2aa5487de
-#      path: packages/firebase_auth
+  firebase_dynamic_links: ^5.0.12
+  firebase_analytics: ^10.1.1
+  cloud_firestore: ^4.4.5
+  firebase_storage: ^11.0.16
   firebase_messaging: ^14.2.2
   google_sign_in: ^5.4.2
   flutter_login_facebook: ^1.7.0
@@ -97,8 +96,6 @@ dependencies:
   flutter_local_notifications: ^9.6.0
   workmanager: ^0.5.1
   syncfusion_flutter_charts: ^20.4.48
-  firebase_dynamic_links: ^5.0.12
-  firebase_analytics: ^10.1.1
   share_plus: ^6.3.1
   credit_card_form: ^0.0.2
   sign_in_with_apple: ^4.3.0
@@ -109,6 +106,9 @@ dependencies:
   google_mobile_ads: ^2.3.0
   expandable: ^5.0.1
   webview_flutter: ^4.0.6
+  auth_handler: ^1.0.0
+  chat_bubbles: ^1.4.0
+#  firebase_chat: ^0.0.6+1
 #  el_tooltip: ^1.0.8
 #  notification_permissions: ^0.6.1
   #  advance_pdf_viewer: ^2.0.1
