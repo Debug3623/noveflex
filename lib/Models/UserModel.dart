@@ -43,7 +43,7 @@ class User {
   int id;
   String username;
   String email;
-  String phone;
+  dynamic phone;
   String accessToken;
   String image;
   int expiredDays;

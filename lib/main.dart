@@ -7,6 +7,7 @@ import 'package:firebase_phone_auth_handler/firebase_phone_auth_handler.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
@@ -29,6 +30,8 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 BuildContext? context1;
+
+
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 
@@ -37,12 +40,19 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print('Handling a background message ${message.messageId}');
 }
 
-
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 
 
 
 Future<void> main() async {
 
+  HttpOverrides.global = new MyHttpOverrides();
   try {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
@@ -84,6 +94,9 @@ Future<void> main() async {
 }
 
 
+
+
+
 const AndroidNotificationChannel channel = AndroidNotificationChannel(
   'high_importance_channel', // id
   'High Importance Notifications', // title// description
@@ -105,7 +118,6 @@ class MyApp extends StatefulWidget {
     state!.setLocale(newLocale);
   }
 }
-
 
 
 class _MyAppState extends State<MyApp> {
@@ -587,3 +599,4 @@ class _SplashPageState extends State<SplashPage> {
 
 
 }
+

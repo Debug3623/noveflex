@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:auth_handler/auth_handler.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -21,12 +22,16 @@ class ForgetPasswordEmailScreen extends StatefulWidget {
 }
 
 class _ForgetPasswordEmailScreenState extends State<ForgetPasswordEmailScreen> {
+
+  AuthHandler authHandler = AuthHandler();
+  TextEditingController otpController = TextEditingController();
   TextEditingController? _controllerEmail;
   var _emailFocusNode = new FocusNode();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   bool _isLoading = false;
+  bool firstState= false;
 
   var _emailKey = GlobalKey<FormFieldState>();
 
@@ -35,6 +40,11 @@ class _ForgetPasswordEmailScreenState extends State<ForgetPasswordEmailScreen> {
   @override
   void initState() {
     super.initState();
+    authHandler.config(
+      senderName: "NovelFlex",
+      senderEmail: "no-reply",
+      otpLength: 6
+    );
     _controllerEmail = TextEditingController();
   }
 
@@ -93,80 +103,169 @@ class _ForgetPasswordEmailScreenState extends State<ForgetPasswordEmailScreen> {
                               fontStyle: FontStyle.normal,
                               fontSize: 12.0),
                           textAlign: TextAlign.center)),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: _width * 0.05,
-                        right: _width * 0.05,
-                        top: _height * 0.05),
-                    child: TextFormField(
-                      key: _emailKey,
-                      controller: _controllerEmail,
-                      focusNode: _emailFocusNode,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Colors.black,
-                      validator: validateEmail,
-                      onFieldSubmitted: (_) {
-                        FocusScope.of(context).requestFocus();
-                      },
-                      decoration: InputDecoration(
-                          errorMaxLines: 3,
-                          counterText: "",
-                          filled: true,
-                          fillColor: Colors.white,
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
+                  Visibility(
+                    visible: !firstState,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: _width * 0.05,
+                          right: _width * 0.05,
+                          top: _height * 0.05),
+                      child: TextFormField(
+                        key: _emailKey,
+                        controller: _controllerEmail,
+                        focusNode: _emailFocusNode,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.next,
+                        cursorColor: Colors.black,
+                        validator: validateEmail,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus();
+                        },
+                        decoration: InputDecoration(
+                            errorMaxLines: 3,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF256D85),
+                              ),
                             ),
-                          ),
-                          disabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
+                            disabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF256D85),
+                              ),
                             ),
-                          ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Color(0xFF256D85),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF256D85),
+                              ),
                             ),
-                          ),
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                              ),
                             ),
-                          ),
-                          errorBorder: const OutlineInputBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10)),
+                            errorBorder: const OutlineInputBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Colors.red,
+                                )),
+                            focusedErrorBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
                               borderSide: BorderSide(
                                 width: 1,
                                 color: Colors.red,
-                              )),
-                          focusedErrorBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10)),
-                            borderSide: BorderSide(
-                              width: 1,
-                              color: Colors.red,
+                              ),
                             ),
-                          ),
-                          hintText: Languages.of(context)!.email,
-                          // labelText: Languages.of(context)!.email,
-                          hintStyle: const TextStyle(
-                            fontFamily: Constants.fontfamily,
-                          )),
+                            hintText: Languages.of(context)!.email,
+                            // labelText: Languages.of(context)!.email,
+                            hintStyle: const TextStyle(
+                              fontFamily: Constants.fontfamily,
+                            )),
+                      ),
+                    ),
+                  ),
+                  Visibility(
+                    visible: firstState,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                          left: _width * 0.05,
+                          right: _width * 0.05,
+                          top: _height * 0.05),
+                      child: TextFormField(
+                        controller: otpController,
+                        keyboardType: TextInputType.phone,
+                        cursorColor: Colors.black,
+                        validator: validateOtp,
+                        onFieldSubmitted: (_) {
+                          FocusScope.of(context).requestFocus();
+                        },
+                        decoration: InputDecoration(
+                            errorMaxLines: 3,
+                            counterText: "",
+                            filled: true,
+                            fillColor: Colors.white,
+                            focusedBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF256D85),
+                              ),
+                            ),
+                            disabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF256D85),
+                              ),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Color(0xFF256D85),
+                              ),
+                            ),
+                            border: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                              ),
+                            ),
+                            errorBorder: const OutlineInputBorder(
+                                borderRadius:
+                                BorderRadius.all(Radius.circular(10)),
+                                borderSide: BorderSide(
+                                  width: 1,
+                                  color: Colors.red,
+                                )),
+                            focusedErrorBorder: const OutlineInputBorder(
+                              borderRadius: BorderRadius.all(Radius.circular(10)),
+                              borderSide: BorderSide(
+                                width: 1,
+                                color: Colors.red,
+                              ),
+                            ),
+                            hintText: Languages.of(context)!.otp,
+                            // labelText: Languages.of(context)!.email,
+                            hintStyle: const TextStyle(
+                              fontFamily: Constants.fontfamily,
+                            )),
+                      ),
                     ),
                   ),
                   Container(
                     margin: EdgeInsets.only(top: _height * 0.06),
                     child: ResuableMaterialButtonSmall(
                       onpress: () async {
-                        _checkInternetConnection();
+                        if(firstState){
+                          bool verify = await authHandler.verifyOtp(otpController.text);
+                          if(verify){
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => NewPasswordScreen(
+                                      token: forgetPasswordModelEmail!.user!.accessToken
+                                          .toString(),
+                                    )),
+                                    (Route<dynamic> route) => false);
+                          }else{
+                            ToastConstant.showToast(context, "Sorry OTP is incorrect");
+                          }
+
+                        }else{
+                          _checkInternetConnection();
+                        }
+
                       },
                       buttonname: Languages.of(context)!.continuebtn,
                     ),
@@ -203,6 +302,13 @@ class _ForgetPasswordEmailScreenState extends State<ForgetPasswordEmailScreen> {
     } else {
       return null;
     }
+  }
+
+  String? validateOtp(String? value) {
+    if (value!.isEmpty)
+      return 'Enter OTP to verify';
+    else
+      return null;
   }
 
   Future _checkInternetConnection() async {
@@ -246,16 +352,13 @@ class _ForgetPasswordEmailScreenState extends State<ForgetPasswordEmailScreen> {
       if (jsonData['status'] == 200) {
         forgetPasswordModelEmail = ForgetPasswordModelEmail.fromJson(jsonData);
         print('forget_response: $jsonData');
-        Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (context) => NewPasswordScreen(
-                      token: forgetPasswordModelEmail!.user!.accessToken
-                          .toString(),
-                    )),
-            (Route<dynamic> route) => false);
+        authHandler.sendOtp(_controllerEmail!.text);
+
         setState(() {
+          firstState=true;
           _isLoading = false;
         });
+
       } else {
         ToastConstant.showToast(context, "Sorry You have not register yet!");
         setState(() {
@@ -263,7 +366,7 @@ class _ForgetPasswordEmailScreenState extends State<ForgetPasswordEmailScreen> {
         });
       }
     } else {
-      ToastConstant.showToast(context, "Server error try again!");
+      ToastConstant.showToast(context, "Sorry You have not register yet!");
       setState(() {
         _isLoading = false;
       });

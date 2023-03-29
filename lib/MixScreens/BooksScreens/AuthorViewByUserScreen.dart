@@ -491,13 +491,21 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                   )),
                         ),
                         Positioned(
+                            top: _height*0.01,
+                            left: _width*0.01,
                             child: Container(
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(Icons.arrow_back_ios)),
-                        )),
+                              height: _height*0.05,
+                              width: _width*0.1,
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  color: Colors.black.withOpacity(0.4)
+                              ),
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: Icon(Icons.arrow_back_ios,color:Color(0xffebf5f9) ,)),
+                            )),
                         Visibility(
                           visible: _followLoading,
                           child: Positioned(
@@ -759,4 +767,6 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
           );
         });
   }
+
+
 }

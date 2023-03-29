@@ -67,6 +67,7 @@ class ApiUtils {
   static const String TOTAL_GIFTS_API = '$BASE/user/follow/totalGifts';
   static const String SEE_ALL_REVIEWS_API = '$BASE/comments';
   static const String ADD_REVIEW_API = '$BASE/comment/store';
+  static const String AGREEMENT_API = '$BASE/comment/store';
 
 
 

@@ -40,6 +40,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   bool _isImageLoading = false;
   File? _cover_imageFile;
+  bool _status = false;
 
   @override
   void initState() {
@@ -442,13 +443,21 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       )),
                             ),
                             Positioned(
+                                top: _height*0.01,
+                                left: _width*0.01,
                                 child: Container(
-                              child: IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(Icons.arrow_back_ios)),
-                            )),
+                                  height: _height*0.05,
+                                  width: _width*0.1,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.black.withOpacity(0.3)
+                                  ),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(Icons.arrow_back_ios,color:Color(0xffebf5f9) ,)),
+                                )),
                           ],
                         )
                       : Stack(
@@ -588,7 +597,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                             ),
                                             Text(
                                               _authorProfileViewModel!
-                                                  .data!.followers
+                                                  .data.followers
                                                   .toString(),
                                               style: const TextStyle(
                                                   color:
@@ -621,19 +630,24 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                     ),
                                     child: GestureDetector(
                                         onTap: () {
-                                          Transitioner(
-                                            context: context,
-                                            child: UploadDataScreen(),
-                                            animation: AnimationType.slideLeft,
-                                            // Optional value
-                                            duration:
-                                                Duration(milliseconds: 1000),
-                                            // Optional value
-                                            replacement: false,
-                                            // Optional value
-                                            curveType: CurveType
-                                                .decelerate, // Optional value
-                                          );
+                                          if(_status==false){
+                                            showTermsAndConditionAlert();
+                                          }else{
+                                            Transitioner(
+                                              context: context,
+                                              child: UploadDataScreen(),
+                                              animation: AnimationType.slideLeft,
+                                              // Optional value
+                                              duration:
+                                              Duration(milliseconds: 1000),
+                                              // Optional value
+                                              replacement: false,
+                                              // Optional value
+                                              curveType: CurveType
+                                                  .decelerate, // Optional value
+                                            );
+                                          }
+
                                         },
                                         child: Container(
                                           width: _width * 0.25,
@@ -915,7 +929,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                 ),
                                                 Text(
                                                   _authorProfileViewModel!
-                                                      .data!.book![index]!.title
+                                                      .data.book[index].title
                                                       .toString(),
                                                   style: const TextStyle(
                                                     fontFamily: 'Lato',
@@ -934,12 +948,20 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       )),
                             ),
                             Positioned(
+                              top: _height*0.01,
+                                left: _width*0.01,
                                 child: Container(
+                                  height: _height*0.05,
+                                 width: _width*0.1,
+                                 decoration: BoxDecoration(
+                                   borderRadius: BorderRadius.circular(5),
+                                   color: Colors.black.withOpacity(0.3)
+                                 ),
                               child: IconButton(
                                   onPressed: () {
                                     Navigator.pop(context);
                                   },
-                                  icon: Icon(Icons.arrow_back_ios)),
+                                  icon: Icon(Icons.arrow_back_ios,color:Color(0xffebf5f9) ,)),
                             )),
                           ],
                         )
@@ -1108,4 +1130,140 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
       UploadCoverImageApi();
     }
   }
+
+  showTermsAndConditionAlert() {
+    bool agree = false;
+    var _height = MediaQuery.of(context).size.height;
+    var _width = MediaQuery.of(context).size.width;
+    showDialog(
+        barrierDismissible: true,
+        barrierColor: Colors.black54,
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(builder: (context, setState) {
+            return Stack(
+              children: [
+                AlertDialog(
+                  backgroundColor: Color(0xFFe4e6fb),
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(
+                        20.0,
+                      ),
+                    ),
+                  ),
+                  contentPadding: const EdgeInsets.only(
+                    top: 10.0,
+                  ),
+                  title: Text(
+                    Languages.of(context)!.terms,
+                    style: const TextStyle(
+                        fontSize: 15.0, fontWeight: FontWeight.bold),
+                  ),
+                  content: Container(
+                    height: 400,
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              Languages.of(context)!.longTextTerms,
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ),
+                          Material(
+                            color: Color(0xFFe4e6fb),
+                            child: Checkbox(
+                              value: agree,
+                              onChanged: (value) {
+                                setState(() {
+                                  agree = value ?? false;
+                                });
+                              },
+                            ),
+                          ),
+                          Text(
+                            Languages.of(context)!.termsText_1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontSize: 10.0),
+                          ),
+                          SizedBox(
+                            height: _height * 0.05,
+                          ),
+                          Container(
+                            width: double.infinity,
+                            height: 60,
+                            padding: const EdgeInsets.all(8.0),
+                            child: ElevatedButton(
+                              onPressed: agree ? _doSomething : null,
+                              style: ElevatedButton.styleFrom(
+                                primary: Color(0xFF256D85),
+                                // fixedSize: Size(250, 50),
+                              ),
+                              child: Text(
+                                Languages.of(context)!.agree,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: _height * 0.05,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Positioned(
+                    top: _height * 0.15,
+                    left: _width * 0.87,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: Container(
+                        height: _height * 0.08,
+                        width: _width * 0.08,
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/quotes_data/cancel_icon.png"))),
+                      ),
+                    ))
+              ],
+            );
+          });
+        });
+  }
+
+  void _doSomething() {
+    setState(() {
+      _updateTermsAndConditions();
+      Navigator.pop(context);
+    });
+  }
+
+  Future _updateTermsAndConditions() async {
+    final response = await http
+        .get(Uri.parse(ApiUtils.AGREEMENT_API), headers: {
+      'Authorization': "Bearer ${context
+          .read<UserProvider>()
+          .UserToken}"});
+
+    if (response.statusCode == 200) {
+      print('update_profile_response under 200 ${response.body}');
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        var jsonData = json.decode(response.body);
+        _checkInternetConnection();
+      } else {
+        Constants.showToastBlack(context, "Some things went wrong");
+      }
+    }
+  }
+
 }

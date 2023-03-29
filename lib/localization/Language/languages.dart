@@ -240,6 +240,15 @@ abstract class Languages {
 
   String get email;
 
+  String get otp;
+
+  String get mangaText;
+
+  String get authorEarn;
+
+  String get monSubscription;
+
+
   String get iban;
 
   String get gift;
@@ -348,6 +357,12 @@ abstract class Languages {
   String get ourCondition;
 
   String get ourCondition2;
+
+  String get ourCondition21;
+
+  String get ourCondition22;
+
+  String get ourCondition23;
 
   String get readerWin2;
 

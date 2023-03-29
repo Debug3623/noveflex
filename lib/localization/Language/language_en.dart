@@ -118,22 +118,26 @@ class LanguageEn extends Languages {
   """;
 
   @override
-  String get submission2 => """It is possible to apply for activating the wallet after passing the conditions. The account will be verified within three working days only.
-  Earnings account:
-  wallet activation images
+  String get submission2 => """It is possible to apply for activating the wallet after passing the conditions. The account will be verified within three working days only.\n
   The monthly profits will be added at the beginning of each month based on the number of ads percentage and the number of followers of the authors for each author in his portfolio and he can withdraw according to the existing payment methods for the bank card.""";
 
   @override
-  String get ourCondition => "Our Condition:";
+  String get ourCondition => "What are the conditions for activating the wallet and withdrawing?";
 
   @override
-  String get ourCondition2 => """Conditions for applying to activate the wallet and reap profits from the monthly subscription and ads.
-  • The author's account must have at least 100 followers of the author of the novel of all kinds.
-  • It is ensured that the works are not stolen or quoted from other authors.
-  • The quality of the work will be confirmed as it matches the realistic conditions of good drawing, dictation, and non-repetition in more than one account.""";
+  String get ourCondition2 => "Conditions for applying to activate the wallet and reap profits from the monthly subscription and ads.";
 
   @override
   String get readerWin => "How does the reader win?";
+
+  @override
+  String get ourCondition21 => "The author's account must have at least 100 followers of the author of the novel of all kinds.";
+
+  @override
+  String get ourCondition22 => "It is ensured that the works are not stolen or quoted from other authors.";
+
+  @override
+  String get ourCondition23 => "The quality of the work will be confirmed as it matches the realistic conditions of good drawing, dictation, and non-repetition in more than one account.";
 
   @override
   String get readerWin2 => "Readers can profit through a participant or the application for friends accused of the platform, as they will receive 10% of the value of each person’s subscription. The amount will be placed in their electronic wallet for the platform.";
@@ -145,7 +149,7 @@ class LanguageEn extends Languages {
   String get fanSupport2 => "Support can be obtained from fans of the author's work by sending material gifts through the author's account. There will be a fee of only 5% of the value of the gift for the platform.";
 
   @override
-  String get mangaka_text => "First for the authors and mangaka: Monthly subscription: All authors who have passed the conditions for the number of followers can activate the portfolio and get a monthly income from the net profit according to the number of followers and the profit percentage shown below.";
+  String get mangaka_text => "All authors who have passed the conditions for the number of followers can activate the portfolio and get a monthly income from the net profit according to the number of followers and the profit percentage shown below.";
 
   @override
   String get profit_text => "How can I profit from the Novelx platform?";
@@ -634,6 +638,18 @@ class LanguageEn extends Languages {
 
   @override
   String get free1 => "Read Free";
+
+  @override
+  String get authorEarn => "How can Authors Earn from the Platform?";
+
+  @override
+  String get monSubscription => "Monthly subscription:";
+
+  @override
+  String get mangaText => "Here is an illustration of how to earn, and it will be explained in detail";
+
+  @override
+  String get otp => "Please Enter OTP send to your email Address";
 
   @override
   String get episodes => "Episodes";
