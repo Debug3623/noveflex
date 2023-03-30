@@ -32,7 +32,7 @@ class _UnlockWalletScreenOneState extends State<UnlockWalletScreenOne> {
     var _width = MediaQuery.of(context).size.width;
     return OnBoardingSlider(
       finishButtonText: Languages.of(context)!.confirmTxt,
-      finishButtonColor: kDarkBlueColor,
+      // finishButtonColor: kDarkBlueColor,
       onFinish: () {
         Transitioner(
           context: context,

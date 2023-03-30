@@ -63,7 +63,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                   ? const Center(
                       child: CupertinoActivityIndicator(),
                     )
-                  : _statusCheckModel!.data[0].type == "Reader"
+                  : _statusCheckModel!.data.type == "Reader"
                       ? Stack(
                           children: [
                             Positioned(
@@ -630,7 +630,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                     ),
                                     child: GestureDetector(
                                         onTap: () {
-                                          if(_status==false){
+                                          if(_statusCheckModel!.aggrement == false){
                                             showTermsAndConditionAlert();
                                           }else{
                                             Transitioner(
@@ -975,7 +975,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
 
   Future AUTHOR_PROFILE() async {
     var map = Map<String, dynamic>();
-    map['user_id'] = _statusCheckModel!.data[0].id.toString();
+    map['user_id'] = _statusCheckModel!.data.id.toString();
 
     final response =
         await http.post(Uri.parse(ApiUtils.AUTHOR_BOOKS_DETAILS_API),
@@ -1042,7 +1042,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         _statusCheckModel = statusCheckModelFromJson(jsonData);
-        if (_statusCheckModel!.data[0].type == "Reader") {
+        if (_statusCheckModel!.data.type == "Reader") {
           READER_PROFILE();
         } else {
           AUTHOR_PROFILE();
@@ -1249,7 +1249,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
 
   Future _updateTermsAndConditions() async {
     final response = await http
-        .get(Uri.parse(ApiUtils.AGREEMENT_API), headers: {
+        .post(Uri.parse(ApiUtils.AGREEMENT_API), headers: {
       'Authorization': "Bearer ${context
           .read<UserProvider>()
           .UserToken}"});
@@ -1259,7 +1259,23 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         var jsonData = json.decode(response.body);
-        _checkInternetConnection();
+        setState(() {
+          _statusCheckModel!.aggrement = true;
+        });
+        Transitioner(
+          context: context,
+          child: UploadDataScreen(),
+          animation: AnimationType.slideLeft,
+          // Optional value
+          duration:
+          Duration(milliseconds: 1000),
+          // Optional value
+          replacement: false,
+          // Optional value
+          curveType: CurveType
+              .decelerate, // Optional value
+        );
+
       } else {
         Constants.showToastBlack(context, "Some things went wrong");
       }

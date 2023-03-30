@@ -112,23 +112,24 @@ class _MenuScreenState extends State<MenuScreen> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Container(
-                              height: _height * 0.25,
-                              width: _width * 0.25,
-                              decoration: BoxDecoration(
-                                  color: Colors.black12,
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: _menuProfileModel!
-                                                  .data.profilePhoto !=
-                                              ""
-                                          ? NetworkImage(
-                                              _menuProfileModel!
-                                                  .data.profilePath,
-                                            )
-                                          : AssetImage('assets/profile_pic.png')
-                                              as ImageProvider,
-                                      fit: BoxFit.cover)),
+                            SizedBox(
+                              height: _height * 0.03,
+                            ),
+                            CircleAvatar(
+                              radius: _width * _height * 0.0002,
+                              backgroundColor: Colors.black12,
+                              backgroundImage: _menuProfileModel!
+                                  .data.profilePhoto !=
+                                  ""
+                                  ? NetworkImage(
+                                _menuProfileModel!
+                                    .data.profilePath,
+                              )
+                                  : AssetImage('assets/profile_pic.png')
+                              as ImageProvider,
+                            ),
+                            SizedBox(
+                              height: _height * 0.03,
                             ),
                             Container(
                               color: const Color(0xffebf5f9),
@@ -349,7 +350,7 @@ class _MenuScreenState extends State<MenuScreen> {
                           ),
                         ),
                         Visibility(
-                          visible: _statusCheckModel!.data[0].type == "Writer",
+                          visible: _statusCheckModel!.data.type == "Writer",
                           child: GestureDetector(
                             onTap: () {
                               Transitioner(

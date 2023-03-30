@@ -113,13 +113,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.1"
-  chat_bubbles:
-    dependency: "direct main"
-    description:
-      name: chat_bubbles
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.4.0"
   clock:
     dependency: transitive
     description:
@@ -127,27 +120,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.1.1"
-  cloud_firestore:
-    dependency: "direct main"
-    description:
-      name: cloud_firestore
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.4.5"
-  cloud_firestore_platform_interface:
-    dependency: transitive
-    description:
-      name: cloud_firestore_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "5.11.5"
-  cloud_firestore_web:
-    dependency: transitive
-    description:
-      name: cloud_firestore_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.3.5"
   collection:
     dependency: transitive
     description:
@@ -266,7 +238,7 @@ packages:
       name: facebook_auth_desktop
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.0.8"
+    version: "0.0.9"
   fake_async:
     dependency: transitive
     description:
@@ -301,42 +273,42 @@ packages:
       name: firebase_analytics
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "10.1.1"
+    version: "10.1.6"
   firebase_analytics_platform_interface:
     dependency: transitive
     description:
       name: firebase_analytics_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.3.18"
+    version: "3.3.23"
   firebase_analytics_web:
     dependency: transitive
     description:
       name: firebase_analytics_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.5.1+9"
+    version: "0.5.1+14"
   firebase_auth:
     dependency: transitive
     description:
       name: firebase_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.2.5"
+    version: "4.3.0"
   firebase_auth_platform_interface:
     dependency: transitive
     description:
       name: firebase_auth_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.11.7"
+    version: "6.12.0"
   firebase_auth_web:
     dependency: transitive
     description:
       name: firebase_auth_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.2.4"
+    version: "5.2.10"
   firebase_core:
     dependency: transitive
     description:
@@ -364,14 +336,14 @@ packages:
       name: firebase_dynamic_links
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.12"
+    version: "5.0.17"
   firebase_dynamic_links_platform_interface:
     dependency: transitive
     description:
       name: firebase_dynamic_links_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.3+27"
+    version: "0.2.3+32"
   firebase_messaging:
     dependency: "direct main"
     description:
@@ -399,28 +371,7 @@ packages:
       name: firebase_phone_auth_handler
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.7"
-  firebase_storage:
-    dependency: "direct main"
-    description:
-      name: firebase_storage
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "11.0.16"
-  firebase_storage_platform_interface:
-    dependency: transitive
-    description:
-      name: firebase_storage_platform_interface
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.1.32"
-  firebase_storage_web:
-    dependency: transitive
-    description:
-      name: firebase_storage_web
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "3.3.25"
+    version: "1.0.8"
   flutter:
     dependency: "direct main"
     description: flutter
@@ -460,7 +411,7 @@ packages:
       name: flutter_facebook_auth
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.0.7"
+    version: "5.0.8"
   flutter_facebook_auth_platform_interface:
     dependency: transitive
     description:
@@ -570,7 +521,7 @@ packages:
       name: flutter_onboarding_slider
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.8"
+    version: "1.0.9"
   flutter_pdfview:
     dependency: transitive
     description:
@@ -605,21 +556,21 @@ packages:
       name: flutter_secure_storage
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.0.1"
+    version: "8.0.0"
   flutter_secure_storage_linux:
     dependency: transitive
     description:
       name: flutter_secure_storage_linux
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.2"
+    version: "1.1.3"
   flutter_secure_storage_macos:
     dependency: transitive
     description:
       name: flutter_secure_storage_macos
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.0.1"
+    version: "3.0.0"
   flutter_secure_storage_platform_interface:
     dependency: transitive
     description:
@@ -640,7 +591,7 @@ packages:
       name: flutter_secure_storage_windows
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.1.3"
+    version: "2.0.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -692,42 +643,42 @@ packages:
       name: google_mobile_ads
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.4.0"
   google_sign_in:
     dependency: "direct main"
     description:
       name: google_sign_in
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.4.2"
+    version: "5.4.4"
   google_sign_in_android:
     dependency: transitive
     description:
       name: google_sign_in_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "6.1.4"
+    version: "6.1.8"
   google_sign_in_ios:
     dependency: transitive
     description:
       name: google_sign_in_ios
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.5.1"
+    version: "5.6.1"
   google_sign_in_platform_interface:
     dependency: transitive
     description:
       name: google_sign_in_platform_interface
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.3.0"
+    version: "2.3.1"
   google_sign_in_web:
     dependency: transitive
     description:
       name: google_sign_in_web
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.10.2"
+    version: "0.10.2+1"
   html:
     dependency: transitive
     description:
@@ -1161,14 +1112,14 @@ packages:
       name: purchases_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.10.0"
+    version: "4.11.1"
   quiver:
     dependency: transitive
     description:
       name: quiver
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.1.0"
+    version: "3.2.1"
   rating_dialog:
     dependency: "direct main"
     description:
@@ -1334,14 +1285,14 @@ packages:
       name: syncfusion_flutter_charts
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.4.48"
+    version: "20.4.54"
   syncfusion_flutter_core:
     dependency: transitive
     description:
       name: syncfusion_flutter_core
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "20.4.52"
+    version: "20.4.54"
   synchronized:
     dependency: transitive
     description:
@@ -1481,14 +1432,14 @@ packages:
       name: webview_flutter
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "4.0.6"
+    version: "4.0.7"
   webview_flutter_android:
     dependency: transitive
     description:
       name: webview_flutter_android
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.4.2"
+    version: "3.4.3"
   webview_flutter_platform_interface:
     dependency: transitive
     description:
@@ -1502,7 +1453,7 @@ packages:
       name: webview_flutter_wkwebview
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.2.1"
+    version: "3.2.3"
   win32:
     dependency: transitive
     description:
