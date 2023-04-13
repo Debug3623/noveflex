@@ -55,6 +55,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   int count = 0;
   BannerAd? _bannerAd;
 
+
   @override
   void initState() {
     super.initState();
@@ -179,10 +180,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           _isNotificationsLoading
-              ? Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CupertinoActivityIndicator(),
-                )
+              ?  Padding(
+                padding: const EdgeInsets.only(right: 8.0),
+                child: Icon(
+            Icons.notifications_none,
+            size: 30,
+            color: Colors.black54,
+          ),
+              )
               : InkWell(
                   onTap: () {
                     context.read<UserProvider>().setNotificationsCount(0);

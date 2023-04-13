@@ -182,8 +182,8 @@ class _MyAppState extends State<MyApp> {
 
   setFCMToken() async {
     SharedPreferences prefts = await SharedPreferences.getInstance();
-    // token = Platform.isIOS ? await FirebaseMessaging.instance.getAPNSToken() : await FirebaseMessaging.instance.getToken();
-    token =  await FirebaseMessaging.instance.getToken();
+    token = Platform.isIOS ? await FirebaseMessaging.instance.getAPNSToken() : await FirebaseMessaging.instance.getToken();
+    // token =  await FirebaseMessaging.instance.getToken();
 
     prefts.setString('fcm_token', token!);
     // String? tokenIOS = await FirebaseMessaging.instance.getAPNSToken();

@@ -19,10 +19,10 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # of the product and file versions while build-number is used as the build suffix.
 
 #ios last upload versions
-version: 2.0.2+3
+#version: 2.0.3+4
 
 #Android  last upload  versions
-#version: 1.2.3+23
+version: 1.2.7+27
 
 
 environment:
@@ -57,7 +57,7 @@ dependencies:
   file_picker: ^5.2.4
   image_picker: any
   path_provider: ^2.0.4
-  dio: ^4.0.6
+  dio: ^5.1.1
   getwidget: ^3.0.1
   flutter_cached_pdfview: any
   carousel_slider: any
@@ -108,8 +108,7 @@ dependencies:
   webview_flutter: ^4.0.6
   auth_handler: ^1.0.0
   pie_chart: ^5.3.2
-
-#  firebase_chat: ^0.0.6+1
+  #  firebase_chat: ^0.0.6+1
 #  el_tooltip: ^1.0.8
 #  notification_permissions: ^0.6.1
   #  advance_pdf_viewer: ^2.0.1

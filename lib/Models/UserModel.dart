@@ -45,7 +45,7 @@ class User {
   String email;
   dynamic phone;
   String accessToken;
-  String image;
+  dynamic image;
   int expiredDays;
   bool googleLogin;
 

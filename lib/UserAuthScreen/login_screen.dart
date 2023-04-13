@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,7 @@ import 'FogetPassword/forgetPasswordEmailScreen.dart';
 import 'SignUpScreens/SignUpScreen_Second.dart';
 import 'SignUpScreens/signUpScreen_Third.dart';
 import 'dart:io';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -78,6 +80,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _authorizationCode = 'Unknown';
   bool show = true;
   String? fcmToken;
+  Dio dio = Dio();
 
   @override
   void initState()  {
@@ -684,7 +687,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var map = Map<String, dynamic>();
     map['email'] = _controllerEmail!.text.trim();
     map['password'] = _controllerPassword!.text.trim();
-    map['firebase_token'] = fcmToken!.trim();
+    map['firebase_token'] = fcmToken!.isEmpty ? "xyzdatachc": fcmToken!.trim();
 
     final response = await http.post(
       Uri.parse(ApiUtils.URL_LOGIN_USER_API),
