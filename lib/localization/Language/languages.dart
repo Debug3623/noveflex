@@ -117,6 +117,8 @@ abstract class Languages {
 
   String get publishButton;
 
+  String get publishNovel;
+
   String get next;
 
   String get filesSelected;

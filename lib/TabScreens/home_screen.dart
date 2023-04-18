@@ -16,10 +16,10 @@ import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
 import '../MixScreens/BooksScreens/BookDetailsAuthor.dart';
 import '../MixScreens/SeeAllBooksScreen.dart';
+import '../MixScreens/Uploadscreens/UploadDataScreen.dart';
 import '../MixScreens/notification_screen.dart';
 import '../Models/HomeModelClass.dart';
-import '../Models/RecentModel.dart';
-import '../Models/SliderModel.dart';
+import '../Models/StatusCheckModel.dart';
 import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
@@ -41,9 +41,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   final globalKey = GlobalKey<ScaffoldState>();
   String release = "";
   late AnimationController _bellController;
-  SliderModel? _sliderModel;
-  RecentModel? _recentModel;
-  HomeModelClass? _homeModelClass;
+  HomeApiResponse? _homeApiResponse;
   bool _isLoading = false;
   bool _isNotificationsLoading = false;
   late final translator;
@@ -54,7 +52,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   bool _isInternetConnected = true;
   int count = 0;
   BannerAd? _bannerAd;
-
+  StatusCheckModel? _statusCheckModel;
 
   @override
   void initState() {
@@ -108,14 +106,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
       print('User granted permission');
-    } else if (settings.authorizationStatus == AuthorizationStatus.provisional) {
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
       print('User granted provisional permission');
     } else {
       print('User declined or has not accepted permission');
     }
   }
-
-
 
   basicStatusCheck(NewVersion newVersion) {
     newVersion.showAlertIfNecessary(context: context);
@@ -155,7 +152,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 width: _width * 0.1,
                 decoration: BoxDecoration(
                     image: DecorationImage(
-                  image: AssetImage("assets/quotes_data/NoPath_3x-removebg-preview.png"),
+                  image: AssetImage(
+                      "assets/quotes_data/NoPath_3x-removebg-preview.png"),
                 )),
               )
             : IconButton(
@@ -180,14 +178,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           _isNotificationsLoading
-              ?  Padding(
-                padding: const EdgeInsets.only(right: 8.0),
-                child: Icon(
-            Icons.notifications_none,
-            size: 30,
-            color: Colors.black54,
-          ),
-              )
+              ? Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Icon(
+                    Icons.notifications_none,
+                    size: 30,
+                    color: Colors.black54,
+                  ),
+                )
               : InkWell(
                   onTap: () {
                     context.read<UserProvider>().setNotificationsCount(0);
@@ -277,13 +275,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ],
                   ),
                 ),
-                SizedBox(
+          SizedBox(
             width: 5.0,
           ),
-    //            ElTooltip(
-    //     child: Icon(Icons.info_outline),
-    // content: Text('Click me to publish book'),
-    // ),
+          //            ElTooltip(
+          //     child: Icon(Icons.info_outline),
+          // content: Text('Click me to publish book'),
+          // ),
         ],
       ),
       body: _isInternetConnected == false
@@ -345,10 +343,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           color: const Color(0xff002333).withOpacity(0.07)),
                       child: Padding(
                           padding: const EdgeInsets.all(0.0),
-                          child: _sliderModel!.data.length == 0
+                          child: _homeApiResponse!.data.slider.length == 0
                               ? Container()
                               : CarouselSlider.builder(
-                                  itemCount: _sliderModel!.data.length,
+                                  itemCount:
+                                      _homeApiResponse!.data.slider.length,
                                   options: CarouselOptions(
                                     height: 400,
                                     aspectRatio: 1,
@@ -368,23 +367,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                   itemBuilder: (BuildContext context,
                                       int itemIndex, int pageViewIndex) {
                                     return GestureDetector(
-                                      onTap: (){
+                                      onTap: () {
                                         Transitioner(
                                           context: context,
                                           child: BookDetailAuthor(
-                                            bookID: _sliderModel!
-                                                .data[
-                                            itemIndex]
-                                                .id
+                                            bookID: _homeApiResponse!
+                                                .data.slider[itemIndex].id
                                                 .toString(),
                                           ),
                                           animation: AnimationType
                                               .slideTop, // Optional value
                                           duration: Duration(
                                               milliseconds:
-                                              1000), // Optional value
-                                          replacement:
-                                          false, // Optional value
+                                                  1000), // Optional value
+                                          replacement: false, // Optional value
                                           curveType: CurveType
                                               .decelerate, // Optional value
                                         );
@@ -400,7 +396,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               ),
                                               Column(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Text(
                                                     Languages.of(context)!
@@ -410,9 +407,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             0xff2a2a2a),
                                                         fontWeight:
                                                             FontWeight.w700,
-                                                        fontFamily: "Alexandria",
-                                                        fontStyle:
-                                                            FontStyle.normal,
+                                                        fontFamily:
+                                                            "Alexandria",
+                                                        fontStyle: FontStyle
+                                                            .normal,
                                                         fontSize: 16.0),
                                                   ),
                                                   Container(
@@ -420,12 +418,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     height: _height * 0.135,
                                                     decoration: BoxDecoration(
                                                         borderRadius:
-                                                            BorderRadius.circular(
-                                                                10),
+                                                            BorderRadius
+                                                                .circular(10),
                                                         image: DecorationImage(
                                                             image: NetworkImage(
-                                                              _sliderModel!
-                                                                  .data[itemIndex]
+                                                              _homeApiResponse!
+                                                                  .data
+                                                                  .slider[
+                                                                      itemIndex]
                                                                   .imagePath
                                                                   .toString(),
                                                             ),
@@ -447,10 +447,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                 //       fit: BoxFit.cover),
                                                                 // ),
                                                                 ),
-                                                        imageUrl: _sliderModel!
-                                                            .data[itemIndex]
-                                                            .imagePath
-                                                            .toString(),
+                                                        imageUrl:
+                                                            _homeApiResponse!
+                                                                .data
+                                                                .slider[
+                                                                    itemIndex]
+                                                                .imagePath
+                                                                .toString(),
                                                         fit: BoxFit.cover,
                                                         placeholder: (context,
                                                                 url) =>
@@ -487,8 +490,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     SizedBox(),
                                                     SizedBox(),
                                                     Text(
-                                                      _sliderModel!
-                                                          .data[itemIndex].title
+                                                      _homeApiResponse!
+                                                          .data
+                                                          .slider[itemIndex]
+                                                          .title
                                                           .toString(),
                                                       style: const TextStyle(
                                                           color: const Color(
@@ -511,11 +516,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                               right:
                                                                   _width * 0.02)
                                                           : EdgeInsets.only(
-                                                              left:
-                                                                  _width * 0.02),
+                                                              left: _width *
+                                                                  0.02),
                                                       child: Text(
-                                                        _sliderModel!
-                                                            .data[itemIndex]
+                                                        _homeApiResponse!
+                                                            .data
+                                                            .slider[itemIndex]
                                                             .description
                                                             .toString(),
                                                         style: const TextStyle(
@@ -524,18 +530,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             fontWeight:
                                                                 FontWeight.w400,
                                                             fontFamily: "Lato",
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 12.0),
-                                                        textAlign: TextAlign.left,
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
+                                                        textAlign:
+                                                            TextAlign.left,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         maxLines: 5,
                                                       ),
                                                     ),
                                                     Text(
-                                                      _sliderModel!
-                                                          .data[itemIndex]
+                                                      _homeApiResponse!
+                                                          .data
+                                                          .slider[itemIndex]
                                                           .categories[0]
                                                           .title
                                                           .toString(),
@@ -633,7 +641,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       height: _height * 0.23,
                                       child: ListView.builder(
                                         physics: const BouncingScrollPhysics(),
-                                        itemCount: _recentModel!.data.length,
+                                        itemCount: _homeApiResponse!
+                                            .data.recentlyPublishBooks.length,
                                         scrollDirection: Axis.horizontal,
                                         itemBuilder: (context, index1) {
                                           return GestureDetector(
@@ -642,8 +651,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 Transitioner(
                                                   context: context,
                                                   child: BookDetailAuthor(
-                                                    bookID: _recentModel!
-                                                        .data[index1].id
+                                                    bookID: _homeApiResponse!
+                                                        .data
+                                                        .recentlyPublishBooks[
+                                                            index1]
+                                                        .id
                                                         .toString(),
                                                   ),
                                                   animation: AnimationType
@@ -681,52 +693,55 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     ),
                                                     child: ClipRRect(
                                                       child: CachedNetworkImage(
-                                                          filterQuality:
-                                                        FilterQuality
-                                                            .high,
-                                                          imageBuilder: (context,
-                                                            imageProvider) =>
-                                                        Container(
-                                                      decoration:
-                                                          BoxDecoration(
-                                                        shape: BoxShape
-                                                            .rectangle,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(
-                                                                    10),
-                                                        image: DecorationImage(
-                                                            image:
-                                                                imageProvider,
-                                                            fit: BoxFit
-                                                                .cover),
-                                                      ),
+                                                        filterQuality:
+                                                            FilterQuality.high,
+                                                        imageBuilder: (context,
+                                                                imageProvider) =>
+                                                            Container(
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            shape: BoxShape
+                                                                .rectangle,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        10),
+                                                            image: DecorationImage(
+                                                                image:
+                                                                    imageProvider,
+                                                                fit: BoxFit
+                                                                    .cover),
                                                           ),
-                                                          imageUrl:
-                                                        _recentModel!
-                                                            .data[index1]
+                                                        ),
+                                                        imageUrl: _homeApiResponse!
+                                                            .data
+                                                            .recentlyPublishBooks[
+                                                                index1]
                                                             .imagePath
                                                             .toString(),
-                                                          fit: BoxFit.cover,
-                                                          placeholder: (context,
-                                                            url) =>
-                                                        const Center(
-                                                            child:
-                                                                CupertinoActivityIndicator(
-                                                      color: Color(
-                                                          0xFF256D85),
-                                                          )),
-                                                          errorWidget: (context,
-                                                            url, error) =>
-                                                        const Center(
-                                                            child: Icon(Icons
-                                                                .error_outline)),
-                                                        ),
+                                                        fit: BoxFit.cover,
+                                                        placeholder: (context,
+                                                                url) =>
+                                                            const Center(
+                                                                child:
+                                                                    CupertinoActivityIndicator(
+                                                          color:
+                                                              Color(0xFF256D85),
+                                                        )),
+                                                        errorWidget: (context,
+                                                                url, error) =>
+                                                            const Center(
+                                                                child: Icon(Icons
+                                                                    .error_outline)),
+                                                      ),
                                                     ),
                                                   ),
                                                   Text(
-                                                    _recentModel!
-                                                        .data[index1].title
+                                                    _homeApiResponse!
+                                                        .data
+                                                        .recentlyPublishBooks[
+                                                            index1]
+                                                        .title
                                                         .toString(),
                                                     overflow:
                                                         TextOverflow.ellipsis,
@@ -742,8 +757,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         fontSize: 10.0),
                                                   ),
                                                   Text(
-                                                      _recentModel!.data[index1]
-                                                          .user[0].username
+                                                      _homeApiResponse!
+                                                          .data
+                                                          .recentlyPublishBooks[
+                                                              index1]
+                                                          .user![0]
+                                                          .username
                                                           .toString(),
                                                       style: const TextStyle(
                                                           color: const Color(
@@ -773,7 +792,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               shrinkWrap: true, // outer ListView
                               // reverse: true,
                               physics: const BouncingScrollPhysics(),
-                              itemCount: _homeModelClass?.data.length,
+                              itemCount:
+                                  _homeApiResponse!.data.categoryBooks.length,
                               itemBuilder: (_, index) {
                                 return Column(
                                   children: [
@@ -794,10 +814,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                 UserProvider>()
                                                             .SelectedLanguage ==
                                                         null
-                                                ? _homeModelClass!
-                                                    .data[index].title
-                                                : _homeModelClass!
-                                                    .data[index].titleAr,
+                                                ? _homeApiResponse!.data
+                                                    .categoryBooks[index].title
+                                                : _homeApiResponse!
+                                                    .data
+                                                    .categoryBooks[index]
+                                                    .titleAr,
                                             style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontFamily: Constants.fontfamily,
@@ -810,8 +832,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   context: context,
                                                   child: SeeAllBookScreen(
                                                     categoriesId:
-                                                        _homeModelClass!
-                                                            .data[index].id
+                                                        _homeApiResponse!
+                                                            .data
+                                                            .categoryBooks[
+                                                                index]
+                                                            .id
                                                             .toString(),
                                                   ),
                                                   animation: AnimationType
@@ -861,8 +886,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         child: ListView.builder(
                                           physics:
                                               const BouncingScrollPhysics(),
-                                          itemCount: _homeModelClass!
-                                              .data[index].books.length,
+                                          itemCount: _homeApiResponse!
+                                              .data
+                                              .categoryBooks[index]
+                                              .books
+                                              .length,
                                           scrollDirection: Axis.horizontal,
                                           itemBuilder: (context, index1) {
                                             return GestureDetector(
@@ -871,8 +899,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                   Transitioner(
                                                     context: context,
                                                     child: BookDetailAuthor(
-                                                      bookID: _homeModelClass!
-                                                          .data[index]
+                                                      bookID: _homeApiResponse!
+                                                          .data
+                                                          .categoryBooks[index]
                                                           .books[index1]
                                                           .id
                                                           .toString(),
@@ -912,58 +941,58 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                 .circular(20),
                                                       ),
                                                       child: ClipRRect(
-                                                        child: CachedNetworkImage(
-                                                            filterQuality:
-                                                          FilterQuality
-                                                              .high,
-
-                                                            imageBuilder: (context,
-                                                              imageProvider) =>
-                                                          Container(
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape: BoxShape
-                                                              .rectangle,
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      10),
-                                                          image: DecorationImage(
-                                                              image:
-                                                                  imageProvider,
-                                                              fit: BoxFit
-                                                                  .cover),
-                                                        ),
+                                                        child:
+                                                            CachedNetworkImage(
+                                                          filterQuality:
+                                                              FilterQuality
+                                                                  .high,
+                                                          imageBuilder: (context,
+                                                                  imageProvider) =>
+                                                              Container(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              shape: BoxShape
+                                                                  .rectangle,
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10),
+                                                              image: DecorationImage(
+                                                                  image:
+                                                                      imageProvider,
+                                                                  fit: BoxFit
+                                                                      .cover),
                                                             ),
-                                                            imageUrl:
-                                                          _homeModelClass!
-                                                              .data[index]
-                                                              .books[
-                                                                  index1]
-                                                              .image
-                                                              .toString(),
-                                                            fit: BoxFit.cover,
-                                                            placeholder: (context,
-                                                              url) =>
-                                                          const Center(
-                                                              child:
-                                                                  CupertinoActivityIndicator(
-                                                        color: Color(
-                                                            0xFF256D85),
-                                                            )),
-                                                            errorWidget: (context,
-                                                              url,
-                                                              error) =>
-                                                          const Center(
-                                                              child: Icon(
-                                                                  Icons
-                                                                      .error_outline)),
                                                           ),
+                                                          imageUrl:
+                                                              _homeApiResponse!
+                                                                  .data
+                                                                  .categoryBooks[
+                                                                      index]
+                                                                  .books[index1]
+                                                                  .image
+                                                                  .toString(),
+                                                          fit: BoxFit.cover,
+                                                          placeholder: (context,
+                                                                  url) =>
+                                                              const Center(
+                                                                  child:
+                                                                      CupertinoActivityIndicator(
+                                                            color: Color(
+                                                                0xFF256D85),
+                                                          )),
+                                                          errorWidget: (context,
+                                                                  url, error) =>
+                                                              const Center(
+                                                                  child: Icon(Icons
+                                                                      .error_outline)),
+                                                        ),
                                                       ),
                                                     ),
                                                     Text(
-                                                      _homeModelClass!
-                                                          .data[index]
+                                                      _homeApiResponse!
+                                                          .data
+                                                          .categoryBooks[index]
                                                           .books[index1]
                                                           .bookTitle
                                                           .toString(),
@@ -981,8 +1010,10 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                           fontSize: 10.0),
                                                     ),
                                                     Text(
-                                                        _homeModelClass!
-                                                            .data[index]
+                                                        _homeApiResponse!
+                                                            .data
+                                                            .categoryBooks[
+                                                                index]
                                                             .books[index1]
                                                             .authorName
                                                             .toString(),
@@ -1014,27 +1045,26 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             ),
                             _bannerAd != null
                                 ? Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: Container(
-                                    width: _bannerAd!.size.width
-                                        .toDouble(),
-                                    height: _bannerAd!.size.height
-                                        .toDouble(),
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(30)
+                                    alignment: Alignment.bottomCenter,
+                                    child: Container(
+                                      width: _bannerAd!.size.width.toDouble(),
+                                      height: _bannerAd!.size.height.toDouble(),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(30)),
+                                      child: AdWidget(ad: _bannerAd!),
                                     ),
-                                    child: AdWidget(ad: _bannerAd!),
-                                  ),
-                                )
+                                  )
                                 : Container()
                           ],
                         ),
                       ),
                     ),
-
                   ],
                 ),
       // drawer: DrawerCode(),
+
+
     );
   }
 
@@ -1057,69 +1087,12 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         });
       }
     } else {
-      _callDashboardDioAPI();
+      HOMEApiCall();
       if (widget.route != "guest") {
         NotificationsCount();
       } else {
         print("guest login");
         context.read<UserProvider>().setNotificationsCount(0);
-      }
-    }
-  }
-
-  Future _callDashboardDioAPI() async {
-    final response = await http.get(
-      Uri.parse(ApiUtils.SLIDER_API),
-      //     headers: {
-      //   'Content-Type': 'application/json',
-      //   'Accept': 'application/json',
-      //   'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-      // }
-    );
-
-    if (response.statusCode == 200) {
-      print('home_response${response.body}');
-      var jsonData = json.decode(response.body);
-      if (jsonData['status'] == 200) {
-        print('slider_response ${response.body}');
-        var jsonData = jsonDecode(response.body);
-        _sliderModel = SliderModel.fromJson(jsonData);
-        RecentApiCall();
-      } else {
-        ToastConstant.showToast(context, jsonData['message'].toString());
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
-
-  Future RecentApiCall() async {
-    final response = await http.get(
-      Uri.parse(ApiUtils.RECENT_API),
-      //     headers: {
-      //   'Content-Type': 'application/json',
-      //   'Accept': 'application/json',
-      //   'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-      // }
-    );
-
-    if (response.statusCode == 200) {
-      print('recent_response${response.body}');
-      var jsonData = response.body;
-      //var jsonData = response.body;
-      var jsonData1 = json.decode(response.body);
-      if (jsonData1['status'] == 200) {
-        _recentModel = recentModelFromJson(jsonData);
-        // setState(() {
-        //   _isLoading = false;
-        // });
-        HOMEApiCall();
-      } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
-        setState(() {
-          _isLoading = false;
-        });
       }
     }
   }
@@ -1155,11 +1128,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future HOMEApiCall() async {
     final response = await http.get(
       Uri.parse(ApiUtils.ALL_HOME_CATEGORIES_API),
-      //         headers: {
-      //   'Content-Type': 'application/json',
-      //   'Accept': 'application/json',
-      //   'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-      // }
     );
 
     if (response.statusCode == 200) {
@@ -1168,7 +1136,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       //var jsonData = response.body;
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
-        _homeModelClass = homeModelClassFromJson(jsonData);
+        _homeApiResponse = homeApiResponseFromJson(jsonData);
         setState(() {
           _isLoading = false;
         });
@@ -1201,4 +1169,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     print("${status?.storeVersion}");
     print("${status?.appStoreLink}");
   }
+
+
 }

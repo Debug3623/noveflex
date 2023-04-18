@@ -1030,32 +1030,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
     }
   }
 
-  Future CHECK_STATUS() async {
-    final response =
-        await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
-      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-    });
 
-    if (response.statusCode == 200) {
-      print('status_response${response.body}');
-      var jsonData = response.body;
-      var jsonData1 = json.decode(response.body);
-      if (jsonData1['status'] == 200) {
-        _statusCheckModel = statusCheckModelFromJson(jsonData);
-        if (_statusCheckModel!.data.type == "Reader") {
-          READER_PROFILE();
-        } else {
-          AUTHOR_PROFILE();
-
-        }
-      } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
-        setState(() {
-          _isLoading = false;
-        });
-      }
-    }
-  }
 
   Future _checkInternetConnection() async {
     if (this.mounted) {
@@ -1128,6 +1103,33 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
         _cover_imageFile = File(image.path);
       });
       UploadCoverImageApi();
+    }
+  }
+
+  Future CHECK_STATUS() async {
+    final response =
+    await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    });
+
+    if (response.statusCode == 200) {
+      print('status_response${response.body}');
+      var jsonData = response.body;
+      var jsonData1 = json.decode(response.body);
+      if (jsonData1['status'] == 200) {
+        _statusCheckModel = statusCheckModelFromJson(jsonData);
+        if (_statusCheckModel!.data.type == "Reader") {
+          READER_PROFILE();
+        } else {
+          AUTHOR_PROFILE();
+
+        }
+      } else {
+        ToastConstant.showToast(context, jsonData1['message'].toString());
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 

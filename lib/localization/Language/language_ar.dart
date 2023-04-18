@@ -516,6 +516,9 @@ class LanguageAr extends Languages {
   @override
   String get ourCondition2 => "شروط التقديم لتفعيل المحفظة وجني الأرباح من الاشتراك الشهري والإعلانات.";
 
+  @override
+  String get publishNovel => "نشر الرواية";
+
 
   @override
   String get readerWin2 => "يمكن للقراء الربح من خلال مشارك أو تطبيق للأصدقاء المتهمين بالمنصة ، حيث سيحصلون على 10٪ من قيمة اشتراك كل شخص. سيتم وضع المبلغ في محفظتهم الإلكترونية للمنصة.";

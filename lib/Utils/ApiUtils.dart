@@ -7,7 +7,7 @@ class ApiUtils {
   static const String CHECK_STATUS_API = '$BASE/user/check_user_status';
   static const String USER_SOCIAL_REGISTER = '$BASE/user/google/register';
   static const String USER_SOCIAL_LOGIN = '$BASE/user/googlelogin';
-  static const String ALL_HOME_CATEGORIES_API = '$BASE/categoryBooks';
+  static const String ALL_HOME_CATEGORIES_API = '$BASE/home/alldetails';
   // static const String ALL_HOME_CATEGORIES_API = '$BASE/home/category/books';
   static const String ALL_BOOKS_CATEGORIES_API = '$BASE/home/categoriesWiseBooksById';
   static const String SEARCH_CATEGORIES_API = '$BASE/categories/all';

@@ -131,6 +131,9 @@ class LanguageEn extends Languages {
   String get readerWin => "How does the reader win?";
 
   @override
+  String get publishNovel => "Publish Novel";
+
+  @override
   String get ourCondition21 => "The author's account must have at least 100 followers of the author of the novel of all kinds.";
 
   @override

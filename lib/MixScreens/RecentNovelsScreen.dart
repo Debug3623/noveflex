@@ -59,6 +59,7 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                   : Column(
                       children: [
                         Expanded(
+                          flex: 8,
                           child: Padding(
                             padding: EdgeInsets.only(
                                 top: _height * 0.02,
@@ -118,15 +119,15 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                                                 fontSize: 12.0),
                                             textAlign: TextAlign.left),
                                       ),
-                                      Expanded(
-                                          child: Text(_allrecentModel!.data[index].user[0].username.toString(),
-                                              style: const TextStyle(
-                                                  color: const Color(0xff676767),
-                                                  fontWeight: FontWeight.w400,
-                                                  fontFamily: "Lato",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: 12.0),
-                                              textAlign: TextAlign.left)),
+                                      // Expanded(
+                                      //     child: Text(_allrecentModel!.data[index].user[1].username.toString(),
+                                      //         style: const TextStyle(
+                                      //             color: const Color(0xff676767),
+                                      //             fontWeight: FontWeight.w400,
+                                      //             fontFamily: "Lato",
+                                      //             fontStyle: FontStyle.normal,
+                                      //             fontSize: 12.0),
+                                      //         textAlign: TextAlign.left)),
                                     ],
                                   ),
                                 );
