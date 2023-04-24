@@ -47,6 +47,7 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
+    // CHECK_STATUSType();
     _addController =
     AnimationController(vsync: this, duration: const Duration(seconds: 1))
       ..repeat();
@@ -140,7 +141,9 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
                     height: height * width * 0.0002,
                     width:  height * width * 0.0002,
                     fit: BoxFit.cover)  : Icon(
-                  _statusCheckModel!.data.type == "Writer" ?Icons.add : Icons.person,
+                  // _statusCheckModel!.data.type == "Writer" ?
+                  Icons.add,
+                      // : Icons.person,
                   size: height * width * 0.0001,
                   color: AppColors.inactive,
                 )),

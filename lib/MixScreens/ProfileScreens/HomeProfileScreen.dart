@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:ripple_wave/ripple_wave.dart';
 import '../../Models/AuthorProfileViewModel.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -100,27 +101,33 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                               top: _height * 0.05,
                               child: Column(
                                 children: [
-                                  Container(
-                                    height: _height * 0.15,
-                                    width: _width * 0.5,
-                                    decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        border: Border.all(
-                                          width: 2,
-                                          color: Colors.black,
-                                        ),
-                                        image: DecorationImage(
-                                            image: _readerProfileModel!
-                                                .data.profilePhoto ==
-                                                ""
-                                                ? AssetImage(
-                                                "assets/profile_pic.png",)
-                                                : NetworkImage(
-                                                _readerProfileModel!
-                                                    .data.profilePath
-                                                    .toString())
-                                            as ImageProvider,
-                                            fit: BoxFit.cover)),
+                                  RippleWave(
+                                    color: Colors.white12,
+                                    // childTween: Tween(begin: 0.2, end: 1.0),
+                                    repeat: true,
+                                    duration: const Duration(seconds: 2),
+                                    child: Container(
+                                      height: _height * 0.15,
+                                      width: _width * 0.5,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            width: 1,
+                                            color: Colors.black,
+                                          ),
+                                          image: DecorationImage(
+                                              image: _readerProfileModel!
+                                                  .data.profilePhoto ==
+                                                  ""
+                                                  ? AssetImage(
+                                                  "assets/profile_pic.png",)
+                                                  : NetworkImage(
+                                                  _readerProfileModel!
+                                                      .data.profilePath
+                                                      .toString())
+                                              as ImageProvider,
+                                              fit: BoxFit.cover)),
+                                    ),
                                   ),
                                   Padding(
                                     padding:

@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:novelflex/tab_screen.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:ripple_wave/ripple_wave.dart';
 import 'package:transitioner/transitioner.dart';
 import '../../Models/PdfUploadModel.dart';
 import '../../Provider/UserProvider.dart';
@@ -21,6 +22,8 @@ import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button.dart';
 import '../../localization/Language/languages.dart';
 import 'package:path/path.dart' as path;
+import 'package:flutter_animated_icons/lottiefiles.dart';
+import 'package:lottie/lottie.dart';
 
 class UploaddataNextScreen extends StatefulWidget {
   String bookId;
@@ -31,7 +34,7 @@ class UploaddataNextScreen extends StatefulWidget {
   State<UploaddataNextScreen> createState() => _UploaddataNextScreenState();
 }
 
-class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
+class _UploaddataNextScreenState extends State<UploaddataNextScreen> with SingleTickerProviderStateMixin{
   var dropDownChapterId;
   bool _isLoading = false;
   File? DocumentFile;
@@ -45,16 +48,21 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
   TextEditingController? _chapterController;
   String paymentStatus = "1";
   File? imageFile;
+  late AnimationController _homeController;
 
   @override
   void initState() {
     _chapterController= TextEditingController();
+    _homeController =
+    AnimationController(vsync: this, duration: const Duration(seconds: 1))
+      ..repeat();
     super.initState();
   }
 
   @override
   void dispose() {
     _chapterController!.dispose();
+    _homeController.dispose();
     super.dispose();
   }
 
@@ -64,272 +72,281 @@ class _UploaddataNextScreenState extends State<UploaddataNextScreen> {
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: const Color(0xffebf5f9),
-      appBar: AppBar(
-        toolbarHeight: height * 0.12,
-        backgroundColor: const Color(0xffebf5f9),
-        elevation: 0.0,
-        leading: Container(),
-        actions: [
-          IconButton(
-              onPressed: () {
-                _navigateAndRemove();
-              },
-              icon: Icon(
-                Icons.check_circle_outline_rounded,
-                color: Colors.lightGreen,
-                size: height * width * 0.00015,
-              )),
-          SizedBox(
-            width: width * 0.05,
-          )
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(
-                  top: 15.0,
-                  bottom: 15.0,
-                  left: width * 0.05,
-                  right: width * 0.05),
-              child: Text(
-                Languages.of(context)!.publishPorF_text,
-                style: const TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: Constants.fontfamily,
-                    fontSize: 15.0),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: width * 0.05),
-              child: Column(
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  RadioListTile(
-                    activeColor: const Color(0xff3a6c83),
-                    title:  Text(
-                      Languages.of(context)!.paid,
-                      style: TextStyle(
-                        fontFamily: Constants.fontfamily,
+                  GestureDetector(
+                    onTap: () {
+                      _navigateAndRemove();
+                    },
+                    child: Padding(
+                      padding:  EdgeInsets.all(height*0.03),
+                      child: RippleWave(
+                        child: CircleAvatar(
+                          minRadius: 25,
+                          maxRadius: 25,
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            Icons.home,
+                            color: Color(0xff3a6c83),
+                          ),
+                        ),
+                        color: Color(0xff3a6c83),
+                        childTween: Tween(begin: 0.75, end: 1.0),
+                        repeat: true,
                       ),
                     ),
-                    value: "2",
-                    groupValue: paymentStatus,
-                    onChanged: (value) {
-                      setState(() {
-                        paymentStatus = value.toString();
-                      });
-                    },
-                  ),
-                  RadioListTile(
-                    activeColor: const Color(0xff3a6c83),
-                    title:  Text(
-                      Languages.of(context)!.free,
-                      style: TextStyle(
-                        fontFamily: Constants.fontfamily,
-                      ),
-                    ),
-                    value: "1",
-                    groupValue: paymentStatus,
-                    onChanged: (value) {
-                      setState(() {
-                        paymentStatus = value.toString();
-                      });
-                    },
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: width * 0.02,right: width * 0.02),
-              child: Container(
-                margin: EdgeInsets.only(
-                    top: height * 0.04, left: width * 0.02, right: width * 0.02),
-                height: height * 0.07,
-                width: width * 0.9,
-                child: TextFormField(
-                  key: _chapterKey,
-                  controller: _chapterController,
-                  keyboardType: TextInputType.text,
-                  textInputAction: TextInputAction.next,
-                  cursorColor: Colors.black,
-                  validator: validateBookTitle,
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Color(0xffebf5f9),
-                    // labelText: widget.labelText,
-                    hintText: Languages.of(context)!.episodes,
-                    hintStyle: const TextStyle(
+              Padding(
+                padding: EdgeInsets.only(
+                    top: 15.0,
+                    bottom: 15.0,
+                    left: width * 0.05,
+                    right: width * 0.05),
+                child: Text(
+                  Languages.of(context)!.publishPorF_text,
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
                       fontFamily: Constants.fontfamily,
+                      fontSize: 15.0),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: width * 0.05),
+                child: Column(
+                  children: [
+                    RadioListTile(
+                      activeColor: const Color(0xff3a6c83),
+                      title:  Text(
+                        Languages.of(context)!.paid,
+                        style: TextStyle(
+                          fontFamily: Constants.fontfamily,
+                        ),
+                      ),
+                      value: "2",
+                      groupValue: paymentStatus,
+                      onChanged: (value) {
+                        setState(() {
+                          paymentStatus = value.toString();
+                        });
+                      },
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 2, color: Color(0xFF256D85)),
-                      borderRadius: BorderRadius.circular(10),
+                    RadioListTile(
+                      activeColor: const Color(0xff3a6c83),
+                      title:  Text(
+                        Languages.of(context)!.free,
+                        style: TextStyle(
+                          fontFamily: Constants.fontfamily,
+                        ),
+                      ),
+                      value: "1",
+                      groupValue: paymentStatus,
+                      onChanged: (value) {
+                        setState(() {
+                          paymentStatus = value.toString();
+                        });
+                      },
                     ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 2, color: Color(0xFF256D85)),
-                      borderRadius: BorderRadius.circular(10),
+                  ],
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.only(left: width * 0.02,right: width * 0.02),
+                child: Container(
+                  margin: EdgeInsets.only(
+                      top: height * 0.04, left: width * 0.02, right: width * 0.02),
+                  height: height * 0.07,
+                  width: width * 0.9,
+                  child: TextFormField(
+                    key: _chapterKey,
+                    controller: _chapterController,
+                    keyboardType: TextInputType.text,
+                    textInputAction: TextInputAction.next,
+                    cursorColor: Colors.black,
+                    validator: validateBookTitle,
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Color(0xffebf5f9),
+                      // labelText: widget.labelText,
+                      hintText: Languages.of(context)!.episodes,
+                      hintStyle: const TextStyle(
+                        fontFamily: Constants.fontfamily,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(width: 2, color: Color(0xFF256D85)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            const BorderSide(width: 2, color: Color(0xFF256D85)),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(left: width * 0.02,right: width * 0.02,bottom: height*0.03),
-              child: Container(
-                decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      side: BorderSide(width: 0.5, style: BorderStyle.solid),
-                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    ),
-                    color: Color(0xffebf5f9)),
-                width: width * 0.9,
-                height: height * 0.08,
-                margin: EdgeInsets.only(
-                    left: width * 0.02, right: width * 0.02, top: height * 0.05),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    // SizedBox(
-                    //   width: _width * 0.04,
-                    //   height: _height * 0.07,
-                    // ),
-                    fileLength == 0
-                        ? Expanded(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 8.0, right: 8.0),
-                              child: Text(Languages.of(context)!.SelectBook,
+              Padding(
+                padding: EdgeInsets.only(left: width * 0.02,right: width * 0.02,bottom: height*0.03),
+                child: Container(
+                  decoration: const ShapeDecoration(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(width: 0.5, style: BorderStyle.solid),
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      ),
+                      color: Color(0xffebf5f9)),
+                  width: width * 0.9,
+                  height: height * 0.08,
+                  margin: EdgeInsets.only(
+                      left: width * 0.02, right: width * 0.02, top: height * 0.05),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // SizedBox(
+                      //   width: _width * 0.04,
+                      //   height: _height * 0.07,
+                      // ),
+                      fileLength == 0
+                          ? Expanded(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 8.0, right: 8.0),
+                                child: Text(Languages.of(context)!.SelectBook,
+                                    style: const TextStyle(
+                                      color: Colors.black54,
+                                      fontFamily: Constants.fontfamily,
+                                    )),
+                              ),
+                            )
+                          : Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 8.0),
+                                child: Text(
+                                  '$fileLength ${Languages.of(context)!.filesSelected}',
                                   style: const TextStyle(
                                     color: Colors.black54,
+                                    fontSize: 18,
                                     fontFamily: Constants.fontfamily,
-                                  )),
-                            ),
-                          )
-                        : Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Text(
-                                '$fileLength ${Languages.of(context)!.filesSelected}',
-                                style: const TextStyle(
-                                  color: Colors.black54,
-                                  fontSize: 18,
-                                  fontFamily: Constants.fontfamily,
-                                  fontWeight: FontWeight.bold,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                    // SizedBox(
-                    //   width: _width * 0.35,
-                    // ),
-                    IconButton(
-                        onPressed: () {
-                          getPdfAndUpload();
-                        },
-                        icon: const Icon(Icons.file_upload_outlined)),
-                  ],
+                      // SizedBox(
+                      //   width: _width * 0.35,
+                      // ),
+                      IconButton(
+                          onPressed: () {
+                            getPdfAndUpload();
+                          },
+                          icon: const Icon(Icons.file_upload_outlined)),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding:  EdgeInsets.only(
-                top: height*0.1
+              Padding(
+                padding:  EdgeInsets.only(
+                  top: height*0.1
+                ),
+                child: Visibility(
+                    visible: docUploader == true,
+                    child: const Center(
+                      child: CupertinoActivityIndicator(
+
+                      ),
+                    )),
               ),
-              child: Visibility(
-                  visible: docUploader == true,
-                  child: const Center(
-                    child: CupertinoActivityIndicator(
+              checkUpload
+                  ? Visibility(
+                      visible: checkUpload,
+                      child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const ClampingScrollPhysics(),
+                          itemCount: _pdfUploadModel!.data.length,
+                          itemBuilder: (BuildContext context, index) {
+                            return Container(
+                              decoration: const ShapeDecoration(
+                                  shape: RoundedRectangleBorder(
+                                    side: BorderSide(
+                                        width: 0.5, style: BorderStyle.solid),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(5.0)),
+                                  ),
+                                  color: Color(0xFF256D85)),
+                              width: width * 0.9,
+                              height: height * 0.08,
+                              margin: EdgeInsets.only(
+                                  left: width * 0.02,
+                                  right: width * 0.02,
+                                  top: height * 0.05),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
 
-                    ),
-                  )),
-            ),
-            checkUpload
-                ? Visibility(
-                    visible: checkUpload,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const ClampingScrollPhysics(),
-                        itemCount: _pdfUploadModel!.data.length,
-                        itemBuilder: (BuildContext context, index) {
-                          return Container(
-                            decoration: const ShapeDecoration(
-                                shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      width: 0.5, style: BorderStyle.solid),
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(5.0)),
-                                ),
-                                color: Color(0xFF256D85)),
-                            width: width * 0.9,
-                            height: height * 0.08,
-                            margin: EdgeInsets.only(
-                                left: width * 0.02,
-                                right: width * 0.02,
-                                top: height * 0.05),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
+                                  _pdfUploadModel!.data[index].pdfStatus== 2 ? IconButton(
+                                      onPressed: () async {},
+                                      icon: const Icon(
+                                        Icons.lock_open_outlined,
+                                        color: Colors.white,
+                                      )): Container(),
+                                  _pdfUploadModel!.data.length == 0
+                                      ? const Expanded(
+                                          child: Padding(
+                                            padding: EdgeInsets.only(left: 8.0),
+                                            child: Text('No PDF Found',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontFamily:
+                                                      Constants.fontfamily,
+                                                )),
+                                          ),
+                                        )
+                                      : Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 8.0, right: 8.0),
+                                            child: Text(
+                                              '${_pdfUploadModel!.data[index].lesson.toString()}',
 
-                                _pdfUploadModel!.data[index].pdfStatus== 2 ? IconButton(
-                                    onPressed: () async {},
-                                    icon: const Icon(
-                                      Icons.lock_open_outlined,
-                                      color: Colors.white,
-                                    )): Container(),
-                                _pdfUploadModel!.data.length == 0
-                                    ? const Expanded(
-                                        child: Padding(
-                                          padding: EdgeInsets.only(left: 8.0),
-                                          child: Text('No PDF Found',
-                                              style: TextStyle(
+                                              // '${_bookDetailsModel!.data!.chapters![index].name!.replaceAll(".pdf", "")}',
+                                              style: const TextStyle(
                                                 color: Colors.white,
-                                                fontFamily:
-                                                    Constants.fontfamily,
-                                              )),
-                                        ),
-                                      )
-                                    : Expanded(
-                                        child: Padding(
-                                          padding: const EdgeInsets.only(
-                                              left: 8.0, right: 8.0),
-                                          child: Text(
-                                            '${_pdfUploadModel!.data[index].lesson.toString()}',
-
-                                            // '${_bookDetailsModel!.data!.chapters![index].name!.replaceAll(".pdf", "")}',
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 18,
-                                              fontFamily: Constants.fontfamily,
-                                              fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                fontFamily: Constants.fontfamily,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                              textAlign: TextAlign.center,
                                             ),
-                                            textAlign: TextAlign.center,
                                           ),
                                         ),
-                                      ),
-                                // SizedBox(
-                                //   width: _width * 0.35,
-                                // ),
-                                IconButton(
-                                    onPressed: () async {},
-                                    icon: const Icon(
-                                      Icons.picture_as_pdf,
-                                      color: Colors.white,
-                                    )),
-                              ],
-                            ),
-                          );
-                        }),
-                  )
-                : Container(),
-            SizedBox(
-              height: height * 0.1,
-            ),
-          ],
+                                  // SizedBox(
+                                  //   width: _width * 0.35,
+                                  // ),
+                                  IconButton(
+                                      onPressed: () async {},
+                                      icon: const Icon(
+                                        Icons.picture_as_pdf,
+                                        color: Colors.white,
+                                      )),
+                                ],
+                              ),
+                            );
+                          }),
+                    )
+                  : Container(),
+              SizedBox(
+                height: height * 0.1,
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: Container(

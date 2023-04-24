@@ -139,7 +139,7 @@ class _PieChartScreenState extends State<PieChartScreen> {
                                     SizedBox(
                                       width: _width * 0.1,
                                     ),
-                                    Text("+%${Followers/100*120}",
+                                    Text("+%${Followers/100*20}",
                                         style: const TextStyle(
                                             color: const Color(0xff00bb23),
                                             fontWeight: FontWeight.w400,
@@ -191,7 +191,7 @@ class _PieChartScreenState extends State<PieChartScreen> {
                                     SizedBox(
                                       width: _width * 0.1,
                                     ),
-                                    Text("+%${gifts/50*100}",
+                                    Text("+%${gifts/50*20}",
                                         style: const TextStyle(
                                             color: const Color(0xffd10606),
                                             fontWeight: FontWeight.w400,

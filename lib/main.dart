@@ -18,6 +18,7 @@ import 'package:novelflex/tab_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transitioner/transitioner.dart';
+import 'MixScreens/BooksScreens/AllPdfScreens.dart';
 import 'Provider/UserProvider.dart';
 import 'Provider/VariableProvider.dart';
 import 'UserAuthScreen/login_screen.dart';
@@ -27,7 +28,6 @@ import 'firebase_options.dart';
 import 'localization/locale_constants.dart';
 import 'localization/localizations_delegate.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:http/http.dart' as http;
 import 'dart:io' show Platform;
 BuildContext? context1;
 
@@ -49,10 +49,10 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 // }
 
 
-
 Future<void> main() async {
 
   // HttpOverrides.global = new MyHttpOverrides();
+
   try {
     WidgetsFlutterBinding.ensureInitialized();
     await Firebase.initializeApp(
@@ -87,6 +87,8 @@ Future<void> main() async {
   }
 
   SharedPreferences prefs = await SharedPreferences.getInstance();
+
+
 
   runApp(Phoenix(child: MyApp(sharedPreferences: prefs)));
 

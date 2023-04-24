@@ -12,6 +12,7 @@ import 'package:novelflex/MixScreens/AccountInfoScreen.dart';
 import 'package:novelflex/Models/UserReferralModel.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:simple_ripple_animation/simple_ripple_animation.dart';
 import 'package:transitioner/transitioner.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:io';
@@ -68,7 +69,6 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
   void dispose() {
     _interstitialAd?.dispose();
     _addController.dispose();
-
     super.dispose();
   }
 
@@ -127,18 +127,40 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   SizedBox(
                                     height: _height * 0.03,
                                   ),
-                                  CircleAvatar(
-                                    radius: _width * _height * 0.0002,
-                                    backgroundColor: Colors.black12,
-                                    backgroundImage: _menuProfileModel!
-                                        .data.profilePhoto !=
-                                        ""
-                                        ? NetworkImage(
-                                      _menuProfileModel!
-                                          .data.profilePath,
-                                    )
-                                        : AssetImage('assets/profile_pic.png')
-                                    as ImageProvider,
+                                  GestureDetector(
+                                    onTap: (){
+                                      Transitioner(
+                                        context: context,
+                                        child: AccountScreen(),
+                                        animation:
+                                        AnimationType.slideBottom, // Optional value
+                                        duration: Duration(
+                                            milliseconds: 1000), // Optional value
+                                        replacement: false, // Optional value
+                                        curveType: CurveType.decelerate, // Optional value
+                                      );
+                                    },
+                                    child: RippleAnimation(
+                                      color: Colors.black12,
+                                      delay: const Duration(milliseconds: 3),
+                                      repeat: true,
+                                      minRadius: 40,
+                                      ripplesCount: 6,
+
+                                      child: CircleAvatar(
+                                        radius: _width * _height * 0.0002,
+                                        backgroundColor: Colors.black12,
+                                        backgroundImage: _menuProfileModel!
+                                            .data.profilePhoto !=
+                                            ""
+                                            ? NetworkImage(
+                                          _menuProfileModel!
+                                              .data.profilePath,
+                                        )
+                                            : AssetImage('assets/profile_pic.png')
+                                        as ImageProvider,
+                                      ),
+                                    ),
                                   ),
                                   SizedBox(
                                     height: _height * 0.03,
@@ -279,7 +301,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   _loadInterstitialAd();
                                   if (_interstitialAd != null) {
                                     _interstitialAd?.show();
-                                  } else {
+                                  }  else {
                                     Transitioner(
                                       context: context,
                                       child: HomeProfileScreen(),

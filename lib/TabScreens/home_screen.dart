@@ -756,24 +756,24 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             FontStyle.normal,
                                                         fontSize: 10.0),
                                                   ),
-                                                  Text(
-                                                      _homeApiResponse!
-                                                          .data
-                                                          .recentlyPublishBooks[
-                                                              index1]
-                                                          .user![0]
-                                                          .username
-                                                          .toString(),
-                                                      style: const TextStyle(
-                                                          color: const Color(
-                                                              0xff676767),
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                          fontFamily: "Lato",
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 8.0),
-                                                      textAlign: TextAlign.left)
+                                                  // Text(
+                                                  //     _homeApiResponse!
+                                                  //         .data
+                                                  //         .recentlyPublishBooks[
+                                                  //             index1]
+                                                  //         .user![0]
+                                                  //         .username
+                                                  //         .toString(),
+                                                  //     style: const TextStyle(
+                                                  //         color: const Color(
+                                                  //             0xff676767),
+                                                  //         fontWeight:
+                                                  //             FontWeight.w400,
+                                                  //         fontFamily: "Lato",
+                                                  //         fontStyle:
+                                                  //             FontStyle.normal,
+                                                  //         fontSize: 8.0),
+                                                  //     textAlign: TextAlign.left)
                                                 ],
                                               ),
                                             ),

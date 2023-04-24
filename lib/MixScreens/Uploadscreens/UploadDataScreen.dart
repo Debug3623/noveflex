@@ -1,17 +1,14 @@
 import 'dart:async';
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:connectivity/connectivity.dart';
-import 'package:dio/dio.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:language_picker/language_picker_cupertino.dart';
+import 'package:language_picker/language_picker_dialog.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +27,7 @@ import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button.dart';
 import '../../localization/Language/languages.dart';
 import 'UploadDatanextScreen.dart';
+import 'package:language_picker/languages.dart' as lang;
 
 class UploadDataScreen extends StatefulWidget {
   @override
@@ -37,7 +35,6 @@ class UploadDataScreen extends StatefulWidget {
 }
 
 class _UploadDataScreenState extends State<UploadDataScreen> {
-
   final _bookTitleKey = GlobalKey<FormFieldState>();
   final _descriptionKey = GlobalKey<FormFieldState>();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -104,11 +101,9 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
   int fileLength = 0;
   File? imageFile;
   var documentFile;
-  bool docUploader= false;
+  bool docUploader = false;
   bool subCategoriesStatus = false;
-
-
-
+  lang.Language _selectedDialogLanguage = lang.Languages.arabic;
 
   @override
   void initState() {
@@ -120,8 +115,8 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
 
   @override
   void dispose() {
-    _bookTitleController =  TextEditingController();
-    _descriptionController =  TextEditingController();
+    _bookTitleController = TextEditingController();
+    _descriptionController = TextEditingController();
     super.dispose();
   }
 
@@ -147,7 +142,6 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -172,297 +166,318 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
       ),
       body: _isInternetConnected == false
           ? SafeArea(
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const Text(
-                "INTERNET NOT CONNECTED",
-                style: TextStyle(
-                  fontFamily: Constants.fontfamily,
-                  color: Color(0xFF256D85),
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-              SizedBox(
-                height: height * 0.019,
-              ),
-              InkWell(
-                child: Container(
-                  width: width * 0.40,
-                  height: height * 0.058,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF256D85),
-                    borderRadius: const BorderRadius.all(
-                      Radius.circular(
-                        40.0,
-                      ),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: const Offset(
-                            0, 3), // changes position of shadow
-                      ),
-                    ],
-                  ),
-                  child: const Center(
-                    child: Text(
-                      "No Internet Connected",
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "INTERNET NOT CONNECTED",
                       style: TextStyle(
                         fontFamily: Constants.fontfamily,
+                        color: Color(0xFF256D85),
                         fontWeight: FontWeight.w400,
-                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      height: height * 0.019,
+                    ),
+                    InkWell(
+                      child: Container(
+                        width: width * 0.40,
+                        height: height * 0.058,
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF256D85),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(
+                              40.0,
+                            ),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 5,
+                              blurRadius: 7,
+                              offset: const Offset(
+                                  0, 3), // changes position of shadow
+                            ),
+                          ],
+                        ),
+                        child: const Center(
+                          child: Text(
+                            "No Internet Connected",
+                            style: TextStyle(
+                              fontFamily: Constants.fontfamily,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () {
+                        _checkInternetConnection();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            )
+          : _isLoading
+              ? const Align(
+                  alignment: Alignment.center,
+                  child: const Center(
+                    child: CupertinoActivityIndicator(),
+                  ))
+              : SafeArea(
+                  child: SingleChildScrollView(
+                    child: Form(
+                      key: _formKey,
+                      child: Container(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              height: height * 0.03,
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: 15.0,
+                                  bottom: 15.0,
+                                  left: width * 0.05,
+                                  right: width * 0.05),
+                              child: Text(
+                                Languages.of(context)!.publishPorF,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: Constants.fontfamily,
+                                    fontSize: 15.0),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                _openLanguagePickerDialog;
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    top: height * 0.04,
+                                    left: width * 0.02,
+                                    right: width * 0.02),
+                                height: height * 0.07,
+                                width: width * 0.9,
+                                child: ListTile(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10),
+                                    side: BorderSide(color: Colors.black),
+                                  ),
+                                  title: Text(_selectedDialogLanguage
+                                          .name.isEmpty
+                                      ? Languages.of(context)!.selectLanguage
+                                      : _selectedDialogLanguage.name),
+                                  trailing:
+                                      Icon(Icons.arrow_drop_down_outlined),
+                                  onTap: _openLanguagePickerDialog,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: height * 0.04,
+                                  left: width * 0.02,
+                                  right: width * 0.02),
+                              height: height * 0.07,
+                              width: width * 0.9,
+                              child: TextFormField(
+                                key: _bookTitleKey,
+                                controller: _bookTitleController,
+                                keyboardType: TextInputType.text,
+                                textInputAction: TextInputAction.next,
+                                cursorColor: Colors.black,
+                                validator: validateBookTitle,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xffebf5f9),
+                                  // labelText: widget.labelText,
+                                  hintText:
+                                      Languages.of(context)!.enterBookTitle,
+                                  hintStyle: const TextStyle(
+                                    fontFamily: Constants.fontfamily,
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        width: 1, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        width: 1, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Container(
+                                margin: EdgeInsets.only(
+                                    top: height * 0.05,
+                                    left: width * 0.02,
+                                    right: width * 0.02),
+                                height: height * 0.06,
+                                width: width * 0.9,
+                                child: _dropDownCategoriesWidget()),
+                            _isLoadingLast
+                                ? Padding(
+                                    padding: const EdgeInsets.only(top: 8.0),
+                                    child: const Align(
+                                        alignment: Alignment.center,
+                                        child: const Center(
+                                          child: CupertinoActivityIndicator(),
+                                        )),
+                                  )
+                                : subCategoriesStatus
+                                    ? Container(
+                                        margin: EdgeInsets.only(
+                                            top: height * 0.07,
+                                            left: width * 0.02,
+                                            right: width * 0.02),
+                                        height: height * 0.07,
+                                        width: width * 0.9,
+                                        child:
+                                            _dropDownCategoriesWidgetSubCategories2())
+                                    : Container(),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  top: height * 0.05,
+                                  bottom: 15.0,
+                                  left: width * 0.02,
+                                  right: width * 0.02),
+                              child: Text(
+                                  Languages.of(context)!.writetheDescription,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: Constants.fontfamily,
+                                      fontSize: 15.0)),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(
+                                  top: height * 0.015,
+                                  left: width * 0.02,
+                                  right: width * 0.02),
+                              height: height * 0.35,
+                              width: width * 0.9,
+                              child: TextFormField(
+                                key: _descriptionKey,
+                                controller: _descriptionController,
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 10,
+                                textInputAction: TextInputAction.next,
+                                cursorColor: Colors.black,
+                                validator: validateDescription,
+                                decoration: InputDecoration(
+                                  filled: true,
+                                  fillColor: Color(0xffebf5f9),
+                                  // labelText: widget.labelText,
+                                  enabledBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        width: 1, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        width: 1, color: Colors.black),
+                                    borderRadius: BorderRadius.circular(10),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                _getFromGallery();
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: width * 0.02, right: width * 0.02),
+                                height: height * 0.35,
+                                width: width * 0.7,
+                                child: Center(
+                                  child: pathImage == null
+                                      ? Container(
+                                          margin: EdgeInsets.only(
+                                              left: width * 0.02),
+                                          height: height * 0.35,
+                                          width: width * 0.7,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(15.0),
+                                              color: Colors.black12),
+                                          child: Center(
+                                            child: Text(
+                                              Languages.of(context)!
+                                                  .taptoUploadCoverImage,
+                                              style: const TextStyle(
+                                                fontFamily:
+                                                    Constants.fontfamily,
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          child: Image.file(
+                                            File(pathImage!),
+                                            fit: BoxFit.cover,
+                                            colorBlendMode:
+                                                BlendMode.saturation,
+                                            errorBuilder:
+                                                (context, error, stackTrace) {
+                                              return Container(
+                                                decoration: BoxDecoration(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15.0),
+                                                    color: Colors.black12),
+                                                child: Center(
+                                                  child: Text(
+                                                    Languages.of(context)!
+                                                        .taptoUploadCoverImage,
+                                                    style: TextStyle(
+                                                      fontFamily:
+                                                          Constants.fontfamily,
+                                                    ),
+                                                  ),
+                                                ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                ),
+                              ),
+                            ),
+                            SizedBox(
+                              height: height * 0.05,
+                            ),
+                            Visibility(
+                                visible: docUploader == true,
+                                child: const Center(
+                                  child: CupertinoActivityIndicator(),
+                                )),
+                            SizedBox(
+                              height: height * 0.06,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 ),
-                onTap: () {
-                  _checkInternetConnection();
-                },
-              ),
-            ],
-          ),
-        ),
-      )
-          : _isLoading
-          ? const Align(
-          alignment: Alignment.center,
-          child: const Center(
-            child: CupertinoActivityIndicator(
-            ),
-          ))
-          : SafeArea(
-        child: SingleChildScrollView(
-          child: Form(
-            key: _formKey,
-            child: Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(
-                    height: height * 0.05,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: 15.0,
-                        bottom: 15.0,
-                        left: width * 0.05,
-                        right: width * 0.05),
-                    child: Text(
-                      Languages.of(context)!.publishPorF,
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: Constants.fontfamily,
-                          fontSize: 15.0),
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: height * 0.04,
-                        left: width * 0.02,
-                        right: width * 0.02),
-                    height: height * 0.07,
-                    width: width * 0.9,
-                    child: TextFormField(
-                      key: _bookTitleKey,
-                      controller: _bookTitleController,
-                      keyboardType: TextInputType.text,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Colors.black,
-                      validator: validateBookTitle,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xffebf5f9),
-                        // labelText: widget.labelText,
-                        hintText:
-                        Languages.of(context)!.enterBookTitle,
-                        hintStyle: const TextStyle(
-                          fontFamily: Constants.fontfamily,
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2, color: Color(0xFF256D85)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2, color: Color(0xFF256D85)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Container(
-                      margin: EdgeInsets.only(
-                          top: height * 0.07,
-                          left: width * 0.02,
-                          right: width * 0.02),
-                      height: height * 0.06,
-                      width: width * 0.9,
-                      child: _dropDownCategoriesWidget()),
-                _isLoadingLast
-                    ? Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: const Align(
-                      alignment: Alignment.center,
-                      child: const Center(
-                        child: CupertinoActivityIndicator(
-                        ),
-                      )),
-                    )
-                    : subCategoriesStatus
-                    ? Container(
-                    margin: EdgeInsets.only(
-                        top: height * 0.07,
-                        left: width * 0.02,
-                        right: width * 0.02),
-                    height: height * 0.07,
-                    width: width * 0.9,
-                    child:
-                    _dropDownCategoriesWidgetSubCategories2())
-                    : Container(),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        top: height * 0.05,
-                        bottom: 15.0,
-                        left: width * 0.02,
-                        right: width * 0.02),
-                    child: Text(
-                        Languages.of(context)!.writetheDescription,
-                        style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: Constants.fontfamily,
-                            fontSize: 15.0)),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                        top: height * 0.015,
-                        left: width * 0.02,
-                        right: width * 0.02),
-                    height: height * 0.35,
-                    width: width * 0.9,
-                    child: TextFormField(
-                      key: _descriptionKey,
-                      controller: _descriptionController,
-                      keyboardType: TextInputType.multiline,
-                      maxLines: 10,
-                      textInputAction: TextInputAction.next,
-                      cursorColor: Colors.black,
-                      validator: validateDescription,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color(0xffebf5f9),
-                        // labelText: widget.labelText,
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2, color: Color(0xFF256D85)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                              width: 2, color: Color(0xFF256D85)),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                      ),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () async {
-                      _getFromGallery();
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(
-                          left: width * 0.02, right: width * 0.02),
-                      height: height * 0.35,
-                      width: width * 0.7,
-                      child: Center(
-                        child: pathImage == null
-                            ? Container(
-                          margin: EdgeInsets.only(
-                              left: width * 0.02),
-                          height: height * 0.35,
-                          width: width * 0.7,
-                          decoration: BoxDecoration(
-                              borderRadius:
-                              BorderRadius.circular(15.0),
-                              color: Colors.black12),
-                          child: Center(
-                            child: Text(
-                              Languages.of(context)!
-                                  .taptoUploadCoverImage,
-                              style: const TextStyle(
-                                fontFamily:
-                                Constants.fontfamily,
-                              ),
-                            ),
-                          ),
-                        )
-                            : ClipRRect(
-                          borderRadius:
-                          BorderRadius.circular(10),
-                          child: Image.file(
-                            File(pathImage!),
-                            fit: BoxFit.cover,
-                            colorBlendMode:
-                            BlendMode.saturation,
-                            errorBuilder:
-                                (context, error, stackTrace) {
-                              return Container(
-                                decoration: BoxDecoration(
-                                    borderRadius:
-                                    BorderRadius.circular(
-                                        15.0),
-                                    color: Colors.black12),
-                                child: Center(
-                                  child: Text(
-                                    Languages.of(context)!
-                                        .taptoUploadCoverImage,
-                                    style: TextStyle(
-                                      fontFamily:
-                                      Constants.fontfamily,
-                                    ),
-                                  ),
-                                ),
-                              );
-                            },
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: height * 0.05,
-                  ),
-                  Visibility(
-                      visible: docUploader == true,
-                      child: const Center(
-                        child: CupertinoActivityIndicator(
-                        ),
-                      )),
-                  SizedBox(
-                    height: height * 0.06,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
       bottomNavigationBar: Container(
-        margin:  EdgeInsets.only(left: 10.0, right: 10.0,bottom: height*0.03),
+        margin: EdgeInsets.only(left: 10.0, right: 10.0, bottom: height * 0.03),
         alignment: Alignment.center,
         height: height * 0.06,
         width: width * 0.95,
         child: ResuableMaterialButton(
           onpress: () {
-
             _AutomaticCallApiMethod();
-
           },
           buttonname: Languages.of(context)!.next,
         ),
@@ -472,7 +487,7 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
 
   _getFromGallery() async {
     final PickedFile? image =
-    await ImagePicker().getImage(source: ImageSource.gallery);
+        await ImagePicker().getImage(source: ImageSource.gallery);
 
     if (image != null) {
       imageFile = File(image.path);
@@ -497,7 +512,6 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
         _descriptionController!.text.isNotEmpty &&
         imageFile != null) {
       _checkInternetConnectionStatus();
-
     } else {
       Constants.showToastBlack(
           context, "Please fill all the fields Correctly!");
@@ -507,7 +521,6 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
   Widget _dropDownCategoriesWidget() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
-
       decoration: const ShapeDecoration(
         shape: RoundedRectangleBorder(
           side: BorderSide(width: 0.5, style: BorderStyle.solid),
@@ -528,7 +541,9 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
           return DropdownMenuItem<DropDownCategoriesModel>(
             value: newItem,
             child: Text(
-              context.read<UserProvider>().SelectedLanguage == "English" ? newItem.title!: newItem.titleAr!,
+              context.read<UserProvider>().SelectedLanguage == "English"
+                  ? newItem.title!
+                  : newItem.titleAr!,
               style: const TextStyle(
                   fontFamily: Constants.fontfamily,
                   fontWeight: FontWeight.w400,
@@ -540,7 +555,7 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
         onChanged: (DropDownCategoriesModel? newItem) {
           setState(() {
             _dropDownCategoriesModel = newItem;
-            dropDownId =  newItem!.categoryId;
+            dropDownId = newItem!.categoryId;
           });
           _callDropDownCategoriesAPISubCategories2(newItem!.categoryId);
         },
@@ -557,23 +572,21 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
       _isInternetConnected = true;
     });
 
-    final response = await http.get(
-        Uri.parse(ApiUtils.MAIN_CATEGORIES_DROPDOWN_API),
-        headers: {
-          'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-        }
-    );
+    final response = await http
+        .get(Uri.parse(ApiUtils.MAIN_CATEGORIES_DROPDOWN_API), headers: {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    });
 
     if (response.statusCode == 200) {
       print('dropDownApiResponse under 200 ${response.body}');
       var jsonData = response.body;
-      _dropDownCategoriesModelList = dropDownCategoriesModelFromJson(jsonData)?.cast<DropDownCategoriesModel>();
+      _dropDownCategoriesModelList = dropDownCategoriesModelFromJson(jsonData)
+          ?.cast<DropDownCategoriesModel>();
       setState(() {
         _isLoading = false;
       });
     }
   }
-
 
   Widget _dropDownCategoriesWidgetSubCategories2() {
     return Container(
@@ -612,7 +625,7 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
         onChanged: (DropDownSubCategoriesModel? newItem) {
           setState(() {
             _dropDownSubCategoriesModel = newItem;
-            dropDownSub2Id = newItem!.subcategoryId;
+            dropDownSub2Id = newItem!.id;
           });
         },
         value: _dropDownSubCategoriesModel,
@@ -629,18 +642,19 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
     var map = Map<String, dynamic>();
     map['category_id'] = id.toString();
 
-    final response = await http
-        .post(Uri.parse(ApiUtils.DROPDOWN_SUB_CATEGORIES_API), body: map,
+    final response = await http.post(
+        Uri.parse(ApiUtils.DROPDOWN_SUB_CATEGORIES_API),
+        body: map,
         headers: {
           'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-        } );
+        });
 
     if (response.statusCode == 200) {
       print('dropDownApiResponse_SubCategories_2 under 200 ${response.body}');
       var jsonData = response.body;
       _dropDownSubCategoriesModelList =
-          dropDownSubCategoriesModelFromJson(jsonData)?.cast<DropDownSubCategoriesModel>();
-
+          dropDownSubCategoriesModelFromJson(jsonData)
+              ?.cast<DropDownSubCategoriesModel>();
 
       setState(() {
         _isLoadingLast = false;
@@ -648,9 +662,6 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
       });
     }
   }
-
-
-
 
   String? validateBookTitle(String? value) {
     if (value!.isEmpty)
@@ -666,10 +677,13 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
       return null;
   }
 
-  _navigateAndRemove(){
+  _navigateAndRemove() {
     Transitioner(
       context: context,
-      child: UploaddataNextScreen(bookId: _postImageOtherFieldModel!.data!.id.toString(),route: 0,),
+      child: UploaddataNextScreen(
+        bookId: _postImageOtherFieldModel!.data!.id.toString(),
+        route: 0,
+      ),
       animation: AnimationType.slideLeft, // Optional value
       duration: Duration(milliseconds: 1000), // Optional value
       replacement: false, // Optional value
@@ -700,7 +714,6 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
   }
 
   Future<void> UploadBookImageAndOtherFieldApi() async {
-
     Map<String, String> headers = {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     };
@@ -711,7 +724,8 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
     request.fields['title'] = _bookTitleController!.text.trim();
     request.fields['category_id'] = dropDownId.toString();
     request.fields['subcategory_id'] = dropDownSub2Id.toString();
-    request.fields['description'] = _descriptionController!.text.trim().toString();
+    request.fields['description'] =
+        _descriptionController!.text.trim().toString();
     request.fields['payment_status'] = paymentStatus;
     request.files.add(new http.MultipartFile.fromBytes(
       "image",
@@ -719,18 +733,15 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
           .readAsBytesSync(), //UserFile is my JSON key,use your own and "image" is the pic im getting from my gallary
       filename: "Image.jpg",
       contentType: MediaType('image', 'jpg'),
-    )
-
-    );
+    ));
 
     request.headers.addAll(headers);
 
     request.send().then((result) async {
       http.Response.fromStream(result).then((response) {
         if (response.statusCode == 200) {
-
           var jsonData = json.decode(response.body);
-          if (jsonData['status'] == 200){
+          if (jsonData['status'] == 200) {
             print('response_image_upload ' + response.body);
             _postImageOtherFieldModel =
                 postImageOtherFieldModelFromJson(response.body);
@@ -738,23 +749,44 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
               docUploader = false;
             });
             _navigateAndRemove();
-          }else{
+          } else {
             ToastConstant.showToast(context, jsonData['message']);
             setState(() {
               docUploader = false;
             });
           }
-
-
-        }else{
+        } else {
           ToastConstant.showToast(context, "Internet Server error");
           setState(() {
             docUploader = false;
           });
         }
-
       });
     });
   }
 
+  void _openLanguagePickerDialog() => showDialog(
+      context: context,
+      builder: (context) => Theme(
+          data: Theme.of(context).copyWith(primaryColor: Colors.pink),
+          child: LanguagePickerDialog(
+              titlePadding: EdgeInsets.all(8.0),
+              searchCursorColor: Colors.pinkAccent,
+              searchInputDecoration: InputDecoration(hintText: 'Search...'),
+              isSearchable: true,
+              title: Text('Select your language'),
+              onValuePicked: (lang.Language language) => setState(() {
+                    _selectedDialogLanguage = language;
+                    print(_selectedDialogLanguage.name);
+                    print(_selectedDialogLanguage.isoCode);
+                  }),
+              itemBuilder: _buildDialogItem)));
+
+  Widget _buildDialogItem(lang.Language language) => Row(
+        children: <Widget>[
+          Text(language.name),
+          SizedBox(width: 8.0),
+          Flexible(child: Text("(${language.isoCode})"))
+        ],
+      );
 }
