@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:novelflex/TabScreens/home_screen.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/SignUpScreen_Second.dart';
 import 'package:novelflex/localization/Language/languages.dart';
@@ -318,8 +319,7 @@ class _SplashFirstState extends State<SplashFirst> {
     return const Scaffold(
         backgroundColor: const Color(0xffebf5f9),
         body: const Center(
-          child: CupertinoActivityIndicator(
-          ),
+          child: MoreLoadingGif(type: MoreLoadingGifType.eclipse)
         )
     );
   }

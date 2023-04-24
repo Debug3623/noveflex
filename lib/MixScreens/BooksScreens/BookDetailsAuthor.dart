@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:novelflex/MixScreens/StripePayment/StripePayment.dart';
 import 'package:novelflex/Models/LikeDislikeModel.dart';
 import 'package:provider/provider.dart';
@@ -21,6 +22,7 @@ import '../../Utils/constant.dart';
 import '../../Utils/native_dialog.dart';
 import '../../Utils/store_config.dart';
 import '../../Utils/toast.dart';
+import '../../Widgets/loading_widgets.dart';
 import '../../ad_helper.dart';
 import '../../localization/Language/languages.dart';
 import 'AllPdfScreens.dart';
@@ -159,9 +161,15 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
               ),
             )
           : _isLoading
-              ? const Align(
+              ? Align(
                   alignment: Alignment.center,
-                  child: CupertinoActivityIndicator(),
+                  child: CustomCard(
+                    gif: MoreLoadingGif(
+                      type: MoreLoadingGifType.eclipse,
+                      size: _height * _width * 0.0002,
+                    ),
+                    text: 'Loading',
+                  ),
                 )
               : Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -170,26 +178,26 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         GestureDetector(
-                          onTap: (){
+                          onTap: () {
                             Transitioner(
                               context: context,
                               child: BookAllPDFViewSceens(
-                                bookId: _bookDetailsModel!.data!.bookId
-                                    .toString(),
+                                bookId:
+                                    _bookDetailsModel!.data!.bookId.toString(),
                                 bookName: _bookDetailsModel!.data!.bookTitle
                                     .toString(),
-                                readerId: _bookDetailsModel!.data!.userId
-                                    .toString(),
-                                PaymentStatus: _bookDetailsModel!.data!.paymentStatus
+                                readerId:
+                                    _bookDetailsModel!.data!.userId.toString(),
+                                PaymentStatus: _bookDetailsModel!
+                                    .data!.paymentStatus
                                     .toString(),
                               ),
                               animation:
-                              AnimationType.slideTop, // Optional value
+                                  AnimationType.slideTop, // Optional value
                               duration: Duration(
                                   milliseconds: 1000), // Optional value
                               replacement: false, // Optional value
-                              curveType:
-                              CurveType.decelerate, // Optional value
+                              curveType: CurveType.decelerate, // Optional value
                             );
                           },
                           child: Padding(
@@ -387,8 +395,8 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 height: _height * 0.03,
                               ),
                               Container(
-                                width: _width*0.28,
-                                height: _height*0.035,
+                                width: _width * 0.28,
+                                height: _height * 0.035,
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
@@ -454,8 +462,8 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 height: _height * 0.03,
                               ),
                               Container(
-                                width: _width*0.28,
-                                height: _height*0.035,
+                                width: _width * 0.28,
+                                height: _height * 0.035,
                                 decoration: BoxDecoration(
                                     borderRadius:
                                         BorderRadius.all(Radius.circular(5)),
@@ -520,7 +528,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                       ],
                     ),
                     Padding(
-                      padding:  EdgeInsets.only(top:_height*0.01),
+                      padding: EdgeInsets.only(top: _height * 0.01),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
@@ -541,7 +549,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                   fontSize: 12.0),
                               textAlign: TextAlign.left),
                           InkWell(
-                            onTap: (){
+                            onTap: () {
                               Transitioner(
                                 context: context,
                                 child: ShowAllReviewScreen(
@@ -553,33 +561,29 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                       .toString(),
                                 ),
                                 animation:
-                                AnimationType.slideTop, // Optional value
+                                    AnimationType.slideTop, // Optional value
                                 duration: Duration(
                                     milliseconds: 1000), // Optional value
                                 replacement: false, // Optional value
                                 curveType:
-                                CurveType.decelerate, // Optional value
+                                    CurveType.decelerate, // Optional value
                               );
-
-
                             },
                             child: Column(
                               children: [
                                 Text(Languages.of(context)!.allReview,
                                     style: const TextStyle(
-                                        color:  Colors.black,
+                                        color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontFamily: "Lato",
                                         fontStyle: FontStyle.normal,
                                         fontSize: 13.0),
                                     textAlign: TextAlign.left),
                                 Container(
-                                    width: _width*0.3,
+                                    width: _width * 0.3,
                                     height: 1,
-                                    decoration: BoxDecoration(
-                                        color: Colors.black
-                                    )
-                                )
+                                    decoration:
+                                        BoxDecoration(color: Colors.black))
                               ],
                             ),
                           ),
@@ -588,32 +592,33 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                     ),
                     Padding(
                       padding: EdgeInsets.only(
-                          left: _width * 0.02, top: _height * 0.02, right: _width * 0.02),
+                          left: _width * 0.02,
+                          top: _height * 0.02,
+                          right: _width * 0.02),
                       child: Container(
-                        height: _height*0.2,
+                        height: _height * 0.2,
                         width: _width,
-                        padding: EdgeInsets.all(_width*0.035),
+                        padding: EdgeInsets.all(_width * 0.035),
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: Colors.white
-                        ),
+                            borderRadius: BorderRadius.circular(15),
+                            color: Colors.white),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(Languages.of(context)!.aboutBook,
-                                    style: const TextStyle(
-                                        color: const Color(0xff2a2a2a),
-                                        fontWeight: FontWeight.w500,
-                                        fontFamily: "Alexandria",
-                                        fontStyle: FontStyle.normal,
-                                        fontSize: 16.0),
-                                   ),
+                                Text(
+                                  Languages.of(context)!.aboutBook,
+                                  style: const TextStyle(
+                                      color: const Color(0xff2a2a2a),
+                                      fontWeight: FontWeight.w500,
+                                      fontFamily: "Alexandria",
+                                      fontStyle: FontStyle.normal,
+                                      fontSize: 16.0),
+                                ),
                                 InkWell(
-                                  onTap: (){
-
+                                  onTap: () {
                                     Transitioner(
                                       context: context,
                                       child: AuthorViewByUserScreen(
@@ -625,32 +630,30 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                       duration: Duration(
                                           milliseconds: 1000), // Optional value
                                       replacement: false, // Optional value
-                                      curveType:
-                                      CurveType.decelerate, // Optional value
+                                      curveType: CurveType
+                                          .decelerate, // Optional value
                                     );
-
                                   },
                                   child: Padding(
-                                    padding:  EdgeInsets.only(
-                                      right: _width*0.07
-                                    ),
+                                    padding:
+                                        EdgeInsets.only(right: _width * 0.07),
                                     child: Column(
                                       children: [
-                                        Text(Languages.of(context)!.seeAuthorBooks,
+                                        Text(
+                                            Languages.of(context)!
+                                                .seeAuthorBooks,
                                             style: const TextStyle(
-                                                color:  Color(0xff3a6c83),
+                                                color: Color(0xff3a6c83),
                                                 fontWeight: FontWeight.bold,
                                                 fontFamily: "Lato",
                                                 fontStyle: FontStyle.normal,
                                                 fontSize: 13.0),
                                             textAlign: TextAlign.left),
                                         Container(
-                                            width: _width*0.3,
+                                            width: _width * 0.3,
                                             height: 1,
                                             decoration: BoxDecoration(
-                                                color: const Color(0xff3a6c83)
-                                            )
-                                        )
+                                                color: const Color(0xff3a6c83)))
                                       ],
                                     ),
                                   ),
@@ -662,7 +665,8 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                             ),
                             Expanded(
                               child: Text(
-                                _bookDetailsModel!.data!.bookDescription.toString(),
+                                _bookDetailsModel!.data!.bookDescription
+                                    .toString(),
                                 style: const TextStyle(
                                     color: const Color(0xff676767),
                                     fontWeight: FontWeight.w400,
@@ -790,22 +794,22 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                             Transitioner(
                               context: context,
                               child: BookAllPDFViewSceens(
-                                bookId: _bookDetailsModel!.data!.bookId
-                                    .toString(),
+                                bookId:
+                                    _bookDetailsModel!.data!.bookId.toString(),
                                 bookName: _bookDetailsModel!.data!.bookTitle
                                     .toString(),
-                                readerId: _bookDetailsModel!.data!.userId
+                                readerId:
+                                    _bookDetailsModel!.data!.userId.toString(),
+                                PaymentStatus: _bookDetailsModel!
+                                    .data!.paymentStatus
                                     .toString(),
-                                PaymentStatus: _bookDetailsModel!.data!.paymentStatus
-                                  .toString(),
                               ),
                               animation:
-                              AnimationType.slideTop, // Optional value
+                                  AnimationType.slideTop, // Optional value
                               duration: Duration(
                                   milliseconds: 1000), // Optional value
                               replacement: false, // Optional value
-                              curveType:
-                              CurveType.decelerate, // Optional value
+                              curveType: CurveType.decelerate, // Optional value
                             );
                           },
                           child: Container(
@@ -823,7 +827,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 ],
                                 color: const Color(0xff3a6c83)),
                             child: Center(
-                              child:Text( Languages.of(context)!.read,
+                              child: Text(Languages.of(context)!.read,
                                   style: const TextStyle(
                                       color: const Color(0xffffffff),
                                       fontWeight: FontWeight.w700,
@@ -897,13 +901,13 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                       height: _height * 0.05,
                       child: _bannerAd != null
                           ? Align(
-                            alignment: Alignment.bottomCenter,
-                            child: Container(
-                              width: _bannerAd!.size.width.toDouble(),
-                              height: _bannerAd!.size.height.toDouble(),
-                              child: AdWidget(ad: _bannerAd!),
-                            ),
-                          )
+                              alignment: Alignment.bottomCenter,
+                              child: Container(
+                                width: _bannerAd!.size.width.toDouble(),
+                                height: _bannerAd!.size.height.toDouble(),
+                                child: AdWidget(ad: _bannerAd!),
+                              ),
+                            )
                           : Container(),
                     )
                   ],
@@ -1041,6 +1045,4 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
       Constants.showToastBlack(context, "Some things went wrong");
     }
   }
-
-
 }

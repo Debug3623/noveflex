@@ -9,6 +9,7 @@ import 'package:http_parser/http_parser.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:language_picker/language_picker_cupertino.dart';
 import 'package:language_picker/language_picker_dialog.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -24,6 +25,7 @@ import '../../Provider/UserProvider.dart';
 import '../../Utils/ApiUtils.dart';
 import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
+import '../../Widgets/loading_widgets.dart';
 import '../../Widgets/reusable_button.dart';
 import '../../localization/Language/languages.dart';
 import 'UploadDatanextScreen.dart';
@@ -222,11 +224,16 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
               ),
             )
           : _isLoading
-              ? const Align(
+              ? Align(
                   alignment: Alignment.center,
-                  child: const Center(
-                    child: CupertinoActivityIndicator(),
-                  ))
+                  child: CustomCard(
+                    gif: MoreLoadingGif(
+                      type: MoreLoadingGifType.eclipse,
+                      size: height * width * 0.0002,
+                    ),
+                    text: 'Loading',
+                  ),
+                )
               : SafeArea(
                   child: SingleChildScrollView(
                     child: Form(

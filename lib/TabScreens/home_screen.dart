@@ -9,12 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:http/http.dart' as http;
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:new_version/new_version.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:novelflex/MixScreens/RecentNovelsScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
 import '../MixScreens/BooksScreens/BookDetailsAuthor.dart';
+import '../MixScreens/SEARCHSCREENS/GeneralCategoriesSearchScreen.dart';
 import '../MixScreens/SeeAllBooksScreen.dart';
 import '../MixScreens/Uploadscreens/UploadDataScreen.dart';
 import '../MixScreens/notification_screen.dart';
@@ -24,6 +26,7 @@ import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import '../Widgets/loading_widgets.dart';
 import '../ad_helper.dart';
 import '../localization/Language/languages.dart';
 import 'package:flutter_animated_icons/lottiefiles.dart';
@@ -139,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       backgroundColor: const Color(0xffebf5f9),
       key: globalKey,
@@ -324,10 +328,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             )
           : _isLoading
-              ? const Align(
+              ? Align(
                   alignment: Alignment.center,
-                  child: CupertinoActivityIndicator(),
-                )
+                  child:   CustomCard(gif: MoreLoadingGif(type: MoreLoadingGifType.eclipse,
+                  size: _height*_width*0.0002,), text: 'Loading',),
+
+
+
+      )
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -409,8 +417,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             FontWeight.w700,
                                                         fontFamily:
                                                             "Alexandria",
-                                                        fontStyle: FontStyle
-                                                            .normal,
+                                                        fontStyle:
+                                                            FontStyle.normal,
                                                         fontSize: 16.0),
                                                   ),
                                                   Container(
@@ -828,10 +836,34 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                           GestureDetector(
                                             onTap: () {
                                               if (widget.route != "guest") {
+                                                // Transitioner(
+                                                //   context: context,
+                                                //   child:
+                                                //
+                                                //   SeeAllBookScreen(
+                                                //     categoriesId:
+                                                //         _homeApiResponse!
+                                                //             .data
+                                                //             .categoryBooks[
+                                                //                 index]
+                                                //             .id
+                                                //             .toString(),
+                                                //   ),
+                                                //   animation: AnimationType
+                                                //       .fadeIn, // Optional value
+                                                //   duration: Duration(
+                                                //       milliseconds:
+                                                //           1000), // Optional value
+                                                //   replacement:
+                                                //       false, // Optional value
+                                                //   curveType: CurveType
+                                                //       .decelerate, // Optional value
+                                                // );
                                                 Transitioner(
                                                   context: context,
-                                                  child: SeeAllBookScreen(
-                                                    categoriesId:
+                                                  child:
+                                                      GeneralCategoriesScreen(
+                                                    categories_id:
                                                         _homeApiResponse!
                                                             .data
                                                             .categoryBooks[
@@ -840,7 +872,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             .toString(),
                                                   ),
                                                   animation: AnimationType
-                                                      .fadeIn, // Optional value
+                                                      .slideLeft, // Optional value
                                                   duration: Duration(
                                                       milliseconds:
                                                           1000), // Optional value
@@ -1063,8 +1095,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   ],
                 ),
       // drawer: DrawerCode(),
-
-
     );
   }
 
@@ -1169,6 +1199,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     print("${status?.storeVersion}");
     print("${status?.appStoreLink}");
   }
-
-
 }
+
+

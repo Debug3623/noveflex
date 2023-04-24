@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:mailto/mailto.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:novelflex/MixScreens/AccountInfoScreen.dart';
 import 'package:novelflex/Models/UserReferralModel.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import '../Widgets/loading_widgets.dart';
 import '../ad_helper.dart';
 import '../localization/Language/languages.dart';
 import 'package:http/http.dart' as http;
@@ -58,8 +60,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
   @override
   void initState() {
     _addController =
-    AnimationController(vsync: this, duration: const Duration(seconds: 1))
-      ..repeat();
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+          ..repeat();
     _checkInternetConnection();
     _loadInterstitialAd();
     super.initState();
@@ -111,8 +113,15 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
       body: SafeArea(
         child: _isInternetConnected
             ? _isLoading
-                ? const Center(
-                    child: CupertinoActivityIndicator(),
+                ? Align(
+                    alignment: Alignment.center,
+                    child: CustomCard(
+                      gif: MoreLoadingGif(
+                        type: MoreLoadingGifType.eclipse,
+                        size: _height * _width * 0.0002,
+                      ),
+                      text: 'Loading',
+                    ),
                   )
                 : SingleChildScrollView(
                     child: Stack(
@@ -128,37 +137,39 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     height: _height * 0.03,
                                   ),
                                   GestureDetector(
-                                    onTap: (){
+                                    onTap: () {
                                       Transitioner(
                                         context: context,
                                         child: AccountScreen(),
-                                        animation:
-                                        AnimationType.slideBottom, // Optional value
+                                        animation: AnimationType
+                                            .slideBottom, // Optional value
                                         duration: Duration(
-                                            milliseconds: 1000), // Optional value
+                                            milliseconds:
+                                                1000), // Optional value
                                         replacement: false, // Optional value
-                                        curveType: CurveType.decelerate, // Optional value
+                                        curveType: CurveType
+                                            .decelerate, // Optional value
                                       );
                                     },
                                     child: RippleAnimation(
-                                      color: Colors.black12,
+                                      color: Color(0xff3a6c83),
                                       delay: const Duration(milliseconds: 3),
                                       repeat: true,
                                       minRadius: 40,
                                       ripplesCount: 6,
-
                                       child: CircleAvatar(
                                         radius: _width * _height * 0.0002,
                                         backgroundColor: Colors.black12,
                                         backgroundImage: _menuProfileModel!
-                                            .data.profilePhoto !=
-                                            ""
+                                                    .data.profilePhoto !=
+                                                ""
                                             ? NetworkImage(
-                                          _menuProfileModel!
-                                              .data.profilePath,
-                                        )
-                                            : AssetImage('assets/profile_pic.png')
-                                        as ImageProvider,
+                                                _menuProfileModel!
+                                                    .data.profilePath,
+                                              )
+                                            : AssetImage(
+                                                    'assets/profile_pic.png')
+                                                as ImageProvider,
                                       ),
                                     ),
                                   ),
@@ -178,7 +189,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               fontWeight: FontWeight.w700,
                                               fontFamily: "Neckar",
                                               fontStyle: FontStyle.normal,
-                                              fontSize: _height * _width * 0.00005),
+                                              fontSize:
+                                                  _height * _width * 0.00005),
                                         ),
                                         SizedBox(
                                           height: 6.0,
@@ -192,7 +204,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               fontWeight: FontWeight.w500,
                                               fontFamily: "Alexandria",
                                               fontStyle: FontStyle.normal,
-                                              fontSize: _height * _width * 0.00004),
+                                              fontSize:
+                                                  _height * _width * 0.00004),
                                         ),
                                       ],
                                     ),
@@ -214,7 +227,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 height: _height * 0.03,
                               ),
                               Visibility(
-                                visible: _statusCheckModel!.data.type == "Writer",
+                                visible:
+                                    _statusCheckModel!.data.type == "Writer",
                                 child: GestureDetector(
                                   onTap: () {
                                     CHECK_STATUS_Publish();
@@ -222,26 +236,34 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   child: Padding(
                                     padding: EdgeInsets.all(_width * 0.03),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            Lottie.asset(LottieFiles.$98956_book_icon,
+                                            Lottie.asset(
+                                                LottieFiles.$98956_book_icon,
                                                 controller: _addController,
-                                                height:_height * _width * 0.0001,
-                                                width:  _height * _width * 0.0001,
+                                                height:
+                                                    _height * _width * 0.0001,
+                                                width:
+                                                    _height * _width * 0.0001,
                                                 fit: BoxFit.cover),
                                             SizedBox(
                                               width: 8.0,
                                             ),
-                                            Text(Languages.of(context)!.publishNovel,
+                                            Text(
+                                                Languages.of(context)!
+                                                    .publishNovel,
                                                 style: TextStyle(
-                                                    color: const Color(0xff2a2a2a),
+                                                    color:
+                                                        const Color(0xff2a2a2a),
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Neckar",
                                                     fontStyle: FontStyle.normal,
-                                                    fontSize:
-                                                    _height * _width * 0.00005),
+                                                    fontSize: _height *
+                                                        _width *
+                                                        0.00005),
                                                 textAlign: TextAlign.left)
                                           ],
                                         ),
@@ -257,18 +279,20 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   Transitioner(
                                     context: context,
                                     child: AccountScreen(),
-                                    animation:
-                                        AnimationType.slideBottom, // Optional value
+                                    animation: AnimationType
+                                        .slideBottom, // Optional value
                                     duration: Duration(
                                         milliseconds: 1000), // Optional value
                                     replacement: false, // Optional value
-                                    curveType: CurveType.decelerate, // Optional value
+                                    curveType:
+                                        CurveType.decelerate, // Optional value
                                   );
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -281,12 +305,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.account,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -301,24 +327,25 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   _loadInterstitialAd();
                                   if (_interstitialAd != null) {
                                     _interstitialAd?.show();
-                                  }  else {
+                                  } else {
                                     Transitioner(
                                       context: context,
                                       child: HomeProfileScreen(),
-                                      animation:
-                                          AnimationType.slideLeft, // Optional value
+                                      animation: AnimationType
+                                          .slideLeft, // Optional value
                                       duration: Duration(
                                           milliseconds: 1000), // Optional value
                                       replacement: false, // Optional value
-                                      curveType:
-                                          CurveType.decelerate, // Optional value
+                                      curveType: CurveType
+                                          .decelerate, // Optional value
                                     );
                                   }
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -329,12 +356,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.myProfile,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -349,18 +378,20 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   Transitioner(
                                     context: context,
                                     child: MyWalletScreen(),
-                                    animation:
-                                        AnimationType.slideLeft, // Optional value
+                                    animation: AnimationType
+                                        .slideLeft, // Optional value
                                     duration: Duration(
                                         milliseconds: 1000), // Optional value
                                     replacement: false, // Optional value
-                                    curveType: CurveType.decelerate, // Optional value
+                                    curveType:
+                                        CurveType.decelerate, // Optional value
                                   );
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -371,12 +402,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.myWallet,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -393,7 +426,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -404,12 +438,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.inviteApp,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -423,19 +459,20 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 ),
                               ),
                               Visibility(
-                                visible: _statusCheckModel!.data.type == "Writer",
+                                visible:
+                                    _statusCheckModel!.data.type == "Writer",
                                 child: GestureDetector(
                                   onTap: () {
                                     Transitioner(
                                       context: context,
                                       child: PieChartScreen(),
-                                      animation:
-                                          AnimationType.slideLeft, // Optional value
+                                      animation: AnimationType
+                                          .slideLeft, // Optional value
                                       duration: Duration(
                                           milliseconds: 1000), // Optional value
                                       replacement: false, // Optional value
-                                      curveType:
-                                          CurveType.decelerate, // Optional value
+                                      curveType: CurveType
+                                          .decelerate, // Optional value
                                     );
                                   },
                                   child: Padding(
@@ -447,18 +484,24 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                         Row(
                                           children: [
                                             Icon(Icons.bar_chart,
-                                                size: _height * _width * 0.0001),
+                                                size:
+                                                    _height * _width * 0.0001),
                                             SizedBox(
                                               width: 8.0,
                                             ),
-                                            Text(Languages.of(context)!.Statistics,
+                                            Text(
+                                                Languages.of(
+                                                        context)!
+                                                    .Statistics,
                                                 style: TextStyle(
-                                                    color: const Color(0xff2a2a2a),
+                                                    color:
+                                                        const Color(0xff2a2a2a),
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Neckar",
                                                     fontStyle: FontStyle.normal,
-                                                    fontSize:
-                                                        _height * _width * 0.00005),
+                                                    fontSize: _height *
+                                                        _width *
+                                                        0.00005),
                                                 textAlign: TextAlign.left)
                                           ],
                                         ),
@@ -476,7 +519,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -485,14 +529,18 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           SizedBox(
                                             width: 8.0,
                                           ),
-                                          Text(Languages.of(context)!.supportTeam,
+                                          Text(
+                                              Languages.of(context)!
+                                                  .supportTeam,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -509,7 +557,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -520,12 +569,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.ContactUs,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -540,24 +591,28 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   Transitioner(
                                     context: context,
                                     child: FaqScreen(),
-                                    animation:
-                                        AnimationType.slideLeft, // Optional value
+                                    animation: AnimationType
+                                        .slideLeft, // Optional value
                                     duration: Duration(
                                         milliseconds: 1000), // Optional value
                                     replacement: false, // Optional value
-                                    curveType: CurveType.decelerate, // Optional value
+                                    curveType:
+                                        CurveType.decelerate, // Optional value
                                   );
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
                                           Container(
-                                            child: Icon(Icons.pan_tool_alt_outlined,
-                                                size: _height * _width * 0.0001),
+                                            child: Icon(
+                                                Icons.pan_tool_alt_outlined,
+                                                size:
+                                                    _height * _width * 0.0001),
                                             decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: Colors.white12),
@@ -567,12 +622,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.faq,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -591,7 +648,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -602,12 +660,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.rate_Us,
                                               style: TextStyle(
-                                                  color: const Color(0xff2a2a2a),
+                                                  color:
+                                                      const Color(0xff2a2a2a),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
-                                                  fontSize:
-                                                      _height * _width * 0.00005),
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
@@ -619,17 +679,18 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  if (_menuProfileModel!.data.totalAmount >= 5) {
+                                  if (_menuProfileModel!.data.totalAmount >=
+                                      5) {
                                     Transitioner(
                                       context: context,
                                       child: UnlockWalletScreenOne(),
-                                      animation:
-                                          AnimationType.fadeIn, // Optional value
+                                      animation: AnimationType
+                                          .fadeIn, // Optional value
                                       duration: Duration(
                                           milliseconds: 1000), // Optional value
                                       replacement: false, // Optional value
-                                      curveType:
-                                          CurveType.decelerate, // Optional value
+                                      curveType: CurveType
+                                          .decelerate, // Optional value
                                     );
                                   } else {
                                     // ToastConstant.showToast(context, Languages.of(context)!.amountWithDraw);
@@ -652,7 +713,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                       ],
                                       color: const Color(0xff3a6c83)),
                                   child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
                                       SizedBox(),
                                       Icon(
@@ -666,7 +728,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               fontWeight: FontWeight.w700,
                                               fontFamily: "Lato",
                                               fontStyle: FontStyle.normal,
-                                              fontSize: _height * _width * 0.00005),
+                                              fontSize:
+                                                  _height * _width * 0.00005),
                                           textAlign: TextAlign.center),
                                       SizedBox()
                                     ],
@@ -692,7 +755,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                             fontWeight: FontWeight.w500,
                                             fontFamily: "Alexandria",
                                             fontStyle: FontStyle.normal,
-                                            fontSize: _height * _width * 0.00005),
+                                            fontSize:
+                                                _height * _width * 0.00005),
                                         textAlign: TextAlign.right)
                                   ],
                                 ),
@@ -704,13 +768,13 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                           ),
                         ),
                         Positioned(
-                          top: _height*0.5,
-                            width: _width*0.99,
+                            top: _height * 0.5,
+                            width: _width * 0.99,
                             child: Visibility(
                               visible: _isStart,
                               child: CupertinoActivityIndicator(
-                          color: Colors.black,
-                        ),
+                                color: Colors.black,
+                              ),
                             ))
                       ],
                     ),
@@ -1013,12 +1077,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
   }
 
   Future CHECK_STATUS_Publish() async {
-
     setState(() {
       _isStart = true;
     });
     final response =
-    await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
+        await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -1032,16 +1095,16 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
         _statusCheckModel!.aggrement == false
             ? showTermsAndConditionAlert()
             : Transitioner(
-          context: context,
-          child: UploadDataScreen(),
-          animation: AnimationType.slideLeft,
-          // Optional value
-          duration: Duration(milliseconds: 1000),
-          // Optional value
-          replacement: false,
-          // Optional value
-          curveType: CurveType.decelerate, // Optional value
-        );
+                context: context,
+                child: UploadDataScreen(),
+                animation: AnimationType.slideLeft,
+                // Optional value
+                duration: Duration(milliseconds: 1000),
+                // Optional value
+                replacement: false,
+                // Optional value
+                curveType: CurveType.decelerate, // Optional value
+              );
 
         setState(() {
           _isStart = false;

@@ -112,6 +112,7 @@ dependencies:
   language_picker: ^0.4.3
   simple_ripple_animation: ^0.0.3
   ripple_wave: ^0.0.2
+  more_loading_gif: ^0.0.3
   #  firebase_chat: ^0.0.6+1
 #  el_tooltip: ^1.0.8
 #  notification_permissions: ^0.6.1

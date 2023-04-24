@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:ripple_wave/ripple_wave.dart';
 import '../../Models/AuthorProfileViewModel.dart';
 import 'dart:convert';
@@ -19,6 +20,7 @@ import '../../Provider/UserProvider.dart';
 import '../../Utils/ApiUtils.dart';
 import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
+import '../../Widgets/loading_widgets.dart';
 import '../../localization/Language/languages.dart';
 import '../BooksScreens/AuthorViewByUserScreen.dart';
 import '../BooksScreens/BookDetailsAuthor.dart';
@@ -61,9 +63,14 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
         child: Container(
           child: _isInternetConnected
               ? _isLoading
-                  ? const Center(
-                      child: CupertinoActivityIndicator(),
-                    )
+                  ? Align(
+            alignment: Alignment.center,
+            child:   CustomCard(gif: MoreLoadingGif(type: MoreLoadingGifType.eclipse,
+              size: _height*_width*0.0002,), text: 'Loading',),
+
+
+
+          )
                   : _statusCheckModel!.data.type == "Reader"
                       ? Stack(
                           children: [

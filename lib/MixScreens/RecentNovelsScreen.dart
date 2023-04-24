@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:language_picker/languages.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 import 'package:transitioner/transitioner.dart';
@@ -11,7 +13,9 @@ import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import '../Widgets/loading_widgets.dart';
 import 'BooksScreens/BookDetailsAuthor.dart';
+import '../localization/Language/languages.dart' as lang;
 
 class RecentNovelsScreen extends StatefulWidget {
   const RecentNovelsScreen({Key? key}) : super(key: key);
@@ -48,13 +52,28 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                 Icons.arrow_back_ios,
                 color: Colors.black54,
               )),
+          title: Text(
+            lang.Languages.of(context)!.recentlyPublish,
+            style: const TextStyle(
+                color: const Color(0xff2a2a2a),
+                fontWeight: FontWeight.w700,
+                fontFamily: "Alexandria",
+                fontStyle: FontStyle.normal,
+                fontSize: 16.0),
+          ),
         ),
         body: SafeArea(
           child: _isInternetConnected
               ? _isLoading
-                  ? const Align(
+                  ? Align(
                       alignment: Alignment.center,
-                      child: CupertinoActivityIndicator(),
+                      child: CustomCard(
+                        gif: MoreLoadingGif(
+                          type: MoreLoadingGifType.eclipse,
+                          size: _height * _width * 0.0002,
+                        ),
+                        text: 'Loading',
+                      ),
                     )
                   : Column(
                       children: [
@@ -70,21 +89,21 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                               crossAxisCount: 3,
                               childAspectRatio: 0.78,
                               mainAxisSpacing: _height * 0.01,
-                              children: List.generate(_allrecentModel!.data.length, (index) {
+                              children: List.generate(
+                                  _allrecentModel!.data.length, (index) {
                                 return GestureDetector(
-                                  onTap: (){
+                                  onTap: () {
                                     Transitioner(
                                       context: context,
                                       child: BookDetailAuthor(
-                                        bookID: _allrecentModel!.data[index].id.toString(),
+                                        bookID: _allrecentModel!.data[index].id
+                                            .toString(),
                                       ),
                                       animation: AnimationType
                                           .slideTop, // Optional value
                                       duration: Duration(
-                                          milliseconds:
-                                          1000), // Optional value
-                                      replacement:
-                                      false, // Optional value
+                                          milliseconds: 1000), // Optional value
+                                      replacement: false, // Optional value
                                       curveType: CurveType
                                           .decelerate, // Optional value
                                     );
@@ -92,7 +111,8 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                                   child: Column(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
                                       Container(
                                           width: _width * 0.25,
@@ -103,14 +123,18 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                                               ),
                                               image: DecorationImage(
                                                   image: NetworkImage(
-                                                      _allrecentModel!.data[index].imagePath.toString()),
+                                                      _allrecentModel!
+                                                          .data[index].imagePath
+                                                          .toString()),
                                                   fit: BoxFit.cover),
                                               color: Colors.green)),
                                       SizedBox(
                                         height: _height * 0.01,
                                       ),
                                       Expanded(
-                                        child: Text(_allrecentModel!.data[index].title.toString(),
+                                        child: Text(
+                                            _allrecentModel!.data[index].title
+                                                .toString(),
                                             style: const TextStyle(
                                                 color: const Color(0xff2a2a2a),
                                                 fontWeight: FontWeight.w500,

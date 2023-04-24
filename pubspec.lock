@@ -924,6 +924,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.2"
+  more_loading_gif:
+    dependency: "direct main"
+    description:
+      name: more_loading_gif
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.3"
   nested:
     dependency: transitive
     description:
