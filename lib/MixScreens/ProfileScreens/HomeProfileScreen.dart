@@ -64,13 +64,15 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
           child: _isInternetConnected
               ? _isLoading
                   ? Align(
-            alignment: Alignment.center,
-            child:   CustomCard(gif: MoreLoadingGif(type: MoreLoadingGifType.eclipse,
-              size: _height*_width*0.0002,), text: 'Loading',),
-
-
-
-          )
+                      alignment: Alignment.center,
+                      child: CustomCard(
+                        gif: MoreLoadingGif(
+                          type: MoreLoadingGifType.eclipse,
+                          size: _height * _width * 0.0002,
+                        ),
+                        text: 'Loading',
+                      ),
+                    )
                   : _statusCheckModel!.data.type == "Reader"
                       ? Stack(
                           children: [
@@ -124,15 +126,16 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                           ),
                                           image: DecorationImage(
                                               image: _readerProfileModel!
-                                                  .data.profilePhoto ==
-                                                  ""
+                                                          .data.profilePhoto ==
+                                                      ""
                                                   ? AssetImage(
-                                                  "assets/profile_pic.png",)
+                                                      "assets/profile_pic.png",
+                                                    )
                                                   : NetworkImage(
-                                                  _readerProfileModel!
-                                                      .data.profilePath
-                                                      .toString())
-                                              as ImageProvider,
+                                                          _readerProfileModel!
+                                                              .data.profilePath
+                                                              .toString())
+                                                      as ImageProvider,
                                               fit: BoxFit.cover)),
                                     ),
                                   ),
@@ -241,10 +244,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                               Transitioner(
                                                 context: context,
                                                 child: AuthorViewByUserScreen(
-                                                    user_id: _readerProfileModel!
-                                                      .data
-                                                      .following[index]
-                                                      .id
+                                                  user_id: _readerProfileModel!
+                                                      .data.following[index].id
                                                       .toString(),
                                                 ),
                                                 animation: AnimationType.fadeIn,
@@ -272,7 +273,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                       shape: BoxShape.circle,
                                                       image: DecorationImage(
                                                           fit: BoxFit.cover,
-                                                          image:  NetworkImage(
+                                                          image: NetworkImage(
                                                               _readerProfileModel!
                                                                   .data
                                                                   .following[
@@ -281,7 +282,9 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                                   .toString())),
                                                     ),
                                                   ),
-                                                  SizedBox(height: _height*0.01,),
+                                                  SizedBox(
+                                                    height: _height * 0.01,
+                                                  ),
                                                   Text(
                                                     _readerProfileModel!
                                                         .data
@@ -300,7 +303,6 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   ),
-
                                                 ],
                                               ),
                                             ),
@@ -351,8 +353,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                             ),
                             Positioned(
                               top: _height * 0.67,
-                              child: _readerProfileModel!.data.books.length ==
-                                      0
+                              child: _readerProfileModel!.data.books.length == 0
                                   ? Padding(
                                       padding: EdgeInsets.only(
                                           top: _height * 0.15,
@@ -407,10 +408,12 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                         height: _height * 0.12,
                                                         margin: EdgeInsets.all(
                                                             _width * 0.05),
-                                                        decoration: BoxDecoration(
+                                                        decoration:
+                                                            BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
-                                                                  .circular(10.0),
+                                                                  .circular(
+                                                                      10.0),
                                                           color: Colors.black,
                                                           image: DecorationImage(
                                                               fit: BoxFit.cover,
@@ -437,8 +440,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                   ],
                                                 ),
                                                 Text(
-                                                  _readerProfileModel!.data
-                                                      .books[index].title
+                                                  _readerProfileModel!
+                                                      .data.books[index].title
                                                       .toString(),
                                                   style: const TextStyle(
                                                     fontFamily: 'Lato',
@@ -457,20 +460,22 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       )),
                             ),
                             Positioned(
-                                top: _height*0.01,
-                                left: _width*0.01,
+                                top: _height * 0.01,
+                                left: _width * 0.01,
                                 child: Container(
-                                  height: _height*0.05,
-                                  width: _width*0.1,
+                                  height: _height * 0.05,
+                                  width: _width * 0.1,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(5),
-                                      color: Colors.black.withOpacity(0.3)
-                                  ),
+                                      color: Colors.black.withOpacity(0.3)),
                                   child: IconButton(
                                       onPressed: () {
                                         Navigator.pop(context);
                                       },
-                                      icon: Icon(Icons.arrow_back_ios,color:Color(0xffebf5f9) ,)),
+                                      icon: Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Color(0xffebf5f9),
+                                      )),
                                 )),
                           ],
                         )
@@ -537,7 +542,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                               left: _width * 0.02,
                               top: _height * 0.21,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
                                 children: [
                                   Container(
                                     height: _height * 0.12,
@@ -577,7 +583,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Container(
-                                          width:_width*0.3,
+                                          width: _width * 0.3,
                                           child: Text(
                                             _authorProfileViewModel!
                                                 .data.username,
@@ -644,16 +650,18 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                     ),
                                     child: GestureDetector(
                                         onTap: () {
-                                          if(_statusCheckModel!.aggrement == false){
+                                          if (_statusCheckModel!.aggrement ==
+                                              false) {
                                             showTermsAndConditionAlert();
-                                          }else{
+                                          } else {
                                             Transitioner(
                                               context: context,
                                               child: UploadDataScreen(),
-                                              animation: AnimationType.slideLeft,
+                                              animation:
+                                                  AnimationType.slideLeft,
                                               // Optional value
                                               duration:
-                                              Duration(milliseconds: 1000),
+                                                  Duration(milliseconds: 1000),
                                               // Optional value
                                               replacement: false,
                                               // Optional value
@@ -661,7 +669,6 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                   .decelerate, // Optional value
                                             );
                                           }
-
                                         },
                                         child: Container(
                                           width: _width * 0.25,
@@ -879,9 +886,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                 child: BookDetailAuthor(
                                                   bookID:
                                                       _authorProfileViewModel!
-                                                          .data
-                                                          .book[index]
-                                                          .id
+                                                          .data.book[index].id
                                                           .toString(),
                                                 ),
                                                 animation: AnimationType.fadeIn,
@@ -922,8 +927,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                                     "assets/quotes_data/manga image.png")
                                                                 : NetworkImage(_authorProfileViewModel!
                                                                         .data
-                                                                        .book[
-                                                                            index]
+                                                                        .book[index]
                                                                         .imagePath
                                                                         .toString())
                                                                     as ImageProvider),
@@ -962,21 +966,23 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       )),
                             ),
                             Positioned(
-                              top: _height*0.01,
-                                left: _width*0.01,
+                                top: _height * 0.01,
+                                left: _width * 0.01,
                                 child: Container(
-                                  height: _height*0.05,
-                                 width: _width*0.1,
-                                 decoration: BoxDecoration(
-                                   borderRadius: BorderRadius.circular(5),
-                                   color: Colors.black.withOpacity(0.3)
-                                 ),
-                              child: IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: Icon(Icons.arrow_back_ios,color:Color(0xffebf5f9) ,)),
-                            )),
+                                  height: _height * 0.05,
+                                  width: _width * 0.1,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(5),
+                                      color: Colors.black.withOpacity(0.3)),
+                                  child: IconButton(
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      icon: Icon(
+                                        Icons.arrow_back_ios,
+                                        color: Color(0xffebf5f9),
+                                      )),
+                                )),
                           ],
                         )
               : Center(
@@ -1043,8 +1049,6 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
       }
     }
   }
-
-
 
   Future _checkInternetConnection() async {
     if (this.mounted) {
@@ -1122,7 +1126,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
 
   Future CHECK_STATUS() async {
     final response =
-    await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
+        await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -1136,7 +1140,6 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
           READER_PROFILE();
         } else {
           AUTHOR_PROFILE();
-
         }
       } else {
         ToastConstant.showToast(context, jsonData1['message'].toString());
@@ -1264,11 +1267,10 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
   }
 
   Future _updateTermsAndConditions() async {
-    final response = await http
-        .post(Uri.parse(ApiUtils.AGREEMENT_API), headers: {
-      'Authorization': "Bearer ${context
-          .read<UserProvider>()
-          .UserToken}"});
+    final response = await http.post(Uri.parse(ApiUtils.AGREEMENT_API),
+        headers: {
+          'Authorization': "Bearer ${context.read<UserProvider>().UserToken}"
+        });
 
     if (response.statusCode == 200) {
       print('update_profile_response under 200 ${response.body}');
@@ -1283,19 +1285,15 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
           child: UploadDataScreen(),
           animation: AnimationType.slideLeft,
           // Optional value
-          duration:
-          Duration(milliseconds: 1000),
+          duration: Duration(milliseconds: 1000),
           // Optional value
           replacement: false,
           // Optional value
-          curveType: CurveType
-              .decelerate, // Optional value
+          curveType: CurveType.decelerate, // Optional value
         );
-
       } else {
         Constants.showToastBlack(context, "Some things went wrong");
       }
     }
   }
-
 }

@@ -93,7 +93,7 @@ class _GeneralCategoriesScreenState extends State<GeneralCategoriesScreen> {
                     ? const Align(
                         alignment: Alignment.center,
                         child: CupertinoActivityIndicator(
-                          color: Colors.black12,
+                          color: Color(0xff1b4a6b)
                         ),
                       )
                     : ListView(
@@ -137,6 +137,8 @@ class _GeneralCategoriesScreenState extends State<GeneralCategoriesScreen> {
                                     ),
                                     // color of selected chip
                                     selectedColor: const Color(0xff3a6c83),
+                                    shadowColor:Color(0xff1b4a6b),
+                                    surfaceTintColor: Color(0xff6499bc),
                                     selected: _value == index,
                                     onSelected: (bool selected) {
                                       setState(() {
@@ -169,7 +171,7 @@ class _GeneralCategoriesScreenState extends State<GeneralCategoriesScreen> {
                 ? const Align(
               alignment: Alignment.center,
               child: CupertinoActivityIndicator(
-                color: Colors.black12,
+                color:Color(0xff1b4a6b)
               ),
             )
                 : _subCategoriesModel!.data!.length == 0

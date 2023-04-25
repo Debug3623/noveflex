@@ -825,7 +825,16 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                       blurRadius: 14,
                                       spreadRadius: 0)
                                 ],
-                                color: const Color(0xff3a6c83)),
+                                gradient: LinearGradient(
+                                    begin: Alignment(-0.01018629550933838,
+                                        -0.01894212305545807),
+                                    end: Alignment(1.6960868120193481,
+                                        1.3281718730926514),
+                                    colors: [
+                                      Color(0xff246897),
+                                      Color(0xff1b4a6b),
+                                    ]),
+                                ),
                             child: Center(
                               child: Text(Languages.of(context)!.read,
                                   style: const TextStyle(
@@ -879,8 +888,10 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                       color: const Color(0x12000000),
                                       offset: Offset(0, 7),
                                       blurRadius: 14,
-                                      spreadRadius: 0)
+                                      spreadRadius: 0),
+
                                 ],
+
                                 color: _isSaved
                                     ? Color(0xff3a6c83)
                                     : Color(0xfffafcfd)),

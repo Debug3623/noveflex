@@ -76,7 +76,7 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
     var width = MediaQuery.of(context).size.width;
     return Container(
       height: height * 0.08,
-      color: const Color(0xffffffff),
+      color: const Color(0xfffffffa),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [

@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
 import 'package:intl/intl.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:provider/provider.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:rxdart/rxdart.dart';
@@ -25,6 +26,7 @@ import '../../Utils/constant.dart';
 import '../../Utils/native_dialog.dart';
 import '../../Utils/store_config.dart';
 import '../../Utils/toast.dart';
+import '../../Widgets/loading_widgets.dart';
 import '../../localization/Language/languages.dart';
 import '../InAppPurchase/paywall.dart';
 import '../InAppPurchase/singletons_data.dart';
@@ -186,11 +188,18 @@ class _PdfTabState extends State<PdfTab> {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     return Scaffold(
+        backgroundColor: Color(0xffebf5f9),
         body: _isInternetConnected
             ? _isLoading
-                ? const Align(
+                ? Align(
                     alignment: Alignment.center,
-                    child: CupertinoActivityIndicator(),
+                    child: CustomCard(
+                      gif: MoreLoadingGif(
+                        type: MoreLoadingGifType.eclipse,
+                        size: _height * _width * 0.0002,
+                      ),
+                      text: 'Loading',
+                    ),
                   )
                 : _boolAllPdfViewModelClass!.data.length == 0
                     ? Center(
@@ -644,48 +653,52 @@ class _AudioTabState extends State<AudioTab> {
   var audioUrl;
   AudioPlayer player = AudioPlayer();
 
-@override
+  @override
   void initState() {
-    audioUrl=UrlSource('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+    audioUrl = UrlSource(
+        'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     return Scaffold(
+      backgroundColor: Color(0xffebf5f9),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-              padding:  EdgeInsets.all(_height*0.05),
+              padding: EdgeInsets.all(_height * 0.05),
               child: Container(
-                width: _width*0.8,
-                height: _height*0.06,
+                width: _width * 0.8,
+                height: _height * 0.06,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(30)),
-                  color: Colors.black12
-                ),
+                    borderRadius: BorderRadius.all(Radius.circular(30)),
+                    color: Colors.black12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    SizedBox(width: _width*0.05,),
+                    SizedBox(
+                      width: _width * 0.05,
+                    ),
                     GestureDetector(
-                      onTap: () async{
-                        if(PlayerState.playing!=true){
+                      onTap: () async {
+                        if (PlayerState.playing != true) {
                           await player.play(audioUrl);
-                        }else{
-                          await  player.pause();
+                        } else {
+                          await player.pause();
                         }
-
                       },
                       child: CircleAvatar(
-                        radius: _height*_width*0.00005,
+                        radius: _height * _width * 0.00005,
                         backgroundColor: Colors.black26,
-                        child: Icon(Icons.play_arrow,color: Colors.white,),
+                        child: Icon(
+                          Icons.play_arrow,
+                          color: Colors.white,
+                        ),
                       ),
                     )
                   ],
@@ -697,12 +710,7 @@ class _AudioTabState extends State<AudioTab> {
       ),
     );
   }
-
 }
-
-
-
-
 
 class TextTab extends StatefulWidget {
   const TextTab({Key? key}) : super(key: key);
@@ -715,6 +723,7 @@ class _TextTabState extends State<TextTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xffebf5f9),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

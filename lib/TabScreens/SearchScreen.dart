@@ -234,7 +234,20 @@ class _SearchScreenState extends State<SearchScreen> {
                                             colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.modulate,),
                                             fit: BoxFit.cover
                                         ),
-                                        color: const Color(0xff3a6c83)),
+                                        gradient: LinearGradient(
+                                            begin:
+                                            Alignment(-0.01018629550933838, -0.01894212305545807),
+                                            end: Alignment(1.6960868120193481, 1.3281718730926514),
+                                            colors: [
+                                              Color(0xff246897),
+                                              Color(0xff1b4a6b),
+
+
+
+                                            ]),
+                                        // color: const Color(0xff3a6c83)
+                                    ),
+
                                 ),
                               ),
                             ),
@@ -289,8 +302,20 @@ class _SearchScreenState extends State<SearchScreen> {
                                             decoration: BoxDecoration(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(20)),
+                                              gradient: LinearGradient(
+                                                  begin:
+                                                  Alignment(-0.01018629550933838, -0.01894212305545807),
+                                                  end: Alignment(1.6960868120193481, 1.3281718730926514),
+                                                  colors: [
+                                                    Color(0xff246897),
+                                                    Color(0xff1b4a6b),
 
-                                                color: const Color(0xff3a6c83)),
+
+
+                                                  ]),
+
+                                                // color: const Color(0xff3a6c83)
+                                            ),
                                           child: CachedNetworkImage(
                                             filterQuality:
                                             FilterQuality.high,

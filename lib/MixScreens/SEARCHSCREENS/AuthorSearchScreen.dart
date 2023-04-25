@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:novelflex/localization/Language/languages.dart';
 import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,7 @@ import '../../Provider/UserProvider.dart';
 import '../../Utils/ApiUtils.dart';
 import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
+import '../../Widgets/loading_widgets.dart';
 import '../BooksScreens/AuthorViewByUserScreen.dart';
 
 class AuthorSearchScreen extends StatefulWidget {
@@ -132,10 +134,14 @@ class _AuthorSearchScreenState extends State<AuthorSearchScreen> {
             flex: 8,
             child: _isInternetConnected
                 ? _isLoading
-                    ? const Align(
+                    ? Align(
                         alignment: Alignment.center,
-                        child: CupertinoActivityIndicator(
-                          color: Colors.black12,
+                        child: CustomCard(
+                          gif: MoreLoadingGif(
+                            type: MoreLoadingGifType.eclipse,
+                            size: _height * _width * 0.0002,
+                          ),
+                          text: 'Loading',
                         ),
                       )
                     : _searchAuthorbyCategoriesIdModel!.data!.length == 0
@@ -186,7 +192,6 @@ class _AuthorSearchScreenState extends State<AuthorSearchScreen> {
                                         clipBehavior: Clip.none,
                                         children: [
                                           Positioned(
-
                                             child: CircleAvatar(
                                               backgroundColor: Colors.black38,
                                               child: CachedNetworkImage(
@@ -227,7 +232,8 @@ class _AuthorSearchScreenState extends State<AuthorSearchScreen> {
                                               //     _searchAuthorbyCategoriesIdModel!
                                               //         .data![index]!.userimage
                                               //         .toString()),
-                                              radius: _height * _width * 0.000095,
+                                              radius:
+                                                  _height * _width * 0.000095,
                                             ),
                                           ),
                                           Positioned(
@@ -244,8 +250,15 @@ class _AuthorSearchScreenState extends State<AuthorSearchScreen> {
                                                         color: const Color(
                                                             0xffffffff),
                                                         width: 1),
-                                                    color: const Color(
-                                                        0xff256d85)),
+                                                  gradient: LinearGradient(
+                                                      begin: Alignment(-0.01018629550933838,
+                                                          -0.01894212305545807),
+                                                      end: Alignment(1.6960868120193481,
+                                                          1.3281718730926514),
+                                                      colors: [
+                                                        Color(0xff246897),
+                                                        Color(0xff1b4a6b),
+                                                      ]),),
                                                 child: Center(
                                                   child: Text(
                                                       "${Languages.of(context)!.level + " " + _searchAuthorbyCategoriesIdModel!.data![index]!.level.toString()}",
@@ -394,7 +407,16 @@ class _AuthorSearchScreenState extends State<AuthorSearchScreen> {
                                         decoration: BoxDecoration(
                                             borderRadius: BorderRadius.all(
                                                 Radius.circular(17)),
-                                            color: const Color(0xff3a6c83)),
+                                          gradient: LinearGradient(
+                                              begin: Alignment(-0.01018629550933838,
+                                                  -0.01894212305545807),
+                                              end: Alignment(1.6960868120193481,
+                                                  1.3281718730926514),
+                                              colors: [
+                                                Color(0xff246897),
+                                                Color(0xff1b4a6b),
+                                              ]),
+                                           ),
                                         child: Center(
                                           child: Text(
                                               Languages.of(context)!.profile,

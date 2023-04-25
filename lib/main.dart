@@ -319,7 +319,9 @@ class _SplashFirstState extends State<SplashFirst> {
     return const Scaffold(
         backgroundColor: const Color(0xffebf5f9),
         body: const Center(
-          child: MoreLoadingGif(type: MoreLoadingGifType.eclipse)
+          child: CupertinoActivityIndicator(
+            color: Colors.black,
+          )
         )
     );
   }

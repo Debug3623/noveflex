@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:novelflex/localization/Language/languages.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -12,6 +13,7 @@ import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import '../Widgets/loading_widgets.dart';
 
 class PieChartScreen extends StatefulWidget {
   const PieChartScreen({Key? key}) : super(key: key);
@@ -71,9 +73,16 @@ class _PieChartScreenState extends State<PieChartScreen> {
       ),
       body: _isInternetConnected
           ? _isLoading
-              ? const Center(
-                  child: CupertinoActivityIndicator(),
-                )
+              ? Align(
+        alignment: Alignment.center,
+        child: CustomCard(
+          gif: MoreLoadingGif(
+            type: MoreLoadingGifType.eclipse,
+            size: _height * _width * 0.0002,
+          ),
+          text: 'Loading',
+        ),
+      )
               : ListView(
                   children: [
                     Container(

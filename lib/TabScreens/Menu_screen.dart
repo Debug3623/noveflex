@@ -27,6 +27,7 @@ import '../MixScreens/disclimar_screen.dart';
 import '../Models/MenuProfileModel.dart';
 import '../Models/ReaderProfileModel.dart';
 import '../Models/StatusCheckModel.dart';
+import '../Models/language_model.dart';
 import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
@@ -37,6 +38,8 @@ import '../localization/Language/languages.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:lottie/lottie.dart';
+
+import '../localization/locale_constants.dart';
 
 class MenuScreen extends StatefulWidget {
   const MenuScreen({Key? key}) : super(key: key);
@@ -55,13 +58,9 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
   bool _isInternetConnected = true;
   bool isCheck = true;
   InterstitialAd? _interstitialAd;
-  late AnimationController _addController;
 
   @override
   void initState() {
-    _addController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1))
-          ..repeat();
     _checkInternetConnection();
     _loadInterstitialAd();
     super.initState();
@@ -70,7 +69,6 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
   @override
   void dispose() {
     _interstitialAd?.dispose();
-    _addController.dispose();
     super.dispose();
   }
 
@@ -152,7 +150,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                       );
                                     },
                                     child: RippleAnimation(
-                                      color: Color(0xff3a6c83),
+                                      color: Color(0xff1b4a6b),
                                       delay: const Duration(milliseconds: 3),
                                       repeat: true,
                                       minRadius: 40,
@@ -185,7 +183,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           textAlign: TextAlign.start,
                                           overflow: TextOverflow.ellipsis,
                                           style: TextStyle(
-                                              color: const Color(0xff2a2a2a),
+                                              color: Color(0xff1b4a6b),
                                               fontWeight: FontWeight.w700,
                                               fontFamily: "Neckar",
                                               fontStyle: FontStyle.normal,
@@ -241,14 +239,10 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                       children: [
                                         Row(
                                           children: [
-                                            Lottie.asset(
-                                                LottieFiles.$98956_book_icon,
-                                                controller: _addController,
-                                                height:
-                                                    _height * _width * 0.0001,
-                                                width:
-                                                    _height * _width * 0.0001,
-                                                fit: BoxFit.cover),
+                                            Icon(Icons.menu_book_outlined,
+                                                size: _height * _width * 0.00009,
+                                                  color: Color(0xff1b4a6b),),
+
                                             SizedBox(
                                               width: 8.0,
                                             ),
@@ -256,8 +250,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                                 Languages.of(context)!
                                                     .publishNovel,
                                                 style: TextStyle(
-                                                    color:
-                                                        const Color(0xff2a2a2a),
+                                                    color: Color(0xff1b4a6b),
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Neckar",
                                                     fontStyle: FontStyle.normal,
@@ -267,8 +260,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                                 textAlign: TextAlign.left)
                                           ],
                                         ),
-                                        Icon(Icons.arrow_forward_ios,
-                                            size: _height * _width * 0.00007)
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: _height * _width * 0.00007,
+                                          color: Color(0xff1b4a6b),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -299,14 +295,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           Icon(
                                             Icons.manage_accounts_outlined,
                                             size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
                                           ),
                                           SizedBox(
                                             width: 8.0,
                                           ),
                                           Text(Languages.of(context)!.account,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -316,8 +312,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -349,15 +348,17 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(Icons.account_circle_outlined,
-                                              size: _height * _width * 0.0001),
+                                          Icon(
+                                            Icons.account_circle_outlined,
+                                            size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
+                                          ),
                                           SizedBox(
                                             width: 8.0,
                                           ),
                                           Text(Languages.of(context)!.myProfile,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -367,8 +368,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -395,15 +399,17 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(Icons.card_travel,
-                                              size: _height * _width * 0.0001),
+                                          Icon(
+                                            Icons.card_travel,
+                                            size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
+                                          ),
                                           SizedBox(
                                             width: 8.0,
                                           ),
                                           Text(Languages.of(context)!.myWallet,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -413,8 +419,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -431,15 +440,17 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(Icons.share,
-                                              size: _height * _width * 0.0001),
+                                          Icon(
+                                            Icons.share,
+                                            size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
+                                          ),
                                           SizedBox(
                                             width: 8.0,
                                           ),
                                           Text(Languages.of(context)!.inviteApp,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -452,8 +463,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                       SizedBox(
                                         width: 5.0,
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -483,19 +497,19 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                       children: [
                                         Row(
                                           children: [
-                                            Icon(Icons.bar_chart,
-                                                size:
-                                                    _height * _width * 0.0001),
+                                            Icon(
+                                              Icons.bar_chart,
+                                              size: _height * _width * 0.0001,
+                                              color: Color(0xff1b4a6b),
+                                            ),
                                             SizedBox(
                                               width: 8.0,
                                             ),
                                             Text(
-                                                Languages.of(
-                                                        context)!
+                                                Languages.of(context)!
                                                     .Statistics,
                                                 style: TextStyle(
-                                                    color:
-                                                        const Color(0xff2a2a2a),
+                                                    color: Color(0xff1b4a6b),
                                                     fontWeight: FontWeight.w700,
                                                     fontFamily: "Neckar",
                                                     fontStyle: FontStyle.normal,
@@ -505,8 +519,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                                 textAlign: TextAlign.left)
                                           ],
                                         ),
-                                        Icon(Icons.arrow_forward_ios,
-                                            size: _height * _width * 0.00007)
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: _height * _width * 0.00007,
+                                          color: Color(0xff1b4a6b),
+                                        )
                                       ],
                                     ),
                                   ),
@@ -524,8 +541,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(Icons.mark_email_read_outlined,
-                                              size: _height * _width * 0.0001),
+                                          Icon(
+                                            Icons.mark_email_read_outlined,
+                                            size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
+                                          ),
                                           SizedBox(
                                             width: 8.0,
                                           ),
@@ -533,8 +553,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               Languages.of(context)!
                                                   .supportTeam,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -544,8 +563,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -562,15 +584,17 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(Icons.mark_email_unread_outlined,
-                                              size: _height * _width * 0.0001),
+                                          Icon(
+                                            Icons.mark_email_unread_outlined,
+                                            size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
+                                          ),
                                           SizedBox(
                                             width: 8.0,
                                           ),
                                           Text(Languages.of(context)!.ContactUs,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -580,8 +604,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -610,9 +637,10 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                         children: [
                                           Container(
                                             child: Icon(
-                                                Icons.pan_tool_alt_outlined,
-                                                size:
-                                                    _height * _width * 0.0001),
+                                              Icons.pan_tool_alt_outlined,
+                                              size: _height * _width * 0.0001,
+                                              color: Color(0xff1b4a6b),
+                                            ),
                                             decoration: BoxDecoration(
                                                 shape: BoxShape.circle,
                                                 color: Colors.white12),
@@ -622,8 +650,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                           ),
                                           Text(Languages.of(context)!.faq,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -633,8 +660,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -653,15 +683,17 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     children: [
                                       Row(
                                         children: [
-                                          Icon(Icons.star_border_rounded,
-                                              size: _height * _width * 0.0001),
+                                          Icon(
+                                            Icons.star_border_rounded,
+                                            size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
+                                          ),
                                           SizedBox(
                                             width: 8.0,
                                           ),
                                           Text(Languages.of(context)!.rate_Us,
                                               style: TextStyle(
-                                                  color:
-                                                      const Color(0xff2a2a2a),
+                                                  color: Color(0xff1b4a6b),
                                                   fontWeight: FontWeight.w700,
                                                   fontFamily: "Neckar",
                                                   fontStyle: FontStyle.normal,
@@ -671,8 +703,11 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               textAlign: TextAlign.left)
                                         ],
                                       ),
-                                      Icon(Icons.arrow_forward_ios,
-                                          size: _height * _width * 0.00007)
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
                                     ],
                                   ),
                                 ),
@@ -702,16 +737,25 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   width: _width * 0.5,
                                   height: _height * 0.05,
                                   decoration: BoxDecoration(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(25)),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: const Color(0x24000000),
-                                            offset: Offset(0, 7),
-                                            blurRadius: 14,
-                                            spreadRadius: 0)
-                                      ],
-                                      color: const Color(0xff3a6c83)),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(10)),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          color: const Color(0x24000000),
+                                          offset: Offset(0, 7),
+                                          blurRadius: 14,
+                                          spreadRadius: 0)
+                                    ],
+                                    gradient: LinearGradient(
+                                        begin: Alignment(-0.03018629550933838,
+                                            -0.03894212305545807),
+                                        end: Alignment(1.3960868120193481,
+                                            1.4281718730926514),
+                                        colors: [
+                                          Color(0xff246897),
+                                          Color(0xff1b4a6b),
+                                        ]),
+                                  ),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
@@ -729,12 +773,33 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                               fontFamily: "Lato",
                                               fontStyle: FontStyle.normal,
                                               fontSize:
-                                                  _height * _width * 0.00005),
+                                                  _height * _width * 0.00004),
                                           textAlign: TextAlign.center),
                                       SizedBox()
                                     ],
                                   ),
                                 ),
+                              ),
+                              SizedBox(
+                                height: _height * 0.02,
+                              ),
+                              Container(
+                                width: _width * 0.5,
+                                height: _height * 0.05,
+                                decoration: BoxDecoration(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                  gradient: LinearGradient(
+                                      begin: Alignment(-0.01018629550933838,
+                                          -0.01894212305545807),
+                                      end: Alignment(1.6960868120193481,
+                                          1.3281718730926514),
+                                      colors: [
+                                        Color(0xff246897),
+                                        Color(0xff1b4a6b),
+                                      ]),
+                                ),
+                                child: _createLanguageDropDown(context),
                               ),
                               SizedBox(
                                 height: _height * 0.02,
@@ -746,12 +811,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Icon(Icons.logout_outlined,
-                                        size: _height * _width * 0.0001,
-                                        color: const Color(0xff3a6c83)),
+                                    Icon(
+                                      Icons.logout_outlined,
+                                      size: _height * _width * 0.0001,
+                                      color: Color(0xff1b4a6b),
+                                    ),
                                     Text(Languages.of(context)!.LogOut,
                                         style: TextStyle(
-                                            color: const Color(0xff3a6c83),
+                                            color: Color(0xff1b4a6b),
                                             fontWeight: FontWeight.w500,
                                             fontFamily: "Alexandria",
                                             fontStyle: FontStyle.normal,
@@ -1262,5 +1329,53 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
         Constants.showToastBlack(context, "Some things went wrong");
       }
     }
+  }
+
+  _createLanguageDropDown(BuildContext context) {
+    return Container(
+      height: 40.0,
+      child: DropdownButton<LanguageModel>(
+        iconSize: 30,
+        iconEnabledColor: Colors.white,
+        underline: SizedBox(),
+        isExpanded: true,
+        hint: Text(
+          Languages.of(context)!.labelSelectLanguage,
+          style: TextStyle(
+              color: const Color(0xffffffff),
+              fontWeight: FontWeight.w700,
+              fontFamily: "Lato",
+              fontStyle: FontStyle.normal,
+              fontSize: 13),
+        ),
+        onChanged: (LanguageModel? language) {
+          changeLanguage(context, language!.languageCode);
+          UserProvider userProviderlng =
+              Provider.of<UserProvider>(this.context, listen: false);
+          userProviderlng.setLanguage(language.name);
+
+          print("my_lang: ${userProviderlng.SelectedLanguage}");
+        },
+        items: LanguageModel.languageList()
+            .map<DropdownMenuItem<LanguageModel>>(
+              (e) => DropdownMenuItem<LanguageModel>(
+                value: e,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    Text(
+                      e.flag,
+                      style: TextStyle(fontSize: 30),
+                    ),
+                    Text(
+                      e.name,
+                    )
+                  ],
+                ),
+              ),
+            )
+            .toList(),
+      ),
+    );
   }
 }
