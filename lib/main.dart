@@ -19,7 +19,8 @@ import 'package:novelflex/tab_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:transitioner/transitioner.dart';
-import 'MixScreens/BooksScreens/AllPdfScreens.dart';
+import 'MixScreens/BooksScreens/BookViewTab.dart';
+import 'MixScreens/PdfScreens/pdf_main.dart';
 import 'Provider/UserProvider.dart';
 import 'Provider/VariableProvider.dart';
 import 'UserAuthScreen/login_screen.dart';
@@ -320,7 +321,7 @@ class _SplashFirstState extends State<SplashFirst> {
         backgroundColor: const Color(0xffebf5f9),
         body: const Center(
           child: CupertinoActivityIndicator(
-            color: Colors.black,
+            color:  Color(0xff1b4a6b)
           )
         )
     );
@@ -595,7 +596,9 @@ class _SplashPageState extends State<SplashPage> {
             top: _height*0.6,
               left: _width*0.4,
               right:_width*0.4,
-              child: CupertinoActivityIndicator()) : Container()
+              child: CupertinoActivityIndicator(
+                color:  Color(0xff1b4a6b),
+              )) : Container()
         ],
       ),
     );

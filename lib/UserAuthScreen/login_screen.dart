@@ -375,6 +375,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         },
                         child: forgetPassword(height)),
                     Container(
+
                       margin: EdgeInsets.only(top: height * 0.03),
                       child: ResuableMaterialButtonSmall(
                         onpress: () {
@@ -518,7 +519,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Visibility(
                   visible: _isLoading == true,
                   child: const Center(
-                    child: CupertinoActivityIndicator(),
+                    child: CupertinoActivityIndicator(
+                      color:  Color(0xff1b4a6b),
+                    ),
                   ),
                 ),
                 GestureDetector(

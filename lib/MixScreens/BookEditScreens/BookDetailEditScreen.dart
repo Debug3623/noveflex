@@ -22,6 +22,7 @@ import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button.dart';
 import '../../localization/Language/languages.dart';
 import '../Uploadscreens/UploadDatanextScreen.dart';
+import '../Uploadscreens/BookUploadEditTabScreen.dart';
 
 class BookDetailEditScreen extends StatefulWidget {
   String? BookID;
@@ -232,7 +233,7 @@ class _BookDetailEditScreenState extends State<BookDetailEditScreen> {
                                     height: _height * 0.5,
                                     width: _width,
                                     decoration: const BoxDecoration(
-                                      color: Colors.white,
+                                      color:  Color(0xffebf5f9),
                                       borderRadius: BorderRadius.only(
                                           topLeft: Radius.circular(0),
                                           topRight: Radius.circular(0)),
@@ -341,190 +342,7 @@ class _BookDetailEditScreenState extends State<BookDetailEditScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        color: Colors.white,
-                                        child: ListView.builder(
-                                            shrinkWrap: true,
-                                            physics:
-                                                const ClampingScrollPhysics(),
-                                            itemCount: _bookEditModel!
-                                                .data!.chapter!.length,
-                                            itemBuilder:
-                                                (BuildContext context, index) {
-                                              return GestureDetector(
-                                                onTap: () {
-                                                  // Navigator.push(
-                                                  //     context,
-                                                  //     MaterialPageRoute(
-                                                  //         builder: (context) => PdfScreen(
-                                                  //           url: _bookEditModel!
-                                                  //               .data!.chapter![index]!.url,
-                                                  //           name: _bookEditModel!
-                                                  //               .data!.title,
-                                                  //         )));
-                                                  // PdfScreen()));
-                                                },
-                                                child: Container(
-                                                  decoration:
-                                                      const ShapeDecoration(
-                                                          shape:
-                                                              RoundedRectangleBorder(
-                                                            side: BorderSide(
-                                                                width: 0.5,
-                                                                style:
-                                                                    BorderStyle
-                                                                        .solid),
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .all(Radius
-                                                                        .circular(
-                                                                            5.0)),
-                                                          ),
-                                                          color: Color(
-                                                              0xFF256D85)),
-                                                  width: _width * 0.9,
-                                                  height: _height * 0.08,
-                                                  margin: EdgeInsets.only(
-                                                      left: _width * 0.02,
-                                                      right: _width * 0.02,
-                                                      top: _height * 0.03),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    children: [
-                                                      IconButton(
-                                                          onPressed: () async {
-                                                            _callDeleteBookAPI(
-                                                                _bookEditModel!
-                                                                    .data!
-                                                                    .chapter![
-                                                                        index]!
-                                                                    .id
-                                                                    .toString());
-                                                            setState(() {
-                                                              _bookEditModel!
-                                                                  .data!
-                                                                  .chapter!
-                                                                  .removeWhere((item) =>
-                                                                      item!
-                                                                          .id ==
-                                                                      _bookEditModel!
-                                                                          .data!
-                                                                          .chapter![
-                                                                              index]!
-                                                                          .id);
-                                                            });
-                                                          },
-                                                          icon: Icon(
-                                                            Icons
-                                                                .cancel_presentation,
-                                                            color: Colors.white,
-                                                            size: _height *
-                                                                _width *
-                                                                0.00012,
-                                                          )),
-                                                      _bookEditModel!
-                                                                  .data!
-                                                                  .chapter!
-                                                                  .length ==
-                                                              0
-                                                          ? const Expanded(
-                                                              child: Padding(
-                                                                padding: EdgeInsets
-                                                                    .only(
-                                                                        left:
-                                                                            8.0),
-                                                                child: Text(
-                                                                    'No PDF Found',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      color: Colors
-                                                                          .white,
-                                                                      fontFamily:
-                                                                          Constants
-                                                                              .fontfamily,
-                                                                    )),
-                                                              ),
-                                                            )
-                                                          : Expanded(
-                                                              child: Padding(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                            .only(
-                                                                        left:
-                                                                            8.0,
-                                                                        right:
-                                                                            8.0),
-                                                                child: Text(
-                                                                  _bookEditModel!
-                                                                              .data!
-                                                                              .chapter!
-                                                                              .length ==
-                                                                          1
-                                                                      ? '${_bookEditModel!.data!.title}'
-                                                                      : '${_bookEditModel!.data!.title} ${_bookEditModel!.data!.chapter![index]!.lesson}',
-                                                                  // '${_bookDetailsModel!.data!.chapters![index].name!.replaceAll(".pdf", "")}',
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    color: Colors
-                                                                        .white,
-                                                                    fontSize:
-                                                                        18,
-                                                                    fontFamily:
-                                                                        Constants
-                                                                            .fontfamily,
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
-                                                                  ),
-                                                                  textAlign:
-                                                                      TextAlign
-                                                                          .center,
-                                                                ),
-                                                              ),
-                                                            ),
-                                                      // SizedBox(
-                                                      //   width: _width * 0.35,
-                                                      // ),
-                                                      IconButton(
-                                                          onPressed: () async {
-                                                            // _pdf = await PDFDocument.fromURL(_bookDetailsModel!.data!.chapters![index].url.toString());
-                                                            // Navigator.push(context, MaterialPageRoute(builder: (context)=>PdfViewScreen()));
-                                                            // setState(() {
-                                                            //   _isLoadingPdf = false;
-                                                            // });
-                                                          },
-                                                          icon: const Icon(
-                                                            Icons
-                                                                .picture_as_pdf,
-                                                            color: Colors.white,
-                                                          )),
-                                                    ],
-                                                  ),
-                                                ),
-                                              );
-                                            }),
-                                      ),
-                                      // GestureDetector(
-                                      //   onTap: (){
-                                      //     getPdfAndUpload(_bookEditModel!
-                                      //         .data!.id.toString());
-                                      //   },
-                                      //   child: Container(
-                                      //     margin: EdgeInsets.only(left:_width*0.03,
-                                      //     top: _height*0.02),
-                                      //       decoration: BoxDecoration(
-                                      //         borderRadius: BorderRadius.circular(5.0),
-                                      //         color: Color(0xFF256D85),
-                                      //       ),
-                                      //       height: _height*0.04,
-                                      //       width: _width*0.25,
-                                      //       child: Center(child: Padding(
-                                      //         padding: const EdgeInsets.only(left: 15),
-                                      //         child: Text(Languages.of(context)!.EditButton,style: TextStyle(fontFamily: Constants.fontfamily,color: Colors.white),),
-                                      //       ))),
-                                      // ),
+
                                       Container(
                                         margin: EdgeInsets.only(
                                             top: _height * 0.04,
@@ -545,7 +363,7 @@ class _BookDetailEditScreenState extends State<BookDetailEditScreen> {
                                   ),
                                   Container(
                                     height: _height * 0.1,
-                                    color: Colors.white,
+                                    color:  Color(0xffebf5f9),
                                   ),
                                 ],
                               )
@@ -611,44 +429,6 @@ class _BookDetailEditScreenState extends State<BookDetailEditScreen> {
     }
   }
 
-  Future _callDeleteBookAPI(String id) async {
-    setState(() {
-      _isDeleteLoading = true;
-    });
-    var map = Map<String, dynamic>();
-    map['chapterId'] = id;
-
-    final response = await http
-        .post(Uri.parse(ApiUtils.DELETE_PDF_API), body: map, headers: {
-      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
-    });
-
-    var jsonData;
-
-    if (response.statusCode == 200) {
-      //Success
-
-      jsonData = json.decode(response.body);
-      print('delete_chapter_data: $jsonData');
-      if (jsonData['status'] == 200) {
-        setState(() {
-          _isDeleteLoading = false;
-          _bookEditModel!.data!.chapter!.removeWhere((item) => item!.id == id);
-        });
-      } else {
-        ToastConstant.showToast(context, jsonData['message']);
-        setState(() {
-          _isDeleteLoading = false;
-        });
-      }
-    } else {
-      ToastConstant.showToast(context, "Internet Server Error!");
-      setState(() {
-        _isDeleteLoading = false;
-      });
-    }
-  }
-
   Future _callEditDescriptionAPI() async {
     setState(() {
       _isDeleteLoading = true;
@@ -678,9 +458,10 @@ class _BookDetailEditScreenState extends State<BookDetailEditScreen> {
         });
         Transitioner(
           context: context,
-          child: UploaddataNextScreen(
+          child: BookUploadEditTabScreen(
             bookId: _bookEditModel!.data!.id.toString(),
             route: 1,
+              Chapters: _bookEditModel!.data!.chapter?.toList()
           ),
           animation: AnimationType.slideLeft, // Optional value
           duration: Duration(milliseconds: 1000), // Optional value

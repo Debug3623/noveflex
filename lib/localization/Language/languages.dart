@@ -113,6 +113,8 @@ abstract class Languages {
 
   String get SelectBook;
 
+  String get SelectAudio;
+
   String get Publish;
 
   String get publishButton;
@@ -411,6 +413,8 @@ abstract class Languages {
   String get no;
 
   String get nodata;
+
+  String get textbook;
 
   String get disclaimer;
 

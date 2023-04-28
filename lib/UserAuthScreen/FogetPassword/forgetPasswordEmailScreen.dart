@@ -275,7 +275,9 @@ class _ForgetPasswordEmailScreenState extends State<ForgetPasswordEmailScreen> {
                     child: Padding(
                       padding: EdgeInsets.only(top: _height * 0.1),
                       child: const Center(
-                        child: CupertinoActivityIndicator(),
+                        child: CupertinoActivityIndicator(
+                          color:  Color(0xff1b4a6b),
+                        ),
                       ),
                     ),
                   ),

@@ -22,6 +22,8 @@ class ResuableMaterialButtonSmall extends StatelessWidget {
       height: height*0.06,
       onPressed: onpress,
       child:  Container(
+          width: width*0.9,
+          height: height*0.06,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
             gradient: LinearGradient(

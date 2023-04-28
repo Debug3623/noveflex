@@ -180,7 +180,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
             visible:  _isLoading==true,
             child: const Center(
               child: CupertinoActivityIndicator(
-                color: Color(0xFF256D85),
+                color:  Color(0xff1b4a6b),
               ),
             ),
           ),

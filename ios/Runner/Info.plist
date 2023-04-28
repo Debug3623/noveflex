@@ -27,6 +27,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleURLTypes</key>
+
 	<array>
 		<dict>
 			<key>CFBundleURLSchemes</key>
@@ -116,5 +117,7 @@
 	<array>
 		<string>applinks:abc.page.link</string>
 	</array>
+	<key>NSMicrophoneUsageDescription</key>
+    <string> Novel flex app have Audio Book Features listen by reader</string>
 </dict>
 </plist>

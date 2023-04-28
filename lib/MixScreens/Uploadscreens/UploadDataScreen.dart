@@ -31,6 +31,8 @@ import '../../localization/Language/languages.dart';
 import 'UploadDatanextScreen.dart';
 import 'package:language_picker/languages.dart' as lang;
 
+import 'BookUploadEditTabScreen.dart';
+
 class UploadDataScreen extends StatefulWidget {
   @override
   State<UploadDataScreen> createState() => _UploadDataScreenState();
@@ -687,13 +689,13 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
   _navigateAndRemove() {
     Transitioner(
       context: context,
-      child: UploaddataNextScreen(
+      child: BookUploadEditTabScreen(
         bookId: _postImageOtherFieldModel!.data!.id.toString(),
         route: 0,
       ),
       animation: AnimationType.slideLeft, // Optional value
       duration: Duration(milliseconds: 1000), // Optional value
-      replacement: false, // Optional value
+      replacement: true, // Optional value
       curveType: CurveType.decelerate, // Optional value
     );
   }

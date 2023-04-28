@@ -25,7 +25,7 @@ import '../../Utils/toast.dart';
 import '../../Widgets/loading_widgets.dart';
 import '../../ad_helper.dart';
 import '../../localization/Language/languages.dart';
-import 'AllPdfScreens.dart';
+import 'BookViewTab.dart';
 import 'AuthorViewByUserScreen.dart';
 import 'dart:io';
 import '../InAppPurchase/inAppPurchaseSubscription.dart';
@@ -181,7 +181,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                           onTap: () {
                             Transitioner(
                               context: context,
-                              child: BookAllPDFViewSceens(
+                              child: BookViewTab(
                                 bookId:
                                     _bookDetailsModel!.data!.bookId.toString(),
                                 bookName: _bookDetailsModel!.data!.bookTitle
@@ -190,6 +190,9 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                     _bookDetailsModel!.data!.userId.toString(),
                                 PaymentStatus: _bookDetailsModel!
                                     .data!.paymentStatus
+                                    .toString(),
+                                cover_url: _bookDetailsModel!
+                                    .data!.imagePath
                                     .toString(),
                               ),
                               animation:
@@ -793,7 +796,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
 
                             Transitioner(
                               context: context,
-                              child: BookAllPDFViewSceens(
+                              child: BookViewTab(
                                 bookId:
                                     _bookDetailsModel!.data!.bookId.toString(),
                                 bookName: _bookDetailsModel!.data!.bookTitle
@@ -803,6 +806,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 PaymentStatus: _bookDetailsModel!
                                     .data!.paymentStatus
                                     .toString(),
+                                cover_url:_bookDetailsModel!.data!.imagePath.toString(),
                               ),
                               animation:
                                   AnimationType.slideTop, // Optional value

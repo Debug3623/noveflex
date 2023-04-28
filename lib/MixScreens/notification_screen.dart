@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
 
@@ -11,6 +12,7 @@ import '../Provider/UserProvider.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
+import '../Widgets/loading_widgets.dart';
 import '../localization/Language/languages.dart';
 import 'BooksScreens/BookDetailsAuthor.dart';
 
@@ -53,10 +55,16 @@ class _NotificationScreenState extends State<NotificationScreen> {
         body: SafeArea(
           child: _isInternetConnected
               ? _isLoading
-                  ? const Align(
-                      alignment: Alignment.center,
-                      child: CupertinoActivityIndicator(),
-                    )
+                  ? Align(
+            alignment: Alignment.center,
+            child: CustomCard(
+              gif: MoreLoadingGif(
+                type: MoreLoadingGifType.eclipse,
+                size: _height * _width * 0.0002,
+              ),
+              text: 'Loading',
+            ),
+          )
                   : SingleChildScrollView(
                       child: Padding(
                         padding: EdgeInsets.only(

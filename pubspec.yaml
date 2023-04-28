@@ -108,11 +108,18 @@ dependencies:
   webview_flutter: ^4.0.6
   auth_handler: ^1.0.0
   pie_chart: ^5.3.2
-  audioplayers: ^1.0.0
+  just_audio: ^0.9.32
   language_picker: ^0.4.3
   simple_ripple_animation: ^0.0.3
   ripple_wave: ^0.0.2
   more_loading_gif: ^0.0.3
+  audio_session: ^0.1.11
+  rxdart: ^0.27.7
+  just_audio_mpv: ^0.1.6
+  pdfx: ^2.3.0
+  internet_file: ^1.2.0
+  fade_scroll_app_bar: ^0.0.7
+  easy_scroll_animation: ^1.0.2
   #  firebase_chat: ^0.0.6+1
 #  el_tooltip: ^1.0.8
 #  notification_permissions: ^0.6.1

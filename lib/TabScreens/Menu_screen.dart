@@ -760,7 +760,6 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceAround,
                                     children: [
-                                      SizedBox(),
                                       Icon(
                                         Icons.card_travel,
                                         size: _height * _width * 0.0001,

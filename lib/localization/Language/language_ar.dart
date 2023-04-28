@@ -11,6 +11,12 @@ class LanguageAr extends Languages {
   String get episodes => "الحلقات";
 
   @override
+  String get SelectAudio => "حدد كتاب صوتي";
+
+  @override
+  String get textbook => "تم نشر كتاب نصي بالفعل يمكنك تحريره في ملف التعريف الخاص بك";
+
+  @override
   String get mangaText => "فيما يلي توضيح لكيفية الكسب ، وسيتم شرحه بالتفصيل";
 
   @override

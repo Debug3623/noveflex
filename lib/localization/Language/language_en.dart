@@ -14,6 +14,12 @@ class LanguageEn extends Languages {
   String get termsText => "Terms of Services";
 
   @override
+  String get SelectAudio => "Select Audio Book";
+
+  @override
+  String get textbook => "Text Book Already Published You can Edit in Your Profile";
+
+  @override
   String get level => "level";
 
   @override

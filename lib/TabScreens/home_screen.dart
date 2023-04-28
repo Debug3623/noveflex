@@ -918,6 +918,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         child: ListView.builder(
                                           physics:
                                               const BouncingScrollPhysics(),
+
                                           itemCount: _homeApiResponse!
                                               .data
                                               .categoryBooks[index]

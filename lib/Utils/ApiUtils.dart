@@ -68,6 +68,12 @@ class ApiUtils {
   static const String SEE_ALL_REVIEWS_API = '$BASE/comments';
   static const String ADD_REVIEW_API = '$BASE/comment/store';
   static const String AGREEMENT_API = '$BASE/updata/status';
+  static const String UPLOAD_AUDIO_API = '$BASE/book/uploadAudioFile';
+  static const String UPLOAD_TEXT_BOOK = '$BASE/book/uploadTextFile';
+  static const String GET_AUDIO_BOOK = '$BASE/book/audio';
+  static const String GET_TEXT_BOOK = '$BASE/book/text';
+  static const String UPDATE_AUDIO_BOOK = '$BASE/book/update/audio';
+  static const String UPDATE_TEXT_BOOK = '$BASE/book/update/text';
 
 
 

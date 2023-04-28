@@ -77,7 +77,9 @@ class _AccountScreenState extends State<AccountScreen> {
             ? _isLoading
                 ? const Align(
                     alignment: Alignment.center,
-                    child: CupertinoActivityIndicator(),
+                    child: CupertinoActivityIndicator(
+                      color:  Color(0xff1b4a6b),
+                    ),
                   )
                 : SingleChildScrollView(
                     child: Column(

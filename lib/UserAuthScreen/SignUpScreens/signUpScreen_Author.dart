@@ -155,7 +155,7 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
               visible:  isLoading==true,
               child: const Center(
                 child: CupertinoActivityIndicator(
-                  color: Color(0xFF256D85),
+                  color:  Color(0xff1b4a6b),
                 ),
               ),
             ),
