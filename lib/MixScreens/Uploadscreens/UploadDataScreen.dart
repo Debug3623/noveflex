@@ -737,6 +737,7 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
     request.fields['description'] =
         _descriptionController!.text.trim().toString();
     request.fields['payment_status'] = paymentStatus;
+    request.fields['language'] = _selectedDialogLanguage.name.trim().toString();
     request.files.add(new http.MultipartFile.fromBytes(
       "image",
       File(imageFile!.path)

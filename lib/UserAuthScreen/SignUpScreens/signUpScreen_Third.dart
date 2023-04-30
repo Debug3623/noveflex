@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,6 +38,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
   bool _isLoading = false;
   UserModel? _userModel;
 
+
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
@@ -65,6 +67,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
               setState(() {
                 isWriter=true;
                 isReader = false;
+                warningAuthor();
               });
             },
             child: Container(
@@ -123,6 +126,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
               setState(() {
                 isWriter=false;
                 isReader = true;
+                warning();
               });
             },
             child: Container(
@@ -249,6 +253,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
       ),
     );
   }
+
   Widget mainText2(var width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -267,6 +272,7 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
       ],
     );
   }
+
   Widget mainText(var width) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -284,6 +290,34 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
         ),
       ],
     );
+  }
+
+  void warning() {
+    AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        animType: AnimType.topSlide,
+        title: "${Languages.of(context)!.dialogTitle} Reader",
+        desc: Languages.of(context)!.dialogTitleN,
+        btnOkOnPress: () {
+
+        },
+        btnOkColor: Color(0xFF256D85))
+      ..show();
+  }
+
+  void warningAuthor() {
+    AwesomeDialog(
+        context: context,
+        dialogType: DialogType.success,
+        animType: AnimType.topSlide,
+        title: "${Languages.of(context)!.dialogTitle} Author",
+        desc: Languages.of(context)!.dialogTitleY,
+        btnOkOnPress: () {
+
+        },
+        btnOkColor: Color(0xFF256D85))
+      ..show();
   }
 
   Future _checkInternetConnection() async {
@@ -522,7 +556,6 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
       });
     }
   }
-
 
   _navigateAndRemove() {
     Transitioner(

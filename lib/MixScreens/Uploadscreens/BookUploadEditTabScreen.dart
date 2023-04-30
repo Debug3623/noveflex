@@ -1001,7 +1001,7 @@ class _AudioTabState extends State<AudioTab> {
     var request =
         http.MultipartRequest('POST', Uri.parse(ApiUtils.UPLOAD_AUDIO_API));
 
-    request.fields['bookId'] = widget.bookId.toString();
+    request.fields['book_id'] = widget.bookId.toString();
     http.MultipartFile document = await http.MultipartFile.fromPath(
       'audio', DocumentFile!.path,
       // contentType: MediaType('application', 'pdf')
@@ -1190,7 +1190,7 @@ class _TextTabState extends State<TextTab> {
       _isLoading = true;
     });
     var map = Map<String, dynamic>();
-    map['bookId'] = widget.bookId;
+    map['book_id'] = widget.bookId;
     map['description'] = text;
 
     final response = await http.post(

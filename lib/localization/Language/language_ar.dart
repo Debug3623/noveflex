@@ -11,6 +11,16 @@ class LanguageAr extends Languages {
   String get episodes => "الحلقات";
 
   @override
+  String get dialogTitle => "مرحبًا";
+
+  @override
+  String get dialogTitleY => "تهانينا يمكنك النشر مجانًا معنا والحصول على مزايا بـ \$ ";
+
+  @override
+  String get dialogTitleN => "أتمنى لك يومًا سعيدًا ، أنت قارئ ، لا يمكنك نشر الروايات فقط يمكن للمؤلف نشر روايات يمكنك التسجيل كمؤلف مجانًا";
+
+
+  @override
   String get writeBook => "اكتب كتاب...";
 
   @override

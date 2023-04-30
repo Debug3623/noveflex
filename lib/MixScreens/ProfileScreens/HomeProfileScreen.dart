@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:ripple_wave/ripple_wave.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../Models/AuthorProfileViewModel.dart';
 import 'dart:convert';
 import 'dart:io';
@@ -632,80 +633,146 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       ],
                                     ),
                                   ),
-                                  Padding(
-                                    padding: EdgeInsets.only(
-                                      top: _height * 0.07,
-                                      left: context
-                                                  .read<UserProvider>()
-                                                  .SelectedLanguage ==
-                                              'English'
-                                          ? _width * 0.15
-                                          : 0.0,
-                                      right: context
-                                                  .read<UserProvider>()
-                                                  .SelectedLanguage ==
-                                              'Arabic'
-                                          ? _width * 0.15
-                                          : 0.0,
-                                    ),
-                                    child: GestureDetector(
-                                        onTap: () {
-                                          if (_statusCheckModel!.aggrement ==
-                                              false) {
-                                            showTermsAndConditionAlert();
-                                          } else {
-                                            Transitioner(
-                                              context: context,
-                                              child: UploadDataScreen(),
-                                              animation:
-                                                  AnimationType.slideLeft,
-                                              // Optional value
-                                              duration:
-                                                  Duration(milliseconds: 1000),
-                                              // Optional value
-                                              replacement: false,
-                                              // Optional value
-                                              curveType: CurveType
-                                                  .decelerate, // Optional value
-                                            );
-                                          }
-                                        },
-                                        child: Container(
-                                          width: _width * 0.25,
-                                          height: _height * 0.04,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5)),
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xff3a6c83),
-                                                  width: 1),
-                                              color: const Color(0xffebf5f9)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Icon(
-                                                Icons.add,
-                                                color: const Color(0xff3a6c83),
+                                  Column(
+                                    children: [
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: _height * 0.05,
+                                          left: context
+                                                      .read<UserProvider>()
+                                                      .SelectedLanguage ==
+                                                  'English'
+                                              ? _width * 0.15
+                                              : 0.0,
+                                          right: context
+                                                      .read<UserProvider>()
+                                                      .SelectedLanguage ==
+                                                  'Arabic'
+                                              ? _width * 0.15
+                                              : 0.0,
+                                        ),
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              if (_statusCheckModel!.aggrement ==
+                                                  false) {
+                                                showTermsAndConditionAlert();
+                                              } else {
+                                                Transitioner(
+                                                  context: context,
+                                                  child: UploadDataScreen(),
+                                                  animation:
+                                                      AnimationType.slideLeft,
+                                                  // Optional value
+                                                  duration:
+                                                      Duration(milliseconds: 1000),
+                                                  // Optional value
+                                                  replacement: false,
+                                                  // Optional value
+                                                  curveType: CurveType
+                                                      .decelerate, // Optional value
+                                                );
+                                              }
+                                            },
+                                            child: Container(
+                                              width: _width * 0.25,
+                                              height: _height * 0.04,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  border: Border.all(
+                                                      color:
+                                                          const Color(0xff3a6c83),
+                                                      width: 1),
+                                                  color: const Color(0xffebf5f9)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Icon(
+                                                    Icons.add,
+                                                    color: const Color(0xff3a6c83),
+                                                  ),
+                                                  Text(
+                                                      Languages.of(context)!
+                                                          .publishButton,
+                                                      style: const TextStyle(
+                                                          color: const Color(
+                                                              0xff3a6c83),
+                                                          fontWeight:
+                                                              FontWeight.w800,
+                                                          fontFamily: "Lato",
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontSize: 10.0),
+                                                      textAlign: TextAlign.left)
+                                                ],
                                               ),
-                                              Text(
-                                                  Languages.of(context)!
-                                                      .publishButton,
-                                                  style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff3a6c83),
-                                                      fontWeight:
+                                            )),
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                          top: _height * 0.01,
+                                          left: context
+                                              .read<UserProvider>()
+                                              .SelectedLanguage ==
+                                              'English'
+                                              ? _width * 0.15
+                                              : 0.0,
+                                          right: context
+                                              .read<UserProvider>()
+                                              .SelectedLanguage ==
+                                              'Arabic'
+                                              ? _width * 0.15
+                                              : 0.0,
+                                        ),
+                                        child: GestureDetector(
+                                            onTap: () {
+                                              Platform.isIOS
+                                                  ? Share.share(
+                                                  'https://apps.apple.com/ae/app/novelflex/id1661629198')
+                                                  : Share.share(
+                                                  'https://play.google.com/store/apps/details?id=com.appcom.estisharati.novel.flex');
+                                            },
+                                            child: Container(
+                                              width: _width * 0.25,
+                                              height: _height * 0.04,
+                                              decoration: BoxDecoration(
+                                                  borderRadius: BorderRadius.all(
+                                                      Radius.circular(5)),
+                                                  border: Border.all(
+                                                      color:
+                                                      const Color(0xff3a6c83),
+                                                      width: 1),
+                                                  color: const Color(0xffebf5f9)),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                                children: [
+                                                  Icon(
+                                                    Icons.share,
+                                                    color: const Color(0xff3a6c83),
+                                                    size: _width*_height*0.00006,
+                                                  ),
+                                                  Text(
+                                                      Languages.of(context)!
+                                                          .profile,
+                                                      style: const TextStyle(
+                                                          color: const Color(
+                                                              0xff3a6c83),
+                                                          fontWeight:
                                                           FontWeight.w800,
-                                                      fontFamily: "Lato",
-                                                      fontStyle:
+                                                          fontFamily: "Lato",
+                                                          fontStyle:
                                                           FontStyle.normal,
-                                                      fontSize: 10.0),
-                                                  textAlign: TextAlign.left)
-                                            ],
-                                          ),
-                                        )),
+                                                          fontSize: 10.0),
+                                                      textAlign: TextAlign.left)
+                                                ],
+                                              ),
+                                            )),
+                                      ),
+                                    ],
                                   ),
+
                                 ],
                               ),
                             ),

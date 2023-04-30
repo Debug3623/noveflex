@@ -9,13 +9,13 @@ HomeApiResponse homeApiResponseFromJson(String str) => HomeApiResponse.fromJson(
 String homeApiResponseToJson(HomeApiResponse data) => json.encode(data.toJson());
 
 class HomeApiResponse {
+  int status;
+  Data data;
+
   HomeApiResponse({
     required this.status,
     required this.data,
   });
-
-  int status;
-  Data data;
 
   factory HomeApiResponse.fromJson(Map<String, dynamic> json) => HomeApiResponse(
     status: json["status"],
@@ -29,15 +29,15 @@ class HomeApiResponse {
 }
 
 class Data {
+  List<RecentlyPublishBook> slider;
+  List<RecentlyPublishBook> recentlyPublishBooks;
+  List<CategoryBook> categoryBooks;
+
   Data({
     required this.slider,
     required this.recentlyPublishBooks,
     required this.categoryBooks,
   });
-
-  List<RecentlyPublishBook> slider;
-  List<RecentlyPublishBook> recentlyPublishBooks;
-  List<CategoryBook> categoryBooks;
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     slider: List<RecentlyPublishBook>.from(json["slider"].map((x) => RecentlyPublishBook.fromJson(x))),
@@ -53,6 +53,18 @@ class Data {
 }
 
 class CategoryBook {
+  int id;
+  String title;
+  String titleAr;
+  int isActive;
+  String image;
+  DateTime createdAt;
+  String updatedAt;
+  int createdBy;
+  dynamic updatedBy;
+  dynamic deletedBy;
+  List<Book> books;
+
   CategoryBook({
     required this.id,
     required this.title,
@@ -66,18 +78,6 @@ class CategoryBook {
     this.deletedBy,
     required this.books,
   });
-
-  int id;
-  String title;
-  String titleAr;
-  int isActive;
-  String image;
-  DateTime createdAt;
-  String updatedAt;
-  int createdBy;
-  dynamic updatedBy;
-  dynamic deletedBy;
-  List<Book> books;
 
   factory CategoryBook.fromJson(Map<String, dynamic> json) => CategoryBook(
     id: json["id"],
@@ -109,6 +109,13 @@ class CategoryBook {
 }
 
 class Book {
+  int id;
+  String bookTitle;
+  String description;
+  int paymentStatus;
+  String image;
+  String authorName;
+
   Book({
     required this.id,
     required this.bookTitle,
@@ -117,13 +124,6 @@ class Book {
     required this.image,
     required this.authorName,
   });
-
-  int id;
-  String bookTitle;
-  String description;
-  int paymentStatus;
-  String image;
-  String authorName;
 
   factory Book.fromJson(Map<String, dynamic> json) => Book(
     id: json["id"],
@@ -145,6 +145,28 @@ class Book {
 }
 
 class RecentlyPublishBook {
+  int id;
+  String title;
+  String description;
+  int categoryId;
+  int subcategoryId;
+  int paymentStatus;
+  int userId;
+  dynamic lessonId;
+  String image;
+  dynamic status;
+  int isActive;
+  int isSeen;
+  String language;
+  dynamic createdBy;
+  dynamic updatedBy;
+  dynamic deletedBy;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String imagePath;
+  List<Category> categories;
+  List<User>? user;
+
   RecentlyPublishBook({
     required this.id,
     required this.title,
@@ -169,28 +191,6 @@ class RecentlyPublishBook {
     this.user,
   });
 
-  int id;
-  String title;
-  String description;
-  int categoryId;
-  int subcategoryId;
-  int paymentStatus;
-  int userId;
-  dynamic lessonId;
-  String image;
-  dynamic status;
-  int isActive;
-  int isSeen;
-  Language language;
-  dynamic createdBy;
-  dynamic updatedBy;
-  dynamic deletedBy;
-  DateTime createdAt;
-  DateTime updatedAt;
-  String imagePath;
-  List<Category> categories;
-  List<User>? user;
-
   factory RecentlyPublishBook.fromJson(Map<String, dynamic> json) => RecentlyPublishBook(
     id: json["id"],
     title: json["title"],
@@ -204,7 +204,7 @@ class RecentlyPublishBook {
     status: json["status"],
     isActive: json["is_active"],
     isSeen: json["is_seen"],
-    language: languageValues.map[json["language"]]!,
+    language: json["language"],
     createdBy: json["created_by"],
     updatedBy: json["updated_by"],
     deletedBy: json["deleted_by"],
@@ -228,7 +228,7 @@ class RecentlyPublishBook {
     "status": status,
     "is_active": isActive,
     "is_seen": isSeen,
-    "language": languageValues.reverse[language],
+    "language": language,
     "created_by": createdBy,
     "updated_by": updatedBy,
     "deleted_by": deletedBy,
@@ -241,15 +241,15 @@ class RecentlyPublishBook {
 }
 
 class Category {
+  int id;
+  String title;
+  String imagePath;
+
   Category({
     required this.id,
     required this.title,
     required this.imagePath,
   });
-
-  int id;
-  String title;
-  String imagePath;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     id: json["id"],
@@ -264,25 +264,18 @@ class Category {
   };
 }
 
-enum Language { ENG, ARB }
-
-final languageValues = EnumValues({
-  "arb": Language.ARB,
-  "eng": Language.ENG
-});
-
 class User {
+  int id;
+  String username;
+  String profilePath;
+  String backgroundPath;
+
   User({
     required this.id,
     required this.username,
     required this.profilePath,
     required this.backgroundPath,
   });
-
-  int id;
-  String username;
-  String profilePath;
-  String backgroundPath;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
@@ -297,16 +290,4 @@ class User {
     "profile_path": profilePath,
     "background_path": backgroundPath,
   };
-}
-
-class EnumValues<T> {
-  Map<String, T> map;
-  late Map<T, String> reverseMap;
-
-  EnumValues(this.map);
-
-  Map<T, String> get reverse {
-    reverseMap = map.map((k, v) => MapEntry(v, k));
-    return reverseMap;
-  }
 }

@@ -97,6 +97,12 @@ abstract class Languages {
 
   String get chapter;
 
+  String get dialogTitle;
+
+  String get dialogTitleN;
+
+  String get dialogTitleY;
+
   String get writeBook;
 
   String get search;

@@ -9,6 +9,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:share_plus/share_plus.dart';
 import 'package:transitioner/transitioner.dart';
 import '../../Models/AuthorProfileViewModel.dart';
 import '../../Models/UserStatusTypeModel.dart';
@@ -190,9 +191,74 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                               Column(
                                 children: [
                                   Visibility(
-                                    visible:
-                                        _userStatusTypeModel!.data![0]!.type !=
-                                            "Writer",
+                                    visible: widget.user_id.toString() ==
+                                        context.read<UserProvider>().UserID,
+                                    child: Padding(
+                                      padding: EdgeInsets.only(
+                                        top: _height * 0.1,
+                                        left: context
+                                                    .read<UserProvider>()
+                                                    .SelectedLanguage ==
+                                                'English'
+                                            ? _width * 0.15
+                                            : 0.0,
+                                        right: context
+                                                    .read<UserProvider>()
+                                                    .SelectedLanguage ==
+                                                'Arabic'
+                                            ? _width * 0.15
+                                            : 0.0,
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          Platform.isIOS
+                                              ? Share.share(
+                                                  'https://apps.apple.com/ae/app/novelflex/id1661629198')
+                                              : Share.share(
+                                                  'https://play.google.com/store/apps/details?id=com.appcom.estisharati.novel.flex');
+                                        },
+                                        child: Container(
+                                          width: _width * 0.25,
+                                          height: _height * 0.04,
+                                          decoration: BoxDecoration(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(5)),
+                                              border: Border.all(
+                                                  color:
+                                                      const Color(0xff3a6c83),
+                                                  width: 1),
+                                              color: Color(0xffebf5f9)),
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              Icon(Icons.share,
+                                                  color:
+                                                      const Color(0xff3a6c83),
+                                                size: _width*_height*0.00006,),
+
+                                              Text(
+                                                  Languages.of(context)!
+                                                      .profile,
+                                                  style: const TextStyle(
+                                                      color: const Color(
+                                                          0xff3a6c83),
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontFamily: "Lato",
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontSize: 10.0),
+                                                  textAlign: TextAlign.left)
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  Visibility(
+                                    visible: widget.user_id.toString() !=
+                                        context.read<UserProvider>().UserID,
                                     child: Padding(
                                       padding: EdgeInsets.only(
                                         top: _height * 0.07,
@@ -268,9 +334,10 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                   Platform.isIOS
                                       ? Container()
                                       : Visibility(
-                                          visible: _userStatusTypeModel!
-                                                  .data![0]!.type !=
-                                              "Writer",
+                                          visible: widget.user_id.toString() !=
+                                              context
+                                                  .read<UserProvider>()
+                                                  .UserID,
                                           child: Padding(
                                             padding: EdgeInsets.only(
                                               top: _height * 0.01,

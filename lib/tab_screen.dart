@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/cupertino.dart';
@@ -240,6 +241,7 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
             _isLoading = false;
           });
         } else {
+          warning();
           Transitioner(
             context: context,
             child: FaqScreen(),
@@ -261,6 +263,20 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
         });
       }
     }
+  }
+
+  void warning() {
+    AwesomeDialog(
+        context: context,
+        dialogType: DialogType.warning,
+        animType: AnimType.topSlide,
+        title: "${Languages.of(context)!.dialogTitle} ${context.read<UserProvider>().UserName}",
+        desc: Languages.of(context)!.dialogTitleN,
+        btnOkOnPress: () {
+
+        },
+        btnOkColor: Color(0xFF256D85))
+      ..show();
   }
 
   showTermsAndConditionAlert() {
@@ -425,7 +441,9 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
                   Navigator.pop(ctx);
                   Transitioner(
                     context: ctx,
-                    child: UploadHistoryscreen(route: 1,),
+                    child: UploadHistoryscreen(
+                      route: 1,
+                    ),
                     animation: AnimationType.slideLeft, // Optional value
                     duration: Duration(milliseconds: 1000), // Optional value
                     replacement: false, // Optional value
@@ -444,7 +462,9 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
                         Navigator.pop(ctx);
                         Transitioner(
                           context: ctx,
-                          child: UploadHistoryscreen(route: 1,),
+                          child: UploadHistoryscreen(
+                            route: 1,
+                          ),
                           animation: AnimationType.slideLeft, // Optional value
                           duration:
                               Duration(milliseconds: 1000), // Optional value
@@ -452,7 +472,7 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
                           curveType: CurveType.decelerate, // Optional value
                         );
                       },
-                      child:  Text(Languages.of(context)!.addEpisodes),
+                      child: Text(Languages.of(context)!.addEpisodes),
                     ),
                   ],
                 ),
@@ -497,7 +517,7 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
                           curveType: CurveType.decelerate, // Optional value
                         );
                       },
-                      child:  Text(Languages.of(context)!.publishNovel),
+                      child: Text(Languages.of(context)!.publishNovel),
                     ),
                   ],
                 ),

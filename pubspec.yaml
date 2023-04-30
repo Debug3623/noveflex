@@ -120,6 +120,7 @@ dependencies:
   internet_file: ^1.2.0
   fade_scroll_app_bar: ^0.0.7
   easy_scroll_animation: ^1.0.2
+  awesome_dialog: ^3.0.2
   #  firebase_chat: ^0.0.6+1
 #  el_tooltip: ^1.0.8
 #  notification_permissions: ^0.6.1

@@ -11,6 +11,15 @@ class LanguageEn extends Languages {
   String get writeBook => "Write Book...";
 
   @override
+  String get dialogTitle => "Hello";
+
+  @override
+  String get dialogTitleY => "Congratulation You can publish free with Us and Get benefits in \$";
+
+  @override
+  String get dialogTitleN => "Have a good day, You are reader, you cannot publish Novels only Author can publish Novels you can register as Author for free";
+
+  @override
   String get seeAuthorBooks => "View Author Books";
 
   @override
