@@ -313,7 +313,7 @@ class _UploadPdfScreenState extends State<UploadPdfScreen>
                       filled: true,
                       fillColor: Color(0xffebf5f9),
                       // labelText: widget.labelText,
-                      hintText: Languages.of(context)!.episodes,
+                      // hintText: Languages.of(context)!.episodes,
                       hintStyle: const TextStyle(
                         fontFamily: Constants.fontfamily,
                       ),
@@ -327,6 +327,7 @@ class _UploadPdfScreenState extends State<UploadPdfScreen>
                             width: 2, color: Color(0xFF256D85)),
                         borderRadius: BorderRadius.circular(10),
                       ),
+                      prefixText: '${Languages.of(context)!.episodes} No ',
                     ),
                   ),
                 ),
@@ -726,7 +727,7 @@ class _UploadPdfScreenState extends State<UploadPdfScreen>
         http.MultipartRequest('POST', Uri.parse(ApiUtils.PDF_UPLOAD_API));
 
     request.fields['book_id'] = widget.bookId.toString();
-    request.fields['lesson'] = _chapterController!.text.trim();
+    request.fields['lesson'] = "${Languages.of(context)!.episodes}  ${_chapterController!.text.trim()}";
     request.fields['pdf_status'] = paymentStatus.toString();
     http.MultipartFile document =
         await http.MultipartFile.fromPath('filename', DocumentFile!.path,
@@ -1090,8 +1091,6 @@ class _AudioTabState extends State<AudioTab> {
 
 
 
-
-
 class TextTab extends StatefulWidget {
   final router;
   final bookId;
@@ -1160,6 +1159,7 @@ class _TextTabState extends State<TextTab> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color(0xffebf5f9),
+                          hintText: Languages.of(context)!.writeBook
 
                         ),
                       ),

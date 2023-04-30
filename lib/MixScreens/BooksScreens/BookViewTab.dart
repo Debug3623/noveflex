@@ -423,7 +423,7 @@ class _PdfTabState extends State<PdfTab> {
                                                         fontSize: 16.0),
                                                   )
                                                 : Text(
-                                                    "${index + 1} ${_boolAllPdfViewModelClass!.data[index].lesson.toString()}",
+                                                    "${index + 1}. ${_boolAllPdfViewModelClass!.data[index].lesson.toString()}",
                                                     style: const TextStyle(
                                                         color: const Color(
                                                             0xff2a2a2a),
@@ -455,7 +455,7 @@ class _PdfTabState extends State<PdfTab> {
                                                     children: [
                                                       Icon(
                                                           Icons
-                                                              .label_important_outline,
+                                                              .label_important_outlined,
                                                           color: Colors.red),
                                                       Text(
                                                         Languages.of(context)!
@@ -508,6 +508,15 @@ class _PdfTabState extends State<PdfTab> {
                                                           )
                                                         ],
                                                       ),
+                                          ),
+                                          Opacity(
+                                            opacity: 0.20000000298023224,
+                                            child: Container(
+                                                width: 368,
+                                                height: 0.5,
+                                                decoration: BoxDecoration(
+                                                    color: const Color(
+                                                        0xff3a6c83))),
                                           ),
                                         ],
                                       ),

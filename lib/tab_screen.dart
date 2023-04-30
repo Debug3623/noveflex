@@ -3,11 +3,13 @@ import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:novelflex/MixScreens/FaqScreen.dart';
 import 'package:novelflex/MixScreens/ProfileScreens/HomeProfileScreen.dart';
 import 'package:novelflex/TabScreens/SearchScreen.dart';
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
 import 'MixScreens/Uploadscreens/UploadDataScreen.dart';
+import 'MixScreens/Uploadscreens/upload_history_screen.dart';
 import 'Models/StatusCheckModel.dart';
 import 'Provider/UserProvider.dart';
 import 'TabScreens/Menu_screen.dart';
@@ -31,7 +33,7 @@ class TabScreen extends StatefulWidget {
 class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
   int pageIndex = 2;
   StatusCheckModel? _statusCheckModel;
-  bool _isLoading= false;
+  bool _isLoading = false;
   late AnimationController _addController;
   StatusCheckModel? _statusCheckModelType;
   final Screen = [
@@ -49,8 +51,8 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
   void initState() {
     // CHECK_STATUSType();
     _addController =
-    AnimationController(vsync: this, duration: const Duration(seconds: 1))
-      ..repeat();
+        AnimationController(vsync: this, duration: const Duration(seconds: 1))
+          ..repeat();
     super.initState();
   }
 
@@ -114,7 +116,7 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
               child: pageIndex == 1
                   ? Image.asset(
                       "assets/quotes_data/feather_new3x.png",
-                      color:AppColors.activeColor,
+                      color: AppColors.activeColor,
                       fit: BoxFit.contain,
                     )
                   : Image.asset(
@@ -136,17 +138,19 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
                     shape: BoxShape.circle,
                     color: Colors.white,
                     border: Border.all(color: AppColors.inactive, width: 2)),
-                child: _isLoading ?  Lottie.asset(LottieFiles.$71721_loading_icon_for_website,
-                    controller: _addController,
-                    height: height * width * 0.0002,
-                    width:  height * width * 0.0002,
-                    fit: BoxFit.cover)  : Icon(
-                  // _statusCheckModel!.data.type == "Writer" ?
-                  Icons.add,
-                      // : Icons.person,
-                  size: height * width * 0.0001,
-                  color: AppColors.inactive,
-                )),
+                child: _isLoading
+                    ? Lottie.asset(LottieFiles.$71721_loading_icon_for_website,
+                        controller: _addController,
+                        height: height * width * 0.0002,
+                        width: height * width * 0.0002,
+                        fit: BoxFit.cover)
+                    : Icon(
+                        // _statusCheckModel!.data.type == "Writer" ?
+                        Icons.add,
+                        // : Icons.person,
+                        size: height * width * 0.0001,
+                        color: AppColors.inactive,
+                      )),
           ),
           GestureDetector(
             onTap: () {
@@ -210,14 +214,13 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
       if (jsonData1['status'] == 200) {
         _statusCheckModel = statusCheckModelFromJson(jsonData);
         CHECK_STATUSType();
-
       } else {}
     }
   }
 
   Future CHECK_STATUSType() async {
     final response =
-    await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
+        await http.get(Uri.parse(ApiUtils.CHECK_PROFILE_STATUS_API), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -228,41 +231,30 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
       if (jsonData1['status'] == 200) {
         _statusCheckModelType = statusCheckModelFromJson(jsonData);
 
-       if(_statusCheckModel!.data.type == "Writer") {
-         _statusCheckModel!.aggrement == false
-             ? showTermsAndConditionAlert()
-             : Transitioner(
-           context: context,
-           child: UploadDataScreen(),
-           animation: AnimationType.slideLeft,
-           // Optional value
-           duration: Duration(milliseconds: 1000),
-           // Optional value
-           replacement: false,
-           // Optional value
-           curveType: CurveType.decelerate, // Optional value
-         );
+        if (_statusCheckModel!.data.type == "Writer") {
+          _statusCheckModel!.aggrement == false
+              ? showTermsAndConditionAlert()
+              : _showSimpleDialog();
 
-         setState(() {
-           _isLoading = false;
-         });
-       }else{
-         Transitioner(
-           context: context,
-           child: HomeProfileScreen(),
-           animation: AnimationType.slideLeft,
-           // Optional value
-           duration: Duration(milliseconds: 1000),
-           // Optional value
-           replacement: false,
-           // Optional value
-           curveType: CurveType.decelerate, // Optional value
-         );
-         setState(() {
-           _isLoading = false;
-         });
-       }
-
+          setState(() {
+            _isLoading = false;
+          });
+        } else {
+          Transitioner(
+            context: context,
+            child: FaqScreen(),
+            animation: AnimationType.slideLeft,
+            // Optional value
+            duration: Duration(milliseconds: 1000),
+            // Optional value
+            replacement: false,
+            // Optional value
+            curveType: CurveType.decelerate, // Optional value
+          );
+          setState(() {
+            _isLoading = false;
+          });
+        }
       } else {
         setState(() {
           _isLoading = false;
@@ -416,5 +408,105 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
         Constants.showToastBlack(context, "Some things went wrong");
       }
     }
+  }
+
+  Future<void> _showSimpleDialog() async {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    await showDialog<void>(
+        context: context,
+        builder: (BuildContext ctx) {
+          return SimpleDialog(
+            // <-- SEE HERE
+            contentPadding: EdgeInsets.all(width * 0.1),
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(ctx);
+                  Transitioner(
+                    context: ctx,
+                    child: UploadHistoryscreen(route: 1,),
+                    animation: AnimationType.slideLeft, // Optional value
+                    duration: Duration(milliseconds: 1000), // Optional value
+                    replacement: false, // Optional value
+                    curveType: CurveType.decelerate, // Optional value
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.add_link_outlined,
+                      color: Color(0xff3a6c83),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        Transitioner(
+                          context: ctx,
+                          child: UploadHistoryscreen(route: 1,),
+                          animation: AnimationType.slideLeft, // Optional value
+                          duration:
+                              Duration(milliseconds: 1000), // Optional value
+                          replacement: false, // Optional value
+                          curveType: CurveType.decelerate, // Optional value
+                        );
+                      },
+                      child:  Text(Languages.of(context)!.addEpisodes),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(ctx);
+                  Transitioner(
+                    context: ctx,
+                    child: UploadDataScreen(),
+                    animation: AnimationType.slideLeft,
+                    // Optional value
+                    duration: Duration(milliseconds: 1000),
+                    // Optional value
+                    replacement: false,
+                    // Optional value
+                    curveType: CurveType.decelerate, // Optional value
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.menu_book_sharp,
+                      color: Color(0xff3a6c83),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        Transitioner(
+                          context: ctx,
+                          child: UploadDataScreen(),
+                          animation: AnimationType.slideLeft,
+                          // Optional value
+                          duration: Duration(milliseconds: 1000),
+                          // Optional value
+                          replacement: false,
+                          // Optional value
+                          curveType: CurveType.decelerate, // Optional value
+                        );
+                      },
+                      child:  Text(Languages.of(context)!.publishNovel),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+            ],
+          );
+        });
   }
 }

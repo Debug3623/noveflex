@@ -238,6 +238,7 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
                 )
               : SafeArea(
                   child: SingleChildScrollView(
+                    physics: BouncingScrollPhysics(),
                     child: Form(
                       key: _formKey,
                       child: Container(

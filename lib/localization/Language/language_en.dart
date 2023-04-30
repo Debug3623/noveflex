@@ -8,10 +8,16 @@ class LanguageEn extends Languages {
   String get follow => "Subscribe";
 
   @override
+  String get writeBook => "Write Book...";
+
+  @override
   String get seeAuthorBooks => "View Author Books";
 
   @override
   String get termsText => "Terms of Services";
+
+  @override
+  String get addEpisodes => "Add Episodes";
 
   @override
   String get SelectAudio => "Select Audio Book";

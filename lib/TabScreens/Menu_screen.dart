@@ -122,6 +122,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                     ),
                   )
                 : SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
                     child: Stack(
                       children: [
                         Positioned(

@@ -11,6 +11,12 @@ class LanguageAr extends Languages {
   String get episodes => "الحلقات";
 
   @override
+  String get writeBook => "اكتب كتاب...";
+
+  @override
+  String get addEpisodes => "اضافة حلقات";
+
+  @override
   String get SelectAudio => "حدد كتاب صوتي";
 
   @override

@@ -819,7 +819,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                 onTap: () {
                                   Transitioner(
                                     context: context,
-                                    child: UploadHistoryscreen(),
+                                    child: UploadHistoryscreen(route: 0,),
                                     animation: AnimationType
                                         .slideTop, // Optional value
                                     duration: Duration(

@@ -97,6 +97,8 @@ abstract class Languages {
 
   String get chapter;
 
+  String get writeBook;
+
   String get search;
 
   String get giftText;
@@ -142,6 +144,8 @@ abstract class Languages {
   String get EditButton;
 
   String get editT;
+
+  String get addEpisodes;
 
   String get deleteb;
 
