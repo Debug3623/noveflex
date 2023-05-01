@@ -14,6 +14,9 @@ import 'package:new_version/new_version.dart';
 import 'package:new_version_plus/new_version_plus.dart';
 import 'package:novelflex/MixScreens/RecentNovelsScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_animtype.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:transitioner/transitioner.dart';
 import '../MixScreens/BooksScreens/BookDetailsAuthor.dart';
 import '../MixScreens/SEARCHSCREENS/GeneralCategoriesSearchScreen.dart';
@@ -23,6 +26,7 @@ import '../MixScreens/notification_screen.dart';
 import '../Models/HomeModelClass.dart';
 import '../Models/StatusCheckModel.dart';
 import '../Provider/UserProvider.dart';
+import '../UserAuthScreen/SignUpScreens/SignUpScreen_Second.dart';
 import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
@@ -227,8 +231,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       CurveType.decelerate, // Optional value
                                 );
                               } else {
-                                ToastConstant.showToast(context,
-                                    "Please register yourself to Proceed");
+                                warningGuest();
                               }
                             },
                             icon: context
@@ -378,22 +381,29 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       int itemIndex, int pageViewIndex) {
                                     return GestureDetector(
                                       onTap: () {
-                                        Transitioner(
-                                          context: context,
-                                          child: BookDetailAuthor(
-                                            bookID: _homeApiResponse!
-                                                .data.slider[itemIndex].id
-                                                .toString(),
-                                          ),
-                                          animation: AnimationType
-                                              .slideTop, // Optional value
-                                          duration: Duration(
-                                              milliseconds:
-                                                  1000), // Optional value
-                                          replacement: false, // Optional value
-                                          curveType: CurveType
-                                              .decelerate, // Optional value
-                                        );
+
+                                        if(widget.route != "guest"){
+                                          Transitioner(
+                                            context: context,
+                                            child: BookDetailAuthor(
+                                              bookID: _homeApiResponse!
+                                                  .data.slider[itemIndex].id
+                                                  .toString(),
+                                            ),
+                                            animation: AnimationType
+                                                .slideTop, // Optional value
+                                            duration: Duration(
+                                                milliseconds:
+                                                1000), // Optional value
+                                            replacement: false, // Optional value
+                                            curveType: CurveType
+                                                .decelerate, // Optional value
+                                          );
+                                        }else{
+                                          warningGuest();
+                                        }
+
+
                                       },
                                       child: Container(
                                           decoration: BoxDecoration(
@@ -618,8 +628,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     .decelerate, // Optional value
                                               );
                                             } else {
-                                              ToastConstant.showToast(context,
-                                                  "Please register yourself to Proceed");
+                                              warningGuest();
                                             }
                                           },
                                           child: Row(
@@ -679,8 +688,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       .decelerate, // Optional value
                                                 );
                                               } else {
-                                                ToastConstant.showToast(context,
-                                                    "Please register yourself to Proceed");
+                                                warningGuest();
                                               }
                                             },
                                             child: Padding(
@@ -884,8 +892,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       .decelerate, // Optional value
                                                 );
                                               } else {
-                                                ToastConstant.showToast(context,
-                                                    "Please register yourself to Proceed");
+                                                warningGuest();
                                               }
                                             },
                                             child: Row(
@@ -951,9 +958,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         .decelerate, // Optional value
                                                   );
                                                 } else {
-                                                  ToastConstant.showToast(
-                                                      context,
-                                                      "Please register yourself to Proceed");
+                                                  warningGuest();
                                                 }
                                               },
                                               child: Padding(
@@ -1201,5 +1206,31 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     }
     print("${status?.storeVersion}");
     print("${status?.appStoreLink}");
+  }
+
+
+  void warningGuest() {
+
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.warning,
+      animType: QuickAlertAnimType.slideInUp,
+      confirmBtnColor: Color(0xFF256D85),
+      showCancelBtn: true,
+      confirmBtnText: "Continue",
+      onConfirmBtnTap: (){
+        Transitioner(
+          context: context,
+          child: SignUpScreen_Second(
+            ReferralUserID: "",
+          ),
+          animation: AnimationType.slideLeft, // Optional value
+          duration: Duration(milliseconds: 1000), // Optional value
+          replacement: true, // Optional value
+          curveType: CurveType.decelerate, // Optional value
+        );
+      },
+      text: "Please register yourself to Proceed",
+    );
   }
 }
