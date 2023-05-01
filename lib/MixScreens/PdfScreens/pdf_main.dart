@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:internet_file/internet_file.dart';
 import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:pdfx/pdfx.dart';
-import 'package:universal_platform/universal_platform.dart';
+import 'dart:io';
 
 import '../../Widgets/loading_widgets.dart';
 import '../../localization/Language/languages.dart';
@@ -49,6 +49,22 @@ class _PinchPageState extends State<PinchPage> {
     var _width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor:  const Color(0xffebf5f9),
+         appBar:  Platform.isIOS ? AppBar(
+        backgroundColor: const Color(0xffebf5f9),
+        elevation: 0.0,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black54,
+            )),
+      ) : AppBar(
+           backgroundColor:  Colors.white,
+           leading: Container(),
+           toolbarHeight: 0.0,
+         ),
       // appBar: AppBar(
       //   title: const Text('Pdfx example'),
       //   actions: <Widget>[

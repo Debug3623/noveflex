@@ -439,6 +439,8 @@ abstract class Languages {
 
   String get doneText;
 
+  String get okText;
+
   String get nouploadhistory;
 
 

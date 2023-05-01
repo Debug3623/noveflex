@@ -791,7 +791,7 @@ class _UploadPdfScreenState extends State<UploadPdfScreen>
       if (jsonData['status'] == 200) {
         setState(() {
           _isDeleteLoading = false;
-          _bookEditModel!.data!.chapter!.removeWhere((item) => item!.id == id);
+          widget.Chapters!.removeWhere((item) => item!.id == id);
         });
       } else {
         ToastConstant.showToast(context, jsonData['message']);

@@ -38,11 +38,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   TextEditingController editingController = TextEditingController();
 
-
-
-
-  List<Searching> searchingItem = [
-  ];
+  List<Searching> searchingItem = [];
 
   var items = <Searching>[];
 
@@ -53,15 +49,15 @@ class _SearchScreenState extends State<SearchScreen> {
     super.initState();
   }
 
-
   void filterSearchResults(String query) {
     List<Searching> dummySearchList = <Searching>[];
     dummySearchList.addAll(searchingItem);
-    if(query.isNotEmpty) {
+    if (query.isNotEmpty) {
       List<Searching> dummyListData = <Searching>[];
       dummySearchList.forEach((item) {
-        if(item.name!.contains(query)) {
-          dummyListData.add(Searching(name: item.name,id: item.id,imageUrl: item.imageUrl));
+        if (item.name!.contains(query)) {
+          dummyListData.add(
+              Searching(name: item.name, id: item.id, imageUrl: item.imageUrl));
         }
       });
       setState(() {
@@ -75,9 +71,7 @@ class _SearchScreenState extends State<SearchScreen> {
         items.addAll(searchingItem);
       });
     }
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -109,13 +103,15 @@ class _SearchScreenState extends State<SearchScreen> {
       body: _isInternetConnected
           ? _isLoading
               ? Align(
-        alignment: Alignment.center,
-        child:   CustomCard(gif: MoreLoadingGif(type: MoreLoadingGifType.eclipse,
-          size: _height*_width*0.0002,), text: 'Loading',),
-
-
-
-      )
+                  alignment: Alignment.center,
+                  child: CustomCard(
+                    gif: MoreLoadingGif(
+                      type: MoreLoadingGifType.eclipse,
+                      size: _height * _width * 0.0002,
+                    ),
+                    text: 'Loading',
+                  ),
+                )
               : Column(
                   children: [
                     SizedBox(
@@ -129,7 +125,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       height: _height * 0.06,
                       width: _width * 0.9,
                       child: TextFormField(
-                        onTap: (){
+                        onTap: () {
                           setState(() {
                             _isSearch = !_isSearch;
                           });
@@ -165,34 +161,32 @@ class _SearchScreenState extends State<SearchScreen> {
                           itemCount: items.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
-                              onTap: (){
+                              onTap: () {
                                 print("ids: ${items[index].id.toString()}");
                                 Transitioner(
                                   context: context,
                                   child: AuthorViewByUserScreen(
-                                    user_id:items[index].id.toString() ,
+                                    user_id: items[index].id.toString(),
                                   ),
-                                  animation: AnimationType
-                                      .slideTop, // Optional value
+                                  animation:
+                                      AnimationType.slideTop, // Optional value
                                   duration: Duration(
-                                      milliseconds:
-                                      1000), // Optional value
-                                  replacement:
-                                  false, // Optional value
-                                  curveType: CurveType
-                                      .decelerate, // Optional value
+                                      milliseconds: 1000), // Optional value
+                                  replacement: false, // Optional value
+                                  curveType:
+                                      CurveType.decelerate, // Optional value
                                 );
                               },
                               child: Container(
                                 margin: EdgeInsets.all(8.0),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(10),
-                                  color: Color(0xffebf5f9)
-                                ),
+                                    borderRadius: BorderRadius.circular(10),
+                                    color: Color(0xffebf5f9)),
                                 child: ListTile(
                                   leading: CircleAvatar(
-                                    radius: _height*_width*0.00005,
-                                    backgroundImage: NetworkImage(items[index].imageUrl.toString()),
+                                    radius: _height * _width * 0.00005,
+                                    backgroundImage: NetworkImage(
+                                        items[index].imageUrl.toString()),
                                   ),
                                   title: Text('${items[index].name}'),
                                 ),
@@ -205,14 +199,16 @@ class _SearchScreenState extends State<SearchScreen> {
                     Visibility(
                       visible: !_isSearch,
                       child: GestureDetector(
-                        onTap: (){
+                        onTap: () {
                           Transitioner(
                             context: context,
                             child: AuthorSearchScreen(
                               searchCategoriesModel: _searchCategoriesModel!,
                             ),
-                            animation: AnimationType.slideBottom, // Optional value
-                            duration: Duration(milliseconds: 1000), // Optional value
+                            animation:
+                                AnimationType.slideBottom, // Optional value
+                            duration:
+                                Duration(milliseconds: 1000), // Optional value
                             replacement: false, // Optional value
                             curveType: CurveType.decelerate, // Optional value
                           );
@@ -223,31 +219,31 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: Opacity(
                                 opacity: 0.8799999952316284,
                                 child: Container(
-                                    width: _width * 0.92,
-                                    height: _height * 0.18,
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(20)),
-                                        image: DecorationImage(
-                                            image: AssetImage("assets/quotes_data/search_authorImg.jpeg",
-                                            ),
-                                            colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.modulate,),
-                                            fit: BoxFit.cover
+                                  width: _width * 0.92,
+                                  height: _height * 0.18,
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(20)),
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                          "assets/quotes_data/search_authorImg.jpeg",
                                         ),
-                                        gradient: LinearGradient(
-                                            begin:
-                                            Alignment(-0.01018629550933838, -0.01894212305545807),
-                                            end: Alignment(1.6960868120193481, 1.3281718730926514),
-                                            colors: [
-                                              Color(0xff246897),
-                                              Color(0xff1b4a6b),
-
-
-
-                                            ]),
-                                        // color: const Color(0xff3a6c83)
-                                    ),
-
+                                        colorFilter: ColorFilter.mode(
+                                          Colors.white.withOpacity(0.2),
+                                          BlendMode.modulate,
+                                        ),
+                                        fit: BoxFit.cover),
+                                    gradient: LinearGradient(
+                                        begin: Alignment(-0.01018629550933838,
+                                            -0.01894212305545807),
+                                        end: Alignment(1.6960868120193481,
+                                            1.3281718730926514),
+                                        colors: [
+                                          Color(0xff246897),
+                                          Color(0xff1b4a6b),
+                                        ]),
+                                    // color: const Color(0xff3a6c83)
+                                  ),
                                 ),
                               ),
                             ),
@@ -272,23 +268,35 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: Padding(
                           padding: EdgeInsets.only(
                               top: _height * 0.03,
-                              left:context.read<UserProvider>().SelectedLanguage=='English' ? _width*0.03 : 0.0,
-
+                              left: context
+                                          .read<UserProvider>()
+                                          .SelectedLanguage ==
+                                      'English'
+                                  ? _width * 0.03
+                                  : 0.0,
                               right: _width * 0.03),
                           child: GridView.count(
                             crossAxisCount: 2,
                             childAspectRatio: 0.98,
                             mainAxisSpacing: _height * 0.01,
-                            children: List.generate(4, (index) {
+                            children: List.generate(
+                                _searchCategoriesModel!.data!.length, (index) {
                               return GestureDetector(
-                                onTap: (){
+                                onTap: () {
                                   Transitioner(
                                     context: context,
-                                    child: GeneralCategoriesScreen(categories_id: _searchCategoriesModel!.data![index]!.categoryId.toString(),),
-                                    animation: AnimationType.slideLeft, // Optional value
-                                    duration: Duration(milliseconds: 1000), // Optional value
+                                    child: GeneralCategoriesScreen(
+                                      categories_id: _searchCategoriesModel!
+                                          .data![index]!.categoryId
+                                          .toString(),
+                                    ),
+                                    animation: AnimationType
+                                        .slideLeft, // Optional value
+                                    duration: Duration(
+                                        milliseconds: 1000), // Optional value
                                     replacement: false, // Optional value
-                                    curveType: CurveType.decelerate, // Optional value
+                                    curveType:
+                                        CurveType.decelerate, // Optional value
                                   );
                                 },
                                 child: Stack(
@@ -297,78 +305,104 @@ class _SearchScreenState extends State<SearchScreen> {
                                       child: Opacity(
                                         opacity: 0.8799999952316284,
                                         child: Container(
-                                            width: _width * 0.43,
-                                            height: _height * 0.2,
-                                            decoration: BoxDecoration(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20)),
-                                              gradient: LinearGradient(
-                                                  begin:
-                                                  Alignment(-0.01018629550933838, -0.01894212305545807),
-                                                  end: Alignment(1.6960868120193481, 1.3281718730926514),
-                                                  colors: [
-                                                    Color(0xff246897),
-                                                    Color(0xff1b4a6b),
+                                          width: _width * 0.43,
+                                          height: _height * 0.2,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20)),
+                                            gradient: LinearGradient(
+                                                begin: Alignment(
+                                                    -0.01018629550933838,
+                                                    -0.01894212305545807),
+                                                end: Alignment(
+                                                    1.6960868120193481,
+                                                    1.3281718730926514),
+                                                colors: [
+                                                  Color(0xff246897),
+                                                  Color(0xff1b4a6b),
+                                                ]),
 
-
-
-                                                  ]),
-
-                                                // color: const Color(0xff3a6c83)
-                                            ),
+                                            // color: const Color(0xff3a6c83)
+                                          ),
                                           child: CachedNetworkImage(
-                                            filterQuality:
-                                            FilterQuality.high,
-                                               fit: BoxFit.cover,
-
+                                            filterQuality: FilterQuality.high,
+                                            fit: BoxFit.cover,
                                             imageBuilder:
                                                 (context, imageProvider) =>
-                                                Container(
-                                                  decoration: BoxDecoration(
-                                                    borderRadius: BorderRadius.all(
-                                                        Radius.circular(20)),
-                                                    shape: BoxShape.rectangle,
-                                                    // borderRadius:
-                                                    // BorderRadius.circular(
-                                                    //     10),
-                                                    image: DecorationImage(
-                                                        image: imageProvider,
-                                                        colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.2), BlendMode.modulate,),
-
-                                                        fit: BoxFit.cover),
-                                                  ),
-                                                ),
-                                            imageUrl: _searchCategoriesModel!.data![index]!.imagePath.toString(),
-
+                                                    Container(
+                                              decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                                shape: BoxShape.rectangle,
+                                                // borderRadius:
+                                                // BorderRadius.circular(
+                                                //     10),
+                                                image: DecorationImage(
+                                                    image: imageProvider,
+                                                    colorFilter:
+                                                        ColorFilter.mode(
+                                                      Colors.white
+                                                          .withOpacity(0.2),
+                                                      BlendMode.modulate,
+                                                    ),
+                                                    fit: BoxFit.cover),
+                                              ),
+                                            ),
+                                            imageUrl: _searchCategoriesModel!
+                                                .data![index]!.imagePath
+                                                .toString(),
                                             placeholder: (context, url) =>
-                                            const Center(
-                                                child:
-                                                CupertinoActivityIndicator(
-                                                  color: Color(0xFF256D85),
-                                                )),
+                                                const Center(
+                                                    child:
+                                                        CupertinoActivityIndicator(
+                                              color: Color(0xFF256D85),
+                                            )),
                                             errorWidget: (context, url,
-                                                error) =>
-                                            const Center(
-                                                child: Icon(Icons
-                                                    .error_outline)),
+                                                    error) =>
+                                                const Center(
+                                                    child: Icon(
+                                                        Icons.error_outline)),
                                           ),
-                                          ),
+                                        ),
                                       ),
                                     ),
                                     Positioned(
                                         top: _height * 0.08,
-                                        left:context.read<UserProvider>().SelectedLanguage=='English' ? _width*0.1 : 0.0,
-                                        right:context.read<UserProvider>().SelectedLanguage=='Arabic' ? _width*0.1 : 0.0,
-
-
-                                        child: Text(context.read<UserProvider>().SelectedLanguage=='English' ?_searchCategoriesModel!.data![index]!.title.toString() : _searchCategoriesModel!.data![index]!.titleAr.toString(),
-                                            style: const TextStyle(
-                                                color: const Color(0xffffffff),
-                                                fontWeight: FontWeight.w700,
-                                                fontFamily: "Neckar",
-                                                fontStyle: FontStyle.normal,
-                                                fontSize: 20.0),
-                                            textAlign: TextAlign.center))
+                                        left: context
+                                                    .read<UserProvider>()
+                                                    .SelectedLanguage ==
+                                                'English'
+                                            ? _width * 0.05
+                                            : 0.0,
+                                        right: context
+                                                    .read<UserProvider>()
+                                                    .SelectedLanguage ==
+                                                'Arabic'
+                                            ? _width * 0.05
+                                            : 0.0,
+                                        child: Center(
+                                          child: Text(
+                                              context
+                                                          .read<UserProvider>()
+                                                          .SelectedLanguage ==
+                                                      'English'
+                                                  ? _searchCategoriesModel!
+                                                      .data![index]!.title
+                                                      .toString()
+                                                  : _searchCategoriesModel!
+                                                      .data![index]!.titleAr
+                                                      .toString(),
+                                              style: const TextStyle(
+                                                  color:
+                                                      const Color(0xffffffff),
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: "Neckar",
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: 15.0),
+                                              overflow: TextOverflow.ellipsis,
+                                              maxLines: 1,
+                                              textAlign: TextAlign.center),
+                                        ))
                                   ],
                                 ),
                               );
@@ -380,40 +414,42 @@ class _SearchScreenState extends State<SearchScreen> {
                   ],
                 )
           : Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text(
-              "INTERNET NOT CONNECTED",
-              style: TextStyle(
-                fontFamily: Constants.fontfamily,
-                color: Color(0xFF256D85),
-                fontWeight: FontWeight.w400,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Text(
+                    "INTERNET NOT CONNECTED",
+                    style: TextStyle(
+                      fontFamily: Constants.fontfamily,
+                      color: Color(0xFF256D85),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  SizedBox(
+                    height: _height * 0.019,
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      width: _width * 0.2,
+                      height: _height * 0.058,
+                      decoration: BoxDecoration(
+                          color: const Color(0xFF256D85),
+                          shape: BoxShape.circle),
+                      child: const Center(
+                        child: Icon(
+                          Icons.sync,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        _checkInternetConnection();
+                      });
+                    },
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: _height * 0.019,
-            ),
-            GestureDetector(
-              child: Container(
-                width: _width * 0.2,
-                height: _height * 0.058,
-                decoration: BoxDecoration(
-                    color: const Color(0xFF256D85),
-                    shape: BoxShape.circle
-                ),
-                child: const Center(
-                  child: Icon(Icons.sync,color: Colors.white,),
-                ),
-              ),
-              onTap: () {
-                setState(() {
-                  _checkInternetConnection();
-                });
-              },
-            ),
-          ],
-        ),
             ),
     );
   }
@@ -433,7 +469,8 @@ class _SearchScreenState extends State<SearchScreen> {
         _searchCategoriesModel = searchCategoriesModelFromJson(jsonData);
         SearchAuthors();
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        // ToastConstant.showToast(context, jsonData1['message'].toString());
+        Constants.warning(context);
         setState(() {
           _isLoading = false;
         });
@@ -443,7 +480,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
   Future SearchAuthors() async {
     final response =
-    await http.get(Uri.parse(ApiUtils.SEARCH_AUTHORS), headers: {
+        await http.get(Uri.parse(ApiUtils.SEARCH_AUTHORS), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -452,18 +489,22 @@ class _SearchScreenState extends State<SearchScreen> {
       var jsonData = response.body;
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
-
         _searchAuthorModel = searchAuthorModelFromJson(jsonData);
 
-        searchingItem = List<Searching>.generate(_searchAuthorModel!.data.length, (i) => Searching(name: _searchAuthorModel!.data[i].username, id: _searchAuthorModel!.data[i].id.toString(),
-            imageUrl: _searchAuthorModel!.data[i].profilePath.toString()));
+        searchingItem = List<Searching>.generate(
+            _searchAuthorModel!.data.length,
+            (i) => Searching(
+                name: _searchAuthorModel!.data[i].username,
+                id: _searchAuthorModel!.data[i].id.toString(),
+                imageUrl: _searchAuthorModel!.data[i].profilePath.toString()));
 
-         setState(() {
+        setState(() {
           items.addAll(searchingItem);
           _isLoading = false;
         });
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        // ToastConstant.showToast(context, jsonData1['message'].toString());
+        Constants.warning(context);
         setState(() {
           _isLoading = false;
         });
@@ -475,7 +516,7 @@ class _SearchScreenState extends State<SearchScreen> {
     if (this.mounted) {
       setState(() {
         _isLoading = true;
-        _isInternetConnected=true;
+        _isInternetConnected = true;
       });
     }
 
@@ -491,13 +532,13 @@ class _SearchScreenState extends State<SearchScreen> {
       }
     } else {
       SearchCategoriesApiCall();
-
     }
   }
 }
+
 class Searching {
   String? name;
   String? id;
   String? imageUrl;
-  Searching({required this.name,required this.id, this.imageUrl});
+  Searching({required this.name, required this.id, this.imageUrl});
 }

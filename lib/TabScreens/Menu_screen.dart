@@ -1014,7 +1014,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
         _statusCheckModel = statusCheckModelFromJson(jsonData);
         MENU_PROFILE_API();
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        // ToastConstant.showToast(context, jsonData1['message'].toString());
+        Constants.warning(context);
         setState(() {
           _isLoading = false;
         });
@@ -1039,7 +1040,8 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
           _isLoading = false;
         });
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        // ToastConstant.showToast(context, jsonData1['message'].toString());
+        Constants.warning(context);
         setState(() {
           _isLoading = false;
         });

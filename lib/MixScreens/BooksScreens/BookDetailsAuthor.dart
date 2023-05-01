@@ -1002,10 +1002,15 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
           _isLoading = false;
         });
       } else {
-        Constants.showToastBlack(context, "Some things went wrong");
+        // Constants.showToastBlack(context, "Some things went wrong");
+        Constants.warning(context);
+        setState(() {
+          _isLoading = false;
+        });
       }
     } else {
-      Constants.showToastBlack(context, "Some things went wrong");
+      // Constants.showToastBlack(context, "Some things went wrong");
+      Constants.warning(context);
       setState(() {
         _isLoading = false;
       });

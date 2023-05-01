@@ -661,6 +661,9 @@ class LanguageEn extends Languages {
   String get doneText => "Continue";
 
   @override
+  String get okText => "Done";
+
+  @override
   String get free1 => "Read Free";
 
   @override

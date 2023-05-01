@@ -10,6 +10,10 @@ class LanguageAr extends Languages {
   @override
   String get episodes => "الحلقات";
 
+
+  @override
+  String get okText => "منتهي";
+
   @override
   String get dialogTitle => "مرحبًا";
 

@@ -80,7 +80,15 @@ class _BookViewTabState extends State<BookViewTab>
         scrollController: _scrollController,
         backgroundColor: Colors.white,
         // elevation: 0.0,
-        expandedHeight: _height * 0.1,
+        appBarLeading: Platform.isIOS ? IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_ios,
+              color: Colors.black54,
+            )) : Container(),
+        expandedHeight: _height * 0.15,
         appBarShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_animtype.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+
+import '../Provider/UserProvider.dart';
+import '../localization/Language/languages.dart';
 
 class Constants {
   static const fontfamily = 'ProximaNovaAlt';
+
 
   static void showToastBlack(BuildContext context, String msg) {
     Fluttertoast.showToast(
@@ -25,6 +33,20 @@ class Constants {
         style: TextStyle(color: Colors.white, fontSize: 12.0),
       ),
     );
+  }
+
+  static void warning(context) {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.error,
+        animType: QuickAlertAnimType.slideInUp,
+        autoCloseDuration: Duration(seconds: 5),
+        title: 'Oops...',
+        text: 'Sorry, something went wrong',
+        confirmBtnColor: Color(0xFF256D85),
+        confirmBtnText: Languages.of(context)!.okText
+    );
+
   }
 
 }

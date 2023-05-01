@@ -330,12 +330,14 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           : _isLoading
               ? Align(
                   alignment: Alignment.center,
-                  child:   CustomCard(gif: MoreLoadingGif(type: MoreLoadingGifType.eclipse,
-                  size: _height*_width*0.0002,), text: 'Loading',),
-
-
-
-      )
+                  child: CustomCard(
+                    gif: MoreLoadingGif(
+                      type: MoreLoadingGifType.eclipse,
+                      size: _height * _width * 0.0002,
+                    ),
+                    text: 'Loading',
+                  ),
+                )
               : Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -918,7 +920,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         child: ListView.builder(
                                           physics:
                                               const BouncingScrollPhysics(),
-
                                           itemCount: _homeApiResponse!
                                               .data
                                               .categoryBooks[index]
@@ -1172,7 +1173,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           _isLoading = false;
         });
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        // ToastConstant.showToast(context, jsonData1['message'].toString());
+        Constants.warning(context);
         setState(() {
           _isLoading = false;
         });
@@ -1201,5 +1203,3 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     print("${status?.appStoreLink}");
   }
 }
-
-

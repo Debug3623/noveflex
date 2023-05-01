@@ -1,6 +1,4 @@
 import 'dart:convert';
-
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:connectivity/connectivity.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -9,6 +7,9 @@ import 'package:novelflex/UserAuthScreen/SignUpScreens/signUpScreen_Author.dart'
 import 'package:http/http.dart' as http;
 import 'package:novelflex/UserAuthScreen/login_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_animtype.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:transitioner/transitioner.dart';
 import '../../Models/UserModel.dart';
 import '../../Provider/UserProvider.dart';
@@ -293,31 +294,25 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
   }
 
   void warning() {
-    AwesomeDialog(
-        context: context,
-        dialogType: DialogType.warning,
-        animType: AnimType.topSlide,
-        title: "${Languages.of(context)!.dialogTitle} Reader",
-        desc: Languages.of(context)!.dialogTitleN,
-        btnOkOnPress: () {
 
-        },
-        btnOkColor: Color(0xFF256D85))
-      ..show();
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.warning,
+      animType: QuickAlertAnimType.slideInUp,
+      confirmBtnColor: Color(0xFF256D85),
+      text: "${Languages.of(context)!.dialogTitle} Reader ${Languages.of(context)!.dialogTitleN}",
+    );
   }
 
   void warningAuthor() {
-    AwesomeDialog(
-        context: context,
-        dialogType: DialogType.success,
-        animType: AnimType.topSlide,
-        title: "${Languages.of(context)!.dialogTitle} Author",
-        desc: Languages.of(context)!.dialogTitleY,
-        btnOkOnPress: () {
 
-        },
-        btnOkColor: Color(0xFF256D85))
-      ..show();
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.success,
+      animType: QuickAlertAnimType.slideInUp,
+      confirmBtnColor: Color(0xFF256D85),
+      text: "${Languages.of(context)!.dialogTitle} Author ${Languages.of(context)!.dialogTitleY}",
+    );
   }
 
   Future _checkInternetConnection() async {

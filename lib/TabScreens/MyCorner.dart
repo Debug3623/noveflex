@@ -381,6 +381,7 @@ class _MyCornerState extends State<MyCorner> {
   }
 
   Future SavedBooksApiCall() async {
+
     final response =
     await http.get(Uri.parse(ApiUtils.SAVED_BOOKS_API), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
@@ -396,10 +397,13 @@ class _MyCornerState extends State<MyCorner> {
         setState(() {
           _isLoading = false;
         });
+
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        // ToastConstant.showToast(context, jsonData1['message'].toString());
+        Constants.warning(context);
         setState(() {
           _isLoading = false;
+
         });
       }
     }
@@ -422,7 +426,8 @@ class _MyCornerState extends State<MyCorner> {
           _isLoading = false;
         });
       } else {
-        ToastConstant.showToast(context, jsonData1['message'].toString());
+        // ToastConstant.showToast(context, jsonData1['message'].toString());
+        Constants.warning(context);
         setState(() {
           _isLoading = false;
         });

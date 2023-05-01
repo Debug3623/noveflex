@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter_animated_icons/lottiefiles.dart';
 import 'package:lottie/lottie.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,6 +7,9 @@ import 'package:novelflex/MixScreens/FaqScreen.dart';
 import 'package:novelflex/MixScreens/ProfileScreens/HomeProfileScreen.dart';
 import 'package:novelflex/TabScreens/SearchScreen.dart';
 import 'package:provider/provider.dart';
+import 'package:quickalert/models/quickalert_animtype.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:transitioner/transitioner.dart';
 import 'MixScreens/Uploadscreens/UploadDataScreen.dart';
 import 'MixScreens/Uploadscreens/upload_history_screen.dart';
@@ -266,17 +268,15 @@ class _TabScreenState extends State<TabScreen> with TickerProviderStateMixin {
   }
 
   void warning() {
-    AwesomeDialog(
-        context: context,
-        dialogType: DialogType.warning,
-        animType: AnimType.topSlide,
-        title: "${Languages.of(context)!.dialogTitle} ${context.read<UserProvider>().UserName}",
-        desc: Languages.of(context)!.dialogTitleN,
-        btnOkOnPress: () {
+    QuickAlert.show(
+      context: context,
+      type: QuickAlertType.warning,
+      animType: QuickAlertAnimType.slideInUp,
+      text: "${Languages.of(context)!.dialogTitle} ${context.read<UserProvider>().UserName} ${Languages.of(context)!.dialogTitleN}",
+      confirmBtnColor: Color(0xFF256D85),
+      confirmBtnText: Languages.of(context)!.okText
+    );
 
-        },
-        btnOkColor: Color(0xFF256D85))
-      ..show();
   }
 
   showTermsAndConditionAlert() {

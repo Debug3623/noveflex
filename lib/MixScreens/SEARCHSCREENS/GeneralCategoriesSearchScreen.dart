@@ -340,6 +340,17 @@ class _GeneralCategoriesScreenState extends State<GeneralCategoriesScreen> {
             _checkInternetConnectionSubCategories("10");
             break;
 
+          case 'Disney Classic':
+            _checkInternetConnectionSubCategories("18");
+            break;
+          case 'Maravel':
+            _checkInternetConnectionSubCategories("22");
+            break;
+
+          case 'Bandes dessinees':
+            _checkInternetConnectionSubCategories("26");
+            break;
+
           default:
             _checkInternetConnectionSubCategories("1");
         }
