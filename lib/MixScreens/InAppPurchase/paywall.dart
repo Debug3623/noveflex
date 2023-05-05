@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:novelflex/MixScreens/InAppPurchase/singletons_data.dart';
 import 'package:novelflex/Utils/Constants.dart';
 import 'package:novelflex/localization/Language/languages.dart';
@@ -15,6 +16,7 @@ import '../../Utils/constant.dart';
 import 'package:http/http.dart' as http;
 
 import '../../Utils/toast.dart';
+import '../../Widgets/loading_widgets.dart';
 import '../BooksScreens/BookDetailsAuthor.dart';
 
 class Paywall extends StatefulWidget {
@@ -188,10 +190,13 @@ class _PaywallState extends State<Paywall> {
               visible: _isLoading,
               child: Positioned(
                 top: _height*0.325,
-                  left: _width*0.45,
-                  child: CupertinoActivityIndicator(
-                    color: Colors.white,
-                    radius: _height*0.023,
+                  left: _width*0.35,
+                  child: CustomCard(
+                    gif: MoreLoadingGif(
+                      type: MoreLoadingGifType.spinner,
+                      size: _height * _width * 0.0002,
+                    ),
+                    text: 'Loading',
                   )),
             )
           ],

@@ -335,7 +335,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                   alignment: Alignment.center,
                   child: CustomCard(
                     gif: MoreLoadingGif(
-                      type: MoreLoadingGifType.eclipse,
+                      type: MoreLoadingGifType.ripple,
                       size: _height * _width * 0.0002,
                     ),
                     text: 'Loading',
@@ -381,8 +381,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                       int itemIndex, int pageViewIndex) {
                                     return GestureDetector(
                                       onTap: () {
-
-                                        if(widget.route != "guest"){
+                                        if (widget.route != "guest") {
                                           Transitioner(
                                             context: context,
                                             child: BookDetailAuthor(
@@ -394,16 +393,15 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 .slideTop, // Optional value
                                             duration: Duration(
                                                 milliseconds:
-                                                1000), // Optional value
-                                            replacement: false, // Optional value
+                                                    1000), // Optional value
+                                            replacement:
+                                                false, // Optional value
                                             curveType: CurveType
                                                 .decelerate, // Optional value
                                           );
-                                        }else{
+                                        } else {
                                           warningGuest();
                                         }
-
-
                                       },
                                       child: Container(
                                           decoration: BoxDecoration(
@@ -774,24 +772,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                             FontStyle.normal,
                                                         fontSize: 10.0),
                                                   ),
-                                                  // Text(
-                                                  //     _homeApiResponse!
-                                                  //         .data
-                                                  //         .recentlyPublishBooks[
-                                                  //             index1]
-                                                  //         .user![0]
-                                                  //         .username
-                                                  //         .toString(),
-                                                  //     style: const TextStyle(
-                                                  //         color: const Color(
-                                                  //             0xff676767),
-                                                  //         fontWeight:
-                                                  //             FontWeight.w400,
-                                                  //         fontFamily: "Lato",
-                                                  //         fontStyle:
-                                                  //             FontStyle.normal,
-                                                  //         fontSize: 8.0),
-                                                  //     textAlign: TextAlign.left)
+                                                  Text(
+                                                      _homeApiResponse!.data.recentlyPublishBooks[index1].user![0].username.toString(),
+                                                      style: const TextStyle(
+                                                          color: const Color(
+                                                              0xff676767),
+                                                          fontWeight:
+                                                              FontWeight.w400,
+                                                          fontFamily: "Lato",
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontSize: 8.0),
+                                                      textAlign: TextAlign.left)
                                                 ],
                                               ),
                                             ),
@@ -1208,9 +1200,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
     print("${status?.appStoreLink}");
   }
 
-
   void warningGuest() {
-
     QuickAlert.show(
       context: context,
       type: QuickAlertType.warning,
@@ -1218,7 +1208,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
       confirmBtnColor: Color(0xFF256D85),
       showCancelBtn: true,
       confirmBtnText: "Continue",
-      onConfirmBtnTap: (){
+      onConfirmBtnTap: () {
         Transitioner(
           context: context,
           child: SignUpScreen_Second(

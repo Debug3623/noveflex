@@ -553,14 +553,9 @@ class _SingUpScreen_ThirdState extends State<SingUpScreen_Third> {
   }
 
   _navigateAndRemove() {
-    Transitioner(
-      context: context,
-      child: LoginScreen(),
-      animation: AnimationType.fadeIn, // Optional value
-      duration: Duration(milliseconds: 1000), // Optional value
-      replacement: true, // Optional value
-      curveType: CurveType.decelerate, // Optional value
-    );
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context){
+      return LoginScreen();
+    }));
   }
 
   signUp({String? email, String? password}) async {

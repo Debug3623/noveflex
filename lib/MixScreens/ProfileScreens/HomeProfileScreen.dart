@@ -1050,6 +1050,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                         color: Color(0xffebf5f9),
                                       )),
                                 )),
+
                           ],
                         )
               : Center(

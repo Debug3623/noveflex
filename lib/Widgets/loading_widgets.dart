@@ -16,12 +16,10 @@ class CustomCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         gradient: LinearGradient(
-            begin:
-            Alignment(-0.01018629550933838, -0.01894212305545807),
-            end: Alignment(1.6960868120193481, 1.3281718730926514),
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
             colors: [
-              Color(0xff246897),
-              Color(0xff1b4a6b),
+              Color(0xFF19547b),Color(0xFF2193b0), Color(0xFF19547b),Color(0xFF19547b)
 
 
 

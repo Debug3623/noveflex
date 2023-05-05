@@ -18,6 +18,7 @@ import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button_small.dart';
 import '../../localization/Language/languages.dart';
 import '../BooksScreens/BookDetailsAuthor.dart';
+import 'dart:io';
 import 'CardScanner.dart';
 
 class StripePayment extends StatefulWidget {
@@ -57,153 +58,193 @@ class _StripePaymentState extends State<StripePayment> {
   String? cvV;
   String? amount= "3";
 
+
+
   @override
   Widget build(BuildContext context) {
     var _height = MediaQuery.of(context).size.height;
     var _width = MediaQuery.of(context).size.width;
     return  Scaffold(
       backgroundColor: const Color(0xffebf6f9),
-      appBar: AppBar(
-        backgroundColor: const Color(0xffebf5f9),
-        elevation: 0.0,
-        leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black54,
-            )),
-      ),
-      body:SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(height: _height*0.03,),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: CreditCardForm(
-                  theme: CreditCardLightTheme(),
-                  onChanged: (CreditCardResult result) {
+      // appBar: AppBar(
+      //   backgroundColor: const Color(0xffebf5f9),
+      //   elevation: 0.0,
+      //   leading: IconButton(
+      //       onPressed: () {
+      //         Navigator.pop(context);
+      //       },
+      //       icon: Icon(
+      //         Icons.arrow_back_ios,
+      //         color: Colors.black54,
+      //       )),
+      // ),
+      body:Container(
 
-                    cardNumber=result.cardNumber;
-                    cardHolderName=result.cardHolderName;
-                    expMonth=result.expirationMonth;
-                    expYear=result.expirationYear;
-                    cvV=result.cvc;
-
-                    print(result.cardNumber);
-                    print(result.cardHolderName);
-                    print(result.expirationMonth);
-                    print(result.expirationYear);
-                    print(result.cardType);
-                    print(result.cvc);
-                  },
-                ),
-              ),
-              SizedBox(height: _height*0.04,),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: 110,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10)
-                        ),
-                        boxShadow: [BoxShadow(
-                            color: const Color(0x17000000),
-                            offset: Offset(0,5),
-                            blurRadius: 16,
-                            spreadRadius: 0
-                        )] ,
-                        color: const Color(0xffffffff)
-                    ),
-                    child:  SizedBox(
-                        height: _height*0.03,
-                        width: _width*0.05,
-                        child: Image.asset("assets/quotes_data/matercard_withDraw.png")),
-                  ),
-                  Container(
-                    width: 110,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10)
-                        ),
-
-                        boxShadow: [BoxShadow(
-                            color: const Color(0x17000000),
-                            offset: Offset(0,5),
-                            blurRadius: 16,
-                            spreadRadius: 0
-                        )] ,
-                        color: const Color(0xffffffff)
-                    ),
-                    child:  SizedBox(
-                        height: _height*0.03,
-                        width: _width*0.05,
-                        child: Image.asset("assets/quotes_data/bank_imag.png")),
-                  ),
-                  Container(
-                    width: 110,
-                    height: 100,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(
-                            Radius.circular(10)
-                        ),
-                        boxShadow: [BoxShadow(
-                            color: const Color(0x17000000),
-                            offset: Offset(0,5),
-                            blurRadius: 16,
-                            spreadRadius: 0
-                        )] ,
-                        color: const Color(0xffffffff)
-                    ),
-                    child:  SizedBox(
-                        height: _height*0.03,
-                        width: _width*0.05,
-                        child: Image.asset("assets/quotes_data/paypal_img.png")),
-                  ),
-                ],
-              ),
-              SizedBox(height: _height*0.04,),
-              Container(
-                margin: EdgeInsets.only(top: _height * 0.03),
-                child: ResuableMaterialButtonSmall(
-                  onpress: () {
-                    if(cardHolderName!.isNotEmpty && cardNumber!.isNotEmpty && expMonth!.isNotEmpty &&
-                    expYear!.isNotEmpty && cvV!.isNotEmpty){
-                      _checkInternetConnection();
-                    }else{
-                      Constants.showToastBlack(context, "Please fill all the Fields with Correct information");
-                    }
-
-                  },
-                  buttonname: Languages.of(context)!.subscribeTxt,
-                ),
-              ),
-              Visibility(
-                 visible: _isLoading,
-                 child : Padding(
-                   padding:  EdgeInsets.only(top: _height*0.1),
-                   child: const Center(
-                child: CupertinoActivityIndicator(),
-              ),
-                 )),
-              // Container(
-              //   margin: EdgeInsets.only(top: _height * 0.03),
-              //   child: ResuableMaterialButtonSmall(
-              //     onpress: () {
-              //       scanCard();
-              //     },
-              //     buttonname: Languages.of(context)!.scan,
-              //   ),
-              // ),
-              SizedBox(),
-            ],
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: [Color(0xFF19547b),Color(0xFF43cea2), Color(0xFF19547b),],
           ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: _height*0.02,),
+           Platform.isIOS ? IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: const Color(0xffffffff),
+                )) : Container(),
+            SizedBox(height: _height*0.01,),
+            Center(
+              child: SizedBox(
+                height: _height * 0.2,
+                width: _width * 0.4,
+                child: Image.asset('assets/quotes_data/NoPath_3x-removebg-preview.png',
+                ),
+              ),
+            ),
+            Center(
+              child: Text(
+                  Languages.of(context)!.amountAndroid,
+                  style: const TextStyle(
+                      color:  const Color(0xffffffff),
+                      fontWeight: FontWeight.w300,
+                      fontFamily: "Alexandria",
+                      fontStyle:  FontStyle.normal,
+                      fontSize: 20.0
+                  ),
+                  textAlign: TextAlign.center
+              ),
+            ),
+            SizedBox(height: _height*0.03,),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: CreditCardForm(
+                theme: CreditCardLightTheme(),
+                onChanged: (CreditCardResult result) {
+
+                  cardNumber=result.cardNumber;
+                  cardHolderName=result.cardHolderName;
+                  expMonth=result.expirationMonth;
+                  expYear=result.expirationYear;
+                  cvV=result.cvc;
+
+                  print(result.cardNumber);
+                  print(result.cardHolderName);
+                  print(result.expirationMonth);
+                  print(result.expirationYear);
+                  print(result.cardType);
+                  print(result.cvc);
+                },
+              ),
+            ),
+            SizedBox(height: _height*0.04,),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Container(
+                  width: 110,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      ),
+                      boxShadow: [BoxShadow(
+                          color: const Color(0x17000000),
+                          offset: Offset(0,5),
+                          blurRadius: 16,
+                          spreadRadius: 0
+                      )] ,
+                      color: const Color(0xffebf5f9)
+                  ),
+                  child:  SizedBox(
+                      height: _height*0.03,
+                      width: _width*0.05,
+                      child: Image.asset("assets/quotes_data/matercard_withDraw.png")),
+                ),
+                Container(
+                  width: 110,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      ),
+
+                      boxShadow: [BoxShadow(
+                          color: const Color(0x17000000),
+                          offset: Offset(0,5),
+                          blurRadius: 16,
+                          spreadRadius: 0
+                      )] ,
+                      color: const Color(0xffebf5f9)
+                  ),
+                  child:  SizedBox(
+                      height: _height*0.03,
+                      width: _width*0.05,
+                      child: Image.asset("assets/quotes_data/bank_imag.png")),
+                ),
+                Container(
+                  width: 110,
+                  height: 100,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(
+                          Radius.circular(10)
+                      ),
+                      boxShadow: [BoxShadow(
+                          color: const Color(0x17000000),
+                          offset: Offset(0,5),
+                          blurRadius: 16,
+                          spreadRadius: 0
+                      )] ,
+                      color: const Color(0xffebf5f9)
+                  ),
+                  child:  SizedBox(
+                      height: _height*0.03,
+                      width: _width*0.05,
+                      child: Image.asset("assets/quotes_data/paypal_img.png")),
+                ),
+              ],
+            ),
+            SizedBox(height: _height*0.04,),
+            Container(
+              margin: EdgeInsets.only(top: _height * 0.03),
+              child: ResuableMaterialButtonSmall(
+                onpress: () {
+                  if(cardHolderName!.isNotEmpty && cardNumber!.isNotEmpty && expMonth!.isNotEmpty &&
+                  expYear!.isNotEmpty && cvV!.isNotEmpty){
+                    _checkInternetConnection();
+                  }else{
+                    Constants.showToastBlack(context, "Please fill all the Fields with Correct information");
+                  }
+
+                },
+                buttonname: Languages.of(context)!.subscribeTxt,
+              ),
+            ),
+            Visibility(
+               visible: _isLoading,
+               child : Padding(
+                 padding:  EdgeInsets.only(top: _height*0.1),
+                 child: const Center(
+              child: CupertinoActivityIndicator(),
+            ),
+               )),
+            // Container(
+            //   margin: EdgeInsets.only(top: _height * 0.03),
+            //   child: ResuableMaterialButtonSmall(
+            //     onpress: () {
+            //       scanCard();
+            //     },
+            //     buttonname: Languages.of(context)!.scan,
+            //   ),
+            // ),
+            SizedBox(),
+          ],
         ),
       ),
     );
@@ -305,3 +346,5 @@ class _StripePaymentState extends State<StripePayment> {
     }
   }
 }
+
+

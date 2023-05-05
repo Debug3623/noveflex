@@ -56,6 +56,9 @@ android {
         targetSdkVersion 33
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        ndk {
+            debugSymbolLevel 'FULL'
+        }
     }
 
 
@@ -72,6 +75,7 @@ android {
         release {
             shrinkResources false
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
     }
@@ -87,4 +91,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-wallet:19.1.0'// Add This Line Here.
 
 
+}
+
+configurations.all {
+    exclude group: 'com.google.android.gms', module: 'play-services-safetynet'
 }

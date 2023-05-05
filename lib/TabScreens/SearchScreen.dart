@@ -106,7 +106,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   alignment: Alignment.center,
                   child: CustomCard(
                     gif: MoreLoadingGif(
-                      type: MoreLoadingGifType.eclipse,
+                      type: MoreLoadingGifType.ripple,
                       size: _height * _width * 0.0002,
                     ),
                     text: 'Loading',

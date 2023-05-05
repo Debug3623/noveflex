@@ -107,7 +107,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                         ),
                         Positioned(
                           left: _width * 0.05,
-                          top: _height * 0.21,
+                          top: _height * 0.23,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -134,10 +134,10 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                         fit: BoxFit.cover)),
                               ),
                               SizedBox(
-                                width: _width * 0.03,
+                                width: _width * 0.05,
                               ),
                               Padding(
-                                padding: EdgeInsets.only(top: _height * 0.06),
+                                padding: EdgeInsets.only(top: _height * 0.05),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -188,219 +188,273 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                   ],
                                 ),
                               ),
-                              Column(
-                                children: [
-                                  Visibility(
-                                    visible: widget.user_id.toString() ==
-                                        context.read<UserProvider>().UserID,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        top: _height * 0.1,
-                                        left: context
-                                                    .read<UserProvider>()
-                                                    .SelectedLanguage ==
-                                                'English'
-                                            ? _width * 0.15
-                                            : 0.0,
-                                        right: context
-                                                    .read<UserProvider>()
-                                                    .SelectedLanguage ==
-                                                'Arabic'
-                                            ? _width * 0.15
-                                            : 0.0,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          Platform.isIOS
-                                              ? Share.share(
-                                                  'https://apps.apple.com/ae/app/novelflex/id1661629198')
-                                              : Share.share(
-                                                  'https://play.google.com/store/apps/details?id=com.appcom.estisharati.novel.flex');
-                                        },
-                                        child: Container(
-                                          width: _width * 0.25,
-                                          height: _height * 0.04,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5)),
-                                              border: Border.all(
-                                                  color:
-                                                      const Color(0xff3a6c83),
-                                                  width: 1),
-                                              color: Color(0xffebf5f9)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              Icon(Icons.share,
-                                                  color:
-                                                      const Color(0xff3a6c83),
-                                                size: _width*_height*0.00006,),
-
-                                              Text(
-                                                  Languages.of(context)!
-                                                      .profile,
-                                                  style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff3a6c83),
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      fontFamily: "Lato",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 10.0),
-                                                  textAlign: TextAlign.left)
-                                            ],
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          left: _width * 0.57,
+                          top: _height * 0.21,
+                          child: Column(
+                            children: [
+                              Visibility(
+                                visible: widget.user_id.toString() ==
+                                    context.read<UserProvider>().UserID,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: _height * 0.1,
+                                    left: context
+                                                .read<UserProvider>()
+                                                .SelectedLanguage ==
+                                            'English'
+                                        ? _width * 0.15
+                                        : 0.0,
+                                    right: context
+                                                .read<UserProvider>()
+                                                .SelectedLanguage ==
+                                            'Arabic'
+                                        ? _width * 0.15
+                                        : 0.0,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Platform.isIOS
+                                          ? Share.share(
+                                              'https://apps.apple.com/ae/app/novelflex/id1661629198')
+                                          : Share.share(
+                                              'https://play.google.com/store/apps/details?id=com.appcom.estisharati.novel.flex');
+                                    },
+                                    child: Container(
+                                      width: _width * 0.25,
+                                      height: _height * 0.04,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5)),
+                                          border: Border.all(
+                                              color: const Color(0xff3a6c83),
+                                              width: 1),
+                                          color: Color(0xffebf5f9)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          Icon(
+                                            Icons.share,
+                                            color: const Color(0xff3a6c83),
+                                            size: _width * _height * 0.00006,
                                           ),
-                                        ),
+                                          Text(Languages.of(context)!.profile,
+                                              style: const TextStyle(
+                                                  color:
+                                                      const Color(0xff3a6c83),
+                                                  fontWeight: FontWeight.w800,
+                                                  fontFamily: "Lato",
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: 10.0),
+                                              textAlign: TextAlign.left)
+                                        ],
                                       ),
                                     ),
                                   ),
-                                  Visibility(
-                                    visible: widget.user_id.toString() !=
-                                        context.read<UserProvider>().UserID,
-                                    child: Padding(
-                                      padding: EdgeInsets.only(
-                                        top: _height * 0.07,
-                                        left: context
-                                                    .read<UserProvider>()
-                                                    .SelectedLanguage ==
-                                                'English'
-                                            ? _width * 0.15
-                                            : 0.0,
-                                        right: context
-                                                    .read<UserProvider>()
-                                                    .SelectedLanguage ==
-                                                'Arabic'
-                                            ? _width * 0.15
-                                            : 0.0,
-                                      ),
-                                      child: GestureDetector(
-                                        onTap: () {
-                                          setState(() {
-                                            FollowOrUnfollow =
-                                                !FollowOrUnfollow!;
-                                          });
-                                          FOLLOW_AND_UNFOLLOW();
-                                        },
-                                        child: Container(
-                                          width: _width * 0.25,
-                                          height: _height * 0.04,
-                                          decoration: BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(5)),
-                                              border: Border.all(
+                                ),
+                              ),
+                              Visibility(
+                                visible: widget.user_id.toString() !=
+                                    context.read<UserProvider>().UserID,
+                                child: Padding(
+                                  padding: EdgeInsets.only(
+                                    top: _height * 0.07,
+                                    left: context
+                                                .read<UserProvider>()
+                                                .SelectedLanguage ==
+                                            'English'
+                                        ? _width * 0.15
+                                        : 0.0,
+                                    right: context
+                                                .read<UserProvider>()
+                                                .SelectedLanguage ==
+                                            'Arabic'
+                                        ? _width * 0.15
+                                        : 0.0,
+                                  ),
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        FollowOrUnfollow = !FollowOrUnfollow!;
+                                      });
+                                      FOLLOW_AND_UNFOLLOW();
+                                    },
+                                    child: Container(
+                                      width: _width * 0.25,
+                                      height: _height * 0.04,
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                              Radius.circular(5)),
+                                          border: Border.all(
+                                              color: const Color(0xff3a6c83),
+                                              width: 1),
+                                          color: Color(0xffebf5f9)),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceAround,
+                                        children: [
+                                          FollowOrUnfollow!
+                                              ? Icon(
+                                                  Icons
+                                                      .notification_add_outlined,
+                                                  color:
+                                                      const Color(0xff3a6c83))
+                                              : Icon(
+                                                  Icons.person_add,
                                                   color:
                                                       const Color(0xff3a6c83),
-                                                  width: 1),
-                                              color: Color(0xffebf5f9)),
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            children: [
-                                              FollowOrUnfollow!
-                                                  ? Icon(
-                                                      Icons
-                                                          .notification_add_outlined,
-                                                      color: const Color(
-                                                          0xff3a6c83))
-                                                  : Icon(
-                                                      Icons.person_add,
-                                                      color: const Color(
-                                                          0xff3a6c83),
-                                                    ),
-                                              Text(
-                                                  FollowOrUnfollow!
-                                                      ? Languages.of(context)!
-                                                          .follow_author
-                                                      : Languages.of(context)!
-                                                          .unfollow_text,
-                                                  style: const TextStyle(
-                                                      color: const Color(
-                                                          0xff3a6c83),
-                                                      fontWeight:
-                                                          FontWeight.w800,
-                                                      fontFamily: "Lato",
-                                                      fontStyle:
-                                                          FontStyle.normal,
-                                                      fontSize: 10.0),
-                                                  textAlign: TextAlign.left)
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                  Platform.isIOS
-                                      ? Container()
-                                      : Visibility(
-                                          visible: widget.user_id.toString() !=
-                                              context
-                                                  .read<UserProvider>()
-                                                  .UserID,
-                                          child: Padding(
-                                            padding: EdgeInsets.only(
-                                              top: _height * 0.01,
-                                              left: context
-                                                          .read<UserProvider>()
-                                                          .SelectedLanguage ==
-                                                      'English'
-                                                  ? _width * 0.15
-                                                  : 0.0,
-                                              right: context
-                                                          .read<UserProvider>()
-                                                          .SelectedLanguage ==
-                                                      'Arabic'
-                                                  ? _width * 0.15
-                                                  : 0.0,
-                                            ),
-                                            child: GestureDetector(
-                                              onTap: () {
-                                                _giftSheet(context);
-                                              },
-                                              child: Container(
-                                                width: _width * 0.25,
-                                                height: _height * 0.04,
-                                                decoration: BoxDecoration(
-                                                    borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(5)),
-                                                    border: Border.all(
-                                                        color: Colors.white,
-                                                        width: 1),
-                                                    color: Color(0xff3a6c83)),
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceAround,
-                                                  children: [
-                                                    Icon(Icons.card_giftcard,
-                                                        color: Colors.white),
-                                                    Text(
-                                                      Languages.of(context)!
-                                                          .giftAuthor,
-                                                      style: const TextStyle(
-                                                          color: Colors.white,
-                                                          fontWeight:
-                                                              FontWeight.w800,
-                                                          fontFamily: "Lato",
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 10.0),
-                                                    )
-                                                  ],
                                                 ),
-                                              ),
+                                          Text(
+                                              FollowOrUnfollow!
+                                                  ? Languages.of(context)!
+                                                      .follow_author
+                                                  : Languages.of(context)!
+                                                      .unfollow_text,
+                                              style: const TextStyle(
+                                                  color:
+                                                      const Color(0xff3a6c83),
+                                                  fontWeight: FontWeight.w800,
+                                                  fontFamily: "Lato",
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: 10.0),
+                                              textAlign: TextAlign.left)
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(
+                                height: _height * 0.03,
+                              ),
+                              Platform.isIOS
+                                  ? Container()
+                                  : Visibility(
+                                      visible: widget.user_id.toString() !=
+                                          context.read<UserProvider>().UserID,
+                                      child: Padding(
+                                        padding: EdgeInsets.only(
+                                          top: _height * 0.01,
+                                          left: context
+                                                      .read<UserProvider>()
+                                                      .SelectedLanguage ==
+                                                  'English'
+                                              ? _width * 0.15
+                                              : 0.0,
+                                          right: context
+                                                      .read<UserProvider>()
+                                                      .SelectedLanguage ==
+                                                  'Arabic'
+                                              ? _width * 0.15
+                                              : 0.0,
+                                        ),
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            _giftSheet(context);
+                                          },
+                                          child: Container(
+                                            width: _width * 0.25,
+                                            height: _height * 0.04,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(5)),
+                                                border: Border.all(
+                                                    color: Colors.white,
+                                                    width: 1),
+                                                color: Color(0xff3a6c83)),
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.spaceAround,
+                                              children: [
+                                                Icon(Icons.card_giftcard,
+                                                    color: Colors.white),
+                                                Text(
+                                                  Languages.of(context)!
+                                                      .giftAuthor,
+                                                  style: const TextStyle(
+                                                      color: Colors.white,
+                                                      fontWeight:
+                                                          FontWeight.w800,
+                                                      fontFamily: "Lato",
+                                                      fontStyle:
+                                                          FontStyle.normal,
+                                                      fontSize: 10.0),
+                                                )
+                                              ],
                                             ),
                                           ),
                                         ),
-                                ],
+                                      ),
+                                    ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          left: _width * 0.05,
+                          top: _height * 0.36,
+                          child: Row(
+                            children: [
+                              Container(
+                                height: _height * 0.05,
+                                width: _width * 0.08,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/quotes_data/fb_icon.png"))),
+                              ),
+                              SizedBox(
+                                width: _width * 0.025,
+                              ),
+                              Container(
+                                height: _height * 0.05,
+                                width: _width * 0.08,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/quotes_data/yb_icon.png"))),
+                              ),
+                              SizedBox(
+                                width: _width * 0.025,
+                              ),
+                              Container(
+                                height: _height * 0.05,
+                                width: _width * 0.08,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/quotes_data/insta_icon.png"))),
+                              ),
+                              SizedBox(
+                                width: _width * 0.025,
+                              ),
+                              Container(
+                                height: _height * 0.05,
+                                width: _width * 0.08,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/quotes_data/tw_icon.png"))),
+                              ),
+                              SizedBox(
+                                width: _width * 0.025,
+                              ),
+                              Container(
+                                height: _height * 0.05,
+                                width: _width * 0.08,
+                                decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                        image: AssetImage(
+                                            "assets/quotes_data/tk_icon.png"))),
                               ),
                             ],
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.39,
+                          top: _height * 0.43,
                           left: _width * 0.1,
                           right: _width * 0.1,
                           child: Opacity(
@@ -413,7 +467,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.4,
+                          top: _height * 0.43,
                           child: Container(
                             margin: EdgeInsets.all(16.0),
                             height: _height * 0.2,
@@ -458,8 +512,12 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                         ),
                                         Text(
                                           _authorProfileViewModel!
-                                              .data.description
-                                              .toString(),
+                                                      .data.description ==
+                                                  null
+                                              ? "..."
+                                              : _authorProfileViewModel!
+                                                  .data.description
+                                                  .toString(),
                                           style: const TextStyle(
                                               color: const Color(0xff676767),
                                               fontWeight: FontWeight.w400,
@@ -478,7 +536,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.64,
+                          top: _height * 0.67,
                           left: context.read<UserProvider>().SelectedLanguage ==
                                   'English'
                               ? _width * 0.05
@@ -503,7 +561,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.67,
+                          top: _height * 0.7,
                           child: _authorProfileViewModel!.data.book.length == 0
                               ? Padding(
                                   padding:

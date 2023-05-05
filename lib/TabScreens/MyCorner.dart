@@ -25,7 +25,6 @@ class MyCorner extends StatefulWidget {
 }
 
 class _MyCornerState extends State<MyCorner> {
-
   SavedBooksModel? _savedBooksModel;
   LikesBooksModel? _likesBooksModel;
 
@@ -37,6 +36,7 @@ class _MyCornerState extends State<MyCorner> {
     _checkInternetConnection();
     super.initState();
   }
+
   bool saved = true;
   bool liked = false;
   bool history = false;
@@ -47,7 +47,10 @@ class _MyCornerState extends State<MyCorner> {
     return Scaffold(
       backgroundColor: const Color(0xffebf5f9),
       appBar: AppBar(
-        leading: Container(),
+        // leading: Container(
+        //   width: 0.0,
+        //   height: 0.0,
+        // ),
         title: Text(Languages.of(context)!.myCorner,
             style: const TextStyle(
                 color: const Color(0xff2a2a2a),
@@ -124,13 +127,14 @@ class _MyCornerState extends State<MyCorner> {
                       height: _height * 0.04,
                       child: Center(
                         child: Text(
-                         "",
+                          "",
                           style: _widgetTextStyle(),
                         ),
                       ),
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(17)),
-                          color: history ? Color(0xffebf5f9): Color(0xffebf5f9))),
+                          color:
+                              history ? Color(0xffebf5f9) : Color(0xffebf5f9))),
                 )
               ],
             ),
@@ -143,228 +147,329 @@ class _MyCornerState extends State<MyCorner> {
           Expanded(
             child: _isInternetConnected
                 ? _isLoading
-                ? Align(
-              alignment: Alignment.center,
-              child:   CustomCard(gif: MoreLoadingGif(type: MoreLoadingGifType.eclipse,
-                size: _height*_width*0.0002,), text: 'Loading',),
-
-
-
-            )
-                : saved ? Padding(
-              padding:  EdgeInsets.only(top: _height*0.02,left: _width*0.03,right: _width*0.01),
-              child: _savedBooksModel!.data.length== 0 ? Padding(
-                padding:
-                EdgeInsets.all(_height * _width * 0.0004),
-                child: Center(
-                  child: Text(
-                    Languages.of(context)!.nodata,
-                    style: const TextStyle(
-                        fontFamily: Constants.fontfamily,
-                        color: Colors.black54),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ): GridView.count(
-                crossAxisCount: 3,
-                childAspectRatio: 0.78,
-                mainAxisSpacing: _height*0.01,
-                children: List.generate(_savedBooksModel!.data.length, (index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap:(){
-                          Transitioner(
-                            context: context,
-                            child: BookDetailAuthor(
-                              bookID: _savedBooksModel!
-                                  .data[index].id
-                                  .toString(),
-                            ),
-                            animation: AnimationType
-                                .slideTop, // Optional value
-                            duration: Duration(
-                                milliseconds:
-                                1000), // Optional value
-                            replacement:
-                            false, // Optional value
-                            curveType: CurveType
-                                .decelerate, // Optional value
-                          );
-                        },
-                        child: Container(
-                            width: _width*0.25,
-                            height: _height*0.15,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                ),
-                              image: DecorationImage(
-                                image: NetworkImage(_savedBooksModel!.data![index]!.imagePath.toString()),
-                                fit: BoxFit.cover
-                              ),
-                              color: Colors.green
-                            )
-                        ),
-                      ),
-                      SizedBox(height: _height*0.01,),
-                      Expanded(
-                        child: Text(
-                            _savedBooksModel!.data[index].title.toString(),
-                            style: const TextStyle(
-                                color:  const Color(0xff2a2a2a),
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Alexandria",
-                                fontStyle:  FontStyle.normal,
-                                fontSize: 12.0
-                            ),
-                            textAlign: TextAlign.left
-                        ),
-                      ),
-                      Expanded(
-                          child: Text(
-                              _savedBooksModel!.data[index].username.toString(),
-                          style: const TextStyle(
-                              color:  const Color(0xff676767),
-                              fontWeight: FontWeight.w400,
-                              fontFamily: "Lato",
-                              fontStyle:  FontStyle.normal,
-                              fontSize: 12.0
+                    ? Align(
+                        alignment: Alignment.center,
+                        child: CustomCard(
+                          gif: MoreLoadingGif(
+                            type: MoreLoadingGifType.ripple,
+                            size: _height * _width * 0.0002,
                           ),
-                          textAlign: TextAlign.left
-                      )),
-                    ],
-                  );
-                }),
-              ),
-            ) : Padding(
-              padding:  EdgeInsets.only(top: _height*0.02,left: _width*0.03,right: _width*0.01),
-              child:_likesBooksModel!.data.length== 0 ? Padding(
-                padding:
-                EdgeInsets.all(_height * _width * 0.0004),
-                child: Center(
-                  child: Text(
-                    Languages.of(context)!.nodata,
-                    style: const TextStyle(
-                        fontFamily: Constants.fontfamily,
-                        color: Colors.black54),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ): GridView.count(
-                crossAxisCount: 3,
-                childAspectRatio: 0.78,
-                mainAxisSpacing: _height*0.01,
-                children: List.generate(_likesBooksModel!.data.length, (index) {
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap:(){
-                          Transitioner(
-                            context: context,
-                            child: BookDetailAuthor(
-                              bookID: _likesBooksModel!
-                                  .data[index].id
-                                  .toString(),
-                            ),
-                            animation: AnimationType
-                                .slideTop, // Optional value
-                            duration: Duration(
-                                milliseconds:
-                                1000), // Optional value
-                            replacement:
-                            false, // Optional value
-                            curveType: CurveType
-                                .decelerate, // Optional value
-                          );
-                        },
-                        child: ClipRRect(
+                          text: 'Loading',
+                        ),
+                      )
+                    : saved
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                                top: _height * 0.02,
+                                left: _width * 0.03,
+                                right: _width * 0.01),
+                            child: _savedBooksModel!.data.length == 0
+                                ? Padding(
+                                    padding: EdgeInsets.all(
+                                        _height * _width * 0.0004),
+                                    child: Center(
+                                      child: Text(
+                                        Languages.of(context)!.nodata,
+                                        style: const TextStyle(
+                                            fontFamily: Constants.fontfamily,
+                                            color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: _savedBooksModel!.data.length,
+                                    itemBuilder: (BuildContext context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Transitioner(
+                                            context: context,
+                                            child: BookDetailAuthor(
+                                              bookID: _savedBooksModel!
+                                                  .data[index].id
+                                                  .toString(),
+                                            ),
+                                            animation: AnimationType
+                                                .slideTop, // Optional value
+                                            duration: Duration(
+                                                milliseconds:
+                                                1000), // Optional value
+                                            replacement:
+                                            false, // Optional value
+                                            curveType: CurveType
+                                                .decelerate, // Optional value
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: _height * 0.03,right: _width*0.01),
+                                          child: Container(
+                                            width: _width*0.7,
+                                            height: _height*0.12,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: const Color(0xffffffff)),
+                                            child: Row(
+                                              children: [
+                                                Container(
+                                                    width: _width * 0.2,
+                                                    height: _height * 0.15,
+                                                    margin: EdgeInsets.all(8.0),
+                                                    decoration: BoxDecoration(
+                                                        borderRadius:
+                                                            BorderRadius.all(
+                                                          Radius.circular(10),
+                                                        ),
+                                                        image: DecorationImage(
+                                                            image: NetworkImage(
+                                                                _savedBooksModel!
+                                                                    .data[
+                                                                        index]
+                                                                    .imagePath
+                                                                    .toString()),
+                                                            fit: BoxFit.cover),
+                                                        color: Colors.green)),
+                                                SizedBox(
+                                                  width: _width * 0.03,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Text(
+                                                        _savedBooksModel!
+                                                            .data[index].title
+                                                            .toString(),
+                                                        style: const TextStyle(
+                                                            color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            fontFamily:
+                                                                "Alexandria",
+                                                            fontStyle:
+                                                                FontStyle.normal,
+                                                            fontSize: 12.0),
+                                                      ),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text(
+                                                          _savedBooksModel!
+                                                              .data[index]
+                                                              .username
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: const Color(
+                                                                  0xff676767),
+                                                              fontWeight:
+                                                                  FontWeight.w400,
+                                                              fontFamily: "Lato",
+                                                              fontStyle: FontStyle
+                                                                  .normal,
+                                                              fontSize: 12.0),
+                                                        )),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox()
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+
+                                    },
+                                  ),
+                          )
+                        : Padding(
+                            padding: EdgeInsets.only(
+                                top: _height * 0.02,
+                                left: _width * 0.03,
+                                right: _width * 0.01),
+                            child: _likesBooksModel!.data.length == 0
+                                ? Padding(
+                                    padding: EdgeInsets.all(
+                                        _height * _width * 0.0004),
+                                    child: Center(
+                                      child: Text(
+                                        Languages.of(context)!.nodata,
+                                        style: const TextStyle(
+                                            fontFamily: Constants.fontfamily,
+                                            color: Colors.black54),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  )
+                                : ListView.builder(
+                                    itemCount: _likesBooksModel!.data.length,
+                                    itemBuilder: (BuildContext context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          Transitioner(
+                                            context: context,
+                                            child: BookDetailAuthor(
+                                              bookID: _likesBooksModel!
+                                                  .data[index].id
+                                                  .toString(),
+                                            ),
+                                            animation: AnimationType
+                                                .slideTop, // Optional value
+                                            duration: Duration(
+                                                milliseconds:
+                                                1000), // Optional value
+                                            replacement:
+                                            false, // Optional value
+                                            curveType: CurveType
+                                                .decelerate, // Optional value
+                                          );
+                                        },
+                                        child: Padding(
+                                          padding: EdgeInsets.only(
+                                              top: _height * 0.03,right: _width*0.01),
+                                          child: Container(
+                                            width: _width*0.7,
+                                            height: _height*0.12,
+                                            decoration: BoxDecoration(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(10)),
+                                                color: const Color(0xffffffff)),
+                                            child: Row(
+                                              children: [
+                                                ClipRRect(
+                                                  child: Container(
+                                                    margin: EdgeInsets.all(8.0),
+                                                      width: _width * 0.2,
+                                                      height: _height * 0.15,
+                                                      decoration: BoxDecoration(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                            Radius.circular(10),
+                                                          ),
+                                                          image: DecorationImage(
+                                                              image: NetworkImage(
+                                                                  _likesBooksModel!
+                                                                      .data[
+                                                                          index]
+                                                                      .imagePath
+                                                                      .toString()),
+                                                              fit:
+                                                                  BoxFit.cover),
+                                                          color: Colors.green)),
+                                                ),
+                                                SizedBox(
+                                                  width: _width * 0.03,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(),
+                                                    ),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Text(
+                                                          _likesBooksModel!
+                                                              .data[index].title
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: const Color(
+                                                                  0xff2a2a2a),
+                                                              fontWeight:
+                                                                  FontWeight.w500,
+                                                              fontFamily:
+                                                                  "Alexandria",
+                                                              fontStyle: FontStyle
+                                                                  .normal,
+                                                              fontSize: 12.0),
+                                                          textAlign:
+                                                              TextAlign.left),
+                                                    ),
+                                                    Expanded(
+                                                        flex: 1,
+                                                        child: Text(
+                                                            _likesBooksModel!
+                                                                .data[index]
+                                                                .username
+                                                                .toString(),
+                                                            style: const TextStyle(
+                                                                color: const Color(
+                                                                    0xff676767),
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontFamily:
+                                                                    "Lato",
+                                                                fontStyle:
+                                                                    FontStyle
+                                                                        .normal,
+                                                                fontSize: 12.0),
+                                                            textAlign:
+                                                                TextAlign.left)),
+                                                    Expanded(
+                                                      flex: 1,
+                                                      child: Container(),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox()
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                          )
+                : Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text(
+                          "INTERNET NOT CONNECTED",
+                          style: TextStyle(
+                            fontFamily: Constants.fontfamily,
+                            color: Color(0xFF256D85),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          height: _height * 0.019,
+                        ),
+                        GestureDetector(
                           child: Container(
-                              width: _width*0.25,
-                              height: _height*0.15,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(10),
-                                  ),
-                                  image: DecorationImage(
-                                      image: NetworkImage(_likesBooksModel!.data[index].imagePath.toString()),
-                                      fit: BoxFit.cover
-                                  ),
-                                  color: Colors.green
-                              )
-                          ),
-                        ),
-                      ),
-                      SizedBox(height: _height*0.01,),
-                      Expanded(
-                        child: Text(
-                            _likesBooksModel!.data[index].title.toString(),
-                            style: const TextStyle(
-                                color:  const Color(0xff2a2a2a),
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Alexandria",
-                                fontStyle:  FontStyle.normal,
-                                fontSize: 12.0
-                            ),
-                            textAlign: TextAlign.left
-                        ),
-                      ),
-                      Expanded(
-                          child: Text(
-                              _likesBooksModel!.data[index].username.toString(),
-                              style: const TextStyle(
-                                  color:  const Color(0xff676767),
-                                  fontWeight: FontWeight.w400,
-                                  fontFamily: "Lato",
-                                  fontStyle:  FontStyle.normal,
-                                  fontSize: 12.0
+                            width: _width * 0.2,
+                            height: _height * 0.058,
+                            decoration: BoxDecoration(
+                                color: const Color(0xFF256D85),
+                                shape: BoxShape.circle),
+                            child: const Center(
+                              child: Icon(
+                                Icons.sync,
+                                color: Colors.white,
                               ),
-                              textAlign: TextAlign.left
-                          )),
-                    ],
-                  );
-                }),
-              ),
-            )  : Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    "INTERNET NOT CONNECTED",
-                    style: TextStyle(
-                      fontFamily: Constants.fontfamily,
-                      color: Color(0xFF256D85),
-                      fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          onTap: () {
+                            setState(() {
+                              _checkInternetConnection();
+                            });
+                          },
+                        ),
+                      ],
                     ),
                   ),
-                  SizedBox(
-                    height: _height * 0.019,
-                  ),
-                  GestureDetector(
-                    child: Container(
-                      width: _width * 0.2,
-                      height: _height * 0.058,
-                      decoration: BoxDecoration(
-                          color: const Color(0xFF256D85),
-                          shape: BoxShape.circle
-                      ),
-                      child: const Center(
-                        child: Icon(Icons.sync,color: Colors.white,),
-                      ),
-                    ),
-                    onTap: () {
-                      setState(() {
-                        _checkInternetConnection();
-                      });
-                    },
-                  ),
-                ],
-              ),
-            ),
           )
         ],
       ),
@@ -381,9 +486,8 @@ class _MyCornerState extends State<MyCorner> {
   }
 
   Future SavedBooksApiCall() async {
-
     final response =
-    await http.get(Uri.parse(ApiUtils.SAVED_BOOKS_API), headers: {
+        await http.get(Uri.parse(ApiUtils.SAVED_BOOKS_API), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -397,13 +501,11 @@ class _MyCornerState extends State<MyCorner> {
         setState(() {
           _isLoading = false;
         });
-
       } else {
         // ToastConstant.showToast(context, jsonData1['message'].toString());
         Constants.warning(context);
         setState(() {
           _isLoading = false;
-
         });
       }
     }
@@ -411,7 +513,7 @@ class _MyCornerState extends State<MyCorner> {
 
   Future LikesBooksApiCall() async {
     final response =
-    await http.get(Uri.parse(ApiUtils.LIKES_BOOKS_API), headers: {
+        await http.get(Uri.parse(ApiUtils.LIKES_BOOKS_API), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -439,7 +541,7 @@ class _MyCornerState extends State<MyCorner> {
     if (this.mounted) {
       setState(() {
         _isLoading = true;
-        _isInternetConnected=true;
+        _isInternetConnected = true;
       });
     }
 
@@ -462,7 +564,7 @@ class _MyCornerState extends State<MyCorner> {
     if (this.mounted) {
       setState(() {
         _isLoading = true;
-        _isInternetConnected=true;
+        _isInternetConnected = true;
       });
     }
 

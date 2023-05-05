@@ -311,7 +311,7 @@ class LanguageEn extends Languages {
   String get faqText_long => "The Novelx platform is a platform located in the United Arab Emirates. The platform was launched in 2020. The idea of the platform is to publish literary and artistic works for all creators and amateurs in novels, manga, and comics along with manhwa and other literary works through one electronic platform.";
 
   @override
-  String get myProfile => "My Profile";
+  String get myProfile => "Author Profile";
 
   @override
   String get following => "Following";
@@ -333,10 +333,33 @@ class LanguageEn extends Languages {
   String get publishButton => "PUBLISH";
 
   @override
-  String get account => "Account";
+  String get account => "Account Setting";
 
   @override
   String get apply => "APPLY";
+
+  @override
+  String get fbLink => "Insert Facebook Link";
+
+  @override
+  String get ybLink => "Insert Youtube Link";
+
+  @override
+  String get insLink => "Insert Instagram Link";
+
+  @override
+  String get twLink => "Insert Twitter Link";
+
+  @override
+  String get tkLink => "Insert TikTok Link";
+
+
+  @override
+  String get linksText => "Social Media Links";
+
+
+  @override
+  String get addLinks => "Add Social Media Links";
 
   @override
   String get recentlyPublish => "Recently Published";
@@ -662,6 +685,9 @@ class LanguageEn extends Languages {
 
   @override
   String get okText => "Done";
+
+  @override
+  String get amountAndroid => "Get subscribe for only  3\$/Month";
 
   @override
   String get free1 => "Read Free";

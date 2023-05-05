@@ -23,6 +23,7 @@ import '../MixScreens/ProfileScreens/HomeProfileScreen.dart';
 import '../MixScreens/Uploadscreens/UploadDataScreen.dart';
 import '../MixScreens/WalletDirectory/MyWalletScreen.dart';
 import '../MixScreens/WalletDirectory/Unlock_wallet_screen_one.dart';
+import '../MixScreens/author_profile_links.dart';
 import '../MixScreens/disclimar_screen.dart';
 import '../Models/MenuProfileModel.dart';
 import '../Models/ReaderProfileModel.dart';
@@ -115,7 +116,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                     alignment: Alignment.center,
                     child: CustomCard(
                       gif: MoreLoadingGif(
-                        type: MoreLoadingGifType.eclipse,
+                        type: MoreLoadingGifType.ripple,
                         size: _height * _width * 0.0002,
                       ),
                       text: 'Loading',
@@ -227,29 +228,39 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                               ),
                               Visibility(
                                 visible:
-                                    _statusCheckModel!.data.type == "Writer",
+                                _statusCheckModel!.data.type == "Writer",
                                 child: GestureDetector(
                                   onTap: () {
-                                    CHECK_STATUS_Publish();
+                                    Transitioner(
+                                      context: context,
+                                      child: AddAuthorProfileLinks(),
+                                      animation: AnimationType
+                                          .slideLeft, // Optional value
+                                      duration: Duration(
+                                          milliseconds: 1000), // Optional value
+                                      replacement: false, // Optional value
+                                      curveType: CurveType
+                                          .decelerate, // Optional value
+                                    );
                                   },
                                   child: Padding(
                                     padding: EdgeInsets.all(_width * 0.03),
                                     child: Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
+                                      MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            Icon(Icons.menu_book_outlined,
-                                                size: _height * _width * 0.00009,
-                                                  color: Color(0xff1b4a6b),),
+                                            Icon(Icons.link,
+                                              size: _height * _width * 0.00009,
+                                              color: Color(0xff1b4a6b),),
 
                                             SizedBox(
                                               width: 8.0,
                                             ),
                                             Text(
                                                 Languages.of(context)!
-                                                    .publishNovel,
+                                                    .addLinks,
                                                 style: TextStyle(
                                                     color: Color(0xff1b4a6b),
                                                     fontWeight: FontWeight.w700,
@@ -282,14 +293,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                         milliseconds: 1000), // Optional value
                                     replacement: false, // Optional value
                                     curveType:
-                                        CurveType.decelerate, // Optional value
+                                    CurveType.decelerate, // Optional value
                                   );
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -345,7 +356,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -378,7 +389,97 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   ),
                                 ),
                               ),
+                              Visibility(
+                                visible:
+                                _statusCheckModel!.data.type == "Writer",
+                                child: GestureDetector(
+                                  onTap: () {
+                                    CHECK_STATUS_Publish();
+                                  },
+                                  child: Padding(
+                                    padding: EdgeInsets.all(_width * 0.03),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Icon(Icons.menu_book_outlined,
+                                              size: _height * _width * 0.00009,
+                                              color: Color(0xff1b4a6b),),
+
+                                            SizedBox(
+                                              width: 8.0,
+                                            ),
+                                            Text(
+                                                Languages.of(context)!
+                                                    .publishNovel,
+                                                style: TextStyle(
+                                                    color: Color(0xff1b4a6b),
+                                                    fontWeight: FontWeight.w700,
+                                                    fontFamily: "Neckar",
+                                                    fontStyle: FontStyle.normal,
+                                                    fontSize: _height *
+                                                        _width *
+                                                        0.00005),
+                                                textAlign: TextAlign.left)
+                                          ],
+                                        ),
+                                        Icon(
+                                          Icons.arrow_forward_ios,
+                                          size: _height * _width * 0.00007,
+                                          color: Color(0xff1b4a6b),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
                               GestureDetector(
+                                onTap: () {
+                                  supportTeam();
+                                },
+                                child: Padding(
+                                  padding: EdgeInsets.all(_width * 0.03),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.mark_email_read_outlined,
+                                            size: _height * _width * 0.0001,
+                                            color: Color(0xff1b4a6b),
+                                          ),
+                                          SizedBox(
+                                            width: 8.0,
+                                          ),
+                                          Text(
+                                              Languages.of(context)!
+                                                  .supportTeam,
+                                              style: TextStyle(
+                                                  color: Color(0xff1b4a6b),
+                                                  fontWeight: FontWeight.w700,
+                                                  fontFamily: "Neckar",
+                                                  fontStyle: FontStyle.normal,
+                                                  fontSize: _height *
+                                                      _width *
+                                                      0.00005),
+                                              textAlign: TextAlign.left)
+                                        ],
+                                      ),
+                                      Icon(
+                                        Icons.arrow_forward_ios,
+                                        size: _height * _width * 0.00007,
+                                        color: Color(0xff1b4a6b),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              GestureDetector(
+
                                 onTap: () {
                                   Transitioner(
                                     context: context,
@@ -527,49 +628,6 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                         )
                                       ],
                                     ),
-                                  ),
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  supportTeam();
-                                },
-                                child: Padding(
-                                  padding: EdgeInsets.all(_width * 0.03),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Row(
-                                        children: [
-                                          Icon(
-                                            Icons.mark_email_read_outlined,
-                                            size: _height * _width * 0.0001,
-                                            color: Color(0xff1b4a6b),
-                                          ),
-                                          SizedBox(
-                                            width: 8.0,
-                                          ),
-                                          Text(
-                                              Languages.of(context)!
-                                                  .supportTeam,
-                                              style: TextStyle(
-                                                  color: Color(0xff1b4a6b),
-                                                  fontWeight: FontWeight.w700,
-                                                  fontFamily: "Neckar",
-                                                  fontStyle: FontStyle.normal,
-                                                  fontSize: _height *
-                                                      _width *
-                                                      0.00005),
-                                              textAlign: TextAlign.left)
-                                        ],
-                                      ),
-                                      Icon(
-                                        Icons.arrow_forward_ios,
-                                        size: _height * _width * 0.00007,
-                                        color: Color(0xff1b4a6b),
-                                      )
-                                    ],
                                   ),
                                 ),
                               ),

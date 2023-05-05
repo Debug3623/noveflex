@@ -78,17 +78,20 @@ class _BookViewTabState extends State<BookViewTab>
       backgroundColor: const Color(0xffebf5f9),
       body: FadeScrollAppBar(
         scrollController: _scrollController,
-        backgroundColor: Colors.white,
+        elevation: 0.0,
+        backgroundColor: Color(0xffebf5f9),
         // elevation: 0.0,
-        appBarLeading: Platform.isIOS ? IconButton(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            icon: Icon(
-              Icons.arrow_back_ios,
-              color: Colors.black54,
-            )) : Container(),
-        expandedHeight: _height * 0.15,
+        appBarLeading: Platform.isIOS
+            ? IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black54,
+                ))
+            : Container(),
+        expandedHeight: _height * 0.162,
         appBarShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(30.0),
@@ -97,61 +100,63 @@ class _BookViewTabState extends State<BookViewTab>
         ),
         fadeWidget: Container(),
         bottomWidgetHeight: 10,
-        bottomWidget: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TabBar(
-              controller: _tabController,
-              indicatorColor: Color(0xff1b4a6b),
-              tabs: [
-                Tab(
-                  child: Text(
-                    'PDF',
-                    style: const TextStyle(
-                        color: Color(0xff1b4a6b),
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Neckar",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 15.0),
+        bottomWidget: Container(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              TabBar(
+                controller: _tabController,
+                indicatorColor: Color(0xff1b4a6b),
+                tabs: [
+                  Tab(
+                    child: Text(
+                      'PDF',
+                      style: const TextStyle(
+                          color: Color(0xff1b4a6b),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Neckar",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 15.0),
+                    ),
+                    icon: Icon(
+                      Icons.menu_book,
+                      color: Color(0xff1b4a6b),
+                    ),
                   ),
-                  icon: Icon(
-                    Icons.menu_book,
-                    color: Color(0xff1b4a6b),
+                  Tab(
+                    child: Text(
+                      'Audio',
+                      style: const TextStyle(
+                          color: Color(0xff1b4a6b),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Neckar",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 15.0),
+                    ),
+                    icon: Icon(
+                      Icons.audiotrack_outlined,
+                      color: Color(0xff1b4a6b),
+                    ),
                   ),
-                ),
-                Tab(
-                  child: Text(
-                    'Audio',
-                    style: const TextStyle(
-                        color: Color(0xff1b4a6b),
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Neckar",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 15.0),
+                  Tab(
+                    child: Text(
+                      'Text',
+                      style: const TextStyle(
+                          color: Color(0xff1b4a6b),
+                          fontWeight: FontWeight.bold,
+                          fontFamily: "Neckar",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 15.0),
+                    ),
+                    icon: Icon(
+                      Icons.text_fields_outlined,
+                      color: Color(0xff1b4a6b),
+                    ),
                   ),
-                  icon: Icon(
-                    Icons.audio_file_outlined,
-                    color: Color(0xff1b4a6b),
-                  ),
-                ),
-                Tab(
-                  child: Text(
-                    'Text',
-                    style: const TextStyle(
-                        color: Color(0xff1b4a6b),
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Neckar",
-                        fontStyle: FontStyle.normal,
-                        fontSize: 15.0),
-                  ),
-                  icon: Icon(
-                    Icons.text_fields_outlined,
-                    color: Color(0xff1b4a6b),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
         child: TabBarView(
           controller: _tabController,
@@ -210,6 +215,7 @@ class _PdfTabState extends State<PdfTab> {
   @override
   void initState() {
     _checkInternetConnection();
+    BookViewApi();
     initPlatformState();
     super.initState();
   }
@@ -254,8 +260,8 @@ class _PdfTabState extends State<PdfTab> {
                                 padding: EdgeInsets.only(top: _height * 0.1),
                                 child: ClipRRect(
                                   child: Container(
-                                    width: _width * 0.6,
-                                    height: _height * 0.42,
+                                    width: _width * 0.35,
+                                    height: _height * 0.2,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(15)),
@@ -570,7 +576,7 @@ class _PdfTabState extends State<PdfTab> {
   Future BookViewApi() async {
     var map = Map<String, dynamic>();
     map['book_id'] = widget.bookId.toString();
-    map['reader_id'] = widget.readerId.toString();
+    map['reader_id'] = context.read<UserProvider>().UserID.toString();
     final response = await http.post(Uri.parse(ApiUtils.BOOK_VIEW_API),
         headers: {
           'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
@@ -582,8 +588,10 @@ class _PdfTabState extends State<PdfTab> {
       var jsonData = response.body;
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
+        print("This user already view this book");
+      } else {
         print("book_view_by_user");
-      } else {}
+      }
     }
   }
 
@@ -760,8 +768,7 @@ class _AudioTabState extends State<AudioTab> with WidgetsBindingObserver {
   bool loading = true;
   bool _isInternetConnected = true;
   GetAudioBookModel? _getAudioBookModel;
-  String? text= "";
-
+  String? text = "";
 
   @override
   void initState() {
@@ -831,24 +838,24 @@ class _AudioTabState extends State<AudioTab> with WidgetsBindingObserver {
                   )
                 : text!.isEmpty
                     ? Center(
-                      child: Text(
-                        Languages.of(context)!.nodata,
-                        style: const TextStyle(
-                            color: const Color(0xff3a6c83),
-                            fontWeight: FontWeight.w700,
-                            fontFamily: "Lato",
-                            fontStyle: FontStyle.normal,
-                            fontSize: 12.0),
-                      ),
-                    )
+                        child: Text(
+                          Languages.of(context)!.nodata,
+                          style: const TextStyle(
+                              color: const Color(0xff3a6c83),
+                              fontWeight: FontWeight.w700,
+                              fontFamily: "Lato",
+                              fontStyle: FontStyle.normal,
+                              fontSize: 12.0),
+                        ),
+                      )
                     : Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           ClipRRect(
                             child: Container(
-                              width: _width * 0.6,
-                              height: _height * 0.42,
+                              width: _width * 0.35,
+                              height: _height * 0.2,
                               decoration: BoxDecoration(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(5)),
@@ -904,23 +911,21 @@ class _AudioTabState extends State<AudioTab> with WidgetsBindingObserver {
       print('AudioLink${response.body}');
       var jsonData = json.decode(response.body);
       if (jsonData['status'] == 200) {
-
-          _getAudioBookModel = GetAudioBookModel.fromJson(jsonData);
-          print(
-            "Audio_link ${_getAudioBookModel!.data.audio.toString()}",
-          );
-          _init(_getAudioBookModel!.data.audio.toString());
-          setState(() {
-            text= "NoNull";
-            loading = false;
-          });
-
-      } else if(jsonData['status'] == 401) {
+        _getAudioBookModel = GetAudioBookModel.fromJson(jsonData);
+        print(
+          "Audio_link ${_getAudioBookModel!.data.audio.toString()}",
+        );
+        _init(_getAudioBookModel!.data.audio.toString());
         setState(() {
-          text= "";
+          text = "NoNull";
           loading = false;
         });
-      } else{
+      } else if (jsonData['status'] == 401) {
+        setState(() {
+          text = "";
+          loading = false;
+        });
+      } else {
         ToastConstant.showToast(context, "Audio does not Exits for this book");
         setState(() {
           loading = false;
@@ -1058,7 +1063,7 @@ class TextTab extends StatefulWidget {
 class _TextTabState extends State<TextTab> {
   bool loading = true;
   bool _isInternetConnected = true;
-  String? text= "notNull";
+  String? text = "notNull";
 
   @override
   void initState() {
@@ -1085,35 +1090,39 @@ class _TextTabState extends State<TextTab> {
             )
           : text!.isEmpty
               ? Center(
-                child: Text(
-                  Languages.of(context)!.nodata,
-                  style: const TextStyle(
-                      color: const Color(0xff3a6c83),
-                      fontWeight: FontWeight.w700,
-                      fontFamily: "Lato",
-                      fontStyle: FontStyle.normal,
-                      fontSize: 12.0),
-                ),
-              )
+                  child: Text(
+                    Languages.of(context)!.nodata,
+                    style: const TextStyle(
+                        color: const Color(0xff3a6c83),
+                        fontWeight: FontWeight.w700,
+                        fontFamily: "Lato",
+                        fontStyle: FontStyle.normal,
+                        fontSize: 12.0),
+                  ),
+                )
               : Center(
                   child: Padding(
-                    padding:  EdgeInsets.all(_height*0.01),
+                    padding: EdgeInsets.all(_height * 0.01),
                     child: ListView(
-                       shrinkWrap: true,
+                      shrinkWrap: true,
                       physics: BouncingScrollPhysics(),
                       children: [
-                        Text(text.toString().replaceAll("</p>", "").replaceAll("<p>", ""),
-                      style: const TextStyle(
-                          // color: const Color(0xff002333),
-                          fontWeight: FontWeight.w700,
-                          letterSpacing: 1.0,
-                          fontFamily: "Lato",
-                          height: 2,
-                          fontStyle: FontStyle.normal,
-                          fontSize: 14.0,
+                        Text(
+                          text
+                              .toString()
+                              .replaceAll("</p>", "")
+                              .replaceAll("<p>", ""),
+                          style: const TextStyle(
+                            // color: const Color(0xff002333),
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: 1.0,
+                            fontFamily: "Lato",
+                            height: 2,
+                            fontStyle: FontStyle.normal,
+                            fontSize: 14.0,
                           ),
-                      textAlign: TextAlign.start,
-                    ),
+                          textAlign: TextAlign.start,
+                        ),
                       ],
                     ),
                   ),
@@ -1134,11 +1143,10 @@ class _TextTabState extends State<TextTab> {
       print('Text_book${response.body}');
       var jsonData = json.decode(response.body);
       if (jsonData['status'] == 200) {
-
         setState(() {
-          if(jsonData['data'].toString()=="[]"){
+          if (jsonData['data'].toString() == "[]") {
             text = "";
-          }else{
+          } else {
             text = jsonData['data'][0];
           }
 
@@ -1154,7 +1162,6 @@ class _TextTabState extends State<TextTab> {
   }
 
   Future _checkInternetConnection() async {
-
     if (this.mounted) {
       var connectivityResult = await (Connectivity().checkConnectivity());
       if (!(connectivityResult == ConnectivityResult.mobile ||

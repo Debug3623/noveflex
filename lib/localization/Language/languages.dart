@@ -129,6 +129,8 @@ abstract class Languages {
 
   String get publishNovel;
 
+  String get addLinks;
+
   String get next;
 
   String get filesSelected;
@@ -185,6 +187,7 @@ abstract class Languages {
 
   String get account;
 
+  String get linksText;
 
   String get apply;
 
@@ -253,6 +256,18 @@ abstract class Languages {
   String get userName;
 
   String get email;
+
+
+  String get fbLink;
+
+  String get ybLink;
+
+  String get insLink;
+
+  String get twLink;
+
+  String get tkLink;
+
 
   String get otp;
 
@@ -434,6 +449,8 @@ abstract class Languages {
   String get sorry;
 
   String get noReview;
+
+  String get amountAndroid;
 
   String get newFpassword;
 

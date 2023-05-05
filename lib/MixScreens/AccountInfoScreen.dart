@@ -299,8 +299,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             EDIT_PROFILE_Api();
                           },
                           child: Container(
-                            width: 320,
-                            height: 50,
+                            width: _width*0.9,
+                            height: _height*0.065,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 border: Border.all(
@@ -328,8 +328,8 @@ class _AccountScreenState extends State<AccountScreen> {
                             showDeleteDialog();
                           },
                           child: Container(
-                            width: 320,
-                            height: 50,
+                            width: _width*0.9,
+                            height: _height*0.065,
                             decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(25),
                                 border: Border.all(

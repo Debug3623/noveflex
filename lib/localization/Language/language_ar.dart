@@ -10,6 +10,9 @@ class LanguageAr extends Languages {
   @override
   String get episodes => "الحلقات";
 
+  @override
+  String get amountAndroid => "احصل على الاشتراك فقط 3 دولار / شهر";
+
 
   @override
   String get okText => "منتهي";
@@ -305,7 +308,28 @@ class LanguageAr extends Languages {
   String get popular => "الأكثر شهرة";
 
   @override
-  String get account => "حساب";
+  String get account => "إعدادات الحساب";
+
+  @override
+  String get fbLink => "أدخل رابط فيسبوك";
+
+  @override
+  String get ybLink => "أدخل رابط يوتيوب";
+
+  @override
+  String get insLink => "أدخل رابط انستغرام";
+
+  @override
+  String get twLink => "أدخل رابط تويتر";
+
+  @override
+  String get tkLink => "أدخل رابط تيك توك";
+
+  @override
+  String get addLinks => "أضف روابط وسائل التواصل الاجتماعي";
+
+  @override
+  String get linksText => "روابط وسائل التواصل الاجتماعي";
 
   @override
   String get recentlyPublish => "نشرت مؤخرا";

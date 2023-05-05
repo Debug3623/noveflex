@@ -430,14 +430,9 @@ class _SignUpAuthorScreenState extends State<SignUpAuthorScreen> {
 
   _navigateAndRemove() {
 
-      Transitioner(
-        context: context,
-        child: LoginScreen(),
-        animation: AnimationType.slideLeft, // Optional value
-        duration: Duration(milliseconds: 1000), // Optional value
-        replacement: true, // Optional value
-        curveType: CurveType.decelerate, // Optional value
-      );
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (BuildContext context){
+      return LoginScreen();
+    }));
   }
 
 }

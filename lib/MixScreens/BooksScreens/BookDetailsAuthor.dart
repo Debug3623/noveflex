@@ -191,8 +191,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 PaymentStatus: _bookDetailsModel!
                                     .data!.paymentStatus
                                     .toString(),
-                                cover_url: _bookDetailsModel!
-                                    .data!.imagePath
+                                cover_url: _bookDetailsModel!.data!.imagePath
                                     .toString(),
                               ),
                               animation:
@@ -806,7 +805,8 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                 PaymentStatus: _bookDetailsModel!
                                     .data!.paymentStatus
                                     .toString(),
-                                cover_url:_bookDetailsModel!.data!.imagePath.toString(),
+                                cover_url: _bookDetailsModel!.data!.imagePath
+                                    .toString(),
                               ),
                               animation:
                                   AnimationType.slideTop, // Optional value
@@ -820,25 +820,25 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                             width: _width * 0.7,
                             height: _height * 0.05,
                             decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(25)),
-                                boxShadow: [
-                                  BoxShadow(
-                                      color: const Color(0x24000000),
-                                      offset: Offset(0, 7),
-                                      blurRadius: 14,
-                                      spreadRadius: 0)
-                                ],
-                                gradient: LinearGradient(
-                                    begin: Alignment(-0.01018629550933838,
-                                        -0.01894212305545807),
-                                    end: Alignment(1.6960868120193481,
-                                        1.3281718730926514),
-                                    colors: [
-                                      Color(0xff246897),
-                                      Color(0xff1b4a6b),
-                                    ]),
-                                ),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(25)),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: const Color(0x24000000),
+                                    offset: Offset(0, 7),
+                                    blurRadius: 14,
+                                    spreadRadius: 0)
+                              ],
+                              gradient: LinearGradient(
+                                  begin: Alignment(-0.01018629550933838,
+                                      -0.01894212305545807),
+                                  end: Alignment(
+                                      1.6960868120193481, 1.3281718730926514),
+                                  colors: [
+                                    Color(0xff246897),
+                                    Color(0xff1b4a6b),
+                                  ]),
+                            ),
                             child: Center(
                               child: Text(Languages.of(context)!.read,
                                   style: const TextStyle(
@@ -893,9 +893,7 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                                       offset: Offset(0, 7),
                                       blurRadius: 14,
                                       spreadRadius: 0),
-
                                 ],
-
                                 color: _isSaved
                                     ? Color(0xff3a6c83)
                                     : Color(0xfffafcfd)),
@@ -1065,4 +1063,5 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
       Constants.showToastBlack(context, "Some things went wrong");
     }
   }
+
 }
