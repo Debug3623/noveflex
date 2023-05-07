@@ -264,7 +264,7 @@ class _PdfTabState extends State<PdfTab> {
                                     height: _height * 0.2,
                                     decoration: BoxDecoration(
                                         borderRadius: BorderRadius.all(
-                                            Radius.circular(15)),
+                                            Radius.circular(0)),
                                         color: const Color(0xffebf5f9),
                                         image: DecorationImage(
                                             fit: BoxFit.cover,

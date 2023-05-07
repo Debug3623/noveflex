@@ -74,6 +74,8 @@ class ApiUtils {
   static const String GET_TEXT_BOOK = '$BASE/book/text';
   static const String UPDATE_AUDIO_BOOK = '$BASE/book/update/audio';
   static const String UPDATE_TEXT_BOOK = '$BASE/book/update/text';
+  static const String GET_LINKS = '$BASE/social';
+  static const String UPDATE_LINKS = '$BASE/updata/social';
 
 
 
