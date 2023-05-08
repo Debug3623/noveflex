@@ -24,7 +24,7 @@ class ApiUtils {
   static const String ADD_IMAGE_WITH_FILED_API = '$BASE/book/add';
   static const String PDF_UPLOAD_API = '$BASE/book/uploadFile';
   static const String DROPDOWN_SUB_CATEGORIES_API = '$BASE/categories/subcategories';
-  static const String AUTHOR_BOOKS_DETAILS_API = '$BASE/author/bookDetails';
+  static const String AUTHOR_BOOKS_DETAILS_API = '$BASE/author/bookLinkDetail';
   static const String SAVE_BOOK_API = '$BASE/book/saved';
   static const String READER_PROFILE_API = '$BASE/book/getReaderProfile';
   static const String CHECK_PROFILE_STATUS_API = '$BASE/home/checkUserType';

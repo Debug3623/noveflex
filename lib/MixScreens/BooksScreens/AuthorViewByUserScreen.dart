@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:share_plus/share_plus.dart';
 import 'package:transitioner/transitioner.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../Models/AuthorProfileViewModel.dart';
 import '../../Models/UserStatusTypeModel.dart';
 import '../../Provider/UserProvider.dart';
@@ -398,57 +399,133 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           top: _height * 0.36,
                           child: Row(
                             children: [
-                              Container(
-                                height: _height * 0.05,
-                                width: _width * 0.08,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/quotes_data/fb_icon.png"))),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_authorProfileViewModel!
+                                      .data.socialLink.isNotEmpty) {
+                                    if (_authorProfileViewModel!
+                                            .data.socialLink[0].facebookLink !=
+                                        null) {
+                                      _launchProfileUrls(
+                                          _authorProfileViewModel!
+                                              .data.socialLink[0].facebookLink
+                                              .toString());
+                                    } else {}
+                                  } else {
+                                    print("no_links_found");
+                                  }
+                                },
+                                child: Container(
+                                  height: _height * 0.05,
+                                  width: _width * 0.08,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "assets/quotes_data/fb_icon.png"))),
+                                ),
                               ),
                               SizedBox(
                                 width: _width * 0.025,
                               ),
-                              Container(
-                                height: _height * 0.05,
-                                width: _width * 0.08,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/quotes_data/yb_icon.png"))),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_authorProfileViewModel!
+                                      .data.socialLink.isNotEmpty) {
+                                    if (_authorProfileViewModel!
+                                            .data.socialLink[0].youtubeLink !=
+                                        null) {
+                                      _launchProfileUrls(
+                                          _authorProfileViewModel!
+                                              .data.socialLink[0].youtubeLink
+                                              .toString());
+                                    } else {}
+                                  } else {}
+                                },
+                                child: Container(
+                                  height: _height * 0.05,
+                                  width: _width * 0.08,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "assets/quotes_data/yb_icon.png"))),
+                                ),
                               ),
                               SizedBox(
                                 width: _width * 0.025,
                               ),
-                              Container(
-                                height: _height * 0.05,
-                                width: _width * 0.08,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/quotes_data/insta_icon.png"))),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_authorProfileViewModel!
+                                      .data.socialLink.isNotEmpty) {
+                                    if (_authorProfileViewModel!
+                                            .data.socialLink[0].instagramLink !=
+                                        null)
+                                      _launchProfileUrls(
+                                          _authorProfileViewModel!
+                                              .data.socialLink[0].instagramLink
+                                              .toString());
+                                  } else {}
+                                },
+                                child: Container(
+                                  height: _height * 0.05,
+                                  width: _width * 0.08,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "assets/quotes_data/insta_icon.png"))),
+                                ),
                               ),
                               SizedBox(
                                 width: _width * 0.025,
                               ),
-                              Container(
-                                height: _height * 0.05,
-                                width: _width * 0.08,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/quotes_data/tw_icon.png"))),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_authorProfileViewModel!
+                                      .data.socialLink.isNotEmpty) {
+                                    if (_authorProfileViewModel!
+                                            .data.socialLink[0].twitterLink !=
+                                        null) {
+                                      _launchProfileUrls(
+                                          _authorProfileViewModel!
+                                              .data.socialLink[0].twitterLink
+                                              .toString());
+                                    } else {}
+                                  }
+                                },
+                                child: Container(
+                                  height: _height * 0.05,
+                                  width: _width * 0.08,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "assets/quotes_data/tw_icon.png"))),
+                                ),
                               ),
                               SizedBox(
                                 width: _width * 0.025,
                               ),
-                              Container(
-                                height: _height * 0.05,
-                                width: _width * 0.08,
-                                decoration: BoxDecoration(
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            "assets/quotes_data/tk_icon.png"))),
+                              GestureDetector(
+                                onTap: () {
+                                  if (_authorProfileViewModel!
+                                      .data.socialLink.isNotEmpty) {
+                                    if (_authorProfileViewModel!
+                                            .data.socialLink[0].ticktokLink !=
+                                        null) {
+                                      _launchProfileUrls(
+                                          _authorProfileViewModel!
+                                              .data.socialLink[0].ticktokLink
+                                              .toString());
+                                    } else {}
+                                  }
+                                },
+                                child: Container(
+                                  height: _height * 0.05,
+                                  width: _width * 0.08,
+                                  decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                          image: AssetImage(
+                                              "assets/quotes_data/tk_icon.png"))),
+                                ),
                               ),
                             ],
                           ),
@@ -956,5 +1033,14 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
             ),
           );
         });
+  }
+
+  _launchProfileUrls(var link) async {
+    var url = Uri.parse(link.toString());
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 }

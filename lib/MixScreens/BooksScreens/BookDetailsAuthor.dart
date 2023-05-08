@@ -534,22 +534,30 @@ class _BookDetailAuthorState extends State<BookDetailAuthor> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-                          Text(_bookDetailsModel!.data!.bookTitle!,
-                              style: const TextStyle(
-                                  color: const Color(0xff2a2a2a),
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: "Alexandria",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 16.0),
-                              textAlign: TextAlign.left),
-                          Text(_bookDetailsModel!.data!.catgoryTitle.toString(),
-                              style: const TextStyle(
-                                  color: const Color(0xff3a6c83),
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: "Lato",
-                                  fontStyle: FontStyle.normal,
-                                  fontSize: 12.0),
-                              textAlign: TextAlign.left),
+
+                          Container(
+                            width: _width*0.4,
+                            child: Text(_bookDetailsModel!.data!.bookTitle!,
+                                style: const TextStyle(
+                                    color: const Color(0xff2a2a2a),
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Alexandria",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 16.0),
+                                overflow: TextOverflow.ellipsis,
+                                textAlign: TextAlign.left),
+                          ),
+                          Container(
+                            width: _width*0.15,
+                            child: Text(_bookDetailsModel!.data!.catgoryTitle.toString(),
+                                style: const TextStyle(
+                                    color: const Color(0xff3a6c83),
+                                    fontWeight: FontWeight.w700,
+                                    fontFamily: "Lato",
+                                    fontStyle: FontStyle.normal,
+                                    fontSize: 12.0),
+                                textAlign: TextAlign.left),
+                          ),
                           InkWell(
                             onTap: () {
                               Transitioner(
