@@ -752,25 +752,28 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       ),
                                                     ),
                                                   ),
-                                                  Text(
-                                                    _homeApiResponse!
-                                                        .data
-                                                        .recentlyPublishBooks[
-                                                            index1]
-                                                        .title
-                                                        .toString(),
-                                                    overflow:
-                                                        TextOverflow.ellipsis,
-                                                    style: const TextStyle(
-                                                        color: const Color(
-                                                            0xff2a2a2a),
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                        fontFamily:
-                                                            "Alexandria",
-                                                        fontStyle:
-                                                            FontStyle.normal,
-                                                        fontSize: 10.0),
+                                                  Container(
+                                                    width: _width*0.18,
+                                                    child: Text(
+                                                      _homeApiResponse!
+                                                          .data
+                                                          .recentlyPublishBooks[
+                                                              index1]
+                                                          .title
+                                                          .toString(),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: const TextStyle(
+                                                          color: const Color(
+                                                              0xff2a2a2a),
+                                                          fontWeight:
+                                                              FontWeight.w500,
+                                                          fontFamily:
+                                                              "Alexandria",
+                                                          fontStyle:
+                                                              FontStyle.normal,
+                                                          fontSize: 10.0),
+                                                    ),
                                                   ),
                                                   Text(
                                                       _homeApiResponse!.data.recentlyPublishBooks[index1].user![0].username.toString(),
@@ -1020,45 +1023,51 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                         ),
                                                       ),
                                                     ),
-                                                    Text(
-                                                      _homeApiResponse!
-                                                          .data
-                                                          .categoryBooks[index]
-                                                          .books[index1]
-                                                          .bookTitle
-                                                          .toString(),
-                                                      overflow:
-                                                          TextOverflow.ellipsis,
-                                                      style: const TextStyle(
-                                                          color: const Color(
-                                                              0xff2a2a2a),
-                                                          fontWeight:
-                                                              FontWeight.w500,
-                                                          fontFamily:
-                                                              "Alexandria",
-                                                          fontStyle:
-                                                              FontStyle.normal,
-                                                          fontSize: 10.0),
-                                                    ),
-                                                    Text(
+                                                    Container(
+                                                      width: _width*0.2,
+                                                      child: Text(
                                                         _homeApiResponse!
                                                             .data
-                                                            .categoryBooks[
-                                                                index]
+                                                            .categoryBooks[index]
                                                             .books[index1]
-                                                            .authorName
+                                                            .bookTitle
                                                             .toString(),
+                                                        overflow:
+                                                            TextOverflow.ellipsis,
                                                         style: const TextStyle(
                                                             color: const Color(
-                                                                0xff676767),
+                                                                0xff2a2a2a),
                                                             fontWeight:
-                                                                FontWeight.w400,
-                                                            fontFamily: "Lato",
-                                                            fontStyle: FontStyle
-                                                                .normal,
-                                                            fontSize: 8.0),
-                                                        textAlign:
-                                                            TextAlign.left)
+                                                                FontWeight.w500,
+                                                            fontFamily:
+                                                                "Alexandria",
+                                                            fontStyle:
+                                                                FontStyle.normal,
+                                                            fontSize: 10.0),
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: _width*0.2,
+                                                      child: Text(
+                                                          _homeApiResponse!
+                                                              .data
+                                                              .categoryBooks[
+                                                                  index]
+                                                              .books[index1]
+                                                              .authorName
+                                                              .toString(),
+                                                          style: const TextStyle(
+                                                              color: const Color(
+                                                                  0xff676767),
+                                                              fontWeight:
+                                                                  FontWeight.w400,
+                                                              fontFamily: "Lato",
+                                                              fontStyle: FontStyle
+                                                                  .normal,
+                                                              fontSize: 8.0),
+                                                          textAlign:
+                                                              TextAlign.left),
+                                                    )
                                                   ],
                                                 ),
                                               ),

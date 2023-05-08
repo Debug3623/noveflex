@@ -129,7 +129,11 @@ abstract class Languages {
 
   String get publishNovel;
 
+  String get publishNewNovel;
+
   String get addLinks;
+
+  String get home_text;
 
   String get next;
 

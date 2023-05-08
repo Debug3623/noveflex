@@ -43,6 +43,7 @@ import '../InAppPurchase/paywall.dart';
 import '../InAppPurchase/singletons_data.dart';
 import '../StripePayment/StripePayment.dart';
 import '../pdfViewerScreen.dart';
+import 'UploadDataScreen.dart';
 
 class BookUploadEditTabScreen extends StatefulWidget {
   final bookId;
@@ -752,7 +753,8 @@ class _UploadPdfScreenState extends State<UploadPdfScreen>
               docUploader = false;
               checkUpload = true;
             });
-            ToastConstant.showToast(context, "Books Uploaded Successfully");
+            ToastConstant.showToast(context, "Books Published Successfully");
+            _showSimpleDialog();
             setState(() {
               docUploader = false;
               checkUpload = true;
@@ -805,6 +807,131 @@ class _UploadPdfScreenState extends State<UploadPdfScreen>
         _isDeleteLoading = false;
       });
     }
+  }
+
+  Future<void> _showSimpleDialog() async {
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    await showDialog<void>(
+        context: context,
+        builder: (BuildContext ctx) {
+          return SimpleDialog(
+            // <-- SEE HERE
+            contentPadding: EdgeInsets.all(width * 0.1),
+            children: <Widget>[
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(ctx);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.add_link_outlined,
+                      color: Color(0xff3a6c83),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                      },
+                      child: Text(Languages.of(context)!.addEpisodes),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(ctx);
+                  Transitioner(
+                    context: ctx,
+                    child: UploadDataScreen(),
+                    animation: AnimationType.slideLeft,
+                    // Optional value
+                    duration: Duration(milliseconds: 1000),
+                    // Optional value
+                    replacement: true,
+                    // Optional value
+                    curveType: CurveType.decelerate, // Optional value
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.menu_book_sharp,
+                      color: Color(0xff3a6c83),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        Transitioner(
+                          context: ctx,
+                          child: UploadDataScreen(),
+                          animation: AnimationType.slideLeft,
+                          // Optional value
+                          duration: Duration(milliseconds: 1000),
+                          // Optional value
+                          replacement: true,
+                          // Optional value
+                          curveType: CurveType.decelerate, // Optional value
+                        );
+                      },
+                      child: Text(Languages.of(context)!.publishNewNovel),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: height * 0.03,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(ctx);
+                  Transitioner(
+                    context: ctx,
+                    child: TabScreen(),
+                    animation: AnimationType.slideLeft,
+                    // Optional value
+                    duration: Duration(milliseconds: 1000),
+                    // Optional value
+                    replacement: true,
+                    // Optional value
+                    curveType: CurveType.decelerate, // Optional value
+                  );
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Icon(
+                      Icons.home,
+                      color: Color(0xff3a6c83),
+                    ),
+                    SimpleDialogOption(
+                      onPressed: () {
+                        Navigator.pop(ctx);
+                        Transitioner(
+                          context: ctx,
+                          child: TabScreen(),
+                          animation: AnimationType.slideLeft,
+                          // Optional value
+                          duration: Duration(milliseconds: 1000),
+                          // Optional value
+                          replacement: true,
+                          // Optional value
+                          curveType: CurveType.decelerate, // Optional value
+                        );
+                      },
+                      child: Text(Languages.of(context)!.home_text),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          );
+        });
   }
 }
 

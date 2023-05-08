@@ -345,6 +345,12 @@ class LanguageEn extends Languages {
   String get ybLink => "Insert Youtube Link";
 
   @override
+  String get home_text => "Go Home";
+
+  @override
+  String get publishNewNovel => "Publish New Novel";
+
+  @override
   String get insLink => "Insert Instagram Link";
 
   @override

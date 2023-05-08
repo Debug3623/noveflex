@@ -317,6 +317,12 @@ class LanguageAr extends Languages {
   String get ybLink => "أدخل رابط يوتيوب";
 
   @override
+  String get home_text => "اذهب للمنزل";
+
+  @override
+  String get publishNewNovel => "نشر رواية جديدة";
+
+  @override
   String get insLink => "أدخل رابط انستغرام";
 
   @override

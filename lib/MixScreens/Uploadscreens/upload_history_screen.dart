@@ -152,7 +152,7 @@ class _UploadHistoryscreenState extends State<UploadHistoryscreen> {
               children: [
                 Positioned(
                   child: ListView.builder(
-                  itemCount:_userUploadHistoryModel!.data!.length,
+                  itemCount:_userUploadHistoryModel!.data.length,
                   itemBuilder: (BuildContext context, index){
                     return GestureDetector(
                       onTap: (){
@@ -246,15 +246,20 @@ class _UploadHistoryscreenState extends State<UploadHistoryscreen> {
                               GestureDetector(
                                 onTap: (){
 
-                                  widget.route==0 ? Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookDetailEditScreen(
-                                                BookID:
-                                                '${_userUploadHistoryModel!.data[index].id}',
-                                              ))) : _callBookDetailsEditAPI(_userUploadHistoryModel!.data[index].id);
-
+                                  widget.route==0 ? Transitioner(
+                                    context: context,
+                                    child: BookDetailEditScreen(
+                                      BookID:
+                                      '${_userUploadHistoryModel!.data[index].id}',
+                                    ),
+                                    animation: AnimationType.slideLeft,
+                                    // Optional value
+                                    duration: Duration(milliseconds: 1000),
+                                    // Optional value
+                                    replacement: false,
+                                    // Optional value
+                                    curveType: CurveType.decelerate, // Optional value
+                                  ) : _callBookDetailsEditAPI(_userUploadHistoryModel!.data[index].id);
                                 },
                                 child: Container(
                                   decoration: BoxDecoration(
@@ -457,7 +462,7 @@ class _UploadHistoryscreenState extends State<UploadHistoryscreen> {
         ),
         animation: AnimationType.slideLeft, // Optional value
         duration: Duration(milliseconds: 1000), // Optional value
-        replacement: false, // Optional value
+        replacement: true, // Optional value
         curveType: CurveType.decelerate, // Optional value
       );
       setState(() {
