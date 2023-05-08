@@ -753,7 +753,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     ),
                                                   ),
                                                   Container(
-                                                    width: _width*0.18,
+                                                    width: _width * 0.18,
                                                     child: Text(
                                                       _homeApiResponse!
                                                           .data
@@ -776,7 +776,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                     ),
                                                   ),
                                                   Text(
-                                                      _homeApiResponse!.data.recentlyPublishBooks[index1].user![0].username.toString(),
+                                                      _homeApiResponse!
+                                                          .data
+                                                          .recentlyPublishBooks[
+                                                              index1]
+                                                          .user![0]
+                                                          .username
+                                                          .toString(),
                                                       style: const TextStyle(
                                                           color: const Color(
                                                               0xff676767),
@@ -1024,16 +1030,17 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                       ),
                                                     ),
                                                     Container(
-                                                      width: _width*0.2,
+                                                      width: _width * 0.2,
                                                       child: Text(
                                                         _homeApiResponse!
                                                             .data
-                                                            .categoryBooks[index]
+                                                            .categoryBooks[
+                                                                index]
                                                             .books[index1]
                                                             .bookTitle
                                                             .toString(),
-                                                        overflow:
-                                                            TextOverflow.ellipsis,
+                                                        overflow: TextOverflow
+                                                            .ellipsis,
                                                         style: const TextStyle(
                                                             color: const Color(
                                                                 0xff2a2a2a),
@@ -1041,13 +1048,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                                 FontWeight.w500,
                                                             fontFamily:
                                                                 "Alexandria",
-                                                            fontStyle:
-                                                                FontStyle.normal,
+                                                            fontStyle: FontStyle
+                                                                .normal,
                                                             fontSize: 10.0),
                                                       ),
                                                     ),
                                                     Container(
-                                                      width: _width*0.2,
+                                                      width: _width * 0.2,
                                                       child: Text(
                                                           _homeApiResponse!
                                                               .data
@@ -1060,10 +1067,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                               color: const Color(
                                                                   0xff676767),
                                                               fontWeight:
-                                                                  FontWeight.w400,
-                                                              fontFamily: "Lato",
-                                                              fontStyle: FontStyle
-                                                                  .normal,
+                                                                  FontWeight
+                                                                      .w400,
+                                                              fontFamily:
+                                                                  "Lato",
+                                                              fontStyle:
+                                                                  FontStyle
+                                                                      .normal,
                                                               fontSize: 8.0),
                                                           textAlign:
                                                               TextAlign.left),

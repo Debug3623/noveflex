@@ -733,7 +733,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                               style: const TextStyle(
                                                 fontFamily: 'Lato',
                                                 color: Color(0xff313131),
-                                                fontSize: 14,
+                                                fontSize: 10,
                                                 fontWeight: FontWeight.w700,
                                                 fontStyle: FontStyle.normal,
                                               ),
