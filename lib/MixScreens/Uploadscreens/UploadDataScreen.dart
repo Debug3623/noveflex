@@ -50,6 +50,7 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
   var pathImage;
   String paymentStatus = "1";
   bool _isLoadingLast = false;
+  bool _isPressed = false;
 
   Future<void> _retrievePath() async {
     final prefs = await SharedPreferences.getInstance();
@@ -487,7 +488,15 @@ class _UploadDataScreenState extends State<UploadDataScreen> {
         width: width * 0.95,
         child: ResuableMaterialButton(
           onpress: () {
-            _AutomaticCallApiMethod();
+            if (_isPressed==true) {
+              print("Already Press wait...");
+              ToastConstant.showToast(context, "Please Wait...");
+            } else {
+              _AutomaticCallApiMethod();
+              setState(() {
+                _isPressed = true;
+              });
+            }
           },
           buttonname: Languages.of(context)!.next,
         ),
