@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:more_loading_gif/more_loading_gif.dart';
+import 'package:quickalert/models/quickalert_animtype.dart';
+import 'package:quickalert/models/quickalert_type.dart';
+import 'package:quickalert/widgets/quickalert_dialog.dart';
+import 'package:r_dotted_line_border/r_dotted_line_border.dart';
 import 'package:ripple_wave/ripple_wave.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../Models/AuthorProfileViewModel.dart';
@@ -42,9 +46,14 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
   bool _isLoading = false;
   bool _isInternetConnected = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final _linkKey = GlobalKey<FormFieldState>();
+  TextEditingController? _linkController = TextEditingController();
   bool _isImageLoading = false;
   File? _cover_imageFile;
+  File? _Ads_imageFile;
   bool _status = false;
+  String _AdsName = "";
+  bool docUploader = false;
 
   @override
   void initState() {
@@ -62,6 +71,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
       backgroundColor: const Color(0xffebf5f9),
       body: SafeArea(
         child: Container(
+          height: double.infinity,
           child: _isInternetConnected
               ? _isLoading
                   ? Align(
@@ -484,7 +494,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                           children: [
                             Positioned(
                                 child: Container(
-                              height: _height * 0.9,
+                              height: double.infinity,
                               color: const Color(0xffebf5f9),
                             )),
                             Positioned(
@@ -653,7 +663,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                         ),
                                         child: GestureDetector(
                                             onTap: () {
-                                              if (_statusCheckModel!.aggrement ==
+                                              if (_statusCheckModel!
+                                                      .aggrement ==
                                                   false) {
                                                 showTermsAndConditionAlert();
                                               } else {
@@ -663,8 +674,8 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                   animation:
                                                       AnimationType.slideLeft,
                                                   // Optional value
-                                                  duration:
-                                                      Duration(milliseconds: 1000),
+                                                  duration: Duration(
+                                                      milliseconds: 1000),
                                                   // Optional value
                                                   replacement: false,
                                                   // Optional value
@@ -677,23 +688,28 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                               width: _width * 0.25,
                                               height: _height * 0.04,
                                               decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(5)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5)),
                                                   border: Border.all(
-                                                      color:
-                                                          const Color(0xff3a6c83),
+                                                      color: const Color(
+                                                          0xff3a6c83),
                                                       width: 1),
-                                                  color: const Color(0xffebf5f9)),
+                                                  color:
+                                                      const Color(0xffebf5f9)),
                                               child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Icon(
                                                     Icons.add,
-                                                    color: const Color(0xff3a6c83),
+                                                    color:
+                                                        const Color(0xff3a6c83),
                                                   ),
                                                   Text(
-                                                      Languages.of(context)!
+                                                      Languages.of(
+                                                              context)!
                                                           .publishButton,
                                                       style: const TextStyle(
                                                           color: const Color(
@@ -713,15 +729,15 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                         padding: EdgeInsets.only(
                                           top: _height * 0.01,
                                           left: context
-                                              .read<UserProvider>()
-                                              .SelectedLanguage ==
-                                              'English'
+                                                      .read<UserProvider>()
+                                                      .SelectedLanguage ==
+                                                  'English'
                                               ? _width * 0.15
                                               : 0.0,
                                           right: context
-                                              .read<UserProvider>()
-                                              .SelectedLanguage ==
-                                              'Arabic'
+                                                      .read<UserProvider>()
+                                                      .SelectedLanguage ==
+                                                  'Arabic'
                                               ? _width * 0.15
                                               : 0.0,
                                         ),
@@ -729,29 +745,35 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                             onTap: () {
                                               Platform.isIOS
                                                   ? Share.share(
-                                                  'https://apps.apple.com/ae/app/novelflex/id1661629198')
+                                                      'https://apps.apple.com/ae/app/novelflex/id1661629198')
                                                   : Share.share(
-                                                  'https://play.google.com/store/apps/details?id=com.appcom.estisharati.novel.flex');
+                                                      'https://play.google.com/store/apps/details?id=com.appcom.estisharati.novel.flex');
                                             },
                                             child: Container(
                                               width: _width * 0.25,
                                               height: _height * 0.04,
                                               decoration: BoxDecoration(
-                                                  borderRadius: BorderRadius.all(
-                                                      Radius.circular(5)),
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(5)),
                                                   border: Border.all(
-                                                      color:
-                                                      const Color(0xff3a6c83),
+                                                      color: const Color(
+                                                          0xff3a6c83),
                                                       width: 1),
-                                                  color: const Color(0xffebf5f9)),
+                                                  color:
+                                                      const Color(0xffebf5f9)),
                                               child: Row(
                                                 mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
+                                                    MainAxisAlignment
+                                                        .spaceAround,
                                                 children: [
                                                   Icon(
                                                     Icons.share,
-                                                    color: const Color(0xff3a6c83),
-                                                    size: _width*_height*0.00006,
+                                                    color:
+                                                        const Color(0xff3a6c83),
+                                                    size: _width *
+                                                        _height *
+                                                        0.00006,
                                                   ),
                                                   Text(
                                                       Languages.of(context)!
@@ -760,10 +782,10 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                                           color: const Color(
                                                               0xff3a6c83),
                                                           fontWeight:
-                                                          FontWeight.w800,
+                                                              FontWeight.w800,
                                                           fontFamily: "Lato",
                                                           fontStyle:
-                                                          FontStyle.normal,
+                                                              FontStyle.normal,
                                                           fontSize: 10.0),
                                                       textAlign: TextAlign.left)
                                                 ],
@@ -772,7 +794,6 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                       ),
                                     ],
                                   ),
-
                                 ],
                               ),
                             ),
@@ -790,7 +811,76 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                               ),
                             ),
                             Positioned(
-                              top: _height * 0.4,
+                              top: _height * 0.36,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _showPrivateAdvertisingPopup();
+                                },
+                                child: Container(
+                                  margin: EdgeInsets.all(16.0),
+                                  height: _height * 0.12,
+                                  width: _width * 0.9,
+                                  decoration: BoxDecoration(
+                                      border: RDottedLineBorder.all(
+                                          width: 1, color: Colors.black54),
+                                      color: Colors.transparent),
+                                  child: Padding(
+                                    padding: EdgeInsets.only(
+                                        left: context
+                                                    .read<UserProvider>()
+                                                    .SelectedLanguage ==
+                                                'English'
+                                            ? _width * 0.05
+                                            : 0.0,
+                                        right: context
+                                                    .read<UserProvider>()
+                                                    .SelectedLanguage ==
+                                                'Arabic'
+                                            ? _width * 0.05
+                                            : 0.0,
+                                        top: _height * 0.02),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        docUploader ?
+                                        CupertinoActivityIndicator(
+                                           color: Colors.black,
+                                        ) :RichText(
+                                          text: new TextSpan(
+                                            style: const TextStyle(
+                                                color: Colors.black45,
+                                                fontWeight: FontWeight.w300,
+                                                fontFamily: "Alexandria",
+                                                fontStyle: FontStyle.normal,
+                                                fontSize: 12.0),
+                                            children: <TextSpan>[
+                                              new TextSpan(
+                                                  text: Languages.of(context)!
+                                                          .ads_link +
+                                                      " "),
+                                              new TextSpan(
+                                                  text: Languages.of(context)!
+                                                      .ads_link_2,
+                                                  style: new TextStyle(
+                                                      color: Color(0xff3a6c83),
+                                                      decoration: TextDecoration
+                                                          .underline,
+                                                      fontWeight:
+                                                          FontWeight.bold)),
+                                            ],
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              top: _height * 0.5,
                               child: Container(
                                 margin: EdgeInsets.all(16.0),
                                 height: _height * 0.2,
@@ -847,7 +937,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                               ),
                             ),
                             Positioned(
-                              top: _height * 0.64,
+                              top: _height * 0.75,
                               left: context
                                           .read<UserProvider>()
                                           .SelectedLanguage ==
@@ -875,7 +965,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                               ),
                             ),
                             Positioned(
-                              top: _height * 0.64,
+                              top: _height * 0.75,
                               left: userProvider.SelectedLanguage == "English"
                                   ? _width * 0.8
                                   : 0.0,
@@ -886,7 +976,9 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                 onTap: () {
                                   Transitioner(
                                     context: context,
-                                    child: UploadHistoryscreen(route: 0,),
+                                    child: UploadHistoryscreen(
+                                      route: 0,
+                                    ),
                                     animation: AnimationType
                                         .slideTop, // Optional value
                                     duration: Duration(
@@ -919,7 +1011,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                               ),
                             ),
                             Positioned(
-                              top: _height * 0.67,
+                              top: _height * 0.77,
                               child: _authorProfileViewModel!
                                           .data.book.length ==
                                       0
@@ -1050,7 +1142,6 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                         color: Color(0xffebf5f9),
                                       )),
                                 )),
-
                           ],
                         )
               : Center(
@@ -1363,5 +1454,325 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
         Constants.showToastBlack(context, "Some things went wrong");
       }
     }
+  }
+
+  Future<void> _showPrivateAdvertisingPopup() async {
+    var _height = MediaQuery.of(context).size.height;
+    var _width = MediaQuery.of(context).size.width;
+    await showDialog<void>(
+        context: context,
+        builder: (BuildContext ctx) {
+          return SimpleDialog(
+            // <-- SEE HERE
+            contentPadding: EdgeInsets.all(_width * 0.05),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            children: <Widget>[
+              Center(
+                  child: Text(
+                Languages.of(context)!.popText_1,
+                style: const TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w900,
+                    fontFamily: "Alexandria",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 12.0),
+              )),
+              SizedBox(
+                height: _height * 0.03,
+              ),
+              Center(
+                  child: Text(
+                Languages.of(context)!.popText_2,
+                style: const TextStyle(
+                    color: Colors.black45,
+                    fontWeight: FontWeight.w300,
+                    fontFamily: "Alexandria",
+                    fontStyle: FontStyle.normal,
+                    fontSize: 12.0),
+              )),
+              SizedBox(
+                height: _height * 0.03,
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(
+                    vertical: _height * 0.02, horizontal: _width * 0.04),
+                child: Container(
+                  width: double.infinity,
+                  height: _height * 0.08,
+                  child: TextFormField(
+                    key: _linkKey,
+                    controller: _linkController,
+                    keyboardType: TextInputType.text,
+                    cursorColor: Colors.black,
+                    decoration: InputDecoration(
+                      counterText: "",
+                      filled: true,
+                      suffix: Icon(
+                        Icons.link,
+                        color: Colors.black45,
+                      ),
+                      fillColor: Colors.white,
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Colors.white12,
+                        ),
+                      ),
+                      disabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Color(0xFF256D85),
+                        ),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Color(0xFF256D85),
+                        ),
+                      ),
+                      border: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 1,
+                        ),
+                      ),
+                      errorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(
+                            width: 1,
+                            color: Colors.red,
+                          )),
+                      focusedErrorBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10)),
+                        borderSide: BorderSide(
+                          width: 1,
+                          color: Colors.red,
+                        ),
+                      ),
+                      hintText: Languages.of(context)!.popText_6,
+                      // labelText: Languages.of(context)!.email,
+                      hintStyle: const TextStyle(
+                          color: Colors.black45,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Lato",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 10.0),
+                    ),
+                  ),
+                ),
+              ),
+              GestureDetector(
+                onTap: () {
+                  _getFromGalleryAds();
+                },
+                child: Container(
+                  margin: EdgeInsets.all(16.0),
+                  height: _height * 0.15,
+                  width: _width * 0.6,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      border: RDottedLineBorder.all(
+                          width: 1, color: Colors.black54),
+                      color: Colors.transparent),
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        left: context.read<UserProvider>().SelectedLanguage ==
+                                'English'
+                            ? _width * 0.05
+                            : 0.0,
+                        right: context.read<UserProvider>().SelectedLanguage ==
+                                'Arabic'
+                            ? _width * 0.05
+                            : 0.0,
+                        top: _height * 0.02),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RichText(
+                          text: new TextSpan(
+                            style: const TextStyle(
+                                color: Colors.black45,
+                                fontWeight: FontWeight.w300,
+                                fontFamily: "Alexandria",
+                                fontStyle: FontStyle.normal,
+                                fontSize: 12.0),
+                            children: <TextSpan>[
+                              new TextSpan(
+                                  text: Languages.of(context)!.popText_3,
+                                  style: new TextStyle(
+                                      color: Color(0xff3a6c83),
+                                      decoration: TextDecoration.underline,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: _height * 0.03,
+              ),
+              GestureDetector(
+                onTap: () {
+                  if(_AdsName.isNotEmpty && _linkController!.text.isNotEmpty){
+                    PrivateAdApi();
+                    Navigator.pop(context);
+                  }else{
+                    ToastConstant.showToast(context, Languages.of(context)!.link_image_text);
+                  }
+                },
+                child: Container(
+                  width: _width * 0.8,
+                  height: _height * 0.05,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(
+                      color: const Color(0xff3a6c83),
+                      width: 2,
+                    ),
+                    color: const Color(0xff3a6c83),
+                  ),
+                  child: Center(
+                    child: Text(
+                      Languages.of(context)!.popText_4,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Lato",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14.0),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: _height * 0.03,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.pop(context);
+
+                },
+                child: Container(
+                  width: _width * 0.8,
+                  height: _height * 0.05,
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(25),
+                      border: Border.all(
+                        color: const Color(0xff3a6c83),
+                        width: 2,
+                      )),
+                  child: Center(
+                    child: Text(
+                      Languages.of(context)!.popText_5,
+                      style: const TextStyle(
+                          color: const Color(0xff3a6c83),
+                          fontWeight: FontWeight.w700,
+                          fontFamily: "Lato",
+                          fontStyle: FontStyle.normal,
+                          fontSize: 14.0),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: _height * 0.03,
+              ),
+            ],
+          );
+        });
+  }
+
+
+  Future<void> PrivateAdApi() async {
+    setState(() {
+      docUploader = true;
+    });
+    Map<String, String> headers = {
+      'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
+    };
+    var jsonResponse;
+
+    var request = http.MultipartRequest(
+        'POST', Uri.parse(ApiUtils.ADD_PRIVATE_ADS_API));
+    request.fields['link'] = _linkController!.text.trim();
+    request.files.add(new http.MultipartFile.fromBytes(
+      "image",
+      File(_Ads_imageFile!.path)
+          .readAsBytesSync(), //UserFile is my JSON key,use your own and "image" is the pic im getting from my gallary
+      filename: _AdsName,
+      contentType: MediaType('image', 'jpg'),
+    ));
+
+    request.headers.addAll(headers);
+
+    request.send().then((result) async {
+      http.Response.fromStream(result).then((response) {
+        if (response.statusCode == 200) {
+          var jsonData = json.decode(response.body);
+          if (jsonData['status'] == 200) {
+            setState(() {
+              docUploader = false;
+            });
+            loading();
+          } else {
+            ToastConstant.showToast(context, jsonData['message']);
+            setState(() {
+              docUploader = false;
+            });
+          }
+        } else {
+          ToastConstant.showToast(context, "Internet Server error");
+          setState(() {
+            docUploader = false;
+          });
+        }
+      });
+    });
+  }
+
+  _getFromGalleryAds() async {
+    final PickedFile? image = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+    );
+
+    if (image != null) {
+      _Ads_imageFile = File(image.path);
+      setState(() {
+        _Ads_imageFile = File(image.path);
+        _AdsName = image.path.split('/').last;
+      });
+    }
+  }
+
+  void loading() {
+    QuickAlert.show(
+        context: context,
+        type: QuickAlertType.success,
+        animType: QuickAlertAnimType.slideInUp,
+        confirmBtnColor: Color(0xFF256D85),
+        confirmBtnText: Languages.of(context)!.view,
+        onConfirmBtnTap: (){
+          Transitioner(
+            context: context,
+            child: AuthorViewByUserScreen(
+              user_id:_authorProfileViewModel!.data.id.toString(),
+            ),
+            animation: AnimationType.fadeIn,
+            duration:
+            Duration(milliseconds: 1000),
+            replacement: true,
+            curveType: CurveType.decelerate,
+          );
+    }
+    );
+
   }
 }

@@ -348,6 +348,29 @@ class LanguageEn extends Languages {
   String get home_text => "Go Home";
 
   @override
+  String get link_image_text => "Please enter Ad Link and Banner Picture";
+
+  @override
+  String get popText_1 => "Private Profile Advertising";
+  @override
+  String get popText_2 => "You can earn money from adding custom Ads banner to your Profile";
+  @override
+  String get popText_3 => "Upload banner Picture";
+  @override
+  String get popText_4 => "Confirm";
+  @override
+  String get popText_5 => "Cancel";
+  @override
+  String get popText_6 => "Add Advertising Link here";
+
+
+  @override
+  String get ads_link => "Advertising Area\n add your Ads";
+
+  @override
+  String get ads_link_2 => "links Here";
+
+  @override
   String get publishNewNovel => "Publish New Novel";
 
   @override

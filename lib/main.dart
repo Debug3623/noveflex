@@ -189,7 +189,7 @@ class _MyAppState extends State<MyApp> {
     token = Platform.isIOS ? await FirebaseMessaging.instance.getAPNSToken() : await FirebaseMessaging.instance.getToken();
     // token =  await FirebaseMessaging.instance.getToken();
 
-    prefts.setString('fcm_token', token!);
+    prefts.setString('fcm_token', token.toString());
     // String? tokenIOS = await FirebaseMessaging.instance.getAPNSToken();
     print(" token__ $token");
   }

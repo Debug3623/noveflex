@@ -1267,6 +1267,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.2.1"
+  r_dotted_line_border:
+    dependency: "direct main"
+    description:
+      name: r_dotted_line_border
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.1"
   rating_dialog:
     dependency: "direct main"
     description:

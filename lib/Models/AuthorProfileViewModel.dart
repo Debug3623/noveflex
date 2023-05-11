@@ -34,19 +34,20 @@ class Data {
   dynamic description;
   dynamic profilePhoto;
   dynamic backgroundImage;
-  dynamic type;
+  String type;
   int followers;
   bool isSubscription;
   UserType userType;
-  dynamic profilePath;
-  dynamic backgroundPath;
+  String profilePath;
+  String backgroundPath;
   List<Book> book;
   List<SocialLink> socialLink;
+  List<Advertisment> advertisment;
 
   Data({
     required this.id,
     required this.username,
-    required this.description,
+    this.description,
     required this.profilePhoto,
     required this.backgroundImage,
     required this.type,
@@ -57,6 +58,7 @@ class Data {
     required this.backgroundPath,
     required this.book,
     required this.socialLink,
+    required this.advertisment,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
@@ -73,6 +75,7 @@ class Data {
     backgroundPath: json["background_path"],
     book: List<Book>.from(json["book"].map((x) => Book.fromJson(x))),
     socialLink: List<SocialLink>.from(json["social_link"].map((x) => SocialLink.fromJson(x))),
+    advertisment: List<Advertisment>.from(json["advertisment"].map((x) => Advertisment.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -89,6 +92,47 @@ class Data {
     "background_path": backgroundPath,
     "book": List<dynamic>.from(book.map((x) => x.toJson())),
     "social_link": List<dynamic>.from(socialLink.map((x) => x.toJson())),
+    "advertisment": List<dynamic>.from(advertisment.map((x) => x.toJson())),
+  };
+}
+
+class Advertisment {
+  int id;
+  int userId;
+  dynamic link;
+  dynamic image;
+  DateTime createdAt;
+  DateTime updatedAt;
+  String imagePath;
+
+  Advertisment({
+    required this.id,
+    required this.userId,
+    required this.link,
+    required this.image,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.imagePath,
+  });
+
+  factory Advertisment.fromJson(Map<String, dynamic> json) => Advertisment(
+    id: json["id"],
+    userId: json["user_id"],
+    link: json["link"],
+    image: json["image"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: DateTime.parse(json["updated_at"]),
+    imagePath: json["image_path"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "link": link,
+    "image": image,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt.toIso8601String(),
+    "image_path": imagePath,
   };
 }
 
@@ -194,11 +238,11 @@ class SocialLink {
   SocialLink({
     required this.id,
     required this.userId,
-    this.facebookLink,
-    this.youtubeLink,
+    required this.facebookLink,
+    required this.youtubeLink,
     this.instagramLink,
     this.twitterLink,
-    this.ticktokLink,
+    required this.ticktokLink,
     required this.createdAt,
     required this.updatedAt,
   });

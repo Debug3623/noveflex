@@ -316,8 +316,31 @@ class LanguageAr extends Languages {
   @override
   String get ybLink => "أدخل رابط يوتيوب";
 
+
+  @override
+  String get link_image_text => "الرجاء إدخال ارتباط الإعلان وصورة البانر";
+
+  @override
+  String get popText_1 => "إعلانات الملف الشخصي الخاص";
+  @override
+  String get popText_2 => "يمكنك كسب المال من إضافة لافتة إعلانات مخصصة إلى ملفك الشخصي";
+  @override
+  String get popText_3 => "تحميل صورة لافتة";
+  @override
+  String get popText_4 => "يتأكد";
+  @override
+  String get popText_5 => "يلغي";
+  @override
+  String get popText_6 => "أضف رابط الإعلان هنا";
+
   @override
   String get home_text => "اذهب للمنزل";
+
+  @override
+  String get ads_link => "منطقة الإعلانات\n أضف إعلاناتك ";
+
+  @override
+  String get ads_link_2 => "الروابط هنا";
 
   @override
   String get publishNewNovel => "نشر رواية جديدة";

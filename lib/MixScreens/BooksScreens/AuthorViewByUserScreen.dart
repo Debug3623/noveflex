@@ -84,12 +84,12 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                       children: [
                         Positioned(
                             child: Container(
-                          height: _height * 0.9,
+                          height: double.infinity,
                           color: const Color(0xffebf5f9),
                         )),
                         Positioned(
                           child: Container(
-                            height: _height * 0.265,
+                            height: _height * 0.23,
                             width: _width,
                             decoration: BoxDecoration(
                                 color: Color(0xFF256D85),
@@ -108,7 +108,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                         ),
                         Positioned(
                           left: _width * 0.05,
-                          top: _height * 0.23,
+                          top: _height * 0.19,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
@@ -194,7 +194,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                         ),
                         Positioned(
                           left: _width * 0.57,
-                          top: _height * 0.21,
+                          top: _height * 0.17,
                           child: Column(
                             children: [
                               Visibility(
@@ -396,7 +396,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                         ),
                         Positioned(
                           left: _width * 0.05,
-                          top: _height * 0.36,
+                          top: _height * 0.32,
                           child: Row(
                             children: [
                               GestureDetector(
@@ -531,7 +531,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.43,
+                          top: _height * 0.375,
                           left: _width * 0.1,
                           right: _width * 0.1,
                           child: Opacity(
@@ -544,13 +544,77 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.43,
+                          top: _height * 0.37,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (_authorProfileViewModel!
+                                  .data.advertisment.isEmpty) {
+                                print("No Ads");
+                              } else {
+                                _launchProfileUrls(_authorProfileViewModel!
+                                    .data.advertisment[0].link
+                                    .toString());
+                              }
+                            },
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  child: Container(
+                                    margin: EdgeInsets.all(16.0),
+                                    height: _height * 0.15,
+                                    width: _width * 0.9,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(1),
+                                        color: Colors.white,
+                                        image: DecorationImage(
+                                            image: NetworkImage(
+                                                _authorProfileViewModel!.data
+                                                        .advertisment.isEmpty
+                                                    ? _authorProfileViewModel!
+                                                        .data.backgroundPath
+                                                        .toString()
+                                                    : _authorProfileViewModel!
+                                                        .data
+                                                        .advertisment[0]
+                                                        .imagePath
+                                                        .toString()),
+                                            fit: BoxFit.cover)),
+                                    child: Container(),
+                                  ),
+                                ),
+                                Positioned(
+                                  top: _height * 0.022,
+                                  left: _width * 0.046,
+                                  child: Container(
+                                    height: _height * 0.03,
+                                    width: _width * 0.075,
+                                    decoration:
+                                        BoxDecoration(color: Colors.red),
+                                    child: Center(
+                                      child: Text(
+                                        "Ad",
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w700,
+                                            fontFamily: "Alexandria",
+                                            fontStyle: FontStyle.normal,
+                                            fontSize: 16.0),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          top: _height * 0.53,
                           child: Container(
                             margin: EdgeInsets.all(16.0),
                             height: _height * 0.2,
                             width: _width * 0.9,
                             decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
+                                borderRadius: BorderRadius.circular(20),
                                 color: Colors.white),
                             child: Padding(
                               padding: EdgeInsets.only(
@@ -613,7 +677,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.67,
+                          top: _height * 0.76,
                           left: context.read<UserProvider>().SelectedLanguage ==
                                   'English'
                               ? _width * 0.05
@@ -638,7 +702,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           ),
                         ),
                         Positioned(
-                          top: _height * 0.7,
+                          top: _height * 0.78,
                           child: _authorProfileViewModel!.data.book.length == 0
                               ? Padding(
                                   padding:
@@ -726,18 +790,21 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                                     )),
                                               ],
                                             ),
-                                            Text(
-                                              _authorProfileViewModel!
-                                                  .data.book[index].title
-                                                  .toString(),
-                                              style: const TextStyle(
-                                                fontFamily: 'Lato',
-                                                color: Color(0xff313131),
-                                                fontSize: 10,
-                                                fontWeight: FontWeight.w700,
-                                                fontStyle: FontStyle.normal,
+                                            Container(
+                                              width: _width*0.2,
+                                              child: Text(
+                                                _authorProfileViewModel!
+                                                    .data.book[index].title
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                  fontFamily: 'Lato',
+                                                  color: Color(0xff313131),
+                                                  fontSize: 10,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontStyle: FontStyle.normal,
+                                                ),
+                                                overflow: TextOverflow.ellipsis,
                                               ),
-                                              overflow: TextOverflow.ellipsis,
                                             ),
                                           ],
                                         ),
@@ -747,13 +814,13 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                         ),
                         Positioned(
                             top: _height * 0.01,
-                            left: _width * 0.01,
+                            left: _width * 0.03,
                             child: Container(
                               height: _height * 0.05,
                               width: _width * 0.1,
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(5),
-                                  color: Colors.black.withOpacity(0.4)),
+                                  color: Colors.black.withOpacity(0.5)),
                               child: IconButton(
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -1043,4 +1110,5 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
       throw 'Could not launch $url';
     }
   }
+
 }

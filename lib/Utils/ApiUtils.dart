@@ -76,6 +76,7 @@ class ApiUtils {
   static const String UPDATE_TEXT_BOOK = '$BASE/book/update/text';
   static const String GET_LINKS = '$BASE/social';
   static const String UPDATE_LINKS = '$BASE/updata/social';
+  static const String ADD_PRIVATE_ADS_API = '$BASE/advertisment/add';
 
 
 

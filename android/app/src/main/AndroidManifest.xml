@@ -10,7 +10,12 @@
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
 
-
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="https" />
+        </intent>
+    </queries>
 
     <application
         android:label="NovelFlex"
@@ -97,5 +102,10 @@
             android:value="ca-app-pub-1911709436746841~9687980309"
             />
 
+
+
    </application>
+
+
+
 </manifest>

@@ -144,8 +144,6 @@ class _LoginScreenState extends State<LoginScreen> {
     print("firebase_token_preferences_login ${fcmToken}");
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -690,7 +688,7 @@ class _LoginScreenState extends State<LoginScreen> {
     var map = Map<String, dynamic>();
     map['email'] = _controllerEmail!.text.trim();
     map['password'] = _controllerPassword!.text.trim();
-    map['firebase_token'] = fcmToken!.isEmpty ? "xyzdatachc": fcmToken!.trim();
+    map['firebase_token'] = fcmToken!.isEmpty ? "xyzdatachc": fcmToken!.trim().toString();
 
     final response = await http.post(
       Uri.parse(ApiUtils.URL_LOGIN_USER_API),

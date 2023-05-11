@@ -173,6 +173,8 @@ abstract class Languages {
 
   String get follow;
 
+  String get link_image_text;
+
   String get level;
 
   String get authorC;
@@ -230,6 +232,22 @@ abstract class Languages {
   String get unfollow_text;
 
   String get aboutAuthor;
+
+  String get ads_link;
+
+  String get ads_link_2;
+
+  String get popText_1;
+
+  String get popText_2;
+
+  String get popText_3;
+
+  String get popText_4;
+
+  String get popText_5;
+
+  String get popText_6;
 
   String get profile;
 
