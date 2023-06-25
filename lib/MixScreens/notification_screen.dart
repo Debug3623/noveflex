@@ -14,6 +14,7 @@ import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
 import '../Widgets/loading_widgets.dart';
 import '../localization/Language/languages.dart';
+import 'BooksScreens/BookDetail.dart';
 import 'BooksScreens/BookDetailsAuthor.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -97,7 +98,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                         onTap: () {
                                           Transitioner(
                                             context: context,
-                                            child: BookDetailAuthor(
+                                            child: BookDetail(
                                               bookID: _notificationsModel!
                                                   .data[index].bookId
                                                   .toString(),

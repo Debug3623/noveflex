@@ -6,11 +6,14 @@ class VariableProvider extends ChangeNotifier{
  int _like =0;
  int _dislikes =0;
 
+ int _commentLikes =0;
+
 
  bool reviewFlag() => _reviewflag;
  bool loadingFlag() => _isloading;
 
  int get getLikes => _like;
+ int get getCommentLikes => _commentLikes;
  int get getDislikes => _dislikes;
 
 
@@ -29,6 +32,12 @@ class VariableProvider extends ChangeNotifier{
   _like =flagR ;  //method to update the variable value
   notifyListeners();
  }
+
+ setCommentLikes(int flagR){
+  _commentLikes =flagR ;  //method to update the variable value
+  notifyListeners();
+ }
+
  setDislikes(int flagR){
   _dislikes =flagR ;  //method to update the variable value
   notifyListeners();

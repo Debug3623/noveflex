@@ -8,6 +8,12 @@ class LanguageAr extends Languages {
   String get free1 => "اقرأ مجانًا";
 
   @override
+  String get freeStory => "قصة مجانية";
+
+  @override
+  String get paidStory => "قصة مدفوعة";
+
+  @override
   String get episodes => "الحلقات";
 
   @override
@@ -182,10 +188,19 @@ class LanguageAr extends Languages {
   String get giftAmount => "مبالغ موهوبة";
 
   @override
+  String get advertisement => "إعلان";
+
+  @override
+  String get post_comment => "انشر تعليق";
+
+  @override
+  String get reply => "رد";
+
+  @override
   String get dollar => "يمكنك إهداء 5\$  كحد أدنى";
 
   @override
-  String get gift => "هدية";
+  String get gift => "الهدايا الممنوحة";
 
   @override
   String get unlockWallet => "سحب الأموال";

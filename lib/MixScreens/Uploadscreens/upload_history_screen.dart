@@ -22,6 +22,7 @@ import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../Widgets/loading_widgets.dart';
 import '../../localization/Language/languages.dart';
+import '../BooksScreens/BookDetail.dart';
 import '../BooksScreens/BookDetailsAuthor.dart';
 import '../BookEditScreens/BookDetailEditScreen.dart';
 import 'BookUploadEditTabScreen.dart';
@@ -160,7 +161,7 @@ class _UploadHistoryscreenState extends State<UploadHistoryscreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    BookDetailAuthor(
+                                    BookDetail(
                                       bookID:
                                       '${_userUploadHistoryModel!.data[index].id}',
                                     )));

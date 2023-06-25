@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.android.vending.BILLING" />
+<!--    <uses-permission android:name="com.android.vending.BILLING" />-->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
@@ -46,12 +46,14 @@
             <!-- Deep linking -->
             <meta-data android:name='flutter _deeplink_enabled'
                 android:value="true" />
-            <intent-filter android:autoVerify="true">
+            <intent-filter android:autoVerify="true"
+                tools:targetApi="m">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="http" android:host="novelflex.page.link" />
-                <data android:scheme="https" />
+                <data android:scheme="http"/>
+                <data android:host="www.novelflexa.com"/>
+                    />
             </intent-filter>
         </activity>
         <!-- Set up the Sign in with Apple activity, such that it's callable from the browser-redirect -->
@@ -63,11 +65,21 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-
                 <data android:scheme="signinwithapple" />
                 <data android:path="callback" />
             </intent-filter>
+
+            <intent-filter android:autoVerify="true" tools:targetApi="m">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https" />
+            </intent-filter>
+
         </activity>
+
+        <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
 
        <meta-data
            android:name="flutterEmbedding"

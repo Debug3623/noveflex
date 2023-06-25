@@ -18,6 +18,7 @@ import 'package:quickalert/models/quickalert_animtype.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
 import 'package:transitioner/transitioner.dart';
+import '../MixScreens/BooksScreens/BookDetail.dart';
 import '../MixScreens/BooksScreens/BookDetailsAuthor.dart';
 import '../MixScreens/SEARCHSCREENS/GeneralCategoriesSearchScreen.dart';
 import '../MixScreens/SeeAllBooksScreen.dart';
@@ -44,7 +45,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin  {
   final globalKey = GlobalKey<ScaffoldState>();
   String release = "";
   late AnimationController _bellController;
@@ -384,7 +385,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                         if (widget.route != "guest") {
                                           Transitioner(
                                             context: context,
-                                            child: BookDetailAuthor(
+                                            child: BookDetail(
                                               bookID: _homeApiResponse!
                                                   .data.slider[itemIndex].id
                                                   .toString(),
@@ -667,7 +668,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                               if (widget.route != "guest") {
                                                 Transitioner(
                                                   context: context,
-                                                  child: BookDetailAuthor(
+                                                  child: BookDetail(
                                                     bookID: _homeApiResponse!
                                                         .data
                                                         .recentlyPublishBooks[
@@ -940,7 +941,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                                 if (widget.route != "guest") {
                                                   Transitioner(
                                                     context: context,
-                                                    child: BookDetailAuthor(
+                                                    child: BookDetail(
                                                       bookID: _homeApiResponse!
                                                           .data
                                                           .categoryBooks[index]

@@ -4,18 +4,18 @@
 
 import 'dart:convert';
 
-BookDetailsModel? bookDetailsModelFromJson(String str) => BookDetailsModel.fromJson(json.decode(str));
+BookDetailsModel bookDetailsModelFromJson(String str) => BookDetailsModel.fromJson(json.decode(str));
 
-String bookDetailsModelToJson(BookDetailsModel? data) => json.encode(data!.toJson());
+String bookDetailsModelToJson(BookDetailsModel data) => json.encode(data.toJson());
 
 class BookDetailsModel {
-  BookDetailsModel({
-    this.status,
-    this.data,
-  });
+  int status;
+  Data data;
 
-  int? status;
-  Data? data;
+  BookDetailsModel({
+    required this.status,
+    required this.data,
+  });
 
   factory BookDetailsModel.fromJson(Map<String, dynamic> json) => BookDetailsModel(
     status: json["status"],
@@ -24,52 +24,56 @@ class BookDetailsModel {
 
   Map<String, dynamic> toJson() => {
     "status": status,
-    "data": data!.toJson(),
+    "data": data.toJson(),
   };
 }
 
 class Data {
-  Data({
-    this.bookId,
-    this.bookTitle,
-    this.image,
-    this.bookDescription,
-    this.userId,
-    this.authorName,
-    this.userimage,
-    this.categoryId,
-    this.catgoryTitle,
-    this.paymentStatus,
-    this.publication,
-    this.subscription,
-    this.bookView,
-    this.bookLike,
-    this.bookDisLike,
-    this.status,
-    this.bookSaved,
-    this.bookSubscription,
-    this.imagePath,
-  });
-
-  int? bookId;
-  String? bookTitle;
-  String? image;
-  String? bookDescription;
-  int? userId;
-  String? authorName;
+  int bookId;
+  String bookTitle;
+  dynamic image;
+  String bookDescription;
+  int userId;
+  String authorName;
   dynamic userimage;
-  int? categoryId;
-  String? catgoryTitle;
-  int? paymentStatus;
-  int? publication;
-  int? subscription;
-  int? bookView;
-  int? bookLike;
-  int? bookDisLike;
-  Status? status;
-  bool? bookSaved;
-  bool? bookSubscription;
-  String? imagePath;
+  int categoryId;
+  String catgoryTitle;
+  int paymentStatus;
+  int publication;
+  int subscription;
+  int bookView;
+  int bookLike;
+  int bookDisLike;
+  Status status;
+  int gifts;
+  List<AdvertismentLink> advertismentLinks;
+  bool bookSaved;
+  bool bookSubscription;
+  String imagePath;
+
+  Data({
+    required this.bookId,
+    required this.bookTitle,
+    required this.image,
+    required this.bookDescription,
+    required this.userId,
+    required this.authorName,
+    required this.userimage,
+    required this.categoryId,
+    required this.catgoryTitle,
+    required this.paymentStatus,
+    required this.publication,
+    required this.subscription,
+    required this.bookView,
+    required this.bookLike,
+    required this.bookDisLike,
+    required this.status,
+    required this.gifts,
+    required this.advertismentLinks,
+    required this.bookSaved,
+    required this.bookSubscription,
+    required this.imagePath,
+  });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     bookId: json["bookId"],
@@ -88,6 +92,8 @@ class Data {
     bookLike: json["BookLike"],
     bookDisLike: json["BookDisLike"],
     status: Status.fromJson(json["status"]),
+    gifts: json["gifts"],
+    advertismentLinks: List<AdvertismentLink>.from(json["advertisment_links"].map((x) => AdvertismentLink.fromJson(x))),
     bookSaved: json["book_saved"],
     bookSubscription: json["book_subscription"],
     imagePath: json["image_path"],
@@ -109,19 +115,61 @@ class Data {
     "BookView": bookView,
     "BookLike": bookLike,
     "BookDisLike": bookDisLike,
-    "status": status!.toJson(),
+    "status": status.toJson(),
+    "gifts": gifts,
+    "advertisment_links": List<dynamic>.from(advertismentLinks.map((x) => x.toJson())),
     "book_saved": bookSaved,
     "book_subscription": bookSubscription,
     "image_path": imagePath,
   };
 }
 
-class Status {
-  Status({
-    this.status,
+class AdvertismentLink {
+  int id;
+  int userId;
+  String link;
+  String image;
+  DateTime createdAt;
+  String updatedAt;
+  String imagePath;
+
+  AdvertismentLink({
+    required this.id,
+    required this.userId,
+    required this.link,
+    required this.image,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.imagePath,
   });
 
-  int? status;
+  factory AdvertismentLink.fromJson(Map<String, dynamic> json) => AdvertismentLink(
+    id: json["id"],
+    userId: json["user_id"],
+    link: json["link"],
+    image: json["image"],
+    createdAt: DateTime.parse(json["created_at"]),
+    updatedAt: json["updated_at"],
+    imagePath: json["image_path"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "id": id,
+    "user_id": userId,
+    "link": link,
+    "image": image,
+    "created_at": createdAt.toIso8601String(),
+    "updated_at": updatedAt,
+    "image_path": imagePath,
+  };
+}
+
+class Status {
+  int status;
+
+  Status({
+    required this.status,
+  });
 
   factory Status.fromJson(Map<String, dynamic> json) => Status(
     status: json["status"],

@@ -697,16 +697,22 @@ class _PdfTabState extends State<PdfTab> {
     // }
     if (_subscriptionModelClass!.success == true) {
       //call book pdf api
+
       Transitioner(
         context: context,
-        child: PdfScreen(
+        child: PinchPage(
           url: lessonPath,
           name: lessonName,
         ),
-        animation: AnimationType.slideTop, // Optional value
-        duration: Duration(milliseconds: 1000), // Optional value
-        replacement: false, // Optional value
-        curveType: CurveType.decelerate, // Optional value
+        animation: AnimationType
+            .slideLeft, // Optional value
+        duration: Duration(
+            milliseconds:
+            1000), // Optional value
+        replacement:
+        false, // Optional value
+        curveType: CurveType
+            .decelerate, // Optional value
       );
     } else {
       try {

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:more_loading_gif/more_loading_gif.dart';
 import 'package:novelflex/MixScreens/StripePayment/GiftScreen.dart';
 import 'package:novelflex/MixScreens/Uploadscreens/UploadDataScreen.dart';
@@ -20,6 +22,7 @@ import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../Widgets/loading_widgets.dart';
 import '../../localization/Language/languages.dart';
+import 'BookDetail.dart';
 import 'BookDetailsAuthor.dart';
 import '../Pay/Pay.dart';
 
@@ -38,18 +41,23 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
   final _giftKey = GlobalKey<FormFieldState>();
 
   TextEditingController? _giftController;
+  FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
 
   bool _isLoading = false;
   bool _followLoading = false;
   bool _isInternetConnected = true;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  Stream? stream;
   bool _isImageLoading = false;
   File? _cover_imageFile;
   bool? FollowOrUnfollow;
+  int? Status;
 
   @override
   void initState() {
     super.initState();
+    _listener();
     _giftController = TextEditingController();
     _checkInternetConnection();
   }
@@ -58,6 +66,18 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
   void dispose() {
     _giftController!.dispose();
     super.dispose();
+  }
+
+  _listener() {
+    stream = _firestore
+        .collection("user")
+        .doc(context.read<UserProvider>().UserID)
+        .snapshots();
+
+    stream!.listen((data) {
+      Status = data["status"];
+      print("Status_Online:: ${Status}");
+    });
   }
 
   @override
@@ -112,27 +132,42 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: [
-                              Container(
-                                height: _height * 0.12,
-                                width: _width * 0.2,
-                                decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      width: 2,
-                                      color: Colors.black,
+                              Stack(
+                                fit: StackFit.loose,
+                                clipBehavior: Clip.none,
+                                children: [
+                                  Positioned(
+                                    child: Container(
+                                      height: _height * 0.12,
+                                      width: _width * 0.2,
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          border: Border.all(
+                                            width: 2,
+                                            color: Colors.black,
+                                          ),
+                                          image: DecorationImage(
+                                              image: _authorProfileViewModel!
+                                                          .data.profilePhoto ==
+                                                      " "
+                                                  ? AssetImage(
+                                                      "assets/profile_pic.png")
+                                                  : NetworkImage(
+                                                          _authorProfileViewModel!
+                                                              .data.profilePath
+                                                              .toString())
+                                                      as ImageProvider,
+                                              fit: BoxFit.cover)),
                                     ),
-                                    image: DecorationImage(
-                                        image: _authorProfileViewModel!
-                                                    .data.profilePhoto ==
-                                                " "
-                                            ? AssetImage(
-                                                "assets/profile_pic.png")
-                                            : NetworkImage(
-                                                    _authorProfileViewModel!
-                                                        .data.profilePath
-                                                        .toString())
-                                                as ImageProvider,
-                                        fit: BoxFit.cover)),
+                                  ),
+                                  Positioned(
+                                      top: _height * 0.08,
+                                      width: _width * 0.38,
+                                      child: Status== 1 ?  CircleAvatar(
+                                        radius: 8,
+                                        backgroundColor: Color(0xff00bb23),
+                                      ) : Container(color: Colors.transparent,))
+                                ],
                               ),
                               SizedBox(
                                 width: _width * 0.05,
@@ -218,12 +253,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                   ),
                                   child: GestureDetector(
                                     onTap: () {
-                                      Platform.isIOS
-                                          ? Share.share(
-                                              'https://apps.apple.com/ae/app/novelflex/id1661629198')
-                                          : Share.share(
-                                              'https://play.google.com/store/apps/details?id=com.appcom.estisharati.novel.flex');
-                                    },
+                                      _createDynamicLinkShort(); },
                                     child: Container(
                                       width: _width * 0.25,
                                       height: _height * 0.04,
@@ -730,7 +760,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                         onTap: () {
                                           Transitioner(
                                             context: context,
-                                            child: BookDetailAuthor(
+                                            child: BookDetail(
                                               bookID: _authorProfileViewModel!
                                                   .data.book[index].id
                                                   .toString(),
@@ -791,7 +821,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                               ],
                                             ),
                                             Container(
-                                              width: _width*0.2,
+                                              width: _width * 0.2,
                                               child: Text(
                                                 _authorProfileViewModel!
                                                     .data.book[index].title
@@ -846,7 +876,7 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
                                     : 0.0,
                             child: CupertinoActivityIndicator(),
                           ),
-                        )
+                        ),
                       ],
                     )
               : Center(
@@ -1111,4 +1141,32 @@ class _AuthorViewByUserScreenState extends State<AuthorViewByUserScreen> {
     }
   }
 
+  Future<void> _createDynamicLinkShort() async {
+
+    String link =
+        "https://www.novelflex.com/?user_Id=${_authorProfileViewModel!.data.id}";
+
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://novelflexa.page.link',
+      link: Uri.parse(link),
+      androidParameters: const AndroidParameters(
+        packageName: 'com.appcom.estisharati.novel.flex',
+        minimumVersion: 21,
+      ),
+      iosParameters: const IOSParameters(
+          bundleId: 'com.appcom.estisharati.novel.flex.novelflex',
+          minimumVersion: '1.0.1',
+          appStoreId: '1661629198'),
+    );
+
+    Uri url;
+    final ShortDynamicLink shortLink =
+    await dynamicLinks.buildShortLink(parameters);
+    url = shortLink.shortUrl;
+
+    await Share.share(
+        '$url');
+    print("url_dynamic  ${url}");
+
+  }
 }

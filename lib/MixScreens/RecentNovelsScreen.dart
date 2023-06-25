@@ -14,6 +14,7 @@ import '../Utils/ApiUtils.dart';
 import '../Utils/Constants.dart';
 import '../Utils/toast.dart';
 import '../Widgets/loading_widgets.dart';
+import 'BooksScreens/BookDetail.dart';
 import 'BooksScreens/BookDetailsAuthor.dart';
 import '../localization/Language/languages.dart' as lang;
 
@@ -95,7 +96,7 @@ class _RecentNovelsScreenState extends State<RecentNovelsScreen> {
                                   onTap: () {
                                     Transitioner(
                                       context: context,
-                                      child: BookDetailAuthor(
+                                      child: BookDetail(
                                         bookID: _allrecentModel!.data[index].id
                                             .toString(),
                                       ),

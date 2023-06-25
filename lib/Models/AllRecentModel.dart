@@ -132,12 +132,12 @@ class Category {
   });
 
   int id;
-  Title title;
+  dynamic title;
   String imagePath;
 
   factory Category.fromJson(Map<String, dynamic> json) => Category(
     id: json["id"],
-    title: titleValues.map[json["title"]]!,
+    title: titleValues.map[json["title"]],
     imagePath: json["image_path"],
   );
 

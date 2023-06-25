@@ -15,6 +15,7 @@ import '../../Utils/ApiUtils.dart';
 import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../localization/Language/languages.dart';
+import '../BooksScreens/BookDetail.dart';
 import '../BooksScreens/BookDetailsAuthor.dart';
 
 class GeneralCategoriesScreen extends StatefulWidget {
@@ -197,7 +198,7 @@ class _GeneralCategoriesScreenState extends State<GeneralCategoriesScreen> {
                     onTap: (){
                       Transitioner(
                         context: context,
-                        child: BookDetailAuthor(
+                        child: BookDetail(
                           bookID: _subCategoriesModel!.data![index]!.id.toString(),
                         ),
                         animation: AnimationType

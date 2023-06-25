@@ -1006,10 +1006,11 @@ class _LoginScreenState extends State<LoginScreen> {
     UserProvider userProvider =
         Provider.of<UserProvider>(context, listen: false);
 
-    userProvider.setUserEmail(_userModel!.user!.email!);
-    userProvider.setUserToken(_userModel.user!.accessToken!);
-    userProvider.setUserName(_userModel.user!.username!);
-    userProvider.setUserID(_userModel.user!.id!.toString());
+    userProvider.setUserEmail(_userModel!.user.email);
+    userProvider.setUserToken(_userModel.user.accessToken);
+    userProvider.setUserName(_userModel.user.username);
+    userProvider.setUserID(_userModel.user.id.toString());
+    userProvider.setUserImage(_userModel.user.image.toString());
     userProvider.setSavedDate(DateTime.now().millisecondsSinceEpoch);
   }
 }

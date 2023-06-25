@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 import 'package:more_loading_gif/more_loading_gif.dart';
+import 'package:novelflex/MixScreens/BooksScreens/AuthorViewByUserScreen.dart';
 import 'package:novelflex/TabScreens/home_screen.dart';
 import 'package:novelflex/UserAuthScreen/SignUpScreens/SignUpScreen_Second.dart';
 import 'package:novelflex/localization/Language/languages.dart';
@@ -124,13 +126,14 @@ class MyApp extends StatefulWidget {
 }
 
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp>  {
 
   String? token;
 
   @override
   void initState() {
     super.initState();
+
     var initializationSettingsAndroid =
     AndroidInitializationSettings('@drawable/ic_launcher');
     const iosInitializationSetting = IOSInitializationSettings(
@@ -180,9 +183,12 @@ class _MyAppState extends State<MyApp> {
       }
     });
 
+
     setFCMToken();
 
   }
+
+
 
   setFCMToken() async {
     SharedPreferences prefts = await SharedPreferences.getInstance();
@@ -265,20 +271,23 @@ class _MyAppState extends State<MyApp> {
 }
 
 
-class SplashFirst extends StatefulWidget {
+class SplashFirst extends StatefulWidget  {
   const SplashFirst({Key? key}) : super(key: key);
 
   @override
   State<SplashFirst> createState() => _SplashFirstState();
 }
 
-class _SplashFirstState extends State<SplashFirst> {
+class _SplashFirstState extends State<SplashFirst> with WidgetsBindingObserver {
 
+  FirebaseFirestore _firestore = FirebaseFirestore.instance;
   FirebaseDynamicLinks dynamicLinks = FirebaseDynamicLinks.instance;
 
   @override
   void initState() {
     super.initState();
+    sentStatus(1);
+    WidgetsBinding.instance.addObserver(this);
     retrieveDynamicLink(context);
     expireToken();
     Timer(const Duration(microseconds: 0), () {
@@ -303,6 +312,27 @@ class _SplashFirstState extends State<SplashFirst> {
           curveType: CurveType.decelerate, // Optional value
         );
       }
+    });
+
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed){
+      sentStatus(1);
+    }
+    else{
+      sentStatus(0);
+    }
+  }
+
+  sentStatus(int value) async {
+    _firestore
+        .collection("user")
+        .doc(context.read<UserProvider>().UserID)
+        .set({
+      "user_id": context.read<UserProvider>().UserID,
+      "status": value,
     });
   }
 
@@ -331,14 +361,19 @@ class _SplashFirstState extends State<SplashFirst> {
     UserProvider userProvider =
     Provider.of<UserProvider>(this.context, listen: false);
     try {
+
+      await Future.delayed(Duration(seconds: 3));
       final PendingDynamicLinkData? data = await FirebaseDynamicLinks.instance.getInitialLink();
       final Uri? deepLink = data?.link;
 
       if (deepLink != null) {
         if (deepLink.queryParameters.containsKey('referral_code')) {
           String? referral_code = deepLink.queryParameters['referral_code'];
+          String? user_Id = deepLink.queryParameters['user_Id'];
           // Constants.showToastBlack(context, deepLink.queryParameters['referral_code']!);
           // context.watch<UserProvider>().setReferral(referral_code.toString());
+          if(referral_code!.isNotEmpty)
+           {
           userProvider.setReferral(referral_code.toString());
           print("Referal_user_code${userProvider.GetReferral.toString()}");
           Transitioner(
@@ -349,12 +384,56 @@ class _SplashFirstState extends State<SplashFirst> {
             replacement: true, // Optional value
             curveType: CurveType.decelerate, // Optional value
           );
-           print("referral_code = $referral_code");
-          }
+          print("referral_code = $referral_code");
+        }else{
+            Transitioner(
+              context: context,
+              child: AuthorViewByUserScreen(user_id: user_Id!,),
+              animation: AnimationType.slideLeft, // Optional value
+              duration: Duration(milliseconds: 1000), // Optional value
+              replacement: true, // Optional value
+              curveType: CurveType.decelerate, // Optional value
+            );
 
+          }
+          }
       }
 
-      FirebaseDynamicLinks.instance.onLink;
+      FirebaseDynamicLinks.instance.onLink.listen(
+            (pendingDynamicLinkData) {
+              if (deepLink != null) {
+                if (deepLink.queryParameters.containsKey('referral_code')) {
+                  String? referral_code = deepLink.queryParameters['referral_code'];
+                  String? user_Id = deepLink.queryParameters['user_Id'];
+                  // Constants.showToastBlack(context, deepLink.queryParameters['referral_code']!);
+                  // context.watch<UserProvider>().setReferral(referral_code.toString());
+                  if(user_Id!.isNotEmpty){
+                    Transitioner(
+                      context: context,
+                      child: AuthorViewByUserScreen(user_id: deepLink.queryParameters['user_Id'].toString(),
+
+                      ),
+                      animation: AnimationType.slideLeft, // Optional value
+                      duration: Duration(milliseconds: 1000), // Optional value
+                      replacement: true, // Optional value
+                      curveType: CurveType.decelerate, // Optional value
+                    );
+                  }
+                  userProvider.setReferral(referral_code.toString());
+                  print("Referal_user_code${userProvider.GetReferral.toString()}");
+                  Transitioner(
+                    context: context,
+                    child: SignUpScreen_Second(ReferralUserID:deepLink.queryParameters['referral_code'],),
+                    animation: AnimationType.slideLeft, // Optional value
+                    duration: Duration(milliseconds: 1000), // Optional value
+                    replacement: true, // Optional value
+                    curveType: CurveType.decelerate, // Optional value
+                  );
+                  print("referral_code = $referral_code");
+                }
+              }
+        },
+      );
 
     } catch (e) {
       print(e.toString());

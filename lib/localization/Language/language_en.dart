@@ -11,6 +11,12 @@ class LanguageEn extends Languages {
   String get writeBook => "Write Book...";
 
   @override
+  String get freeStory => "Free Story";
+
+  @override
+  String get paidStory => "Paid Story";
+
+  @override
   String get dialogTitle => "Hello";
 
   @override
@@ -60,7 +66,16 @@ class LanguageEn extends Languages {
   String get giftText => "Add Amount to Gift";
 
   @override
-  String get gift => "Gift";
+  String get gift => "Gifts Awarded";
+
+  @override
+  String get advertisement => "Advertisement";
+
+  @override
+  String get post_comment => "Post a Comment";
+
+  @override
+  String get reply => "Reply";
 
   @override
   String get iban => "International Bank Account Number (IBAN)";

@@ -7,6 +7,7 @@ import 'package:credit_card_form/credit_card_form.dart';
 // import 'package:credit_card_scanner/models/card_scan_options.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_paypal/flutter_paypal.dart';
 import 'package:novelflex/MixScreens/StripePayment/scan_option_config_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
@@ -17,8 +18,10 @@ import '../../Utils/Constants.dart';
 import '../../Utils/toast.dart';
 import '../../Widgets/reusable_button_small.dart';
 import '../../localization/Language/languages.dart';
+import '../BooksScreens/BookDetail.dart';
 import '../BooksScreens/BookDetailsAuthor.dart';
 import 'dart:io';
+import '../PayPall/payment.dart';
 import 'CardScanner.dart';
 
 class StripePayment extends StatefulWidget {
@@ -188,25 +191,111 @@ class _StripePaymentState extends State<StripePayment> {
                       width: _width*0.05,
                       child: Image.asset("assets/quotes_data/bank_imag.png")),
                 ),
-                Container(
-                  width: 110,
-                  height: 100,
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                          Radius.circular(10)
+                GestureDetector(
+                  // onTap: (){
+                  //     Navigator.of(context).push(
+                  //       MaterialPageRoute(
+                  //         builder: (BuildContext context) => UsePaypal(
+                  //             sandboxMode: false,
+                  //             clientId:
+                  //             "AeNe9f_qZbK-PxOKuAmzhUunMQMGDMBsmm02IuRoC0z79h5wkmj2uvBQF5wWgjbsDljVIyaKLcRw358W",
+                  //             secretKey:
+                  //             "AeNe9f_qZbK-PxOKuAmzhUunMQMGDMBsmm02IuRoC0z79h5wkmj2uvBQF5wWgjbsDljVIyaKLcRw358W",
+                  //             returnURL: "nativexo://paypalpay",
+                  //             cancelURL: "https://samplesite.com/cancel",
+                  //             transactions: const [
+                  //               {
+                  //                 "amount": {
+                  //                   "total": '3.00',
+                  //                   "currency": "USD",
+                  //                   "details": {
+                  //                     "subtotal": '3.00',
+                  //                     "shipping": '0',
+                  //                     "shipping_discount": 0
+                  //                   }
+                  //                 },
+                  //                 "description":
+                  //                 "The payment transaction description.",
+                  //                 // "payment_options": {
+                  //                 //   "allowed_payment_method":
+                  //                 //       "INSTANT_FUNDING_SOURCE"
+                  //                 // },
+                  //                 "item_list": {
+                  //                   "items": [
+                  //                     {
+                  //                       "name": "subscription",
+                  //                       "quantity": 1,
+                  //                       "price": '3.00',
+                  //                       "currency": "USD"
+                  //                     }
+                  //                   ],
+                  //
+                  //                   // shipping address is not required though
+                  //                   "shipping_address": {
+                  //                     "recipient_name": "Mouza Altuniji",
+                  //                     "line1": "Al mourjan Tower Murror road",
+                  //                     "line2": "Office no 7 M floor",
+                  //                     "city": "Abu Dhabi",
+                  //                     "country_code": "AE",
+                  //                     "postal_code": "00000",
+                  //                     "phone": "+971505796166",
+                  //                     "state": "United Arab Emirates"
+                  //                   },
+                  //                 }
+                  //               }
+                  //             ],
+                  //             note: "Contact us for any questions on your order.",
+                  //             onSuccess: (Map params) async {
+                  //               print("onSuccess: $params");
+                  //               Subscribe();
+                  //             },
+                  //             onError: (error) {
+                  //               print("onError: $error");
+                  //             },
+                  //             onCancel: (params) {
+                  //               print('cancelled: $params');
+                  //             }),
+                  //       ),
+                  //     );
+                  //
+                  // },
+                  onTap: (){
+                    Transitioner(
+                      context: context,
+                      child:PaypalPayment(
+                        onFinish: (number) async {
+
+                          // payment done
+                          print('order id: '+number);
+
+                        },
                       ),
-                      boxShadow: [BoxShadow(
-                          color: const Color(0x17000000),
-                          offset: Offset(0,5),
-                          blurRadius: 16,
-                          spreadRadius: 0
-                      )] ,
-                      color: const Color(0xffebf5f9)
+                      animation: AnimationType.slideLeft, // Optional value
+                      duration: Duration(milliseconds: 1000), // Optional value
+                      replacement: true, // Optional value
+                      curveType: CurveType.decelerate, // Optional value
+                    );
+                  },
+                  child: Container(
+                    width: 110,
+                    height: 100,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(
+                            Radius.circular(10)
+                        ),
+                        boxShadow: [BoxShadow(
+                            color: const Color(0x17000000),
+                            offset: Offset(0,5),
+                            blurRadius: 16,
+                            spreadRadius: 0
+                        )] ,
+                        color: const Color(0xffebf5f9)
+                    ),
+                    child:  SizedBox(
+                        height: _height*0.03,
+                        width: _width*0.05,
+                        child: Image.asset("assets/quotes_data/paypal_img.png")),
                   ),
-                  child:  SizedBox(
-                      height: _height*0.03,
-                      width: _width*0.05,
-                      child: Image.asset("assets/quotes_data/paypal_img.png")),
                 ),
               ],
             ),
@@ -303,7 +392,7 @@ class _StripePaymentState extends State<StripePayment> {
         print("subscribe done");
         Transitioner(
           context: context,
-          child: BookDetailAuthor(bookID: widget.bookId,),
+          child: BookDetail(bookID: widget.bookId,),
           animation: AnimationType
               .slideLeft, // Optional value
           duration: Duration(

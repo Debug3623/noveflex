@@ -8,6 +8,7 @@ import 'package:novelflex/localization/Language/languages.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:transitioner/transitioner.dart';
+import '../MixScreens/BooksScreens/BookDetail.dart';
 import '../MixScreens/BooksScreens/BookDetailsAuthor.dart';
 import '../Models/LikesBooksModel.dart';
 import '../Models/SavedBooksModel.dart';
@@ -184,7 +185,7 @@ class _MyCornerState extends State<MyCorner> {
                                         onTap: () {
                                           Transitioner(
                                             context: context,
-                                            child: BookDetailAuthor(
+                                            child: BookDetail(
                                               bookID: _savedBooksModel!
                                                   .data[index].id
                                                   .toString(),
@@ -317,7 +318,7 @@ class _MyCornerState extends State<MyCorner> {
                                         onTap: () {
                                           Transitioner(
                                             context: context,
-                                            child: BookDetailAuthor(
+                                            child: BookDetail(
                                               bookID: _likesBooksModel!
                                                   .data[index].id
                                                   .toString(),

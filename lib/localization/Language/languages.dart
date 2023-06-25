@@ -13,6 +13,10 @@ abstract class Languages {
 
   String get appName;
 
+  String get freeStory;
+
+  String get paidStory;
+
   String get continueWith;
 
   String get unlockWallet;
@@ -301,6 +305,12 @@ abstract class Languages {
 
 
   String get iban;
+
+  String get advertisement;
+
+  String get post_comment;
+
+  String get reply;
 
   String get gift;
 

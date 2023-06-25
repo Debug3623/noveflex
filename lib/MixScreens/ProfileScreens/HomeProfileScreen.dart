@@ -28,6 +28,7 @@ import '../../Utils/toast.dart';
 import '../../Widgets/loading_widgets.dart';
 import '../../localization/Language/languages.dart';
 import '../BooksScreens/AuthorViewByUserScreen.dart';
+import '../BooksScreens/BookDetail.dart';
 import '../BooksScreens/BookDetailsAuthor.dart';
 import '../Uploadscreens/upload_history_screen.dart';
 
@@ -393,7 +394,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                             onTap: () {
                                               Transitioner(
                                                 context: context,
-                                                child: BookDetailAuthor(
+                                                child: BookDetail(
                                                   bookID: _readerProfileModel!
                                                       .data.books[index].id
                                                       .toString(),
@@ -1042,7 +1043,7 @@ class _HomeProfileScreenState extends State<HomeProfileScreen> {
                                             onTap: () {
                                               Transitioner(
                                                 context: context,
-                                                child: BookDetailAuthor(
+                                                child: BookDetail(
                                                   bookID:
                                                       _authorProfileViewModel!
                                                           .data.book[index].id

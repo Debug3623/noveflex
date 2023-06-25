@@ -41,7 +41,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
     var _width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xff3a6c83),
+        backgroundColor: const Color(0xffebf5f9),
         elevation: 0.0,
         leading: IconButton(
             onPressed: () {
@@ -49,12 +49,12 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
             },
             icon: Icon(
               Icons.arrow_back_ios,
-              color: Colors.white,
+              color: Colors.black,
             )),
         title: Text(Languages.of(context)!.myWallet,
             style: TextStyle(
               fontFamily: 'Lato',
-              color: Colors.white,
+              color: Colors.black,
               fontSize: 14,
               fontWeight: FontWeight.w700,
               fontStyle: FontStyle.normal,
@@ -63,15 +63,15 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
       body: _isInternetConnected
           ? _isLoading
               ? Align(
-        alignment: Alignment.center,
-        child: CustomCard(
-          gif: MoreLoadingGif(
-            type: MoreLoadingGifType.eclipse,
-            size: _height * _width * 0.0002,
-          ),
-          text: 'Loading',
-        ),
-      )
+                  alignment: Alignment.center,
+                  child: CustomCard(
+                    gif: MoreLoadingGif(
+                      type: MoreLoadingGifType.eclipse,
+                      size: _height * _width * 0.0002,
+                    ),
+                    text: 'Loading',
+                  ),
+                )
               : Column(
                   children: [
                     Container(
@@ -81,7 +81,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                         borderRadius: BorderRadius.only(
                             bottomRight: Radius.circular(30),
                             bottomLeft: Radius.circular(30)),
-                        color: const Color(0xff3a6c83),
+                        color: const Color(0xffebf5f9),
                       ),
                       child: Column(
                         children: [
@@ -91,7 +91,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                             decoration: BoxDecoration(
                                 image: DecorationImage(
                               image: AssetImage(
-                                  "assets/quotes_data/wallet_image.gif"),
+                                  "assets/quotes_data/wallet_animation_png.gif"),
                             )),
                           ),
                           SizedBox(
@@ -99,76 +99,79 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                           ),
                           Text(
                             Languages.of(context)!.bank1,
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.black),
                           ),
                           Text(Languages.of(context)!.bank2,
-                              style: TextStyle(color: Colors.white))
+                              style: TextStyle(color: Colors.black))
                         ],
                       ),
                     ),
                     Expanded(
-                      child: Stack(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
-
-                          Positioned(
-                            top: _height*0.12,
-                            child: Container(
-                              height: _height * 0.2,
-                              width: _width ,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                  30
-                                ),
-                                color:  Colors.black12,
-                              ),
+                          SizedBox(),
+                          Container(
+                            height: _height * 0.08,
+                            width: _width,
+                            margin: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black12,
+                            ),
+                            child: Center(
                               child: Padding(
-                                padding:  EdgeInsets.all(_height*0.02),
+                                padding: EdgeInsets.all(_height * 0.02),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(),
                                     Text(Languages.of(context)!.giftAmount,
                                         style: const TextStyle(
-                                            color:  Colors.black,
+                                            color: Colors.black54,
                                             fontWeight: FontWeight.bold,
                                             fontFamily: "Alexandria",
                                             fontStyle: FontStyle.normal,
                                             fontSize: 13.0),
                                         textAlign: TextAlign.left),
-                                    SizedBox(width: _width*0.03,),
+                                    SizedBox(
+                                      width: _width * 0.03,
+                                    ),
                                     Text(
                                       "\$ ${_giftAmountModel!.totalAmount.toString()}",
-                                      style: TextStyle(color: Colors.black,fontSize: 15.0,
-                                      fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          color: Colors.black54,
+                                          fontSize: 15.0,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                     SizedBox()
                                   ],
                                 ),
                               ),
-
                             ),
                           ),
-                          Positioned(
-                            top: _height*0.05,
-                            child: Container(
-                              height: _height * 0.2,
-                              width: _width ,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30
-                                ),
-                                color:  Colors.black12,
-                              ),
+                          Container(
+                            height: _height * 0.08,
+                            margin: EdgeInsets.all(8.0),
+                            width: _width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black12,
+                            ),
+                            child: Center(
                               child: Padding(
-                                padding:  EdgeInsets.all(_height*0.02),
+                                padding: EdgeInsets.all(_height * 0.02),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(),
                                     Text(Languages.of(context)!.withdrawAmount,
                                         style: const TextStyle(
-                                            color:  Colors.black,
+                                            color: Colors.black54,
                                             fontWeight: FontWeight.bold,
                                             fontFamily: "Alexandria",
                                             fontStyle: FontStyle.normal,
@@ -177,7 +180,8 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                                     SizedBox(),
                                     Text(
                                       "\$ ${_userWithDrawPaymentModel!.totalAmount.toString()}",
-                                      style: TextStyle(color: Colors.black,
+                                      style: TextStyle(
+                                          color: Colors.black54,
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -185,30 +189,28 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                                   ],
                                 ),
                               ),
-
                             ),
                           ),
-                          Positioned(
-                            top: _height*0.18,
-                            child: Container(
-                              height: _height * 0.2,
-                              width: _width ,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(
-                                    30
-                                ),
-                                color:  Colors.black12,
-                              ),
+                          Container(
+                            height: _height * 0.08,
+                            width: _width,
+                            margin: EdgeInsets.all(8.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.black12,
+                            ),
+                            child: Center(
                               child: Padding(
-                                padding:  EdgeInsets.all(_height*0.02),
+                                padding: EdgeInsets.all(_height * 0.02),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     SizedBox(),
                                     Text(Languages.of(context)!.totalAmount,
                                         style: const TextStyle(
-                                            color:  Colors.black,
+                                            color:Color(0xff1b4a6b),
                                             fontWeight: FontWeight.bold,
                                             fontFamily: "Alexandria",
                                             fontStyle: FontStyle.normal,
@@ -217,7 +219,8 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                                     SizedBox(),
                                     Text(
                                       "\$ ${_userPaymentModel!.totalAmount.toString()}",
-                                      style: TextStyle(color: Colors.black,
+                                      style: TextStyle(
+                                          color: Color(0xff1b4a6b),
                                           fontSize: 15.0,
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -225,10 +228,9 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
                                   ],
                                 ),
                               ),
-
                             ),
                           ),
-
+                          SizedBox(),
                         ],
                       ),
                     )
@@ -295,8 +297,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
   }
 
   Future GiftedAmount() async {
-    final response =
-    await http.get(Uri.parse(ApiUtils.GIFT_PAYMENT), headers: {
+    final response = await http.get(Uri.parse(ApiUtils.GIFT_PAYMENT), headers: {
       'Authorization': "Bearer ${context.read<UserProvider>().UserToken}",
     });
 
@@ -304,8 +305,7 @@ class _MyWalletScreenState extends State<MyWalletScreen> {
       print('user_payment_response${response.body}');
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
-        _giftAmountModel =
-            GiftAmountModel.fromJson(jsonData1);
+        _giftAmountModel = GiftAmountModel.fromJson(jsonData1);
         setState(() {
           _isLoading = false;
         });

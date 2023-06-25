@@ -123,7 +123,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                     ),
                   )
                 : SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
+                    physics: BouncingScrollPhysics(),
                     child: Stack(
                       children: [
                         Positioned(
@@ -228,7 +228,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                               ),
                               Visibility(
                                 visible:
-                                _statusCheckModel!.data.type == "Writer",
+                                    _statusCheckModel!.data.type == "Writer",
                                 child: GestureDetector(
                                   onTap: () {
                                     Transitioner(
@@ -247,20 +247,20 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     padding: EdgeInsets.all(_width * 0.03),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            Icon(Icons.link,
+                                            Icon(
+                                              Icons.link,
                                               size: _height * _width * 0.00009,
-                                              color: Color(0xff1b4a6b),),
-
+                                              color: Color(0xff1b4a6b),
+                                            ),
                                             SizedBox(
                                               width: 8.0,
                                             ),
                                             Text(
-                                                Languages.of(context)!
-                                                    .addLinks,
+                                                Languages.of(context)!.addLinks,
                                                 style: TextStyle(
                                                     color: Color(0xff1b4a6b),
                                                     fontWeight: FontWeight.w700,
@@ -293,14 +293,14 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                         milliseconds: 1000), // Optional value
                                     replacement: false, // Optional value
                                     curveType:
-                                    CurveType.decelerate, // Optional value
+                                        CurveType.decelerate, // Optional value
                                   );
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -356,7 +356,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -391,7 +391,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                               ),
                               Visibility(
                                 visible:
-                                _statusCheckModel!.data.type == "Writer",
+                                    _statusCheckModel!.data.type == "Writer",
                                 child: GestureDetector(
                                   onTap: () {
                                     CHECK_STATUS_Publish();
@@ -400,14 +400,15 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                     padding: EdgeInsets.all(_width * 0.03),
                                     child: Row(
                                       mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         Row(
                                           children: [
-                                            Icon(Icons.menu_book_outlined,
+                                            Icon(
+                                              Icons.menu_book_outlined,
                                               size: _height * _width * 0.00009,
-                                              color: Color(0xff1b4a6b),),
-
+                                              color: Color(0xff1b4a6b),
+                                            ),
                                             SizedBox(
                                               width: 8.0,
                                             ),
@@ -443,7 +444,7 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                   padding: EdgeInsets.all(_width * 0.03),
                                   child: Row(
                                     mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Row(
                                         children: [
@@ -479,7 +480,6 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
                                 ),
                               ),
                               GestureDetector(
-
                                 onTap: () {
                                   Transitioner(
                                     context: context,
@@ -1154,6 +1154,36 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
     print("url_dynamic  ${url}");
   }
 
+  Future<void> _createDynamicLinkShort2(var referralCode) async {
+
+    String link =
+        "https://novelflexa.page.link/?referral_code=${referralCode}";
+
+    final DynamicLinkParameters parameters = DynamicLinkParameters(
+      uriPrefix: 'https://novelflexa.page.link',
+      link: Uri.parse(link),
+      androidParameters: const AndroidParameters(
+        packageName: 'com.appcom.estisharati.novel.flex',
+        minimumVersion: 21,
+      ),
+      iosParameters: const IOSParameters(
+          bundleId: 'com.appcom.estisharati.novel.flex.novelflex',
+          minimumVersion: '1.0.1',
+          appStoreId: '1661629198'),
+    );
+
+    Uri url;
+      final ShortDynamicLink shortLink =
+      await dynamicLinks.buildShortLink(parameters);
+      url = shortLink.shortUrl;
+
+    await Share.share(
+        'Congratulation You have been invited by ${context.read<UserProvider>().UserName} to NovelFlex $url');
+
+    print("url_dynamic  ${url}");
+
+  }
+
   Future GET_REFER_CODE() async {
     final response =
         await http.get(Uri.parse(ApiUtils.USER_REFERRAL_API), headers: {
@@ -1166,11 +1196,17 @@ class _MenuScreenState extends State<MenuScreen> with TickerProviderStateMixin {
       var jsonData1 = json.decode(response.body);
       if (jsonData1['status'] == 200) {
         if (jsonData1['success'] == false) {
-          _createDynamicLink("");
+          // _createDynamicLink("");
+          _createDynamicLinkShort2("");
         } else {
           _userReferralModel = userReferralModelFromJson(jsonData);
-          _createDynamicLink(
+          // _createDynamicLink(
+          //     _userReferralModel!.success![0]!.referralCode.toString());
+
+          _createDynamicLinkShort2(
               _userReferralModel!.success![0]!.referralCode.toString());
+
+          // print(" referal_Code ${_userReferralModel!.success![0]!.referralCode.toString()}");
         }
 
         // if(_userReferralModel!.success![0]!.referralCode!=""||_userReferralModel!.success![0]!.referralCode!=null){
